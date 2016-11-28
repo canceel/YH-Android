@@ -13,9 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-
 import android.view.MotionEvent;
-
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -223,15 +221,6 @@ public class LoginActivity extends BaseActivity{
     }
 
     /*
-     * 点击空白处,收起软键盘
-     */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        return imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-    }
-
-    /*
      * 登录按钮点击事件
      */
     public void actionSubmit(View v) {
@@ -294,7 +283,6 @@ public class LoginActivity extends BaseActivity{
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();
                             }
-
                             finish();
                         }
                     });

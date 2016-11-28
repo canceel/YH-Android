@@ -112,6 +112,7 @@ public class HttpUtil {
         }
         return retMap;
     }
+
     /**
      * ִ执行一个HTTP GET请求，返回请求响应的 Bitmap
      *
@@ -300,6 +301,7 @@ public class HttpUtil {
         }
         return retMap;
     }
+
     /**
      * ִ执行一个HTTP POST请求，上传文件
      */

@@ -157,7 +157,7 @@
 
     <style name="BannerRightButton" parent="BannerButton">
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">10dp</item>
     </style>
 
     <style name="PasswordTextView">

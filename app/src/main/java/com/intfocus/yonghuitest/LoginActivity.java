@@ -13,11 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import android.widget.EditText;
@@ -218,6 +216,82 @@ public class LoginActivity extends BaseActivity{
                         }
                     }
                 });
+    }
+
+    /*
+     * 试用按钮点击事件
+     */
+
+    public void trialSubmit(View v) {
+        try {
+            usernameString = "0061";
+            passwordString = "123456";
+            if (usernameString.isEmpty() || passwordString.isEmpty()) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast("请输入用户名与密码");
+                    }
+                });
+
+                return;
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
+                }
+            });
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final String info = ApiHelper.authentication(mAppContext, usernameString, URLs.MD5(passwordString));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (info.compareTo(kSuccess) > 0 || info.compareTo(kSuccess) < 0) {
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+                                toast(info);
+                                return;
+                            }
+
+                            // 检测用户空间，版本是否升级
+                            assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
+                            checkVersionUpgrade(assetsPath);
+
+                            // 跳转至主界面
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            LoginActivity.this.startActivity(intent);
+
+                            /*
+                             * 用户行为记录, 单独异常处理，不可影响用户体验
+                             */
+                            try {
+                                logParams = new JSONObject();
+                                logParams.put("action", "登录");
+                                new Thread(mRunnableForLogger).start();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+                            finish();
+                        }
+                    });
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mProgressDialog != null) mProgressDialog.dismiss();
+            toast(e.getLocalizedMessage());
+        }
     }
 
     /*

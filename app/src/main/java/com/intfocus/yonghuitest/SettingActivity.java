@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +103,7 @@ public class SettingActivity extends BaseActivity {
         mContext = this;
         mPushAgent = PushAgent.getInstance(mContext);
 
+        RelativeLayout mChangePWDLayout = (RelativeLayout) findViewById(R.id.setting_pwd);
         mUserID = (TextView) findViewById(R.id.user_id);
         mRoleID = (TextView) findViewById(R.id.role_id);
         mGroupID = (TextView) findViewById(R.id.group_id);
@@ -128,6 +130,9 @@ public class SettingActivity extends BaseActivity {
         mCheckAssets.setOnClickListener(mCheckAssetsListener);
 
         try {
+            if (user.getString("user_num").equals("0061")) {
+                mChangePWDLayout.setVisibility(View.GONE);
+            }
             String betaConfigPath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kBetaConfigFileName);
             JSONObject betaJSON = FileUtil.readConfigFile(betaConfigPath);
             if (!betaJSON.has("image_within_screen")) {

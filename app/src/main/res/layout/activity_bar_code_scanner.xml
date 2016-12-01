@@ -9,8 +9,15 @@
         android:id="@+id/bar_code_scanner_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar">
+        android:layout_below="@id/actionBarLine">
     </FrameLayout>
+
+    <View
+        android:id="@+id/actionBarLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/actionBar"
+        android:background="@color/divider"/>
 
     <RelativeLayout
         android:id="@+id/actionBar"

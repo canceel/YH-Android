@@ -109,38 +109,42 @@
             style="@style/LoginActivityLineView"
             android:layout_below="@+id/linearPassword" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linearPasswordBelowLine"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
+            android:layout_below="@id/linearPasswordBelowLine"
+            android:background="@drawable/btn_style"
+            android:onClick="actionSubmit"
+            android:text="@string/login_submit"
+            android:textColor="#FFFFFF"
+            android:textSize="20dip" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/btn_login"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:onClick="trialSubmit">
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_style"
-                android:onClick="actionSubmit"
-                android:text="@string/login_submit"
-                android:textColor="#FFFFFF"
-                android:textSize="20dip" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/show_trial"
+                android:textColor="@color/white"/>
 
-            <Button
-                android:id="@+id/btn_trial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_style"
-                android:onClick="trialSubmit"
-                android:text="@string/login_trial"
-                android:textColor="#FFFFFF"
-                android:textSize="20dip" />
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/btn_play"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -164,7 +168,7 @@
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:text="@string/contactus"
-                android:autoLink="all" />
+                android:onClick="contactUs"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

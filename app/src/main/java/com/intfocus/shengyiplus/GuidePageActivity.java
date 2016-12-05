@@ -80,7 +80,7 @@ public class GuidePageActivity extends Activity implements ViewPager.OnPageChang
     public void initDot() {
         for (int i=0; i<views.size(); i++) {
             ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.image_shape_button);
+            imageView.setImageResource(R.drawable.image_shape_accircle);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dip2px(this, 10), dip2px(this, 10));
             layoutParams.setMargins(dip2px(this, 5), 0, 0, 0);
             imageView.setLayoutParams(layoutParams);
@@ -102,7 +102,7 @@ public class GuidePageActivity extends Activity implements ViewPager.OnPageChang
                 dots.get(j).setImageResource(R.drawable.image_shape_circle);
             }
             else {
-                dots.get(j).setImageResource(R.drawable.image_shape_button);
+                dots.get(j).setImageResource(R.drawable.image_shape_accircle);
             }
         }
     }

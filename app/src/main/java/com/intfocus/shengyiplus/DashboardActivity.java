@@ -426,7 +426,7 @@ public class DashboardActivity extends BaseActivity {
 		Intent intent = getIntent();
 		if (intent.hasExtra("from_activity")) {
 			checkVersionUpgrade(assetsPath);
-			checkPgyerVersionUpgrade(DashboardActivity.this,false);
+//			checkPgyerVersionUpgrade(DashboardActivity.this,false);
 
 			new Thread(new Runnable() {
 				@Override

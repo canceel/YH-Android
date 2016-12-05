@@ -240,8 +240,8 @@ public class SettingActivity extends BaseActivity {
     final View.OnClickListener mCheckUpgradeListener = new View.OnClickListener() {
         @Override
             public void onClick(View v) {
-                checkPgyerVersionUpgrade(SettingActivity.this, true);
-                bvCheckUpgrade.setVisibility(View.GONE);
+//            checkPgyerVersionUpgrade(SettingActivity.this, true);
+            bvCheckUpgrade.setVisibility(View.GONE);
             mCheckUpgrade.setText("检测更新");
 
             /*

@@ -6,7 +6,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion '24.0.3'
     defaultConfig {
-        applicationId 'com.intfocus.shengyiplus'
+        applicationId 'com.intfocus.shengyiplusdemo'
         minSdkVersion 14
         targetSdkVersion 23
     }

@@ -277,13 +277,23 @@ public class DashboardActivity extends BaseActivity {
 					break;
 
 				case "语音播报":
+					final SpeechSynthesizer mTts = SpeechReport.getmTts(mAppContext);
 					mProgressDialog = ProgressDialog.show(DashboardActivity.this, "稍等", "正在合成数据...");
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
 								String urlString = String.format("%s/api/v1/group/%d/role/%d/audio", kBaseUrl, user.getInt("group_id"), user.getInt("role_id"));
-								final String speechAudio = SpeechReport.infoProcess(mAppContext, urlString, "kpi");
+								String speechAudioPath = FileUtil.dirPath(mContext, K.kHTMLDirName,"SpeechAudio.plist");
+								String speechAudio;
+
+								if (mTts.isSpeaking()) {
+									speechAudio = FileUtil.readFile(speechAudioPath);
+								}
+								else {
+									speechAudio = SpeechReport.infoProcess(mAppContext, urlString, "kpi");
+									FileUtil.writeFile(speechAudioPath,speechAudio);
+								}
 
 								if (speechAudio.equals("语音合成错误")) {
 									toast("语音合成错误");
@@ -297,7 +307,7 @@ public class DashboardActivity extends BaseActivity {
 								if (mProgressDialog != null) {
 									mProgressDialog.dismiss();
 								}
-							} catch (JSONException e) {
+							} catch (JSONException | IOException e) {
 								e.printStackTrace();
 							}
 						}

@@ -36,7 +36,7 @@ public class SpeechListActivity extends BaseActivity{
     private ArrayList<String> mSpeechList = new ArrayList<>();
     private SpeechSynthesizer mTts;
     private CircleImageView mPlayButton;
-    private String speechAudio;
+    private String speechAudio, speechCachePath;
     private JSONArray speechArray;
     private SpeechListAdapter.ListArrayAdapter mArrayAdapter;
 
@@ -48,13 +48,15 @@ public class SpeechListActivity extends BaseActivity{
         mPlayButton = (CircleImageView) findViewById(R.id.btn_play);
         mPlayButton.setImageResource(R.drawable.btn_stop);
         mTts = SpeechReport.getmTts(mAppContext);
-        initSpeechInfo();
-        initListView();
+
+        speechCachePath = FileUtil.dirPath(mAppContext, K.kHTMLDirName,"SpeechJson.plist");
 
         if (!mTts.isSpeaking()) {
+            initSpeechInfo();
             SpeechReport.speechNum = 0;
             SpeechReport.startSpeechPlayer(mAppContext,speechArray);
         }
+        initListView();
     }
 
     private void initSpeechInfo() {
@@ -69,7 +71,6 @@ public class SpeechListActivity extends BaseActivity{
     }
 
     private void initListView(){
-        String speechCachePath = FileUtil.dirPath(mAppContext, K.kHTMLDirName,"PlayData.plist");
         mSpeechList.add("播报列表初始化失败");
         try {
             if (new File(speechCachePath).exists()) {

@@ -158,7 +158,7 @@ public class SpeechReport {
 
     public static String infoProcess(final Context mContext,final String urlString,final String type) {
         String mAssetsPath = FileUtil.dirPath(mContext, K.kHTMLDirName);
-        String speechCachePath = FileUtil.dirPath(mContext, K.kHTMLDirName,"PlayData.plist");
+        String speechCachePath = FileUtil.dirPath(mContext, K.kHTMLDirName,"SpeechJson.plist");
         final StringBuilder speechAudio = new StringBuilder();
         speechAudio.append("语音合成错误");
         try {
@@ -201,6 +201,7 @@ public class SpeechReport {
                     default:
                         break;
                 }
+
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();

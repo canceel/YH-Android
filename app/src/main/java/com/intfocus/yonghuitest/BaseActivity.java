@@ -96,7 +96,6 @@ public class BaseActivity extends Activity {
     Context mAppContext;
     Toast toast;
     int displayDpi; //屏幕密度
-    MediaPlayer mediaPlayer;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -141,15 +140,6 @@ public class BaseActivity extends Activity {
         mMyApp = null;
         mAppContext = null;
         super.onDestroy();
-    }
-
-    public MediaPlayer getMediaPlayer() {
-        if (mediaPlayer == null) {
-            return new MediaPlayer();
-        }
-        else {
-            return mediaPlayer;
-        }
     }
 
     private void clearReferences(){

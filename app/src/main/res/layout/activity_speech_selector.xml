@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/actionBar">
+    android:background="@color/lightgray">
 
     <RelativeLayout
         android:id="@+id/actionBar"
@@ -22,8 +22,8 @@
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="播报列表"
-            style="@style/BannerTitle" />
+            style="@style/BannerTitle"
+            android:text="语音播报" />
 
         <RelativeLayout
             android:id="@+id/colorViewLayout"
@@ -37,19 +37,41 @@
             <ImageView
                 android:id="@+id/colorView0"
                 style="@style/ColorViewStyle0" />
+
             <ImageView
                 android:id="@+id/colorView1"
                 style="@style/ColorViewStyle1" />
+
             <ImageView
                 android:id="@+id/colorView2"
                 style="@style/ColorViewStyle2" />
+
             <ImageView
                 android:id="@+id/colorView3"
                 style="@style/ColorViewStyle3" />
+
             <ImageView
                 android:id="@+id/colorView4"
                 style="@style/ColorViewStyle4" />
         </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/actionBar">
+
+        <TextView
+            android:id="@+id/txt_current_speech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/txt_speechdata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
@@ -59,14 +81,15 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="onClick"/>
+        android:onClick="onClick" />
 
-    <ListView
-        android:id="@+id/list_speech"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/actionBar"
-        android:layout_above="@id/btn_play">
-    </ListView>
-
+    <ImageView
+        android:id="@+id/btn_list"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="launchSpeechListMenu"
+        android:padding="10dp"
+        android:src="@drawable/btn_list" />
 </RelativeLayout>

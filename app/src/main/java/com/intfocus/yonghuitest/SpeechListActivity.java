@@ -1,22 +1,21 @@
 package com.intfocus.yonghuitest;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.gson.JsonIOException;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.view.CircleImageView;
 
 import org.json.JSONArray;
@@ -25,7 +24,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by liuruilin on 2016/11/30.
@@ -33,6 +31,8 @@ import java.util.List;
 
 public class SpeechListActivity extends BaseActivity{
     private ListView mListView;
+    private TextView mCurrentSpeech;
+    private TextView mSpeechData;
     private ArrayList<String> mSpeechList = new ArrayList<>();
     private SpeechSynthesizer mTts;
     private CircleImageView mPlayButton;
@@ -46,8 +46,17 @@ public class SpeechListActivity extends BaseActivity{
         setContentView(R.layout.activity_speech_selector);
 
         mPlayButton = (CircleImageView) findViewById(R.id.btn_play);
+        mCurrentSpeech = (TextView) findViewById(R.id.txt_current_speech);
+        mSpeechData = (TextView) findViewById(R.id.txt_speechdata);
         mPlayButton.setImageResource(R.drawable.btn_stop);
         mTts = SpeechReport.getmTts(mAppContext);
+
+        try {
+            mCurrentSpeech.setText("正在播报: " + mSpeechList.get(SpeechReport.speechNum));
+            mSpeechData.setText(speechArray.get(SpeechReport.speechNum).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         speechCachePath = FileUtil.dirPath(mAppContext, K.kHTMLDirName,"SpeechJson.plist");
 
@@ -56,7 +65,6 @@ public class SpeechListActivity extends BaseActivity{
             SpeechReport.speechNum = 0;
             SpeechReport.startSpeechPlayer(mAppContext,speechArray);
         }
-        initListView();
     }
 
     private void initSpeechInfo() {
@@ -70,7 +78,8 @@ public class SpeechListActivity extends BaseActivity{
         }
     }
 
-    private void initListView(){
+
+    private void initSpeechList(){
         mSpeechList.add("播报列表初始化失败");
         try {
             if (new File(speechCachePath).exists()) {
@@ -86,13 +95,46 @@ public class SpeechListActivity extends BaseActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-        mListView = (ListView) findViewById(R.id.list_speech);
+    public void initSpeechMenu() {
+        final View contentView = LayoutInflater.from(this).inflate(R.layout.popupwindow_speech, null);
+
+        initSpeechList();
+
+        mListView = (ListView) contentView.findViewById(R.id.pop_list_speech);
         mListView.setOnItemClickListener(mItemClickListener);
         mArrayAdapter = SpeechListAdapter.SpeechListAdapter(this, R.layout.speech_list_item, mSpeechList);
         mListView.setAdapter(mArrayAdapter);
         mListView.setTextFilterEnabled(true);
+
+        popupWindow = new PopupWindow(this);
+        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(800);
+        popupWindow.setContentView(contentView);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
     }
+
+    /*
+     * listview 点击事件
+     */
+    private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            try {
+                mCurrentSpeech.setText("正在播放: " + mSpeechList.get(position));
+                mSpeechData.setText(speechArray.get(position).toString());
+                SpeechReport.speechNum = position;
+                SpeechReport.startSpeechPlayer(mAppContext,speechArray);
+                mPlayButton.setImageResource(R.drawable.btn_stop);
+                mArrayAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     public void onClick(View v) {
         SpeechReport.speechNum = 0;
@@ -108,22 +150,12 @@ public class SpeechListActivity extends BaseActivity{
         }
     }
 
-    /*
-     * listview 点击事件
-     */
-    private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            try {
-                SpeechReport.speechNum = position;
-                SpeechReport.startSpeechPlayer(mAppContext,speechArray);
-                mPlayButton.setImageResource(R.drawable.btn_stop);
-                mArrayAdapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    public void launchSpeechListMenu(View v) {
+        initSpeechMenu();
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]-popupWindow.getHeight());
+    }
 
     /*
      * 返回

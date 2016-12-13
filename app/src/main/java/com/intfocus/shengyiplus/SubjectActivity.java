@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
 import com.intfocus.shengyiplus.util.ApiHelper;
 import com.intfocus.shengyiplus.util.FileUtil;
 import com.intfocus.shengyiplus.util.K;
@@ -39,15 +38,13 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
@@ -360,9 +357,13 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+					boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
 
-					new Thread(mRunnableForDetecting).start();
+					if (reportDataState) {
+						new Thread(mRunnableForDetecting).start();
+					} else {
+						showWebViewForWithoutNetwork();
+					}
 				}
 			}).start();
 		} else {
@@ -595,8 +596,14 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 				urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
 				ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
 
-				ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
-				new Thread(mRunnableForDetecting).start();
+				boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+
+				if (reportDataState) {
+					new Thread(mRunnableForDetecting).start();
+				} else {
+					showWebViewForWithoutNetwork();
+				}
+
                 /*
                  * 用户行为记录, 单独异常处理，不可影响用户体验
                  */
@@ -706,5 +713,17 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 			}
 			return item;
 		}
+	}
+
+	// 没有放在 BaseActivity,原因:防止在没有使用动画的界面中也使用了该方法。没有使用动画的界面用该方法,会报空指针异常
+	private void showWebViewForWithoutNetwork() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				animLoading.setVisibility(View.GONE);
+				String urlStringForLoading = loadingPath("400");
+				mWebView.loadUrl(urlStringForLoading);
+			}
+		});
 	}
 }

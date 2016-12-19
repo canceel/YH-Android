@@ -35,6 +35,7 @@ public class SpeechReport {
     public static JSONArray speechArray;
     public static int speechNum = 0;
     private static SpeechListAdapter.ListArrayAdapter mSpeechListAdapter;
+    public static String reportTitle, reportAudio, reportAudio2Shwo, reportAudioSum;
 
     public static void startSpeechSynthesizer(Context mContext,String info) {
         context = mContext;
@@ -43,17 +44,14 @@ public class SpeechReport {
         mTts.synthesizeToUri(info,"./sdcard/iflytek.wav",mSynListener);
     }
 
-    public static void startSpeechPlayer(Context mContext,JSONArray array) {
-        try {
-            context = mContext;
-            speechArray = array;
-            LogUtil.d("speechInfo",array.toString());
-            mTts = initSpeechSynthesizer(mContext);
-            initTtsParms();
-            mTts.startSpeaking(array.getString(speechNum),mPlayListener);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static void startSpeechPlayer(Context mContext,JSONArray array,String userInfo) {
+        context = mContext;
+        speechArray = array;
+        mTts = initSpeechSynthesizer(mContext);
+        initTtsParms();
+        String reportSum = "共" + speechArray.length() + "支报表播报";
+        Log.i("speechError",reportSum);
+        mTts.startSpeaking(userInfo + reportSum,mPlayListener);
     }
     
     private static SpeechSynthesizer initSpeechSynthesizer(Context mContext) {
@@ -84,7 +82,6 @@ public class SpeechReport {
     private static void initTtsParms() {
         // 清空参数
         mTts.setParameter(SpeechConstant.PARAMS, null);
-
         mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);   //设置云端
         mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaofeng");                   //设置发音人
         mTts.setParameter(SpeechConstant.SPEED, "50");                              //设置语速
@@ -94,6 +91,19 @@ public class SpeechReport {
         mTts.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         // 设置播放合成音频打断音乐播放，默认为true
         mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "true");
+    }
+
+    /*
+     * 拼接语音播报内容
+     */
+    public static void initReportAudio(JSONObject speechInfo,int number) throws JSONException{
+        speechNum = number;
+        reportTitle = "报表名称：" + speechInfo.getString("title");
+        reportAudio = speechInfo.getJSONArray("audio").toString();
+        reportAudio2Shwo = reportAudio.replace("[\"","").replace("\",\"","\n").replace("\"]","");
+        SpeechListActivity.mSpeechData.setText(reportAudio2Shwo);
+        SpeechListActivity.mCurrentSpeech.setText("正在播报: " + speechInfo.getString("title"));
+        reportAudioSum = "共" + speechInfo.getJSONArray("audio").length() + "条";
     }
 
     /*
@@ -111,7 +121,8 @@ public class SpeechReport {
         //percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
         public void onBufferProgress(int percent, int beginPos, int endPos, String info) {}
         //开始播放
-        public void onSpeakBegin() {}
+        public void onSpeakBegin() {
+        }
         //暂停播放
         public void onSpeakPaused() {}
         //播放进度回调
@@ -129,14 +140,20 @@ public class SpeechReport {
     public static SynthesizerListener mPlayListener = new SynthesizerListener() {
         //会话结束回调接口，没有错误时，error为null
         public void onCompleted(SpeechError error) {
-            if (speechNum <= speechArray.length()) {
-                speechNum++;
-                startSpeechPlayer(context,speechArray);
-                mSpeechListAdapter = SpeechListAdapter.getAdapter();
-                mSpeechListAdapter.notifyDataSetChanged();
-            }
-            else {
+            try {
                 mTts.destroy();
+                if (speechNum <= speechArray.length() && error == null) {
+                    mTts = initSpeechSynthesizer(context);
+                    initTtsParms();
+                    speechNum++;
+                    JSONObject speechInfo = speechArray.getJSONObject(speechNum);
+                    initReportAudio(speechInfo,speechNum);
+                    mTts.startSpeaking(reportTitle + reportAudioSum+ reportAudio,mPlayListener);
+                    mSpeechListAdapter = SpeechListAdapter.getAdapter();
+                    mSpeechListAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
@@ -149,7 +166,8 @@ public class SpeechReport {
         public void onSpeakPaused() {}
         //播放进度回调
         //percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {}
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+        }
         //恢复播放回调接口
         public void onSpeakResumed() {}
         //会话事件回调接口
@@ -171,31 +189,11 @@ public class SpeechReport {
                     case "kpi":
                         FileUtil.writeFile(speechCachePath,speechJson.toString());
                         JSONArray speechList = speechJson.getJSONArray("data");
-                        speechAudio.append("[");
-                        speechAudio.append("\"播报内容如下:\",");
-                        for (int i = 0;i < speechList.length();i++) {
-                            if (i != 0) {
-                                speechAudio.append(",");
-                            }
-                            JSONObject speechInfo = (JSONObject) speechList.get(i);
-                            speechAudio.append("\"" + speechInfo.get("title"));
-                            JSONArray audioList = speechInfo.getJSONArray("audio");
-                            for (int j = 0;j < audioList.length();j++) {
-                                speechAudio.append(audioList.getString(j));
-                            }
-                            speechAudio.append("\"");
-                        }
-                        speechAudio.append(",\"以上是全部内容，谢谢收听\"");
-                        speechAudio.append("]");
+                        speechAudio.append(speechList.toString());
                         break;
 
                     case "report":
-                        speechAudio.append("报表名称:" + speechJson.get("title"));
-                        JSONArray audioList = speechJson.getJSONArray("audio");
-                        for (int j = 0;j < audioList.length();j++) {
-                            speechAudio.append(audioList.getString(j));
-                        }
-                        speechAudio.append("以上是全部内容，谢谢收听");
+                        speechAudio.append(speechJson.toString());
                         break;
 
                     default:

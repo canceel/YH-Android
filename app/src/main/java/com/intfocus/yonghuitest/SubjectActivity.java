@@ -225,14 +225,17 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 									reportID = TextUtils.split(link, "/")[8];
 									String urlString = String.format("%s/api/v1/group/%d/role/%d/report/%s/audio",kBaseUrl,user.getInt("group_id"),user.getInt("role_id"),reportID);
 									String speechInfo = SpeechReport.infoProcess(mAppContext,urlString,"report");
+									JSONObject speechJson = new JSONObject(speechInfo);
 
 									if (speechInfo.equals("语音合成错误")) {
 										toast("语音合成错误");
 									}
 									else {
 										String userInfo = "本次报表针对" + user.getString("role_name") + user.getString("group_name");
-										speechInfo = userInfo + speechInfo;
-										SpeechReport.startSpeechSynthesizer(mAppContext,speechInfo);
+										String reportTitle = "报表名称" + speechJson.getString("title");
+										String reportAudioSum = "共" + speechJson.getJSONArray("audio").length() + "条";
+										String reportAudio = speechJson.getString("audio");
+										SpeechReport.startSpeechSynthesizer(mAppContext,userInfo + reportTitle + reportAudioSum + reportAudio);
 									}
 								} catch (JSONException e) {
 								e.printStackTrace();

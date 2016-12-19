@@ -47,7 +47,7 @@ public class SpeechListAdapter{
             viewItem.setBackgroundColor(Color.WHITE);
 
             if (position == SpeechReport.speechNum) {
-                viewItem.setBackgroundColor(Color.GREEN);
+                viewItem.setTextColor(Color.GREEN);
             }
 
             return listItem;

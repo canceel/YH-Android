@@ -284,23 +284,23 @@ public class DashboardActivity extends BaseActivity {
 						public void run() {
 							try {
 								String urlString = String.format("%s/api/v1/group/%d/role/%d/audio", kBaseUrl, user.getInt("group_id"), user.getInt("role_id"));
-								String speechAudioPath = FileUtil.dirPath(mContext, K.kHTMLDirName,"SpeechAudio.plist");
-								String speechAudio;
+								String speechArrayPath = FileUtil.dirPath(mContext, K.kHTMLDirName,"speechArray.plist");
+								String speechArray;
 
 								if (mTts.isSpeaking()) {
-									speechAudio = FileUtil.readFile(speechAudioPath);
+									speechArray = FileUtil.readFile(speechArrayPath);
 								}
 								else {
-									speechAudio = SpeechReport.infoProcess(mAppContext, urlString, "kpi");
-									FileUtil.writeFile(speechAudioPath,speechAudio);
+									speechArray = SpeechReport.infoProcess(mAppContext, urlString, "kpi");
+									FileUtil.writeFile(speechArrayPath,speechArray);
 								}
 
-								if (speechAudio.equals("语音合成错误")) {
+								if (speechArray.equals("语音合成错误")) {
 									toast("语音合成错误");
 								}
 								else {
 									Intent intent = new Intent(DashboardActivity.this, SpeechListActivity.class);
-									intent.putExtra("speechAudio", speechAudio);
+									intent.putExtra("speechAudio", speechArray);
 									startActivity(intent);
 								}
 

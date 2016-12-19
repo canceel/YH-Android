@@ -31,12 +31,11 @@ import java.util.ArrayList;
 
 public class SpeechListActivity extends BaseActivity{
     private ListView mListView;
-    private TextView mCurrentSpeech;
-    private TextView mSpeechData;
+    public static TextView mSpeechData, mCurrentSpeech;
     private ArrayList<String> mSpeechList = new ArrayList<>();
     private SpeechSynthesizer mTts;
     private CircleImageView mPlayButton;
-    private String speechAudio, speechCachePath;
+    private String speechAudio, speechCachePath, userInfo;
     private JSONArray speechArray;
     private SpeechListAdapter.ListArrayAdapter mArrayAdapter;
 
@@ -51,19 +50,13 @@ public class SpeechListActivity extends BaseActivity{
         mPlayButton.setImageResource(R.drawable.btn_stop);
         mTts = SpeechReport.getmTts(mAppContext);
 
-        try {
-            mCurrentSpeech.setText("正在播报: " + mSpeechList.get(SpeechReport.speechNum));
-            mSpeechData.setText(speechArray.get(SpeechReport.speechNum).toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         speechCachePath = FileUtil.dirPath(mAppContext, K.kHTMLDirName,"SpeechJson.plist");
+        initSpeechList();
+        initSpeechInfo();
 
         if (!mTts.isSpeaking()) {
-            initSpeechInfo();
-            SpeechReport.speechNum = 0;
-            SpeechReport.startSpeechPlayer(mAppContext,speechArray);
+            SpeechReport.speechNum = -1;
+            SpeechReport.startSpeechPlayer(mAppContext,speechArray,userInfo);
         }
     }
 
@@ -72,19 +65,18 @@ public class SpeechListActivity extends BaseActivity{
             Intent intent = getIntent();
             speechAudio = intent.getStringExtra("speechAudio");
             speechArray = new JSONArray(speechAudio);
-            speechArray.put(0,"本次报表针对" + user.getString("role_name") + user.getString("group_name"));
+            userInfo = "本次报表针对" + user.getString("role_name") + user.getString("group_name");
+            SpeechReport.initReportAudio(speechArray.getJSONObject(0),0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
     private void initSpeechList(){
         mSpeechList.add("播报列表初始化失败");
         try {
             if (new File(speechCachePath).exists()) {
                 mSpeechList.clear();
-                mSpeechList.add("本次报表针对" + user.getString("role_name") + user.getString("group_name"));
                 JSONObject speechJson = FileUtil.readConfigFile(speechCachePath);
                 JSONArray speechArray = speechJson.getJSONArray("data");
                 for (int i = 0, len = speechArray.length(); i < len; i++) {
@@ -99,9 +91,6 @@ public class SpeechListActivity extends BaseActivity{
 
     public void initSpeechMenu() {
         final View contentView = LayoutInflater.from(this).inflate(R.layout.popupwindow_speech, null);
-
-        initSpeechList();
-
         mListView = (ListView) contentView.findViewById(R.id.pop_list_speech);
         mListView.setOnItemClickListener(mItemClickListener);
         mArrayAdapter = SpeechListAdapter.SpeechListAdapter(this, R.layout.speech_list_item, mSpeechList);
@@ -124,10 +113,8 @@ public class SpeechListActivity extends BaseActivity{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             try {
-                mCurrentSpeech.setText("正在播放: " + mSpeechList.get(position));
-                mSpeechData.setText(speechArray.get(position).toString());
-                SpeechReport.speechNum = position;
-                SpeechReport.startSpeechPlayer(mAppContext,speechArray);
+                SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
+                mTts.startSpeaking(SpeechReport.reportTitle + SpeechReport.reportAudioSum + SpeechReport.reportAudio,SpeechReport.mPlayListener);
                 mPlayButton.setImageResource(R.drawable.btn_stop);
                 mArrayAdapter.notifyDataSetChanged();
             } catch (Exception e) {
@@ -136,16 +123,14 @@ public class SpeechListActivity extends BaseActivity{
         }
     };
 
-    public void onClick(View v) {
-        SpeechReport.speechNum = 0;
-        mArrayAdapter.notifyDataSetChanged();
+    public void onClick(View v) throws JSONException{
+        SpeechReport.initReportAudio(speechArray.getJSONObject(0),0);
         if (mTts.isSpeaking()){
-
             mTts.stopSpeaking();
             mPlayButton.setImageResource(R.drawable.btn_play);
         }
         else {
-            SpeechReport.startSpeechPlayer(mAppContext,speechArray);
+            SpeechReport.startSpeechPlayer(mAppContext,speechArray,userInfo);
             mPlayButton.setImageResource(R.drawable.btn_stop);
         }
     }

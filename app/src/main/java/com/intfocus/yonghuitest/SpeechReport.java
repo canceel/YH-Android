@@ -37,41 +37,26 @@ public class SpeechReport {
     private static SpeechListAdapter.ListArrayAdapter mSpeechListAdapter;
     public static String reportTitle, reportAudio, reportAudio2Shwo, reportAudioSum;
 
-    public static void startSpeechSynthesizer(Context mContext,String info) {
-        context = mContext;
-        mTts = initSpeechSynthesizer(mContext);
-        initTtsParms();
-        mTts.synthesizeToUri(info,"./sdcard/iflytek.wav",mSynListener);
-    }
 
-    public static void startSpeechPlayer(Context mContext,JSONArray array,String userInfo) {
+    public static void startSpeechPlayer(Context mContext, JSONArray array, String userInfo) {
         context = mContext;
         speechArray = array;
         mTts = initSpeechSynthesizer(mContext);
         initTtsParms();
         String reportSum = "共" + speechArray.length() + "支报表播报";
-        Log.i("speechError",reportSum);
-        mTts.startSpeaking(userInfo + reportSum,mPlayListener);
+        Log.i("speechError", reportSum);
+        mTts.startSpeaking(userInfo + reportSum, mPlayListener);
     }
-    
+
     private static SpeechSynthesizer initSpeechSynthesizer(Context mContext) {
         return SpeechSynthesizer.createSynthesizer(mContext, null);
     }
 
-    public static MediaPlayer getMediaPlayer() {
-        if (mediaPlayer == null) {
-            return new MediaPlayer();
-        }
-        else {
-            return mediaPlayer;
-        }
-    }
 
     public static SpeechSynthesizer getmTts(Context mContext) {
         if (mTts == null) {
             return initSpeechSynthesizer(mContext);
-        }
-        else {
+        } else {
             return mTts;
         }
     }
@@ -96,43 +81,15 @@ public class SpeechReport {
     /*
      * 拼接语音播报内容
      */
-    public static void initReportAudio(JSONObject speechInfo,int number) throws JSONException{
+    public static void initReportAudio(JSONObject speechInfo, int number) throws JSONException {
         speechNum = number;
         reportTitle = "报表名称：" + speechInfo.getString("title");
         reportAudio = speechInfo.getJSONArray("audio").toString();
-        reportAudio2Shwo = reportAudio.replace("[\"","").replace("\",\"","\n").replace("\"]","");
+        reportAudio2Shwo = reportAudio.replace("[\"", "").replace("\",\"", "\n").replace("\"]", "");
         SpeechListActivity.mSpeechData.setText(reportAudio2Shwo);
         SpeechListActivity.mCurrentSpeech.setText("正在播报: " + speechInfo.getString("title"));
         reportAudioSum = "共" + speechInfo.getJSONArray("audio").length() + "条";
     }
-
-    /*
-     * 语音合成回调 - 本地合成
-     */
-    private static SynthesizerListener mSynListener = new SynthesizerListener() {
-        //会话结束回调接口，没有错误时，error为null
-        public void onCompleted(SpeechError error) {
-            Uri uri = Uri.fromFile(new File("./sdcard/iflytek.wav"));
-            mediaPlayer = MediaPlayer.create(context,uri);
-            mediaPlayer.start();
-        }
-
-        //缓冲进度回调
-        //percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
-        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {}
-        //开始播放
-        public void onSpeakBegin() {
-        }
-        //暂停播放
-        public void onSpeakPaused() {}
-        //播放进度回调
-        //percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {}
-        //恢复播放回调接口
-        public void onSpeakResumed() {}
-        //会话事件回调接口
-        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {}
-    };
 
     /*
      * 语音合成回调 - 云端合成
@@ -147,8 +104,8 @@ public class SpeechReport {
                     initTtsParms();
                     speechNum++;
                     JSONObject speechInfo = speechArray.getJSONObject(speechNum);
-                    initReportAudio(speechInfo,speechNum);
-                    mTts.startSpeaking(reportTitle + reportAudioSum+ reportAudio,mPlayListener);
+                    initReportAudio(speechInfo, speechNum);
+                    mTts.startSpeaking(reportTitle + reportAudioSum + reportAudio, mPlayListener);
                     mSpeechListAdapter = SpeechListAdapter.getAdapter();
                     mSpeechListAdapter.notifyDataSetChanged();
                 }
@@ -159,47 +116,45 @@ public class SpeechReport {
 
         //缓冲进度回调
         //percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
-        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {}
+        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
+        }
+
         //开始播放
-        public void onSpeakBegin() {}
+        public void onSpeakBegin() {
+        }
+
         //暂停播放
-        public void onSpeakPaused() {}
+        public void onSpeakPaused() {
+        }
+
         //播放进度回调
         //percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
         public void onSpeakProgress(int percent, int beginPos, int endPos) {
         }
+
         //恢复播放回调接口
-        public void onSpeakResumed() {}
+        public void onSpeakResumed() {
+        }
+
         //会话事件回调接口
-        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {}
+        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {
+        }
     };
 
-    public static String infoProcess(final Context mContext,final String urlString,final String type) {
+    public static String infoProcess(final Context mContext, final String urlString) {
         String mAssetsPath = FileUtil.dirPath(mContext, K.kHTMLDirName);
-        String speechCachePath = FileUtil.dirPath(mContext, K.kHTMLDirName,"SpeechJson.plist");
+        String speechCachePath = FileUtil.dirPath(mContext, K.kHTMLDirName, "SpeechJson.plist");
         final StringBuilder speechAudio = new StringBuilder();
         speechAudio.append("语音合成错误");
         try {
-            Map<String,String> responseHeader = ApiHelper.checkResponseHeader(urlString,mAssetsPath);
-            Map<String,String> response = HttpUtil.httpGet(urlString,responseHeader);
-            if (response.get("code").equals("200")){
-                speechAudio.delete(0,speechAudio.length()); // 若获取到播报数据,则清空 speechAudio 内信息
+            Map<String, String> responseHeader = ApiHelper.checkResponseHeader(urlString, mAssetsPath);
+            Map<String, String> response = HttpUtil.httpGet(urlString, responseHeader);
+            if (response.get("code").equals("200") && ) {
+                speechAudio.delete(0, speechAudio.length()); // 若获取到播报数据,则清空 speechAudio 内信息
                 JSONObject speechJson = new JSONObject(response.get("body"));
-                switch (type) {
-                    case "kpi":
-                        FileUtil.writeFile(speechCachePath,speechJson.toString());
-                        JSONArray speechList = speechJson.getJSONArray("data");
-                        speechAudio.append(speechList.toString());
-                        break;
-
-                    case "report":
-                        speechAudio.append(speechJson.toString());
-                        break;
-
-                    default:
-                        break;
-                }
-
+                FileUtil.writeFile(speechCachePath, speechJson.toString());
+                JSONArray speechList = speechJson.getJSONArray("data");
+                speechAudio.append(speechList.toString());
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();

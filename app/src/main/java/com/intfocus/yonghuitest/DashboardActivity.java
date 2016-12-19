@@ -77,7 +77,6 @@ public class DashboardActivity extends BaseActivity {
 	private String currentUIVersion = "";
 
 	private Context mContext;
-	private MediaPlayer mediaPlayer;
 
 	@Override
 	@SuppressLint("SetJavaScriptEnabled")
@@ -118,8 +117,6 @@ public class DashboardActivity extends BaseActivity {
          * 动态注册广播用于接收通知
 		 */
 		initNotificationService();
-
-		mediaPlayer = SpeechReport.getMediaPlayer();
 
 		dealSendMessage();
 
@@ -291,7 +288,7 @@ public class DashboardActivity extends BaseActivity {
 									speechArray = FileUtil.readFile(speechArrayPath);
 								}
 								else {
-									speechArray = SpeechReport.infoProcess(mAppContext, urlString, "kpi");
+									speechArray = SpeechReport.infoProcess(mAppContext, urlString);
 									FileUtil.writeFile(speechArrayPath,speechArray);
 								}
 

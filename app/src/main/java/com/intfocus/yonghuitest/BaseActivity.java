@@ -830,17 +830,48 @@ public class BaseActivity extends Activity {
         return false;
     }
 
-    protected void toast(String info) {
-        try {
-            if (null == toast) {
-                toast = Toast.makeText(mAppContext, info, Toast.LENGTH_SHORT);
+    protected void toast(final String info) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (null == toast) {
+                        toast = Toast.makeText(mAppContext, info, Toast.LENGTH_SHORT);
+                    }
+                    else {
+                        toast.setText(info); //若当前已有 Toast 在显示,则直接修改当前 Toast 显示的内容
+                    }
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            else {
-                toast.setText(info); //若当前已有 Toast 在显示,则直接修改当前 Toast 显示的内容
+        });
+    }
+
+    protected void showProgressDialog(final Activity activity,final String title, final String info) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mProgressDialog !=null) {
+                    mProgressDialog.setMessage(info);
+                }
+                else {
+                    mProgressDialog = ProgressDialog.show(activity, title, info);
+                }
             }
-            toast.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        });
+    }
+
+    protected void dismisProgressDialog() {
+        if (mProgressDialog != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            });
         }
     }
 

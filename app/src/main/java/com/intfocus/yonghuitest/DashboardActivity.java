@@ -275,36 +275,33 @@ public class DashboardActivity extends BaseActivity {
 
 				case "语音播报":
 					final SpeechSynthesizer mTts = SpeechReport.getmTts(mAppContext);
-					mProgressDialog = ProgressDialog.show(DashboardActivity.this, "稍等", "正在合成数据...");
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
 								String urlString = String.format("%s/api/v1/group/%d/role/%d/audio", kBaseUrl, user.getInt("group_id"), user.getInt("role_id"));
-								String speechArrayPath = FileUtil.dirPath(mContext, K.kHTMLDirName,"speechArray.plist");
-								String speechArray;
+								String speechArrayPath = FileUtil.dirPath(mContext, K.kHTMLDirName,"SpeechArray.plist");
+								JSONArray speechArray;
 
 								if (mTts.isSpeaking()) {
-									speechArray = FileUtil.readFile(speechArrayPath);
+									speechArray = new JSONArray(FileUtil.readFile(speechArrayPath));
 								}
 								else {
+									showProgressDialog(DashboardActivity.this, "稍等", "正在合成数据...");
 									speechArray = SpeechReport.infoProcess(mAppContext, urlString);
-									FileUtil.writeFile(speechArrayPath,speechArray);
 								}
 
-								if (speechArray.equals("语音合成错误")) {
-									toast("语音合成错误");
+								if (speechArray == null || speechArray.length() == 0) {
+									toast("无语音播报报表");
 								}
 								else {
 									Intent intent = new Intent(DashboardActivity.this, SpeechListActivity.class);
-									intent.putExtra("speechAudio", speechArray);
+									intent.putExtra("speechAudio", speechArray.toString());
 									startActivity(intent);
 								}
 
-								if (mProgressDialog != null) {
-									mProgressDialog.dismiss();
-								}
-							} catch (JSONException | IOException e) {
+								dismisProgressDialog();
+							} catch (JSONException e) {
 								e.printStackTrace();
 							}
 						}

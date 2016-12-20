@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
-
-    <RelativeLayout
-        android:id="@+id/txt_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lightgray">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="播报列表"
-            android:textSize="20sp"/>
-    </RelativeLayout>
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <ListView
         android:id="@+id/pop_list_speech"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/txt_banner"
         android:background="@android:color/transparent">
     </ListView>
-</RelativeLayout>
+</LinearLayout>

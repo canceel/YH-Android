@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
 
@@ -43,11 +46,13 @@ public class SpeechListAdapter{
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
             vi.inflate(resourceId, listItem, true);
             TextView viewItem = (TextView) listItem.findViewById(R.id.speechSelectorItem);
+            ImageView imgPlaying = (ImageView) listItem.findViewById(R.id.icon_isPlaying);
             viewItem.setText(item);
-            viewItem.setBackgroundColor(Color.WHITE);
+            imgPlaying.setVisibility(View.GONE);
 
             if (position == SpeechReport.speechNum) {
-                viewItem.setTextColor(Color.GREEN);
+                viewItem.setTextColor(Color.parseColor("#53A93F"));
+                imgPlaying.setVisibility(View.VISIBLE);
             }
 
             return listItem;

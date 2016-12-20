@@ -141,26 +141,23 @@ public class SpeechReport {
         }
     };
 
-    public static String infoProcess(final Context mContext, final String urlString) {
+    public static JSONArray infoProcess(final Context mContext, final String urlString) {
         String mAssetsPath = FileUtil.dirPath(mContext, K.kHTMLDirName);
-        String speechCachePath = FileUtil.dirPath(mContext, K.kHTMLDirName, "SpeechJson.plist");
-        final StringBuilder speechAudio = new StringBuilder();
-        speechAudio.append("语音合成错误");
+        String speechArrayPath = FileUtil.dirPath(mContext, K.kHTMLDirName, "SpeechArray.plist");
+        JSONArray speechArray = null;
         try {
             Map<String, String> responseHeader = ApiHelper.checkResponseHeader(urlString, mAssetsPath);
             Map<String, String> response = HttpUtil.httpGet(urlString, responseHeader);
-            if (response.get("code").equals("200") && ) {
-                speechAudio.delete(0, speechAudio.length()); // 若获取到播报数据,则清空 speechAudio 内信息
+            if (response.get("code").equals("200")) {
                 JSONObject speechJson = new JSONObject(response.get("body"));
-                FileUtil.writeFile(speechCachePath, speechJson.toString());
-                JSONArray speechList = speechJson.getJSONArray("data");
-                speechAudio.append(speechList.toString());
+                speechArray = speechJson.getJSONArray("data");
+                FileUtil.writeFile(speechArrayPath, speechArray.toString());
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
 
-        return speechAudio.toString();
+        return speechArray;
     }
 
 }

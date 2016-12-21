@@ -72,7 +72,7 @@
             android:id="@+id/txt_speechdata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txt_current_speech"/>
+            android:layout_below="@id/txt_current_speech" />
 
     </RelativeLayout>
 

@@ -6,14 +6,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshWebView;
-import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
 import com.intfocus.yonghuitest.util.ApiHelper;
@@ -295,7 +292,7 @@ public class DashboardActivity extends BaseActivity {
 									toast("无语音播报报表");
 								}
 								else {
-									Intent intent = new Intent(DashboardActivity.this, SpeechListActivity.class);
+									Intent intent = new Intent(DashboardActivity.this, SpeechActivity.class);
 									intent.putExtra("speechAudio", speechArray.toString());
 									startActivity(intent);
 								}

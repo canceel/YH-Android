@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,13 +13,11 @@ import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.LogUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -30,28 +27,25 @@ import java.util.Map;
 
 public class SpeechReport {
     private static Context context;
-    private static MediaPlayer mediaPlayer;
     private static SpeechSynthesizer mTts;                            // 语音合成对象
     public static JSONArray speechArray;
     public static int speechNum = 0;
-    private static SpeechListAdapter.ListArrayAdapter mSpeechListAdapter;
-    public static String reportTitle, reportAudio, reportAudio2Shwo, reportAudioSum;
+    private static SpeechListAdapter mSpeechListAdapter;
+    public static String reportUser, reportTitle, reportAudio, reportAudio2Shwo, reportAudioSum;
 
 
-    public static void startSpeechPlayer(Context mContext, JSONArray array, String userInfo) {
+    public static void startSpeechPlayer(Context mContext, JSONArray array) {
         context = mContext;
         speechArray = array;
         mTts = initSpeechSynthesizer(mContext);
         initTtsParms();
         String reportSum = "共" + speechArray.length() + "支报表播报";
-        Log.i("speechError", reportSum);
-        mTts.startSpeaking(userInfo + reportSum, mPlayListener);
+        mTts.startSpeaking(reportUser + reportSum, mPlayListener);
     }
 
     private static SpeechSynthesizer initSpeechSynthesizer(Context mContext) {
         return SpeechSynthesizer.createSynthesizer(mContext, null);
     }
-
 
     public static SpeechSynthesizer getmTts(Context mContext) {
         if (mTts == null) {
@@ -85,10 +79,10 @@ public class SpeechReport {
         speechNum = number;
         reportTitle = "报表名称：" + speechInfo.getString("title");
         reportAudio = speechInfo.getJSONArray("audio").toString();
-        reportAudio2Shwo = reportAudio.replace("[\"", "").replace("\",\"", "\n").replace("\"]", "");
-        SpeechListActivity.mSpeechData.setText(reportAudio2Shwo);
-        SpeechListActivity.mCurrentSpeech.setText("正在播报: " + speechInfo.getString("title"));
         reportAudioSum = "共" + speechInfo.getJSONArray("audio").length() + "条";
+        reportAudio2Shwo = reportAudio.replace("[\"", "").replace("\",\"", "\n").replace("\"]", "").replace("\\/","/");
+        SpeechActivity.mCurrentSpeech.setText(reportTitle);
+        SpeechActivity.mSpeechData.setText(reportUser + "\n" + reportAudioSum + "\n" + reportAudio2Shwo + "\n" + "以上是全部内容,谢谢收听");
     }
 
     /*
@@ -105,7 +99,7 @@ public class SpeechReport {
                     speechNum++;
                     JSONObject speechInfo = speechArray.getJSONObject(speechNum);
                     initReportAudio(speechInfo, speechNum);
-                    mTts.startSpeaking(reportTitle + reportAudioSum + reportAudio, mPlayListener);
+                    mTts.startSpeaking(reportTitle + reportAudioSum + reportAudio + "以上是全部内容,谢谢收听", mPlayListener);
                     mSpeechListAdapter = SpeechListAdapter.getAdapter();
                     mSpeechListAdapter.notifyDataSetChanged();
                 }

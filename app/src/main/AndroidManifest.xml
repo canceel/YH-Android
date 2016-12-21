@@ -96,7 +96,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SpeechListActivity"
+            android:name=".SpeechActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

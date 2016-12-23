@@ -3,19 +3,18 @@ package com.intfocus.yonghuitest;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.iflytek.cloud.SpeechSynthesizer;
-import com.intfocus.yonghuitest.view.CircleImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,12 +26,11 @@ import java.util.ArrayList;
  * Created by liuruilin on 2016/11/30.
  */
 
-public class SpeechActivity extends BaseActivity{
+public class SpeechActivity extends BaseActivity {
     private ListView mListView;
     public static TextView mCurrentSpeech, mSpeechData;
     private ArrayList<String> mSpeechList = new ArrayList<>();
-    private SpeechSynthesizer mTts;
-    private CircleImageView mPlayButton;
+    public static ImageView mPlayButton;
     private String speechAudio, userInfo;
     private JSONArray speechArray;
     private SpeechListAdapter mArrayAdapter;
@@ -42,20 +40,15 @@ public class SpeechActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech);
 
-        mPlayButton = (CircleImageView) findViewById(R.id.btn_play);
+        mPlayButton = (ImageView) findViewById(R.id.btn_play);
         mCurrentSpeech = (TextView) findViewById(R.id.txt_current_speech);
         mSpeechData = (TextView) findViewById(R.id.txt_speechdata);
         mPlayButton.setImageResource(R.drawable.btn_stop);
-        mTts = SpeechReport.getmTts(mAppContext);
-        mSpeechData.setOnTouchListener(mTxtOnTouchListener);
-        mSpeechData.setFocusable(true);
-        mSpeechData.setFocusableInTouchMode(true);
-        mSpeechData.requestFocus();
 
         initSpeechInfo();
         initSpeechList();
 
-        if (!mTts.isSpeaking()) {
+        if (!SpeechReport.getmTts(mAppContext).isSpeaking()) {
             SpeechReport.speechNum = -1;
             SpeechReport.startSpeechPlayer(mAppContext,speechArray);
         }
@@ -68,7 +61,7 @@ public class SpeechActivity extends BaseActivity{
             speechArray = new JSONArray(speechAudio);
             userInfo = "本次报表针对" + user.getString("role_name") + user.getString("group_name");
             SpeechReport.reportUser = userInfo;
-            if (mTts.isSpeaking()) {
+            if (SpeechReport.getmTts(mAppContext).isSpeaking()) {
                 SpeechReport.initReportAudio(speechArray.getJSONObject(SpeechReport.speechNum),SpeechReport.speechNum);
             }
             else {
@@ -109,18 +102,44 @@ public class SpeechActivity extends BaseActivity{
         popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
     }
 
-    public void onClick(View v) throws JSONException{
+    public void playButton(View v) throws JSONException {
         SpeechReport.initReportAudio(speechArray.getJSONObject(0),0);
-        if (mTts.isSpeaking()){
-            mTts.destroy();
+        if (SpeechReport.getmTts(mAppContext).isSpeaking()){
+            SpeechReport.getmTts(mAppContext).stopSpeaking();
             mPlayButton.setImageResource(R.drawable.btn_play);
         }
         else {
             SpeechReport.startSpeechPlayer(mAppContext,speechArray);
             mPlayButton.setImageResource(R.drawable.btn_stop);
         }
+    }
+
+    public void nextButton(View v) throws JSONException {
+        int speechNum = SpeechReport.speechNum;
+        int speechLength = speechArray.length();
+        int position = speechNum < speechLength -1 ? speechNum + 1 : 0;
+        SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
+        SpeechReport.getmTts(mAppContext).startSpeaking(SpeechReport.reportTitle
+                        + SpeechReport.reportAudioSum
+                        + SpeechReport.reportAudio
+                        + "以上是全部内容,谢谢收听"
+                ,SpeechReport.mPlayListener);
+        mPlayButton.setImageResource(R.drawable.btn_stop);
+    }
+
+    public void previousButton(View v) throws JSONException {
+        int speechNum = SpeechReport.speechNum;
+        int position = speechNum > 0 ? speechNum - 1 : 0;
+        SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
+        SpeechReport.getmTts(mAppContext).startSpeaking(SpeechReport.reportTitle
+                        + SpeechReport.reportAudioSum
+                        + SpeechReport.reportAudio
+                        + "以上是全部内容,谢谢收听"
+                ,SpeechReport.mPlayListener);
+        mPlayButton.setImageResource(R.drawable.btn_stop);
     }
 
     public void launchSpeechListMenu(View v) {
@@ -131,65 +150,6 @@ public class SpeechActivity extends BaseActivity{
     }
 
     /*
-     * 播报文本触摸事件
-     */
-    private View.OnTouchListener mTxtOnTouchListener = new View.OnTouchListener() {
-        private int mode = 0;
-        float oldDist;
-        TextView textView = null;
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            textView = (TextView) v;
-            switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN:
-                    mode = 1;
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    mode = 0;
-                    break;
-
-                case MotionEvent.ACTION_POINTER_UP:
-                    mode -= 1;
-                    break;
-
-                case MotionEvent.ACTION_POINTER_DOWN:
-                    oldDist = spacing(event);
-                    mode += 1;
-                    break;
-
-                case MotionEvent.ACTION_MOVE:
-                    if (mode >= 2) {
-                        float newDist = spacing(event);
-                        if (newDist > oldDist + 10) {
-                            zoom();
-                        }
-                        if (newDist < oldDist - 10) {
-                            minZoom();
-                        }
-                    }
-                    break;
-            }
-            return true;
-        }
-
-        private void zoom() {
-            textView.setHeight(dip2px(mAppContext,800));
-        }
-
-        private void minZoom() {
-            textView.setHeight(dip2px(mAppContext,300));
-        }
-
-        private float spacing(MotionEvent event) {
-            float x = event.getX(0) - event.getX(1);
-            float y = event.getY(0) - event.getY(1);
-            return (float)Math.sqrt(x * x + y * y);
-        }
-    };
-
-    /*
      * listview 点击事件
      */
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
@@ -197,7 +157,11 @@ public class SpeechActivity extends BaseActivity{
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             try {
                 SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
-                mTts.startSpeaking(SpeechReport.reportTitle + SpeechReport.reportAudioSum + SpeechReport.reportAudio,SpeechReport.mPlayListener);
+                SpeechReport.getmTts(mAppContext).startSpeaking(SpeechReport.reportTitle
+                                                           + SpeechReport.reportAudioSum
+                                                           + SpeechReport.reportAudio
+                                                           + "以上是全部内容,谢谢收听"
+                                                           ,SpeechReport.mPlayListener);
                 mPlayButton.setImageResource(R.drawable.btn_stop);
                 mArrayAdapter.notifyDataSetChanged();
             } catch (Exception e) {

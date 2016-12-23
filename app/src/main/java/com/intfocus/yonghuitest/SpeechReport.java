@@ -1,9 +1,12 @@
 package com.intfocus.yonghuitest;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -55,6 +58,10 @@ public class SpeechReport {
         }
     }
 
+    public static void start() {
+
+    }
+
     /*
      * 语音合成参数
      */
@@ -93,15 +100,18 @@ public class SpeechReport {
         public void onCompleted(SpeechError error) {
             try {
                 mTts.destroy();
-                if (speechNum <= speechArray.length() && error == null) {
+                speechNum++;
+                if (speechNum < speechArray.length() && error == null) {
                     mTts = initSpeechSynthesizer(context);
                     initTtsParms();
-                    speechNum++;
                     JSONObject speechInfo = speechArray.getJSONObject(speechNum);
                     initReportAudio(speechInfo, speechNum);
                     mTts.startSpeaking(reportTitle + reportAudioSum + reportAudio + "以上是全部内容,谢谢收听", mPlayListener);
                     mSpeechListAdapter = SpeechListAdapter.getAdapter();
                     mSpeechListAdapter.notifyDataSetChanged();
+                }
+                else {
+                    SpeechActivity.mPlayButton.setImageResource(R.drawable.btn_play);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -153,5 +163,4 @@ public class SpeechReport {
 
         return speechArray;
     }
-
 }

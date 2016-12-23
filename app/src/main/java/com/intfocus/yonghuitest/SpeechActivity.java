@@ -132,14 +132,20 @@ public class SpeechActivity extends BaseActivity {
 
     public void previousButton(View v) throws JSONException {
         int speechNum = SpeechReport.speechNum;
-        int position = speechNum > 0 ? speechNum - 1 : 0;
-        SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
-        SpeechReport.getmTts(mAppContext).startSpeaking(SpeechReport.reportTitle
-                        + SpeechReport.reportAudioSum
-                        + SpeechReport.reportAudio
-                        + "以上是全部内容,谢谢收听"
-                ,SpeechReport.mPlayListener);
-        mPlayButton.setImageResource(R.drawable.btn_stop);
+        if (speechNum > 0) {
+            int position = speechNum - 1;
+            SpeechReport.initReportAudio(speechArray.getJSONObject(position),position);
+            SpeechReport.getmTts(mAppContext).startSpeaking(SpeechReport.reportTitle
+                            + SpeechReport.reportAudioSum
+                            + SpeechReport.reportAudio
+                            + "以上是全部内容,谢谢收听"
+                    ,SpeechReport.mPlayListener);
+            mPlayButton.setImageResource(R.drawable.btn_stop);
+        }
+        else {
+            toast("当前为首只报表");
+        }
+
     }
 
     public void launchSpeechListMenu(View v) {

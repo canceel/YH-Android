@@ -289,7 +289,7 @@ public class DashboardActivity extends BaseActivity {
 								}
 
 								if (speechArray == null || speechArray.length() == 0) {
-									toast("无语音播报报表");
+									toast("无语音播报数据");
 								}
 								else {
 									Intent intent = new Intent(DashboardActivity.this, SpeechActivity.class);

@@ -346,9 +346,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 				@Override
 				public void run() {
 					boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
-					if (reportDataState){
+					if (reportDataState) {
 						new Thread(mRunnableForDetecting).start();
-					}else {
+					} else {
 						showWebViewForWithoutNetwork();
 					}
 				}
@@ -583,11 +583,13 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 				ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
 
 				boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
-				if (reportDataState){
+
+				if (reportDataState) {
 					new Thread(mRunnableForDetecting).start();
-				}else {
+				} else {
 					showWebViewForWithoutNetwork();
 				}
+
                 /*
                  * 用户行为记录, 单独异常处理，不可影响用户体验
                  */
@@ -699,6 +701,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 		}
 	}
 
+	// 没有放在 BaseActivity,原因:防止在没有使用动画的界面中也使用了该方法。没有使用动画的界面用该方法,会报空指针异常
 	private void showWebViewForWithoutNetwork() {
 		runOnUiThread(new Runnable() {
 			@Override

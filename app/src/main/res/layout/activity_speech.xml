@@ -59,17 +59,24 @@
 
     </RelativeLayout>
 
+    <View
+        android:id="@+id/underline"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/actionBar"
+        android:background="#302469"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar"
+        android:layout_below="@id/underline"
         android:layout_above="@+id/speech_control"
         android:background="@color/lightgray">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
+            android:layout_margin="30dp"
             android:padding="15dp"
             android:background="@drawable/speech_bg">
 

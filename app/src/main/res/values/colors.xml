@@ -38,5 +38,6 @@
     <color name="pink">#FFC0CB</color>
 
     <color name="pass_number">#000000</color>
+    <color name="speech_bg">#D3D3D3</color>
 
 </resources>

@@ -365,6 +365,8 @@ public class BaseFragment extends Fragment {
                     String message = String.format("%s\n%s\n%d", bannerName, link, objectID);
                     LogUtil.d("JSClick", message);
 
+
+
                     if (link.indexOf("template") > 0) {
                         String templateID = TextUtils.split(link, "/")[7];
 

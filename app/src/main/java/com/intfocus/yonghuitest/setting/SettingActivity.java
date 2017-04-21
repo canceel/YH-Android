@@ -120,7 +120,7 @@ public class SettingActivity extends BaseActivity {
     public void loginOut(View v) {
         // 判断有无网络
         if (!isNetworkConnected(this)){
-            toast("无网络，不退出");
+            toast("未连接网络, 无法退出");
             return;
         }
         new Thread(new Runnable() {

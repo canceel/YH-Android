@@ -1,9 +1,11 @@
 package com.intfocus.yonghuitest.setting;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -13,6 +15,10 @@ import com.intfocus.yonghuitest.BaseActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
+import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.URLs;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -66,13 +72,18 @@ public class SettingPreferenceActivity extends BaseActivity {
     private final CompoundButton.OnCheckedChangeListener mSwitchScreenLockListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-            mEditor.putBoolean("ScreenLock", isChecked);
-            mEditor.commit();
-
+            if (!buttonView.isPressed()) {
+                return;
+            }
             if (isChecked) {
-                startActivity(InitPassCodeActivity.createIntent(mContext));
+                Intent intent = new Intent(SettingPreferenceActivity.this, InitPassCodeActivity.class);
+                startActivity(intent);
                 // 开启锁屏设置
+            }
+            else {
+                SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+                mEditor.putBoolean("ScreenLock", isChecked);
+                mEditor.commit();
             }
         }
     };

@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -45,13 +46,14 @@ public class LoginActivity extends BaseActivity{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CAMERA };
+    private SharedPreferences mSharedPreferences;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         // 使背景填满整个屏幕,包括状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -71,7 +73,7 @@ public class LoginActivity extends BaseActivity{
 
             finish();
         }
-        else if (FileUtil.checkIsLocked(mAppContext)) {
+        else if (mSharedPreferences.getBoolean("ScreenLock", false)) {
             intent = new Intent(this, ConfirmPassCodeActivity.class);
             intent.putExtra("is_from_login", true);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,6 +89,8 @@ public class LoginActivity extends BaseActivity{
              */
             checkPgyerVersionUpgrade(LoginActivity.this,false);
         }
+
+        setContentView(R.layout.activity_login);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);

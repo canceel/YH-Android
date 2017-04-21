@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.screen_lock;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -53,6 +54,8 @@ public class InitPassCodeActivity extends Activity {
             Bitmap.Config.ARGB_8888);
     private Bitmap bitmapGlay = Bitmap.createBitmap(300, 300,
             Bitmap.Config.ARGB_8888);
+
+    private SharedPreferences mSharedPreferences;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, InitPassCodeActivity.class);
@@ -270,6 +273,11 @@ public class InitPassCodeActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
+                    mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
+                    SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+                    mEditor.putBoolean("ScreenLock", true);
+                    mEditor.commit();
 
                     finish();
                     this.onBackPressed();

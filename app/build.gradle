@@ -7,7 +7,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
     defaultConfig {
-        applicationId 'com.intfocus.yonghuitest'
+        applicationId 'com.intfocus.yh_android'
         minSdkVersion 15
         targetSdkVersion 23
 //        jackOptions {

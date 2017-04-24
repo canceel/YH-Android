@@ -90,7 +90,6 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.d("shengming1", "aa");
         dealSendMessage();
     }
 

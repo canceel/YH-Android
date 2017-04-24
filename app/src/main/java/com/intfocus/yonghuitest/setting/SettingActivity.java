@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.setting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,12 +30,14 @@ public class SettingActivity extends BaseActivity {
     private ArrayAdapter<String> mListAdapter;
     private TextView tvUserID, tvRoleID, tvGroupID;
     private Context mContext;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         mContext = this;
+        mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         initSettingListItem();
         initUserInfo();
     }
@@ -123,6 +126,9 @@ public class SettingActivity extends BaseActivity {
             toast("未连接网络, 无法退出");
             return;
         }
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putBoolean("ScreenLock", false);
+        mEditor.commit();
         new Thread(new Runnable() {
             @Override
             public void run() {

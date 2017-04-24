@@ -157,7 +157,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Services -->
-        <service android:name=".LocalNotificationService" />
+        <!--<service android:name=".LocalNotificationService" />-->
 
         <!-- 蒲公英 必选 -->
         <meta-data

@@ -40,7 +40,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yonghuitest.adapter.MetricsAdapter;
 import com.intfocus.yonghuitest.adapter.ProductListAdapter;
+import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.URLs;
+import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.yonghui.homemetrics.data.response.HomeData;
 import com.yonghui.homemetrics.data.response.HomeMetrics;
 import com.yonghui.homemetrics.data.response.Item;
@@ -50,6 +54,7 @@ import com.yonghui.homemetrics.utils.Utils;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -158,6 +163,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         setContentView(R.layout.activity_hometrics);
         mContext = this;
         ButterKnife.bind(this);
+        initUserIDColorView();
 
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
@@ -229,8 +235,18 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         isAsc = false;
         //因为Y轴数据默认向右便宜1个单位，所以X轴数据默认加1
         xAxisList.add("0");
+        int count = 1;
         for (HomeMetrics homeMetrics : datas) {
-            xAxisList.add(homeMetrics.getPeriod());
+            if (count == 1) {
+                xAxisList.add(homeMetrics.getPeriod());
+            }
+            else if (count == datas.size()) {
+                xAxisList.add(homeMetrics.getPeriod());
+            }
+            else {
+                xAxisList.add("");
+            }
+            count++;
         }
         xAxisValue = xAxisList.toArray(new String[xAxisList.size()]);
     }
@@ -405,7 +421,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
         xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
-        xAxis.setTextSize(8f); //设置X轴文字大小
+        xAxis.setTextSize(10f); //设置X轴文字大小
         xAxis.setGranularityEnabled(true);//是否允许X轴上值重复出现
         xAxis.setTextColor(ContextCompat.getColor(this, R.color.co4));//设置X轴文字颜色
 //        //设置竖线的显示样式为虚线
@@ -630,4 +646,22 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     protected float[] mDatas = new float[]{
             29, 33, 50, 59, 10, 5, 50, 18, 29, 19
     };
+
+    /*
+     * 初始化用户信息
+     */
+    private void initUserIDColorView() {
+        String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
+        if ((new File(userConfigPath)).exists()) {
+            try {
+                user = FileUtil.readConfigFile(userConfigPath);
+                if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
+                    userID = user.getInt("user_id");
+                }
+                WidgetUtil.initUserIDColorView(getWindow().getDecorView(), userID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

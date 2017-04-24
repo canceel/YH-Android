@@ -8,7 +8,7 @@ if [ "$br" = "developer" ] ; then
   commit_message=$("crontab task ${timestamp}")
 
   git add ./
-  git commit -m'${commit_message}'
+  git commit -m "${commit_message}"
   git push origin developer
 
 else

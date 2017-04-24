@@ -13,6 +13,7 @@
         android:textColor="@color/gray"
         android:text="内容"/>
 
-    <!--<ImageView-->
-        <!--style="@style/SettingArrow"/>-->
+    <ImageView
+        android:id="@+id/item_setting_arrow"
+        style="@style/SettingArrow"/>
 </RelativeLayout>

@@ -334,6 +334,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
      * 刷新 TabView 高亮状态
      */
     private void refreshTabView() {
+        mTabView[mViewPager.getCurrentItem()].setActive(true);
         for (int i = 0; i < mTabView.length; i++) {
             if (i != mViewPager.getCurrentItem()) {
                 mTabView[i].setActive(false);

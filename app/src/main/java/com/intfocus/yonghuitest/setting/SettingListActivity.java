@@ -89,7 +89,18 @@ public class SettingListActivity extends BaseActivity {
                 mItemNameList = new String[]{"消息推送", "关联的设备列表", "推送的消息列表"};
                 mItemContentList = new String[]{isPushOpened, "arrow", "arrow"};
                 break;
-
+            case "开发者选项" :
+                try {
+                    mItemNameList = new String[]{"报表缓存数据列表", "请求头缓存列表", "所属商行", "手机号码", "邮箱", "修改密码"};
+                    mItemContentList = new String[]{user.getString(URLs.kUserName),
+                            user.getString(URLs.kRoleName),
+                            user.getString(URLs.kGroupName),
+                            "暂未提供",
+                            "暂未提供",
+                            ""};
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             default:
                 mItemNameList = new String[]{};
                 mItemContentList = new String[]{};
@@ -139,7 +150,10 @@ public class SettingListActivity extends BaseActivity {
             switch (mItemText.getText().toString()) {
                 case "应用标识" :
                     if (System.currentTimeMillis() - mLastExitTime < 2000) {
-                        toast("打开 开发者选项");
+                        Intent developerActivityIntent = new Intent(SettingListActivity.this, DeveloperActivity.class);
+                        developerActivityIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(developerActivityIntent);
+                        break;
                     } else {
                         mLastExitTime = System.currentTimeMillis();
                         toast("再点击一下将打开 开发者选项");
@@ -190,7 +204,7 @@ public class SettingListActivity extends BaseActivity {
                             toast("从未接收到推送消息");
                         }else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
-                            intent.putExtra("pushMessage", true);
+                            intent.putExtra("type", "pushMessage");
                             intent.putExtra("title", "推送的消息列表");
                             startActivity(intent);
                         }

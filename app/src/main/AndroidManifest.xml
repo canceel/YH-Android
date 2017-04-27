@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.intfocus.yonghuitest"
-    android:versionCode="286"
-    android:versionName="1.6.2"
+    android:versionCode="288"
+    android:versionName="1.6.4"
     android:hardwareAccelerated="false">
 
     <!-- 扫描条形码或二维码 -->
@@ -11,6 +11,7 @@
 
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -146,7 +147,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeveloperActivity"
+            android:name=".setting.DeveloperActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

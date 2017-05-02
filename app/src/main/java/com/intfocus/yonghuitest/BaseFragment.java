@@ -377,23 +377,28 @@ public class BaseFragment extends Fragment {
                             mContext.startActivity(homeTricsIntent);
                         }
                         else if (templateID.equals("5")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("温馨提示")
-                                    .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
-                                    .setPositiveButton("前去升级", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl));
-                                            startActivity(browserIntent);
-                                        }
-                                    })
-                                    .setNegativeButton("稍后升级", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // 返回 LoginActivity
-                                        }
-                                    });
-                            builder.show();
+                            Intent superTableIntent = new Intent(mContext, TableActivity.class);
+                            superTableIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            superTableIntent.putExtra("urlString", link);
+                            mContext.startActivity(superTableIntent);
+
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                            builder.setTitle("温馨提示")
+//                                    .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
+//                                    .setPositiveButton("前去升级", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl));
+//                                            startActivity(browserIntent);
+//                                        }
+//                                    })
+//                                    .setNegativeButton("稍后升级", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            // 返回 LoginActivity
+//                                        }
+//                                    });
+//                            builder.show();
                         }
                         else {
                             Intent intent = new Intent(getActivity(), SubjectActivity.class);

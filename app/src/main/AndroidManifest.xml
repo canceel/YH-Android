@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.intfocus.yonghuitest"
-    android:versionCode="288"
-    android:versionName="1.6.4"
+    android:versionCode="290"
+    android:versionName="1.6.6"
     android:hardwareAccelerated="false">
 
     <!-- 扫描条形码或二维码 -->
@@ -75,6 +75,10 @@
         </activity>
         <activity
             android:name=".HomeTricsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

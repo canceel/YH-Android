@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +57,7 @@ import com.yonghui.homemetrics.utils.ReorganizeTheDataUtils;
 import com.yonghui.homemetrics.utils.Utils;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -115,6 +120,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     TextView tvRateOfChange;
     @BindView(R.id.iv_rate_of_change)
     ImageView ivRateOfChange;
+    @BindView(R.id.bannerSetting)
+    ImageView mBannerSetting;
 
     private Gson gson;
     private List<HomeMetrics> datas;
@@ -154,8 +161,10 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     protected Typeface mTfLight;
 
     private PopupWindow popupWindow;
+    private PopupWindow mMenuWindow;
     private Context mContext;
     private String urlString;
+    private ArrayList<HashMap<String, Object>> listItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,16 +183,16 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     /*
      * 下载数据
      */
-    class LoadReportData extends AsyncTask<String,Void,Map<String,String>> {
+    class LoadReportData extends AsyncTask<String, Void, Map<String, String>> {
         @Override
-        protected Map<String,String> doInBackground(String... params) {
-            Map<String,String> response = HttpUtil.httpGet(urlString,new HashMap<String, String>());
+        protected Map<String, String> doInBackground(String... params) {
+            Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
             Log.i("reportData", response.toString());
-                return response;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Map<String,String> response){
+        protected void onPostExecute(Map<String, String> response) {
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
                 initData(response.get("body"));
@@ -197,6 +206,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     private void initView() {
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+
+        mBannerSetting.setVisibility(View.VISIBLE);
 
         metricsAdapter = new MetricsAdapter(mContext, null, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -227,7 +238,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         datas = homeData.data;
         homeMetricses.addAll(datas);
         //默认取第1个区域的第1条数据的第1个指标用来展示
-        dateSelected = 0;
+        dateSelected = datas.size() - 1;
         productSelected = 0;
         lastProductSelected = 0;
         itemSelected = 0;
@@ -239,11 +250,9 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         for (HomeMetrics homeMetrics : datas) {
             if (count == 1) {
                 xAxisList.add(homeMetrics.getPeriod());
-            }
-            else if (count == datas.size()) {
+            } else if (count == datas.size()) {
                 xAxisList.add(homeMetrics.getPeriod());
-            }
-            else {
+            } else {
                 xAxisList.add("");
             }
             count++;
@@ -280,6 +289,84 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         }
     }
 
+    /*
+     * 标题栏点击设置按钮显示下拉菜单
+     */
+    public void launchDropMenuActivity(View v) {
+        initDropMenuItem();
+        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
+        mMenuWindow.showAsDropDown(mBannerSetting, dip2px(this, -47), dip2px(this, 10));
+
+		/*
+         * 用户行为记录, 单独异常处理，不可影响用户体验
+		 */
+        try {
+            logParams = new JSONObject();
+            logParams.put("action", "点击/报表/下拉菜单");
+            new Thread(mRunnableForLogger).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+	 * 初始化标题栏下拉菜单
+	 */
+    private void initDropMenuItem() {
+        listItem = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("ItemImage", R.drawable.btn_refresh);
+        map.put("ItemText", "刷新");
+        listItem.add(map);
+
+        SimpleAdapter mSimpleAdapter = new SimpleAdapter(this, listItem, R.layout.menu_list_items, new String[]{"ItemImage", "ItemText"}, new int[]{R.id.img_menu_item, R.id.text_menu_item});
+        initMyDropMenu(mSimpleAdapter, mDropMenuListener);
+    }
+
+    /*
+	 * 标题栏设置按钮下拉菜单样式
+	 */
+    public void initMyDropMenu(SimpleAdapter adapter,AdapterView.OnItemClickListener itemClickListener) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null);
+
+        ListView listView = (ListView) contentView.findViewById(R.id.list_dropmenu);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(itemClickListener);
+
+        mMenuWindow = new PopupWindow(this);
+        mMenuWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mMenuWindow.setHeight(dip2px(this, 55));
+        mMenuWindow.setContentView(contentView);
+        mMenuWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mMenuWindow.setOutsideTouchable(false);
+        mMenuWindow.setFocusable(true);
+    }
+
+    /*
+	 * 标题栏设置按钮下拉菜单点击响应事件
+	 */
+    private final AdapterView.OnItemClickListener mDropMenuListener = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                long arg3) {
+            mMenuWindow.dismiss();
+            switch (listItem.get(arg2).get("ItemText").toString()) {
+                case "刷新":
+                    mAnimLoading.setVisibility(View.VISIBLE);
+                    if (isShowChartData) {
+                        metricsRecyclerView.setVisibility(View.VISIBLE);
+                        rlChart.setVisibility(View.GONE);
+                        ivWarning.setImageResource(R.drawable.btn_inf);
+                        isShowChartData = false;
+                    }
+                    new LoadReportData().execute();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     public void productSelected(int position) {
         lastProductSelected = productSelected;
@@ -307,59 +394,59 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
-                items.clear();
-                homeMetrics = datas.get(dateSelected);
-                if (isNeedSort) {
-                    products = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc);
-                } else {
-                    products = homeMetrics.products;
-                }
-                //排序数据，获取当前数据最大值
-                List<Product> sortProducts = new ArrayList<>();
-                sortProducts.addAll(products);
-                maxValue = ReorganizeTheDataUtils.sortData(sortProducts, itemSelected, false).get(0).items.get(itemSelected).main_data.getData();
-                //给报表使用的数据,已经排序，则提取得报表数据也要排序后得字段
-                for (HomeMetrics homeMetrics : homeMetricses) {
-                    Product product = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc).get(productSelected);
-                    Item item = product.items.get(itemSelected);
-                    items.add(item);
-                }
+        items.clear();
+        homeMetrics = datas.get(dateSelected);
+        if (isNeedSort) {
+            products = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc);
+        } else {
+            products = homeMetrics.products;
+        }
+        //排序数据，获取当前数据最大值
+        List<Product> sortProducts = new ArrayList<>();
+        sortProducts.addAll(products);
+        maxValue = ReorganizeTheDataUtils.sortData(sortProducts, itemSelected, false).get(0).items.get(itemSelected).main_data.getData();
+        //给报表使用的数据,已经排序，则提取得报表数据也要排序后得字段
+        for (HomeMetrics homeMetrics : homeMetricses) {
+            Product product = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc).get(productSelected);
+            Item item = product.items.get(itemSelected);
+            items.add(item);
+        }
 
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
-                        initChart(showAnimation);
-                        combinedChart.invalidate();
-                        if (product == null || lastProductSelected != productSelected) {
-                            product = products.get(productSelected);
-                            //设置下方选中
-                            for (int i = 0; i < products.size(); i++) {
-                                if (i == productSelected) {
-                                    products.get(i).isSelected = true;
-                                } else {
-                                    products.get(i).isSelected = false;
-                                }
-                            }
-                        }
-                        tvTitle.setText(homeMetrics.getHead());
-                        tvNameSort.setText(homeMetrics.getHead());
-                        tvDateTime.setText(homeMetrics.getPeriod());
-                        tvDataTitle.setText(product.getName());
-                        //设置指标选中状态
-                        for (int i = 0; i < product.items.size(); i++) {
-                            if (i == itemSelected) {
-                                product.items.get(i).isSelected = true;
-                            } else {
-                                product.items.get(i).isSelected = false;
-                            }
-                        }
-                        //重组指标数据
-                        homeMetrics = ReorganizeTheDataUtils.groupByNumber(product, 4, true);
-                        metricsAdapter.setDatas(homeMetrics);
-                        //设置排序栏显示文字
-                        tvSaleSort.setText(product.items.get(itemSelected).getName());
-                        adapter.setDatas(products, itemSelected, maxValue);
-                    }
+        initChart(showAnimation);
+        combinedChart.invalidate();
+        if (product == null || lastProductSelected != productSelected) {
+            product = products.get(productSelected);
+            //设置下方选中
+            for (int i = 0; i < products.size(); i++) {
+                if (i == productSelected) {
+                    products.get(i).isSelected = true;
+                } else {
+                    products.get(i).isSelected = false;
+                }
+            }
+        }
+        tvTitle.setText(homeMetrics.getHead());
+        tvNameSort.setText(homeMetrics.getHead());
+        tvDateTime.setText(homeMetrics.getPeriod());
+        tvDataTitle.setText(product.getName());
+        //设置指标选中状态
+        for (int i = 0; i < product.items.size(); i++) {
+            if (i == itemSelected) {
+                product.items.get(i).isSelected = true;
+            } else {
+                product.items.get(i).isSelected = false;
+            }
+        }
+        //重组指标数据
+        homeMetrics = ReorganizeTheDataUtils.groupByNumber(product, 4, true);
+        metricsAdapter.setDatas(homeMetrics);
+        //设置排序栏显示文字
+        tvSaleSort.setText(product.items.get(itemSelected).getName());
+        adapter.setDatas(products, itemSelected, maxValue);
+    }
 //                });
 //            }
 //        }).start();
@@ -578,15 +665,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
-                case "#F2E1AC" :
+                case "#F2E1AC":
                     ivRateOfChange.setImageResource(R.drawable.up_yellowarrow);
                     break;
 
-                case "#F2836B" :
+                case "#F2836B":
                     ivRateOfChange.setImageResource(R.drawable.up_redarrow);
                     break;
 
-                case "#63A69F" :
+                case "#63A69F":
                     ivRateOfChange.setImageResource(R.drawable.up_greenarrow);
                     break;
 
@@ -597,15 +684,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         } else {
             Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
-                case "#F2E1AC" :
+                case "#F2E1AC":
                     ivRateOfChange.setImageResource(R.drawable.down_yellowarrow);
                     break;
 
-                case "#F2836B" :
+                case "#F2836B":
                     ivRateOfChange.setImageResource(R.drawable.down_redarrow);
                     break;
 
-                case "#63A69F" :
+                case "#63A69F":
                     ivRateOfChange.setImageResource(R.drawable.down_greenarrow);
                     break;
 

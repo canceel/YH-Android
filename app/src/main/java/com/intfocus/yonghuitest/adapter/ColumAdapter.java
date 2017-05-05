@@ -58,16 +58,16 @@ public class ColumAdapter extends SwipeMenuAdapter<ColumAdapter.ColumViewHolder>
     public void onBindViewHolder(ColumViewHolder holder, final int position) {
         final Head head = tableChart.table.head.get(position);
         holder.tvColumn.setText(head.getValue());
-        holder.ivCheck.setImageResource(head.isShow ? R.drawable.btn_selected : R.drawable.btn_unselected);
+        holder.ivCheck.setImageResource(head.isShow() ? R.drawable.btn_selected : R.drawable.btn_unselected);
         holder.ivMarker.setImageResource(head.isKeyColumn ? R.drawable.btn_pushpin : R.drawable.btn_pushpin2);
         holder.tvKeyColumn.setVisibility(head.isKeyColumn ? View.VISIBLE : View.GONE);
-        // /关键列无法取消选中状态,非关键列才可取消
+        //关键列无法取消选中状态,非关键列才可取消
         holder.ivCheck.setEnabled(!head.isKeyColumn);
 
         holder.ivCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.checkClick(head.getValue());
+                listener.checkClick(position, head.getValue());
             }
         });
         holder.ivMarker.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,7 @@ public class ColumAdapter extends SwipeMenuAdapter<ColumAdapter.ColumViewHolder>
     }
 
     public interface ColumnListener {
-        void checkClick(String info);
+        void checkClick(int position, String info);
 
         void markerClick(int position, String info);
     }

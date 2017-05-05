@@ -2,14 +2,19 @@ package com.intfocus.yonghuitest.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.bean.tablechart.Head;
 import com.intfocus.yonghuitest.bean.tablechart.MainData;
+import com.intfocus.yonghuitest.bean.tablechart.Table;
 import com.intfocus.yonghuitest.util.Utils;
+
+import java.util.List;
 
 /**
  * Created by CANC on 2017/4/6.
@@ -17,18 +22,20 @@ import com.intfocus.yonghuitest.util.Utils;
 
 public class TableContentItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private MainData mainData;
+    private List<MainData> mainData;
+    private List<Head> heads;
     private final LayoutInflater inflater;
     private int rowHeight;//1行,2行,3行
     public ContentItemListener listener;
 
 
-    public TableContentItemAdapter(Context context, MainData mainData, int rowHeight, ContentItemListener listener) {
+    public TableContentItemAdapter(Context context, List<Head> heads, List<MainData> mainData, int rowHeight, ContentItemListener listener) {
         this.context = context;
         this.mainData = mainData;
         this.inflater = LayoutInflater.from(context);
         this.rowHeight = rowHeight;
         this.listener = listener;
+        this.heads = heads;
     }
 
     @Override
@@ -39,20 +46,26 @@ public class TableContentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        TableHeadHolder viewHolder = (TableHeadHolder) holder;
-        viewHolder.tvMain.setText(mainData.data.get(position));
-        viewHolder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
-        viewHolder.tvMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.ItemClick(position);
-            }
-        });
+        if (!heads.get(position).isShow() || heads.get(position).isKeyColumn) {
+            TableHeadHolder viewHolder = (TableHeadHolder) holder;
+            viewHolder.tvMain.setVisibility(View.GONE);
+        }
+        else {
+            TableHeadHolder viewHolder = (TableHeadHolder) holder;
+            viewHolder.tvMain.setText(mainData.get(position).getValue());
+            viewHolder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
+            viewHolder.tvMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.ItemClick(position);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return (mainData == null || mainData.data == null) ? 0 : mainData.data.size();
+        return (mainData == null) ? 0 : mainData.size();
     }
 
     public class TableHeadHolder extends RecyclerView.ViewHolder {

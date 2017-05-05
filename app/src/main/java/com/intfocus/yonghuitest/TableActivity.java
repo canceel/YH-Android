@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat.LayoutParams;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.intfocus.yonghuitest.bean.tablechart.FilterItem;
 import com.intfocus.yonghuitest.bean.tablechart.Head;
 import com.intfocus.yonghuitest.bean.tablechart.MainData;
 import com.intfocus.yonghuitest.bean.tablechart.SortData;
+import com.intfocus.yonghuitest.bean.tablechart.Table;
 import com.intfocus.yonghuitest.bean.tablechart.TableBarChart;
 import com.intfocus.yonghuitest.bean.tablechart.TableChart;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
@@ -95,10 +97,12 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private Gson gson;
     //原始数据保持不变
     private TableChart originTableData;
+    //用于展示的数据
+    private TableChart showTableData;
     //主表格数据
-    private List<MainData> mainDatas;
+    private List<List<MainData>> mainDatas;
     //过滤后主表格数据
-    private List<MainData> filterMainDatas;
+    private List<List<MainData>> filterMainDatas;
     //主表格适配器
     private TableContentListAdapter contentListAdapter;
     //左边数据
@@ -149,7 +153,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
         mainDatas = new ArrayList<>();
         filterMainDatas = new ArrayList<>();
-        leftDatas = new ArrayList<>();
         headDatas = new ArrayList<>();
         showColum = new ArrayList<>();
         showRow = new ArrayList<>();
@@ -157,9 +160,11 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         textViews = new ArrayList<>();
 
         gson = new Gson();
-        JsonObject returnData = new JsonParser().parse(Utils.getJson(this, "report_data_v5.json")).getAsJsonObject();
+        JsonObject returnData = new JsonParser().parse(Utils.getJson(this, "report_v5.json")).getAsJsonObject();
         originTableData = gson.fromJson(returnData, TableChart.class);
         changeTableChartData = gson.fromJson(returnData, TableChart.class);
+        showTableData = gson.fromJson(returnData, TableChart.class);
+
         if (originTableData != null) {
             //过滤字段
             filters.addAll(originTableData.config.filter);
@@ -173,47 +178,48 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             originTableData.table.head = heads;
             changeTableChartData.table.head = heads;
             headDatas.addAll(heads);
+            showTableData = generateShowTableData(showTableData);
 
-            //默认第一列为关键列
-            originTableData.table.head.get(0).isKeyColumn = true;
-            changeTableChartData.table.head.get(0).isKeyColumn = true;
-            tvTitle.setText(originTableData.name);
             mainDatas.addAll(originTableData.table.main_data);
             filterMainDatas.addAll(mainDatas);
-            //
-            for (MainData mainData : mainDatas) {
-                leftDatas.add(mainData.name);
-            }
-            adapter = new TableLeftListAdapter(mContext, leftDatas, rowHeight);
-            leftListView.setAdapter(adapter);
-            contentListAdapter = new TableContentListAdapter(mContext, mainDatas, rowHeight, this);
+
+            // 默认第一列为关键列
+            setKeyColumn(0);
+
+            // 表格内容填充
+            contentListAdapter = new TableContentListAdapter(mContext, originTableData.table.head, mainDatas, rowHeight, this);
             contentListView.setAdapter(contentListAdapter);
+
             textViews.clear();
             int textViewPosition = 0;
             for (int i = 0; i < originTableData.table.head.size(); i++) {
                 final Head head = originTableData.table.head.get(i);
                 final TextView textView = new TextView(mContext);
-                LayoutParams params = new LayoutParams(Utils.dpToPx(mContext, 80), LayoutParams.MATCH_PARENT);
-                textView.setLayoutParams(params);
-                textView.setText(head.getValue());
-                textView.setGravity(Gravity.CENTER);
-                textView.setTextColor(ContextCompat.getColor(mContext, R.color.text_black));
-                textView.setBackgroundResource(R.drawable.background_square_black_boder_white);
-                textView.setPadding(0, 0, Utils.dpToPx(mContext, 5), 0);
-                textView.setCompoundDrawablePadding(Utils.dpToPx(mContext, 5));
-                Drawable drawable = Utils.returnDrawable(mContext, R.drawable.icon_sort);
-                textView.setCompoundDrawables(null, null, drawable, null);
-                final int finalTextViewPosition = textViewPosition;
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        sort(finalTextViewPosition);
-                        WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
-                    }
-                });
-                textViews.add(textView);
-                llHead.addView(textView);
-                textViewPosition++;
+                if (!head.isShow() || head.isKeyColumn) {
+                    // 隐藏列和关键列不展示
+                } else {
+                    LayoutParams params = new LayoutParams(Utils.dpToPx(mContext, 80), LayoutParams.MATCH_PARENT);
+                    textView.setLayoutParams(params);
+                    textView.setText(head.getValue());
+                    textView.setGravity(Gravity.CENTER);
+                    textView.setTextColor(ContextCompat.getColor(mContext, R.color.text_black));
+                    textView.setBackgroundResource(R.drawable.background_square_black_boder_white);
+                    textView.setPadding(0, 0, Utils.dpToPx(mContext, 5), 0);
+                    textView.setCompoundDrawablePadding(Utils.dpToPx(mContext, 5));
+                    Drawable drawable = Utils.returnDrawable(mContext, R.drawable.icon_sort);
+                    textView.setCompoundDrawables(null, null, drawable, null);
+                    final int finalTextViewPosition = textViewPosition;
+                    textView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+//                            sort(finalTextViewPosition);
+                            WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
+                        }
+                    });
+                    textViews.add(textView);
+                    llHead.addView(textView);
+                    textViewPosition++;
+                }
             }
         }
         SlipMonitor();
@@ -221,9 +227,38 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         tvHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sort(currentPosition);
+//                sort(currentPosition);
             }
         });
+    }
+
+    void setKeyColumn(int keyColumn) {
+        if (leftDatas == null) {
+            leftDatas = new ArrayList<>();
+        } else {
+            leftDatas.clear();
+        }
+
+        //为默认关键列添加数据
+        for (List<MainData> mainData : originTableData.table.main_data) {
+            leftDatas.add(mainData.get(keyColumn).getValue());
+        }
+
+        Log.i("TableValue", leftDatas.toString() + keyColumn);
+
+        // 默认第一列为关键列
+        originTableData.table.head.get(keyColumn).isKeyColumn = true;
+        tvTitle.setText(originTableData.table.head.get(keyColumn).getValue());
+
+        // 关键列绑定适配器
+        if (adapter == null) {
+            Log.i("TableValue", "is null adapter");
+            adapter = new TableLeftListAdapter(mContext, leftDatas, rowHeight);
+            leftListView.setAdapter(adapter);
+        } else {
+            Log.i("TableValue", "isn't null adapter");
+            adapter.notifyDataSetChanged();
+        }
     }
 
     //滑动监听
@@ -353,13 +388,13 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             public void onClick(View view) {
                 showColumDialog();
                 popupWindow.dismiss();
-
             }
         });
         contentView.findViewById(R.id.ll_guolv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showFilterlog();
+//                showFilterlog();
+                WidgetUtil.showToastShort(mContext, "功能正在开发中");
                 popupWindow.dismiss();
             }
         });
@@ -419,7 +454,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             @Override
             public void onClick(View view) {
                 clickALl();
-
             }
         });
     }
@@ -461,7 +495,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                 for (int i = 0; i < changeTableChartData.table.head.size(); i++) {
                     Head head = changeTableChartData.table.head.get(i);
                     if (head.isKeyColumn) {
-                        Collections.swap(changeTableChartData.table.head, i, 0);
+//                        Collections.swap(changeTableChartData.table.head, i, 0);
                     }
                 }
                 columnAdapter.setDatas(changeTableChartData);
@@ -471,13 +505,13 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
     //选列
     @Override
-    public void checkClick(String info) {
+    public void checkClick(int position, String info) {
         selectedNum = 0;
         for (Head head : changeTableChartData.table.head) {
             if (info.equalsIgnoreCase(head.getValue())) {
-                head.isShow = !head.isShow;
+                head.setShow(!head.isShow());
             }
-            if (head.isShow) {
+            if (head.isShow()) {
                 selectedNum++;
             }
         }
@@ -492,19 +526,19 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }, 300);
     }
 
+    //
     //选择关键列
     @Override
     public void markerClick(int position, String info) {
         for (Head head : changeTableChartData.table.head) {
             if (info.equalsIgnoreCase(head.getValue())) {
                 head.isKeyColumn = true;
-                head.isShow = true;
+                head.setShow(true);
             } else {
                 head.isKeyColumn = false;
             }
-
         }
-        Collections.swap(changeTableChartData.table.head, position, 0);
+//        Collections.swap(changeTableChartData.table.head, position, 0);
         columnAdapter.setDatas(changeTableChartData);
     }
 
@@ -515,7 +549,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         for (Head head : changeTableChartData.table.head) {
             //不是关键列点击全选改变数据
             if (!head.isKeyColumn) {
-                head.isShow = isSelectedAll;
+                head.setShow(isSelectedAll);
             }
         }
         columnAdapter.setDatas(changeTableChartData);
@@ -523,6 +557,10 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
     //点击应用
     void clickSure() {
+        // 准备三份数据
+        // 一份 一直不变
+        // 一份 供展示, 去掉隐藏的数据
+        // 一份 供筛选
         mainDatas.clear();
         showColum.clear();
         //更改外部数据的值
@@ -536,7 +574,11 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         for (int i = 0; i < changeTableChartData.table.head.size(); i++) {
             final Head head = changeTableChartData.table.head.get(i);
             //表格Head数据，只有isShow=true才展示
-            if (head.isShow) {
+            if (!head.isShow()) {
+
+            } else if (head.isKeyColumn) {
+                setKeyColumn(i);
+            } else {
                 headDatas.add(head);
                 showColum.add(head.originPosition);
                 final TextView textView = new TextView(mContext);
@@ -557,7 +599,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                     public void onClick(View view) {
                         //添加排序功能
                         sort(finalTextViewPosition);
-                        WidgetUtil.showToastShort(mContext,head.getValue() + ":排序");
+                        WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
                     }
                 });
                 textViews.add(textView);
@@ -565,32 +607,16 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                 textViewPosition++;
             }
         }
-        //获取主表格
-        for (int x = 0; x < originTableData.table.main_data.size(); x++) {
-            MainData mainData = originTableData.table.main_data.get(x);
-            List<String> columDatas = new ArrayList<>();
-            List<Integer> colors = new ArrayList<>();
-            for (int j = 0; j < showColum.size(); j++) {
-                Integer color = mainData.color.get(showColum.get(j));
-                String a = mainData.data.get(showColum.get(j));
-                colors.add(color);
-                columDatas.add(a);
-            }
-            //从改变位置的数据中获取数据
-            MainData mainData1 = new MainData();
-            mainData1.data = columDatas;
-            mainData1.color = colors;
-            mainData1.name = mainData.name;
-            mainData1.district = mainData.district;
-            mainDatas.add(x, mainData1);
-        }
-        filterSelected();
+
+        mainDatas.addAll(changeTableChartData.table.main_data);
+        contentListAdapter.notifyDataSetChanged();
+//        filterSelected();
         if (commonDialog != null) {
             commonDialog.dismiss();
         }
     }
 
-    //显示行距弹框
+        //显示行距弹框
     void showRowHeightDialog() {
         currentHeight = rowHeight;
         commonDialog = new AlertDialog.Builder(mContext, R.style.CommonDialog).setTitle("选列").create();
@@ -672,34 +698,34 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             commonDialog.dismiss();
         }
     }
-
-
-    //显示过滤弹框
-    void showFilterlog() {
-        commonDialog = new AlertDialog.Builder(mContext, R.style.CommonDialog).setTitle("选列").create();
-        commonDialog.show();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_filter, null);
-        TextView tvCancel = (TextView) view.findViewById(R.id.tv_cancel);
-        TextView tvConfirm = (TextView) view.findViewById(R.id.tv_confirm);
-        ListView listView = (ListView) view.findViewById(R.id.filter_list_view);
-        tableFilterListAdapter = new TableFilterListAdapter(mContext, filters, this);
-        listView.setAdapter(tableFilterListAdapter);
-        commonDialog.setContentView(view);
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                commonDialog.dismiss();
-            }
-        });
-        tvConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterSelected();
-                commonDialog.dismiss();
-            }
-        });
-    }
-
+//
+//
+//    //显示过滤弹框
+//    void showFilterlog() {
+//        commonDialog = new AlertDialog.Builder(mContext, R.style.CommonDialog).setTitle("选列").create();
+//        commonDialog.show();
+//        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_filter, null);
+//        TextView tvCancel = (TextView) view.findViewById(R.id.tv_cancel);
+//        TextView tvConfirm = (TextView) view.findViewById(R.id.tv_confirm);
+//        ListView listView = (ListView) view.findViewById(R.id.filter_list_view);
+//        tableFilterListAdapter = new TableFilterListAdapter(mContext, filters, this);
+//        listView.setAdapter(tableFilterListAdapter);
+//        commonDialog.setContentView(view);
+//        tvCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                commonDialog.dismiss();
+//            }
+//        });
+//        tvConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                filterSelected();
+//                commonDialog.dismiss();
+//            }
+//        });
+//    }
+//
     //过滤条件选中
     @Override
     public void updateFilter() {
@@ -714,57 +740,58 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
         tableFilterListAdapter.setData(filters);
     }
-
-    //过滤
-    void filterSelected() {
-        filterMainDatas.clear();
-        leftDatas.clear();
-        int filterCount = 0;
-        List<String> filterValues = new ArrayList<>();
-        //提取出过滤字段
-        for (int i = 0; i < filters.size(); i++) {
-            Filter filter = filters.get(i);
-            if (filter.isSelected) {
-                filterCount++;
-                for (int j = 0; j < filter.items.size(); j++) {
-                    FilterItem filterItem = filter.items.get(j);
-                    if (filterItem.isSelected) {
-                        filterValues.add(filterItem.getValue());
-                    }
-
-                }
-            }
-        }
-        //获取过滤后得数据
-        if (filterCount > 0) {
-            //开启过滤，返回过滤数据
-            if (filterValues.size() > 0) {
-                for (String filterValue : filterValues) {
-                    for (MainData mainData : mainDatas) {
-                        if (filterValue.equals(mainData.district)) {
-                            filterMainDatas.add(mainData);
-                        }
-                    }
-                }
-            }
-        } else {
-            //未开启过滤，返回全部数据
-            filterMainDatas.addAll(mainDatas);
-        }
-        //左侧数据
-        for (MainData mainData : filterMainDatas) {
-            leftDatas.add(mainData.name);
-        }
-        adapter = new TableLeftListAdapter(mContext, leftDatas, rowHeight);
-        leftListView.setAdapter(adapter);
-        contentListAdapter.setData(filterMainDatas);
-        if (barChartListView.getVisibility() == View.VISIBLE) {
-            updateBarCgart(currentPosition);
-        }
-    }
-
+//
+//    //过滤
+//    void filterSelected() {
+//        filterMainDatas.clear();
+//        leftDatas.clear();
+//        int filterCount = 0;
+//        List<String> filterValues = new ArrayList<>();
+//        //提取出过滤字段
+//        for (int i = 0; i < filters.size(); i++) {
+//            Filter filter = filters.get(i);
+//            if (filter.isSelected) {
+//                filterCount++;
+//                for (int j = 0; j < filter.items.size(); j++) {
+//                    FilterItem filterItem = filter.items.get(j);
+//                    if (filterItem.isSelected) {
+//                        filterValues.add(filterItem.getValue());
+//                    }
+//
+//                }
+//            }
+//        }
+//        //获取过滤后得数据
+//        if (filterCount > 0) {
+//            //开启过滤，返回过滤数据
+//            if (filterValues.size() > 0) {
+//                for (String filterValue : filterValues) {
+//                    for (MainData mainData : mainDatas) {
+//                        if (filterValue.equals(mainData.district)) {
+//                            filterMainDatas.add(mainData);
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            //未开启过滤，返回全部数据
+//            filterMainDatas.addAll(mainDatas);
+//        }
+//        //左侧数据
+//        for (MainData mainData : filterMainDatas) {
+//            leftDatas.add(mainData.name);
+//        }
+//        adapter = new TableLeftListAdapter(mContext, leftDatas, rowHeight);
+//        leftListView.setAdapter(adapter);
+//        contentListAdapter.setData(filterMainDatas);
+//        if (barChartListView.getVisibility() == View.VISIBLE) {
+//            updateBarCgart(currentPosition);
+//        }
+//    }
+//
     //排序
     void sort(int position) {
+        // 更改表头排序状态
         for (int i = 0; i < headDatas.size(); i++) {
             Head head = headDatas.get(i);
             if (i == position) {
@@ -784,9 +811,12 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             }
             setDrawableRightImg(textViews.get(i), head);
         }
+
+        // 表格内容排序
+        // String 转 数值
         List<Double> datas = new ArrayList<>();
-        for (MainData mainData : mainDatas) {
-            String mainDataStr = mainData.data.get(position);
+        for (List<MainData> mainData : mainDatas) {
+            String mainDataStr = mainData.get(position).getValue();
             if (mainDataStr.contains(",")) {
                 mainDataStr = mainDataStr.replace(",", "");
             }
@@ -795,6 +825,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             }
             datas.add(Double.parseDouble(mainDataStr));
         }
+
         List<SortData> sortDataList = new ArrayList<>();
         for (int i = 0; i < datas.size(); i++) {
             SortData sortData = new SortData();
@@ -805,10 +836,11 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         List<Integer> integers = Utils.sortData(sortDataList, isAsc);
         List<MainData> sortMainDatas = new ArrayList<>();
         for (Integer integer : integers) {
-            sortMainDatas.add(mainDatas.get(integer));
+            sortMainDatas.add(mainDatas.get(integer).get(position));
         }
-        mainDatas = sortMainDatas;
-        filterSelected();
+//        mainDatas.addAll(sortMainDatas);
+//        mainDatas = sortMainDatas;
+//        filterSelected();
     }
 
     //表格中数据点击
@@ -843,16 +875,15 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
         tvHead.setText(head.getValue());
         setDrawableRightImg(tvHead, head);
-        for (MainData mainData : filterMainDatas) {
+        for (List<MainData> mainData : filterMainDatas) {
             TableBarChart tableBarChart = new TableBarChart();
-            tableBarChart.setData(mainData.data.get(position));
-            tableBarChart.setColor(originTableData.config.color.get(mainData.color.get(position)));
+            tableBarChart.setData(mainData.get(position).getValue());
+            tableBarChart.setColor(originTableData.config.color.get(mainData.get(position).getColor()));
             tableBarCharts.add(tableBarChart);
         }
         double maxValue = Utils.getMaxValue(tableBarCharts);
         tableBarChartAdapter = new TableBarChartAdapter(mContext, tableBarCharts, maxValue, rowHeight, this);
         barChartListView.setAdapter(tableBarChartAdapter);
-
     }
 
     //设置表头右侧排序图标
@@ -885,6 +916,23 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             //解决返回后数据没有更新
             contentListAdapter.notifyDataSetChanged();
         }
+    }
+
+    TableChart generateShowTableData(TableChart tableChart) {
+        List<Head> heads = new ArrayList<>();
+        for (int i = 0; i < tableChart.table.main_data.size(); i++) {
+            for (int j = 0; j < tableChart.table.main_data.get(i).size(); j++) {
+                if (!tableChart.table.head.get(j).isShow()) {
+                    tableChart.table.main_data.get(i).remove(j);
+                } else {
+                    Head head = tableChart.table.head.get(j);
+                    heads.add(head);
+                }
+            }
+        }
+
+        tableChart.table.head = heads;
+        return tableChart;
     }
 
     /*

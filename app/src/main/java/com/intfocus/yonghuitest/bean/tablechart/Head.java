@@ -11,9 +11,9 @@ public class Head {
      */
 
     private String value;
-    public boolean isShow = true;//是展示，默认全部展示
-    public boolean isKeyColumn;//是否为关键列
+    private boolean show;
     public int originPosition;
+    public boolean isKeyColumn;//是否为关键列
     public String sort = "default";
 
     public String getValue() {
@@ -22,5 +22,13 @@ public class Head {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
     }
 }

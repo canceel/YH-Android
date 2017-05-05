@@ -5,12 +5,13 @@ package com.intfocus.yonghuitest.bean.tablechart;
  */
 
 public class FilterItem {
-
     /**
      * value : 区域A
+     * index : 1
      */
 
     private String value;
+    private int index;
     //是否选中，默认选中
     public boolean isSelected = true;
 
@@ -20,5 +21,13 @@ public class FilterItem {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

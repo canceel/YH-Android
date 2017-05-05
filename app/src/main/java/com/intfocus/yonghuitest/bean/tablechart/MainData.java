@@ -7,9 +7,37 @@ import java.util.List;
  */
 
 public class MainData {
-    public String name;
-    public String district;
-    public List<String> data;
-    public List<Integer> color;
+    /**
+     * value : 上海
+     * color : 0
+     * index : 0
+     */
 
+    private String value;
+    private int color;
+    private int index;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

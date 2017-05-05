@@ -29,14 +29,13 @@ public class TableFilterListAdapter extends CommonAdapter<Filter> {
     public void updateDatas(List<Filter> datas) {
         this.datas = datas;
         notifyDataSetChanged();
-
     }
 
     @Override
     public void convert(ViewHolder holder, final Filter filter) {
         TextView tvFilterName = holder.getView(R.id.tv_filter_name);
         SwitchCompat switchCompat = holder.getView(R.id.swipe_content);
-        tvFilterName.setText(filter.filter_name);
+        tvFilterName.setText(filter.name);
         switchCompat.setChecked(filter.isSelected);
         final RecyclerView recyclerView = holder.getView(R.id.recycler_view);
         TableFilterItemAdapter adapter = new TableFilterItemAdapter(context, filter.items, lisenter, filter.isAllcheck);

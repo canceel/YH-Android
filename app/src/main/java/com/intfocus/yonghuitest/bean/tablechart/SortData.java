@@ -5,7 +5,6 @@ package com.intfocus.yonghuitest.bean.tablechart;
  */
 
 public class SortData {
-
     private double value;
     public int originPosition;
 

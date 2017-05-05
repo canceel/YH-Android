@@ -8,5 +8,5 @@ import java.util.List;
 
 public class Table {
     public List<Head> head;
-    public List<MainData> main_data;
+    public List<List<MainData>> main_data;
 }

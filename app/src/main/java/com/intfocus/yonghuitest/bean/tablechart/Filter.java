@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class Filter {
-    public String filter_name;
+    public String name;
     public List<FilterItem> items;
     public boolean isSelected = false;//是否打开过滤条件
     public boolean isAllcheck = true;

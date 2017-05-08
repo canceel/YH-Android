@@ -115,4 +115,18 @@
     <color name="co16">#a984d3</color>
     <!-- 红 -->
     <color name="co17">#f44f4f</color>
+
+    <color name="colorAccent">#FF4081</color>
+    <color name="default_ring_color">#DFE4E6</color>
+    <color name="progress_ring_color">#F0CD00</color>
+    <color name="argb_unitcolor">#989898</color>
+
+    <color name="sequence1">#f44f4f</color>
+    <color name="sequence2">#a984d3</color>
+    <color name="sequence3">#4688b5</color>
+    <color name="sequence3a">#71a3ed</color>
+    <color name="sequence4">#91c941</color>
+    <color name="sequence5">#f57658</color>
+    <color name="sequence6">#f4bc45</color>
+    <color name="sequence7">#3cc7c9</color>
 </resources>

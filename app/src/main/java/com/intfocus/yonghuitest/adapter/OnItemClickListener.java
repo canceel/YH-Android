@@ -19,7 +19,5 @@ package com.intfocus.yonghuitest.adapter;
  * Created by Yan Zhenjie on 2016/7/27.
  */
 public interface OnItemClickListener {
-
     void onItemClick(int position);
-
 }

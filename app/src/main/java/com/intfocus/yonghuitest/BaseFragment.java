@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,11 +56,13 @@ public class BaseFragment extends Fragment {
     public String urlString, sharedPath, assetsPath, urlStringForDetecting, relativeAssetsPath, urlStringForLoading;
     public JSONObject user;
     public int userID;
+    public Activity act;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        act = (Activity) context;
         mMyApp = (YHApplication) getActivity().getApplication();
         mAppContext = mMyApp.getAppContext();
         sharedPath = FileUtil.sharedPath(mContext);

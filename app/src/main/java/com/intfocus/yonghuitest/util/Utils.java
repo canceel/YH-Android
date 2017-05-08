@@ -5,8 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.intfocus.yonghuitest.bean.tablechart.SortData;
-import com.intfocus.yonghuitest.bean.tablechart.TableBarChart;
+import com.intfocus.yonghuitest.bean.table.SortData;
+import com.intfocus.yonghuitest.bean.table.TableBarChart;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -128,15 +128,18 @@ public class Utils {
         return integers;
     }
 
-    public static double getMaxValue(List<TableBarChart> datas) {
+    public static Double getMaxValue(List<TableBarChart> datas) {
         List<Double> doubles = new ArrayList<>();
         for (TableBarChart tableBarChart : datas) {
             String mainDataStr = tableBarChart.getData();
             if (mainDataStr.contains(",")) {
                 mainDataStr = mainDataStr.replace(",", "");
             }
-            if (mainDataStr.contains("%")) {
+            else if (mainDataStr.contains("%")) {
                 mainDataStr = mainDataStr.replace("%", "");
+            }
+            else {
+                return null;
             }
             doubles.add(Double.parseDouble(mainDataStr));
         }

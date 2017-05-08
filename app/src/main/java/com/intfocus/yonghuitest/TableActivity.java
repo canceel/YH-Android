@@ -30,21 +30,20 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.yonghuitest.adapter.ColumAdapter;
-import com.intfocus.yonghuitest.adapter.TableBarChartAdapter;
-import com.intfocus.yonghuitest.adapter.TableContentItemAdapter;
-import com.intfocus.yonghuitest.adapter.TableContentListAdapter;
-import com.intfocus.yonghuitest.adapter.TableFilterItemAdapter;
-import com.intfocus.yonghuitest.adapter.TableFilterListAdapter;
-import com.intfocus.yonghuitest.adapter.TableLeftListAdapter;
-import com.intfocus.yonghuitest.bean.tablechart.Filter;
-import com.intfocus.yonghuitest.bean.tablechart.FilterItem;
-import com.intfocus.yonghuitest.bean.tablechart.Head;
-import com.intfocus.yonghuitest.bean.tablechart.MainData;
-import com.intfocus.yonghuitest.bean.tablechart.SortData;
-import com.intfocus.yonghuitest.bean.tablechart.Table;
-import com.intfocus.yonghuitest.bean.tablechart.TableBarChart;
-import com.intfocus.yonghuitest.bean.tablechart.TableChart;
+import com.intfocus.yonghuitest.adapter.table.ColumAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableBarChartAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableContentItemAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableContentListAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableFilterItemAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableFilterListAdapter;
+import com.intfocus.yonghuitest.adapter.table.TableLeftListAdapter;
+import com.intfocus.yonghuitest.bean.table.Filter;
+import com.intfocus.yonghuitest.bean.table.FilterItem;
+import com.intfocus.yonghuitest.bean.table.Head;
+import com.intfocus.yonghuitest.bean.table.MainData;
+import com.intfocus.yonghuitest.bean.table.SortData;
+import com.intfocus.yonghuitest.bean.table.TableBarChart;
+import com.intfocus.yonghuitest.bean.table.TableChart;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
 import com.intfocus.yonghuitest.util.Utils;
 import com.intfocus.yonghuitest.util.WidgetUtil;
@@ -140,6 +139,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private List<TextView> textViews;
     private List<TableBarChart> tableBarCharts;
     private int currentPosition;
+    private int currentValuePosition;
+    private int keyLinePosition;
     private TableBarChartAdapter tableBarChartAdapter;
     private Context mContext;
 
@@ -177,13 +178,15 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             }
             originTableData.table.head = heads;
             changeTableChartData.table.head = heads;
-            headDatas.addAll(heads);
+//            headDatas.addAll(heads);
             showTableData = generateShowTableData(showTableData);
 
             mainDatas.addAll(originTableData.table.main_data);
             filterMainDatas.addAll(mainDatas);
 
+
             // 默认第一列为关键列
+            originTableData.table.head.get(0).isKeyColumn = true;
             setKeyColumn(0);
 
             // 表格内容填充
@@ -192,12 +195,17 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
             textViews.clear();
             int textViewPosition = 0;
+            int valuePosition = 0;
             for (int i = 0; i < originTableData.table.head.size(); i++) {
                 final Head head = originTableData.table.head.get(i);
                 final TextView textView = new TextView(mContext);
                 if (!head.isShow() || head.isKeyColumn) {
                     // 隐藏列和关键列不展示
-                } else {
+                }
+                else if(head.isKeyColumn) {
+                    keyLinePosition = i;
+                }
+                else{
                     LayoutParams params = new LayoutParams(Utils.dpToPx(mContext, 80), LayoutParams.MATCH_PARENT);
                     textView.setLayoutParams(params);
                     textView.setText(head.getValue());
@@ -209,25 +217,28 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                     Drawable drawable = Utils.returnDrawable(mContext, R.drawable.icon_sort);
                     textView.setCompoundDrawables(null, null, drawable, null);
                     final int finalTextViewPosition = textViewPosition;
+                    final int finalValuePosition = valuePosition;
                     textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-//                            sort(finalTextViewPosition);
+                            sort(finalValuePosition, finalTextViewPosition);
                             WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
                         }
                     });
+                    headDatas.add(head);
                     textViews.add(textView);
                     llHead.addView(textView);
                     textViewPosition++;
                 }
+                valuePosition++;
+                currentValuePosition = valuePosition;
             }
         }
         SlipMonitor();
-
         tvHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                sort(currentPosition);
+                sort(currentValuePosition, currentPosition);
             }
         });
     }
@@ -426,8 +437,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
         recyclerView.setLongPressDragEnabled(true); // 开启拖拽。
         recyclerView.setItemViewSwipeEnabled(false); // 关闭滑动删除。
-        recyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
-        recyclerView.setOnItemStateChangedListener(mOnItemStateChangedListener);
+//        recyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
+//        recyclerView.setOnItemStateChangedListener(mOnItemStateChangedListener);
         commonDialog.setContentView(view);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -557,10 +568,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
     //点击应用
     void clickSure() {
-        // 准备三份数据
-        // 一份 一直不变
-        // 一份 供展示, 去掉隐藏的数据
-        // 一份 供筛选
         mainDatas.clear();
         showColum.clear();
         //更改外部数据的值
@@ -571,15 +578,16 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         textViews.clear();
         headDatas.clear();
         int textViewPosition = 0;
+        int valuePosition = 0;
         for (int i = 0; i < changeTableChartData.table.head.size(); i++) {
             final Head head = changeTableChartData.table.head.get(i);
             //表格Head数据，只有isShow=true才展示
             if (!head.isShow()) {
 
             } else if (head.isKeyColumn) {
+                keyLinePosition = i;
                 setKeyColumn(i);
             } else {
-                headDatas.add(head);
                 showColum.add(head.originPosition);
                 final TextView textView = new TextView(mContext);
                 LayoutParams params = new LayoutParams(Utils.dpToPx(mContext, 80), LayoutParams.MATCH_PARENT);
@@ -594,18 +602,21 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                 textView.setCompoundDrawables(null, null, drawable, null);
                 final int finalI = i;
                 final int finalTextViewPosition = textViewPosition;
+                final int finalValuePosition = valuePosition;
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //添加排序功能
-                        sort(finalTextViewPosition);
+                        sort(finalValuePosition, finalTextViewPosition);
                         WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
                     }
                 });
+                headDatas.add(head);
                 textViews.add(textView);
                 llHead.addView(textView);
                 textViewPosition++;
             }
+            valuePosition++;
         }
 
         mainDatas.addAll(changeTableChartData.table.main_data);
@@ -616,7 +627,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
     }
 
-        //显示行距弹框
+    //显示行距弹框
     void showRowHeightDialog() {
         currentHeight = rowHeight;
         commonDialog = new AlertDialog.Builder(mContext, R.style.CommonDialog).setTitle("选列").create();
@@ -698,7 +709,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             commonDialog.dismiss();
         }
     }
-//
+
+    //
 //
 //    //显示过滤弹框
 //    void showFilterlog() {
@@ -740,7 +752,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
         tableFilterListAdapter.setData(filters);
     }
-//
+
+    //
 //    //过滤
 //    void filterSelected() {
 //        filterMainDatas.clear();
@@ -790,7 +803,23 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 //    }
 //
     //排序
-    void sort(int position) {
+    void sort(int valuePosirion, int position) {
+        // 表格内容排序
+        // String 转 数值
+        List<Double> datas = new ArrayList<>();
+        for (List<MainData> mainData : mainDatas) {
+            String mainDataStr = mainData.get(valuePosirion).getValue();
+            if (mainDataStr.contains(",")) {
+                mainDataStr = mainDataStr.replace(",", "");
+            } else if (mainDataStr.contains("%")) {
+                mainDataStr = mainDataStr.replace("%", "");
+            } else {
+                WidgetUtil.showToastLong(mContext, "暂不支持字符排序");
+                return;
+            }
+            datas.add(Double.parseDouble(mainDataStr));
+        }
+
         // 更改表头排序状态
         for (int i = 0; i < headDatas.size(); i++) {
             Head head = headDatas.get(i);
@@ -809,21 +838,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             } else {
                 head.sort = "default";
             }
-            setDrawableRightImg(textViews.get(i), head);
-        }
 
-        // 表格内容排序
-        // String 转 数值
-        List<Double> datas = new ArrayList<>();
-        for (List<MainData> mainData : mainDatas) {
-            String mainDataStr = mainData.get(position).getValue();
-            if (mainDataStr.contains(",")) {
-                mainDataStr = mainDataStr.replace(",", "");
-            }
-            if (mainDataStr.contains("%")) {
-                mainDataStr = mainDataStr.replace("%", "");
-            }
-            datas.add(Double.parseDouble(mainDataStr));
+            setDrawableRightImg(textViews.get(i), head);
         }
 
         List<SortData> sortDataList = new ArrayList<>();
@@ -833,13 +849,24 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             sortData.originPosition = i;
             sortDataList.add(sortData);
         }
+
         List<Integer> integers = Utils.sortData(sortDataList, isAsc);
-        List<MainData> sortMainDatas = new ArrayList<>();
+        List<List<MainData>> sortMainDatas = new ArrayList<>();
         for (Integer integer : integers) {
-            sortMainDatas.add(mainDatas.get(integer).get(position));
+            sortMainDatas.add(mainDatas.get(integer));
         }
-//        mainDatas.addAll(sortMainDatas);
-//        mainDatas = sortMainDatas;
+
+        mainDatas.clear();
+        mainDatas.addAll(sortMainDatas);
+        contentListAdapter.notifyDataSetChanged();
+//        setKeyColumn(keyLinePosition);
+        //为默认关键列添加数据
+        leftDatas.clear();
+        for (List<MainData> mainData : mainDatas) {
+            leftDatas.add(mainData.get(keyLinePosition).getValue());
+        }
+        adapter.notifyDataSetChanged();
+
 //        filterSelected();
     }
 
@@ -850,19 +877,33 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         mCurTime = System.currentTimeMillis();
         //双击显示条形图
         if (mCurTime - mLastTime < DOUBLE_CLICK_TIME) {
+            tableBarCharts = new ArrayList<>();
+            for (List<MainData> mainData : filterMainDatas) {
+                TableBarChart tableBarChart = new TableBarChart();
+                tableBarChart.setData(mainData.get(position).getValue());
+                tableBarChart.setColor(originTableData.config.color.get(mainData.get(position).getColor()));
+                tableBarCharts.add(tableBarChart);
+            }
+            Double maxValue = Utils.getMaxValue(tableBarCharts);
+            if (null == maxValue) {
+                WidgetUtil.showToastLong(mContext, "该数值无法显示条形图");
+                return;
+            }
             currentPosition = position;
             barChartListView.setVisibility(View.VISIBLE);
             llBarHead.setVisibility(View.VISIBLE);
             contentHorizontalScrollView.setVisibility(View.GONE);
             topHorizontalScrollView.setVisibility(View.GONE);
-            updateBarCgart(position);
+            updateBarCgart(maxValue, position);
         }
     }
 
     //更新条形图
-    void updateBarCgart(int position) {
+    void updateBarCgart(double maxValue, int position) {
+
+        Head head = originTableData.table.head.get(position);
         //选列后，如果数据小于当前点击位置，则显示主表格
-        if (position >= headDatas.size()) {
+        if (position >= originTableData.table.head.size()) {
             barChartListView.setVisibility(View.GONE);
             llBarHead.setVisibility(View.GONE);
             contentHorizontalScrollView.setVisibility(View.VISIBLE);
@@ -870,18 +911,9 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             contentListAdapter.notifyDataSetChanged();
             return;
         }
-        tableBarCharts = new ArrayList<>();
-        Head head = headDatas.get(position);
 
         tvHead.setText(head.getValue());
         setDrawableRightImg(tvHead, head);
-        for (List<MainData> mainData : filterMainDatas) {
-            TableBarChart tableBarChart = new TableBarChart();
-            tableBarChart.setData(mainData.get(position).getValue());
-            tableBarChart.setColor(originTableData.config.color.get(mainData.get(position).getColor()));
-            tableBarCharts.add(tableBarChart);
-        }
-        double maxValue = Utils.getMaxValue(tableBarCharts);
         tableBarChartAdapter = new TableBarChartAdapter(mContext, tableBarCharts, maxValue, rowHeight, this);
         barChartListView.setAdapter(tableBarChartAdapter);
     }

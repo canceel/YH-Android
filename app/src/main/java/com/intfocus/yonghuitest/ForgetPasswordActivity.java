@@ -4,13 +4,11 @@ package com.intfocus.yonghuitest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import com.intfocus.yonghuitest.BaseActivity;
-import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.PrivateURLs;

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.URLs;
 
@@ -30,7 +32,7 @@ import java.util.Locale;
 /**
  * Created by lijunjie on 16/7/20.
  */
-public class ReportSelectorAcitity extends BaseActivity  {
+public class ReportSelectorAcitity extends BaseActivity {
   private ListView mListView;
   private String templateID;
   private String reportID;

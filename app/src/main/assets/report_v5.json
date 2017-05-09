@@ -1,29 +1,81 @@
 {
   "name": "销售额",
   "config": {
-    "color": [
-      "#686868",
-      "#E21717",
-      "#000080",
-      "#51aa38",
-      "#91c941",
-      "#f57658"
-    ],
     "filter": [
       {
         "name": "区域",
         "items": [
           {
-            "value": "区域A",
+            "value": "上海",
             "index": 1
           },
           {
-            "value": "区域B",
+            "value": "北京",
             "index": 2
           },
           {
-            "value": "区域C",
+            "value": "广州",
             "index": 3
+          },
+          {
+            "value": "天津",
+            "index": 4
+          },
+          {
+            "value": "深圳",
+            "index": 5
+          },
+          {
+            "value": "厦门",
+            "index": 6
+          },
+          {
+            "value": "大连",
+            "index": 7
+          },
+          {
+            "value": "重庆",
+            "index": 8
+          },
+          {
+            "value": "成都",
+            "index": 9
+          },
+          {
+            "value": "武汉",
+            "index": 10
+          },
+          {
+            "value": "南京",
+            "index": 11
+          },
+          {
+            "value": "青岛",
+            "index": 12
+          },
+          {
+            "value": "苏州",
+            "index": 13
+          },
+          {
+            "value": "杭州",
+            "index": 14
+          },
+          {
+            "value": "福州",
+            "index": 15
+          },
+          {
+            "value": "郑州",
+            "index": 16
+          },
+          {
+            "value": "西安",
+            "index": 17
+          },
+          {
+            "value": "南通",
+            "index": 18
           }
         ]
       },
@@ -31,16 +83,20 @@
         "name": "销量",
         "items": [
           {
-            "value": "过滤条件A",
+            "value": "60,000~65,000",
             "index": 1
           },
           {
-            "value": "过滤条件B",
+            "value": "65,000~70,000",
             "index": 2
           },
           {
-            "value": "过滤条件C",
+            "value": "70,000~75,000",
             "index": 3
+          },
+          {
+            "value": "75,000~80,000",
+            "index": 4
           }
         ]
       }
@@ -48,37 +104,44 @@
   },
   "table": {
     "head": [
-      { "value": "门店",
+      {
+        "value": "区域",
         "show": true
       },
-      { "value": "区域",
-        "show": false
-      },
-      { "value": "销量",
+      {
+        "value": "销量",
         "show": true
       },
-      { "value": "目标销量",
+      {
+        "value": "目标销量",
         "show": true
       },
-      { "value": "销量 vs 目标",
+      {
+        "value": "销量vs目标",
         "show": true
       },
-      { "value": "去年同期",
+      {
+        "value": "去年同期",
         "show": true
       },
-      { "value": "销量 vs 去年同期",
+      {
+        "value": "销量vs去年",
         "show": true
       },
-      { "value": "上月同期",
+      {
+        "value": "上月同期",
         "show": true
       },
-      { "value": "销量 vs 上月",
+      {
+        "value": "销量vs上月",
         "show": true
       },
-      { "value": "毛利",
+      {
+        "value": "毛利",
         "show": true
       },
-      { "value": "上月毛利",
+      {
+        "value": "上月毛利",
         "show": true
       }
     ],
@@ -86,343 +149,937 @@
       [
         {
           "value": "上海",
-          "color": 0,
-          "index": 0
+          "index": 1,
+          "color": 0
         },
         {
-          "value": "区域A",
-          "color": 1,
-          "index": 0
+          "value": "78000.0",
+          "index": 4,
+          "color": 2
         },
         {
-          "value": "70,714",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "58,291",
-          "color": 3,
-          "index": 0
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
         },
         {
           "value": "-24%",
-          "color": 4,
-          "index": 0
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "37,924",
-          "color": 5,
-          "index": 0
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
         },
         {
           "value": "9%",
-          "color": 5,
-          "index": 0
+          "index": 0,
+          "color": 5
         },
         {
-          "value": "63,400",
-          "color": 4,
-          "index": 0
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
         },
         {
           "value": "-19%",
-          "color": 3,
-          "index": 0
+          "index": 0,
+          "color": 3
         },
         {
-          "value": "61,936",
-          "color": 2,
-          "index": 0
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
         },
         {
-          "value": "87,862",
-          "color": 1,
-          "index": 0
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
         }
       ],
       [
         {
-          "value": "北京",
-          "color": 1,
-          "index": 0
+          "value": "西安",
+          "index": 17,
+          "color": 0
         },
         {
-          "value": "区域B",
-          "color": 1,
-          "index": 0
+          "value": "61700.0",
+          "index": 1,
+          "color": 2
         },
         {
-          "value": "60,666",
-          "color": 2,
-          "index": 0
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
         },
         {
-          "value": "58,111",
-          "color": 3,
-          "index": 0
+          "value": "-24%",
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "-26%",
-          "color": 4,
-          "index": 0
-        },
-        {
-          "value": "37,123",
-          "color": 5,
-          "index": 0
-        },
-        {
-          "value": "2%",
-          "color": 5,
-          "index": 0
-        },
-        {
-          "value": "63,987",
-          "color": 4,
-          "index": 0
-        },
-        {
-          "value": "-29%",
-          "color": 3,
-          "index": 0
-        },
-        {
-          "value": "61,126",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "87,82",
-          "color": 1,
-          "index": 0
-        }
-      ],
-      [
-        {
-          "value": "广州",
-          "color": 5,
-          "index": 0
-        },
-        {
-          "value": "区域C",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "70,712",
-          "color": 3,
-          "index": 0
-        },
-        {
-          "value": "58,21",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "-4%",
-          "color": 1,
-          "index": 0
-        },
-        {
-          "value": "37,224",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "19%",
-          "color": 0,
-          "index": 0
-        },
-        {
-          "value": "18,400",
-          "color": 4,
-          "index": 0
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
         },
         {
           "value": "9%",
-          "color": 1,
-          "index": 0
+          "index": 0,
+          "color": 5
         },
         {
-          "value": "6,936",
-          "color": 3,
-          "index": 0
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "56,862",
-          "color": 1,
-          "index": 0
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "郑州",
+          "index": 16,
+          "color": 0
+        },
+        {
+          "value": "62000.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "福州",
+          "index": 15,
+          "color": 0
+        },
+        {
+          "value": "62100.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "杭州",
+          "index": 14,
+          "color": 0
+        },
+        {
+          "value": "63400.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "苏州",
+          "index": 13,
+          "color": 0
+        },
+        {
+          "value": "63500.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "青岛",
+          "index": 12,
+          "color": 0
+        },
+        {
+          "value": "63600.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "南京",
+          "index": 11,
+          "color": 0
+        },
+        {
+          "value": "65000.0",
+          "index": 2,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "武汉",
+          "index": 10,
+          "color": 0
+        },
+        {
+          "value": "65300.0",
+          "index": 2,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
         }
       ],
       [
         {
           "value": "成都",
-          "color": 0,
-          "index": 0
+          "index": 9,
+          "color": 0
         },
         {
-          "value": "区域B",
-          "color": 1,
-          "index": 0
+          "value": "65500.0",
+          "index": 2,
+          "color": 2
         },
         {
-          "value": "70,714",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "58,291",
-          "color": 3,
-          "index": 0
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
         },
         {
           "value": "-24%",
-          "color": 4,
-          "index": 0
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "37,924",
-          "color": 5,
-          "index": 0
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
         },
         {
           "value": "9%",
-          "color": 5,
-          "index": 0
+          "index": 0,
+          "color": 5
         },
         {
-          "value": "63,400",
-          "color": 4,
-          "index": 0
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
         },
         {
           "value": "-19%",
-          "color": 3,
-          "index": 0
+          "index": 0,
+          "color": 3
         },
         {
-          "value": "61,936",
-          "color": 2,
-          "index": 0
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
         },
         {
-          "value": "87,862",
-          "color": 1,
-          "index": 0
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "重庆",
+          "index": 8,
+          "color": 0
+        },
+        {
+          "value": "66600.0",
+          "index": 2,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "大连",
+          "index": 7,
+          "color": 0
+        },
+        {
+          "value": "69900.0",
+          "index": 2,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "厦门",
+          "index": 6,
+          "color": 0
+        },
+        {
+          "value": "70000.0",
+          "index": 3,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
         }
       ],
       [
         {
           "value": "深圳",
-          "color": 0,
-          "index": 0
+          "index": 5,
+          "color": 0
         },
         {
-          "value": "区域B",
-          "color": 1,
-          "index": 0
+          "value": "72500.0",
+          "index": 3,
+          "color": 2
         },
         {
-          "value": "70,714",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "58,291",
-          "color": 3,
-          "index": 0
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
         },
         {
           "value": "-24%",
-          "color": 4,
-          "index": 0
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "37,924",
-          "color": 5,
-          "index": 0
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
         },
         {
           "value": "9%",
-          "color": 5,
-          "index": 0
+          "index": 0,
+          "color": 5
         },
         {
-          "value": "63,400",
-          "color": 4,
-          "index": 0
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
         },
         {
           "value": "-19%",
-          "color": 3,
-          "index": 0
+          "index": 0,
+          "color": 3
         },
         {
-          "value": "61,936",
-          "color": 2,
-          "index": 0
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
         },
         {
-          "value": "87,862",
-          "color": 1,
-          "index": 0
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
         }
       ],
       [
         {
           "value": "天津",
-          "color": 0,
-          "index": 0
+          "index": 4,
+          "color": 0
         },
         {
-          "value": "区域B",
-          "color": 1,
-          "index": 0
+          "value": "73000.0",
+          "index": 3,
+          "color": 2
         },
         {
-          "value": "70,714",
-          "color": 2,
-          "index": 0
-        },
-        {
-          "value": "58,291",
-          "color": 3,
-          "index": 0
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
         },
         {
           "value": "-24%",
-          "color": 4,
-          "index": 0
+          "index": 0,
+          "color": 4
         },
         {
-          "value": "37,924",
-          "color": 5,
-          "index": 0
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
         },
         {
           "value": "9%",
-          "color": 5,
-          "index": 0
+          "index": 0,
+          "color": 5
         },
         {
-          "value": "63,400",
-          "color": 4,
-          "index": 0
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
         },
         {
           "value": "-19%",
-          "color": 3,
-          "index": 0
+          "index": 0,
+          "color": 3
         },
         {
-          "value": "61,936",
-          "color": 2,
-          "index": 0
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
         },
         {
-          "value": "87,862",
-          "color": 1,
-          "index": 0
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "广州",
+          "index": 3,
+          "color": 0
+        },
+        {
+          "value": "73300.0",
+          "index": 3,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "北京",
+          "index": 2,
+          "color": 0
+        },
+        {
+          "value": "75500.0",
+          "index": 4,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
+        }
+      ],
+      [
+        {
+          "value": "南通",
+          "index": 18,
+          "color": 0
+        },
+        {
+          "value": "60900.0",
+          "index": 1,
+          "color": 2
+        },
+        {
+          "value": "58291.0",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "-24%",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "37924.0",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "9%",
+          "index": 0,
+          "color": 5
+        },
+        {
+          "value": "63400.0",
+          "index": 0,
+          "color": 4
+        },
+        {
+          "value": "-19%",
+          "index": 0,
+          "color": 3
+        },
+        {
+          "value": "61936.0",
+          "index": 0,
+          "color": 2
+        },
+        {
+          "value": "87862.0",
+          "index": 0,
+          "color": 1
         }
       ]
     ]

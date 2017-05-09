@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.base;
 
 import android.app.Activity;
 import android.content.Context;

@@ -44,6 +44,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yonghuitest.adapter.metrics.MetricsAdapter;
 import com.intfocus.yonghuitest.adapter.metrics.ProductListAdapter;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -164,6 +165,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     private PopupWindow mMenuWindow;
     private Context mContext;
     private String urlString;
+
     private ArrayList<HashMap<String, Object>> listItem;
 
     @Override
@@ -195,6 +197,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         protected void onPostExecute(Map<String, String> response) {
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
+//                initData("{\"data\":" + response.get("body") + "}");
                 initData(response.get("body"));
                 setData(false, true);
                 mAnimLoading.setVisibility(View.GONE);
@@ -205,7 +208,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
     private void initView() {
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+        mTfLight = Typeface.createFromAsset(getAssets( ), "OpenSans-Light.ttf");
 
         mBannerSetting.setVisibility(View.VISIBLE);
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BaseFragment;
+import com.intfocus.yonghuitest.base.BaseFragment;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.bean.kpi.MererEntity;
 import com.intfocus.yonghuitest.bean.kpi.MeterClickEventEntity;

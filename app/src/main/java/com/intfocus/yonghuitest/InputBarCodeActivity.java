@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.URLs;
 
 

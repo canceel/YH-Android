@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BaseActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.adapter.SimpleListAdapter;
 import com.intfocus.yonghuitest.util.FileUtil;

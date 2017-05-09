@@ -8,11 +8,16 @@ import android.view.WindowManager;
 import com.intfocus.yonghuitest.bean.table.SortData;
 import com.intfocus.yonghuitest.bean.table.TableBarChart;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Created by CANC on 2017/4/19.
@@ -132,17 +137,36 @@ public class Utils {
         List<Double> doubles = new ArrayList<>();
         for (TableBarChart tableBarChart : datas) {
             String mainDataStr = tableBarChart.getData();
-            if (mainDataStr.contains(",")) {
-                mainDataStr = mainDataStr.replace(",", "");
-            }
-            else if (mainDataStr.contains("%")) {
+            if (mainDataStr.contains("%")) {
                 mainDataStr = mainDataStr.replace("%", "");
+            }
+            if (Utils.isNumber(mainDataStr)) {
+                doubles.add(Double.parseDouble(mainDataStr));
             }
             else {
                 return null;
             }
-            doubles.add(Double.parseDouble(mainDataStr));
         }
         return Collections.max(doubles);
+    }
+
+    public static boolean isNumber(String str) {
+        Pattern p = Pattern.compile("-?[0-9]+.*[0-9]*");
+        Matcher m = p.matcher(str);
+        if(m.matches() ){
+            return true;
+        }
+        p=Pattern.compile("[a-zA-Z]");
+        m=p.matcher(str);
+        if(m.matches()){
+            return false;
+        }
+        p=Pattern.compile("[\u4e00-\u9fa5]");
+        m=p.matcher(str);
+        if(m.matches()){
+            return false;
+        }
+
+        return false;
     }
 }

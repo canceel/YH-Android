@@ -10,10 +10,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BaseActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
 import com.intfocus.yonghuitest.adapter.SimpleListAdapter;

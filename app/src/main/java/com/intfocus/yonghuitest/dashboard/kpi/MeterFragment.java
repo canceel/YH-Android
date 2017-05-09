@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BaseTableFragment;
+import com.intfocus.yonghuitest.base.BaseTableFragment;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.adapter.kpi.MarginDecoration;
 import com.intfocus.yonghuitest.adapter.kpi.MeterVPAdapter;

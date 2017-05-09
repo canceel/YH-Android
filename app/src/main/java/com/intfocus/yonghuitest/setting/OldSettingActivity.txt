@@ -31,7 +31,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.intfocus.yonghuitest.BaseActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.setting.DeveloperActivity;
 import com.intfocus.yonghuitest.LoginActivity;
 import com.intfocus.yonghuitest.R;

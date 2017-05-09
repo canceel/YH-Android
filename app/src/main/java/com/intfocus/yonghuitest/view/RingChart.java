@@ -21,7 +21,6 @@ import com.intfocus.yonghuitest.util.DisplayUtil;
  * Created by zbaoliang on 17-4-29.
  */
 public class RingChart extends View {
-
     // 画实心圆的画笔
     private Paint mCirclePaint;
     // 画圆环的画笔

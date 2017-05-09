@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BaseActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.util.HttpUtil;

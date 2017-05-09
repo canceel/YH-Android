@@ -31,7 +31,7 @@ public class MeterMode extends AbstractMode {
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
-                String result = FileUtil.assetsFileContent(ctx, "kpi_data.json");
+                String result = FileUtil.assetsFileContent(ctx, "report_kpi.json");
                 if (StringUtil.isEmpty(result)) {
                     MeterRequestResult result1 = new MeterRequestResult(true, 400);
                     EventBus.getDefault().post(result1);

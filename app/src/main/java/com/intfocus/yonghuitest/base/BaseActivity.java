@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.base;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -42,6 +42,9 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.intfocus.yonghuitest.LoginActivity;
+import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -91,7 +94,7 @@ public class BaseActivity extends Activity {
     public Context mAppContext;
     public Toast toast;
     int displayDpi; //屏幕密度
-    boolean isOffline = false;
+    public boolean isOffline = false;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -541,7 +544,7 @@ public class BaseActivity extends Activity {
         }
     };
 
-    void initColorView(List<ImageView> colorViews) {
+    public void initColorView(List<ImageView> colorViews) {
         String[] colors = {"#00ffff", "#ffcd0a", "#fd9053", "#dd0929", "#016a43", "#9d203c", "#093db5", "#6a3906", "#192162", "#000000"};
         String userIDStr = String.format("%d", userID);
         int numDiff = colorViews.size() - userIDStr.length();
@@ -700,7 +703,7 @@ public class BaseActivity extends Activity {
     /**
      * app升级后，清除缓存头文件
      */
-    void checkVersionUpgrade(String assetsPath) {
+    public void checkVersionUpgrade(String assetsPath) {
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String versionConfigPath = String.format("%s/%s", assetsPath, K.kCurrentVersionFileName);

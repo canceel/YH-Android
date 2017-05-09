@@ -14,7 +14,6 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.intfocus.yonghuitest.BaseActivity.dip2px;
+import static com.intfocus.yonghuitest.base.BaseActivity.dip2px;
 
 public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     private DashboardFragmentAdapter mDashboardFragmentAdapter;

@@ -1,20 +1,16 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.base;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -24,13 +20,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
+import com.intfocus.yonghuitest.HomeTricsActivity;
+import com.intfocus.yonghuitest.MainActivity;
+import com.intfocus.yonghuitest.SubjectActivity;
+import com.intfocus.yonghuitest.TableActivity;
+import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.dashboard.kpi.MeterDetalActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.CustomWebView;
 
 import org.json.JSONException;
@@ -365,43 +366,66 @@ public class BaseFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    String message = String.format("%s\n%s\n%d", bannerName, link, objectID);
-                    LogUtil.d("JSClick", message);
+                    try {
+                        String message = String.format("%s\n%s\n%d", bannerName, link, objectID);
+                        LogUtil.d("JSClick", message);
 
-
-
-                    if (link.indexOf("template") > 0) {
-                        String templateID = TextUtils.split(link, "/")[7];
-
-                        if (templateID.equals("3")) {
-                            Intent homeTricsIntent = new Intent(mContext, HomeTricsActivity.class);
-                            homeTricsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            homeTricsIntent.putExtra("urlString", link);
-                            mContext.startActivity(homeTricsIntent);
+                        if (link.equals("http://development.shengyiplus.com/api/v1/temp/report/testOriginKpi")) {
+                            Intent kpiIntent = new Intent(mContext, MainActivity.class);
+                            kpiIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                                urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID,reportID);
+                            kpiIntent.putExtra("urlString", urlString);
+                            mContext.startActivity(kpiIntent);
+                            return;
                         }
-                        else if (templateID.equals("5")) {
-                            Intent superTableIntent = new Intent(mContext, TableActivity.class);
-                            superTableIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            superTableIntent.putExtra("urlString", link);
-                            mContext.startActivity(superTableIntent);
 
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                            builder.setTitle("温馨提示")
-//                                    .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
-//                                    .setPositiveButton("前去升级", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl));
-//                                            startActivity(browserIntent);
-//                                        }
-//                                    })
-//                                    .setNegativeButton("稍后升级", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            // 返回 LoginActivity
-//                                        }
-//                                    });
-//                            builder.show();
+                        if (link.indexOf("template") > 0) {
+                            String templateID = TextUtils.split(link, "/")[7];
+                            int groupID = user.getInt(URLs.kGroupId);
+//                            String reportID = TextUtils.split(link, "/")[8];
+                            String urlString = link;
+
+                            if (templateID.equals("3")) {
+                                Intent homeTricsIntent = new Intent(mContext, HomeTricsActivity.class);
+                                homeTricsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                                urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID,reportID);
+                                homeTricsIntent.putExtra("urlString", urlString);
+                                mContext.startActivity(homeTricsIntent);
+                            }
+                            else if (templateID.equals("5")) {
+                                Intent superTableIntent = new Intent(mContext, TableActivity.class);
+                                superTableIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                                urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID,reportID);
+                                superTableIntent.putExtra("urlString", urlString);
+                                mContext.startActivity(superTableIntent);
+
+    //                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    //                            builder.setTitle("温馨提示")
+    //                                    .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
+    //                                    .setPositiveButton("前去升级", new DialogInterface.OnClickListener() {
+    //                                        @Override
+    //                                        public void onClick(DialogInterface dialog, int which) {
+    //                                            Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl));
+    //                                            startActivity(browserIntent);
+    //                                        }
+    //                                    })
+    //                                    .setNegativeButton("稍后升级", new DialogInterface.OnClickListener() {
+    //                                        @Override
+    //                                        public void onClick(DialogInterface dialog, int which) {
+    //                                            // 返回 LoginActivity
+    //                                        }
+    //                                    });
+    //                            builder.show();
+                            }
+                            else {
+                                Intent intent = new Intent(getActivity(), SubjectActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.putExtra(URLs.kBannerName, bannerName);
+                                intent.putExtra(URLs.kLink, urlString);
+                                intent.putExtra(URLs.kObjectId, objectID);
+                                intent.putExtra(URLs.kObjectType, 1);
+                                startActivity(intent);
+                            }
                         }
                         else {
                             Intent intent = new Intent(getActivity(), SubjectActivity.class);
@@ -412,15 +436,8 @@ public class BaseFragment extends Fragment {
                             intent.putExtra(URLs.kObjectType, 1);
                             startActivity(intent);
                         }
-                    }
-                    else {
-                        Intent intent = new Intent(getActivity(), SubjectActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra(URLs.kBannerName, bannerName);
-                        intent.putExtra(URLs.kLink, link);
-                        intent.putExtra(URLs.kObjectId, objectID);
-                        intent.putExtra(URLs.kObjectType, 1);
-                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             });

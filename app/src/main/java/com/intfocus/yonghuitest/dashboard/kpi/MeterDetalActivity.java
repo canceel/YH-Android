@@ -10,8 +10,8 @@ import android.util.TypedValue;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.intfocus.yonghuitest.BaseFragment;
-import com.intfocus.yonghuitest.BaseTableActivity;
+import com.intfocus.yonghuitest.base.BaseFragment;
+import com.intfocus.yonghuitest.base.BaseTableActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.bean.kpi.msg.MeterDetalRequestResult;
 import com.intfocus.yonghuitest.mode.MeterDetalMode;

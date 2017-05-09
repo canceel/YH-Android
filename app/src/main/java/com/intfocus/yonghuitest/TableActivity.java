@@ -37,6 +37,7 @@ import com.intfocus.yonghuitest.adapter.table.TableContentListAdapter;
 import com.intfocus.yonghuitest.adapter.table.TableFilterItemAdapter;
 import com.intfocus.yonghuitest.adapter.table.TableFilterListAdapter;
 import com.intfocus.yonghuitest.adapter.table.TableLeftListAdapter;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.bean.table.Filter;
 import com.intfocus.yonghuitest.bean.table.FilterItem;
 import com.intfocus.yonghuitest.bean.table.Head;
@@ -143,6 +144,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private int keyLinePosition;
     private TableBarChartAdapter tableBarChartAdapter;
     private Context mContext;
+    private String[] mColorList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,6 +161,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         showRow = new ArrayList<>();
         filters = new ArrayList<>();
         textViews = new ArrayList<>();
+        mColorList = new String[]{"#F2836B","#F2836B","#F2E1AC","#F2E1AC","#63A69F","#63A69F"};
 
         gson = new Gson();
         JsonObject returnData = new JsonParser().parse(Utils.getJson(this, "report_v5.json")).getAsJsonObject();
@@ -241,6 +244,10 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                 sort(currentValuePosition, currentPosition);
             }
         });
+    }
+
+    void fillTableData() {
+
     }
 
     void setKeyColumn(int keyColumn) {
@@ -809,15 +816,18 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         List<Double> datas = new ArrayList<>();
         for (List<MainData> mainData : mainDatas) {
             String mainDataStr = mainData.get(valuePosirion).getValue();
-            if (mainDataStr.contains(",")) {
-                mainDataStr = mainDataStr.replace(",", "");
-            } else if (mainDataStr.contains("%")) {
+
+            if (mainDataStr.contains("%")) {
                 mainDataStr = mainDataStr.replace("%", "");
-            } else {
-                WidgetUtil.showToastLong(mContext, "暂不支持字符排序");
+            }
+
+            if (Utils.isNumber(mainDataStr)) {
+                datas.add(Double.parseDouble(mainDataStr));
+            }
+            else {
+                WidgetUtil.showToastShort(mContext, "暂不支持该内容的排序");
                 return;
             }
-            datas.add(Double.parseDouble(mainDataStr));
         }
 
         // 更改表头排序状态
@@ -881,7 +891,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             for (List<MainData> mainData : filterMainDatas) {
                 TableBarChart tableBarChart = new TableBarChart();
                 tableBarChart.setData(mainData.get(position).getValue());
-                tableBarChart.setColor(originTableData.config.color.get(mainData.get(position).getColor()));
+                tableBarChart.setColor(mColorList[position]);
                 tableBarCharts.add(tableBarChart);
             }
             Double maxValue = Utils.getMaxValue(tableBarCharts);

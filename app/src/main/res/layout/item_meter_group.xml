@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <!--android:background="@drawable/shadow_title_white"-->
 
     <TextView
         android:id="@+id/tv_item_meter_group"
         style="@style/tv_base_stytle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_default_medium"
-        android:background="@drawable/shadow_title_white"
         android:text="销售数据"
         android:textSize="18sp"
         app:layout_scrollFlags="scroll|enterAlways" />

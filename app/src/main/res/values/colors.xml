@@ -3,8 +3,8 @@
     <color name="divider">#66898989</color>
     <color name="black_overlay">#66000000</color>
 
-    <color name="actionBar">#53a93f</color>
-    <color name="colorPrimary">#53a93f</color>
+    <color name="actionBar">#51aa38</color>
+    <color name="colorPrimary">#51aa38</color>
 
     <color name="colors0">#ffffff</color>
     <color name="colors1">#ffcd0a</color>
@@ -79,7 +79,6 @@
     <color name="blue_0_0_128">#000080</color>
     <!-- 深天蓝 -->
     <color name="blue_0_191_225">#00BFFF</color>
-
 
     <!-- 主题绿色 -->
     <color name="co1">#51aa38</color>

@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.util.Permissions;
+import com.intfocus.yonghuitest.kpi.constant.Permissions;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
@@ -243,6 +243,15 @@ public abstract class BaseTableActivity<T extends Subject> extends AbstractActiv
         }
     }
 
+    /**
+     * 设置标题栏右边TextView的文字
+     *
+     * @param src
+     */
+    public void setACTitle(String src) {
+        tv_title.setText(src);
+    }
+
     //TODO -------------------设置返回键状态------------------------------
 
     /**
@@ -328,6 +337,7 @@ public abstract class BaseTableActivity<T extends Subject> extends AbstractActiv
                 Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(rootView, 0);
     }
+
 
     /**
      * 显示Loding

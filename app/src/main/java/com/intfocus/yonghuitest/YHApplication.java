@@ -35,6 +35,7 @@ import com.umeng.socialize.PlatformConfig;
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.*;
 
 import static com.intfocus.yonghuitest.util.K.kPushDeviceToken;
 import java.io.File;
@@ -67,6 +68,8 @@ public class YHApplication extends Application {
          *  蒲公英平台，收集闪退日志
          */
         PgyCrashManager.register(this);
+
+        initXutils();
 
         /*
          *  初始化 OpenUDID, 设备唯一化
@@ -151,6 +154,13 @@ public class YHApplication extends Application {
         mPushAgent.onAppStart();
 
         mPushAgent.setNotificationClickHandler(pushMessageHandler);
+    }
+
+    private void initXutils() {
+        x.Ext.init(this);
+        if (!org.xutils.BuildConfig.DEBUG) {
+            x.Ext.setDebug(org.xutils.BuildConfig.DEBUG);
+        }
     }
 
     final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {

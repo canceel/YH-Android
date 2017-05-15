@@ -86,7 +86,7 @@ public class HttpUtil {
             }
             retMap.put(URLs.kCode, String.format("%d", response.code()));
             retMap.put(URLs.kBody, response.body().string());
-            LogUtil.d("BODY", retMap.get("body"));
+//            LogUtil.d("BODY", retMap.get("body"));
 
             if(isJSON) {
                 LogUtil.d("code", retMap.get("code"));

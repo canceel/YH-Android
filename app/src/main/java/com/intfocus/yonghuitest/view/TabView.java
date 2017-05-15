@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.kpi.utils.DisplayUtil;
 import com.intfocus.yonghuitest.util.K;
+
 
 /**
  * Created by wiky on 1/10/16.
@@ -44,19 +46,20 @@ public class TabView extends LinearLayout {
         mDrawable = a.getDrawable(R.styleable.TabView_src);
         mActiveDrawable = a.getDrawable(R.styleable.TabView_active_src);
         String mText = a.getString(R.styleable.TabView_text);
-        int srcHeight = a.getDimensionPixelOffset(R.styleable.TabView_src_height, 20);
+        int srcHeight = a.getDimensionPixelOffset(R.styleable.TabView_src_height, DisplayUtil.dip2px(context, 28));
         a.recycle();
 
         setOrientation(VERTICAL);
         mImageView = new ImageView(context);
-        mImageView.setPadding(0 - 8, 0 - 8, 0 - 8, 0 - 8);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, srcHeight);
+        layoutParams.topMargin = 5;
         addView(mImageView, layoutParams);
         mTextView = new TextView(context);
         mTextView.setText(mText);
+        mTextView.setTextSize(10);
         mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.topMargin = 6;
+        layoutParams.bottomMargin = 6;
         addView(mTextView, layoutParams);
 
         update();

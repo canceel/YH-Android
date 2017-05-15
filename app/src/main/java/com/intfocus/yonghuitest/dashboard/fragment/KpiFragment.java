@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.WebViewFragment;
+import com.intfocus.yonghuitest.base.WebViewFragment;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.view.CustomWebView;

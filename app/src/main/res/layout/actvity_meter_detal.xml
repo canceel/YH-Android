@@ -2,47 +2,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.intfocus.yonghuitest.view.MyScrollView
-        android:id="@+id/myScrollView"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@color/argb_theme_default"
-        android:scrollbars="none"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1">
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" />
-    </com.intfocus.yonghuitest.view.MyScrollView>
+    android:layout_height="match_parent"
+    tools:context="com.intfocus.yonghuitest.kpi.ui.MeterDetalActivity">
 
     <FrameLayout
-        android:id="@+id/fl_mdetal_container"
+        android:id="@+id/fl_mdetal_title_container"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_default_large"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:animateLayoutChanges="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <FrameLayout
+        android:id="@+id/fl_mdetal_cont_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fl_mdetal_title_container" />
 
     <!--<RadioButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@drawable/selector_mdetal_rbtn"-->
-        <!--android:checked="true"-->
-        <!--android:text="11111111111111111111"-->
-        <!--android:textColor="@color/color_mdetal_rbtn"-->
-        <!--tools:layout_editor_absoluteX="0dp"-->
-        <!--tools:layout_editor_absoluteY="200dp" />-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/selector_mdetal_rbtn"-->
+    <!--android:checked="true"-->
+    <!--android:text="11111111111111111111"-->
+    <!--android:textColor="@color/color_mdetal_rbtn"-->
+    <!--tools:layout_editor_absoluteX="0dp"-->
+    <!--tools:layout_editor_absoluteY="200dp" />-->
 
 
 </android.support.constraint.ConstraintLayout>

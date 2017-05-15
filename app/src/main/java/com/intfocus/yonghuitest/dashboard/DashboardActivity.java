@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.intfocus.yonghuitest.BarCodeScannerActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
 import com.intfocus.yonghuitest.adapter.MenuAdapter;
 import com.intfocus.yonghuitest.setting.SettingActivity;
 import com.intfocus.yonghuitest.setting.ThursdaySayActivity;
@@ -141,98 +143,90 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
-        initDropMenuItem();
-        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-        popupWindow.showAsDropDown(mBannerSetting, dip2px(this, -40), dip2px(this, 5));
+        showComplaintsPopWindow(v);
     }
 
-    /*
-     * 初始化下拉菜单按钮
-	 */
-    private void initDropMenuItem() {
-        listItem = new ArrayList<>();
-        int[] imgID = {R.drawable.icon_scan, R.drawable.icon_voice, R.drawable.icon_search, R.drawable.icon_user};
-        String[] itemName = {"扫一扫", "语音播报", "搜索", "个人信息"};
-        for (int i = 0; i < itemName.length; i++) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("ItemImage", imgID[i]);
-            map.put("ItemText", itemName[i]);
-            listItem.add(map);
-        }
-
-        mSimpleAdapter = new MenuAdapter(this, listItem, R.layout.menu_list_items, new String[]{"ItemImage", "ItemText"}, new int[]{R.id.img_menu_item, R.id.text_menu_item});
-        initDropMenu(mSimpleAdapter, mDropMenuListener);
-    }
-
-    /*
-	 * 标题栏设置按钮下拉菜单样式
-	 */
-    public void initDropMenu(SimpleAdapter adapter, AdapterView.OnItemClickListener itemClickListener) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null);
-
-        ListView listView = (ListView) contentView.findViewById(R.id.list_dropmenu);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(itemClickListener);
-
-        popupWindow = new PopupWindow(this);
-        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setContentView(contentView);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-    }
-
-    /*
-     * 标题栏设置按钮下拉菜单点击响应事件
+    /**
+     * 显示菜单
+     *
+     * @param clickView
      */
-    private final AdapterView.OnItemClickListener mDropMenuListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                long arg3) {
-            popupWindow.dismiss();
-            switch (listItem.get(arg2).get("ItemText").toString()) {
-                case "个人信息":
-                    Intent settingIntent = new Intent(mContext, SettingActivity.class);
-                    mContext.startActivity(settingIntent);
-                    break;
+    void showComplaintsPopWindow(View clickView) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_dashboard, null);
+        //设置弹出框的宽度和高度
+        popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //点击外部消失
+        popupWindow.setOutsideTouchable(true);
+        //设置可以点击
+        popupWindow.setTouchable(true);
+        //进入退出的动画
+//        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
+        popupWindow.showAsDropDown(clickView);
 
-                case "扫一扫":
-                    if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.CAMERA)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-                        builder.setTitle("温馨提示")
-                                .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
-                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        goToAppSetting();
-                                    }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 返回DashboardActivity
-                                    }
-                                });
-                        builder.show();
-                    } else {
-                        Intent barCodeScannerIntent = new Intent(mContext, BarCodeScannerActivity.class);
-                        mContext.startActivity(barCodeScannerIntent);
-                    }
-                    break;
-
-                case "语音播报":
-                    WidgetUtil.showToastShort(mContext, "功能开发中，敬请期待");
-                    break;
-
-                case "搜索":
-                    WidgetUtil.showToastShort(mContext, "功能开发中，敬请期待");
-                    break;
-                default:
-                    break;
+        contentView.findViewById(R.id.ll_scan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startBarCodeActivity();
             }
+        });
+        contentView.findViewById(R.id.ll_sound).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WidgetUtil.showToastShort(mContext, "功能正在开发中");
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WidgetUtil.showToastShort(mContext, "功能正在开发中");
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_user_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSettingActivity();
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+    private void startBarCodeActivity() {
+        if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+            builder.setTitle("温馨提示")
+                    .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
+                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            goToAppSetting();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 返回DashboardActivity
+                        }
+                    });
+            builder.show();
+        } else {
+            Intent barCodeScannerIntent = new Intent(mContext, BarCodeScannerActivity.class);
+            mContext.startActivity(barCodeScannerIntent);
         }
-    };
+    }
+
+    private void startSettingActivity() {
+        Intent settingIntent = new Intent(mContext, SettingActivity.class);
+        settingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        mContext.startActivity(settingIntent);
+    }
 
     /*
      * 跳转系统设置页面

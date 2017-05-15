@@ -13,13 +13,13 @@ public class LogUtil {
    * Log.d(tag, str, limit)
    */
   public static void d(String tag, String str, int limit) {
-    int maxLength = 2000;
-    str = str.trim();
-    Log.d(tag, str.substring(0, str.length() > maxLength ? maxLength : str.length()));
-    if (str.length() > maxLength && limit < 4) {
-      str = str.substring(maxLength, str.length());
-      LogUtil.d(tag, str, limit);
-    }
+//    int maxLength = 2000;
+//    str = str.trim();
+//    Log.d(tag, str.substring(0, str.length() > maxLength ? maxLength : str.length()));
+//    if (str.length() > maxLength && limit < 4) {
+//      str = str.substring(maxLength, str.length());
+//      LogUtil.d(tag, str, limit);
+//    }
   }
 
   /*

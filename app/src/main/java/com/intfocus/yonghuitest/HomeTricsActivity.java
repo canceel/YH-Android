@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,6 +72,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.intfocus.yonghuitest.util.URLs.kBannerName;
 
 /**
  * Created by CANC on 2017/4/6.
@@ -165,6 +169,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     private PopupWindow mMenuWindow;
     private Context mContext;
     private String urlString;
+    private String tvBannerName;
 
     private ArrayList<HashMap<String, Object>> listItem;
 
@@ -178,7 +183,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
-
+        tvBannerName = intent.getStringExtra(kBannerName);
         new LoadReportData().execute();
     }
 
@@ -189,7 +194,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         @Override
         protected Map<String, String> doInBackground(String... params) {
             Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
-            Log.i("reportData", response.toString());
             return response;
         }
 
@@ -197,8 +201,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         protected void onPostExecute(Map<String, String> response) {
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
-//                initData("{\"data\":" + response.get("body") + "}");
-                initData(response.get("body"));
+                initData("{\"data\":" + response.get("body") + "}");
+//                initData(response.get("body"));
                 setData(false, true);
                 mAnimLoading.setVisibility(View.GONE);
             }
@@ -296,53 +300,44 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
-        initDropMenuItem();
-        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-        mMenuWindow.showAsDropDown(mBannerSetting, dip2px(this, -47), dip2px(this, 10));
-
-		/*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-		 */
-        try {
-            logParams = new JSONObject();
-            logParams.put("action", "点击/报表/下拉菜单");
-            new Thread(mRunnableForLogger).start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        showComplaintsPopWindow(v);
     }
 
-    /*
-	 * 初始化标题栏下拉菜单
-	 */
-    private void initDropMenuItem() {
-        listItem = new ArrayList<>();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("ItemImage", R.drawable.btn_refresh);
-        map.put("ItemText", "刷新");
-        listItem.add(map);
+    /**
+     * 显示菜单
+     *
+     * @param clickView
+     */
+    void showComplaintsPopWindow(View clickView) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_hometrics, null);
+        //设置弹出框的宽度和高度
+        popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //点击外部消失
+        popupWindow.setOutsideTouchable(true);
+        //设置可以点击
+        popupWindow.setTouchable(true);
+        //进入退出的动画
+//        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
+        popupWindow.showAsDropDown(clickView);
 
-        SimpleAdapter mSimpleAdapter = new SimpleAdapter(this, listItem, R.layout.menu_list_items, new String[]{"ItemImage", "ItemText"}, new int[]{R.id.img_menu_item, R.id.text_menu_item});
-        initMyDropMenu(mSimpleAdapter, mDropMenuListener);
-    }
-
-    /*
-	 * 标题栏设置按钮下拉菜单样式
-	 */
-    public void initMyDropMenu(SimpleAdapter adapter,AdapterView.OnItemClickListener itemClickListener) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null);
-
-        ListView listView = (ListView) contentView.findViewById(R.id.list_dropmenu);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(itemClickListener);
-
-        mMenuWindow = new PopupWindow(this);
-        mMenuWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mMenuWindow.setHeight(dip2px(this, 55));
-        mMenuWindow.setContentView(contentView);
-        mMenuWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        mMenuWindow.setOutsideTouchable(false);
-        mMenuWindow.setFocusable(true);
+        contentView.findViewById(R.id.ll_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAnimLoading.setVisibility(View.VISIBLE);
+                if (isShowChartData) {
+                    metricsRecyclerView.setVisibility(View.VISIBLE);
+                    rlChart.setVisibility(View.GONE);
+                    ivWarning.setImageResource(R.drawable.btn_inf);
+                    isShowChartData = false;
+                }
+                new LoadReportData().execute();
+            }
+        });
     }
 
     /*
@@ -382,6 +377,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     public void itemSelected(int page, int position, boolean isDoubleClick) {
         this.isDoubleClick = isDoubleClick;
         //设置排序栏数据
+        Log.i("itemSelected", "" + page + "    " + position);
         itemSelected = page * 4 + position;
         setData(false, true);
         if (isDoubleClick) {
@@ -394,9 +390,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
      * @param showAnimation 是否展示动画
      */
     private void setData(final boolean isNeedSort, final boolean showAnimation) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
         items.clear();
         homeMetrics = datas.get(dateSelected);
         if (isNeedSort) {
@@ -414,10 +407,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             Item item = product.items.get(itemSelected);
             items.add(item);
         }
-
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
         initChart(showAnimation);
         combinedChart.invalidate();
         if (product == null || lastProductSelected != productSelected) {
@@ -431,7 +420,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 }
             }
         }
-        tvTitle.setText(homeMetrics.getHead());
+        tvTitle.setText(tvBannerName);
         tvNameSort.setText(homeMetrics.getHead());
         tvDateTime.setText(homeMetrics.getPeriod());
         tvDataTitle.setText(product.getName());
@@ -450,10 +439,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         tvSaleSort.setText(product.items.get(itemSelected).getName());
         adapter.setDatas(products, itemSelected, maxValue);
     }
-//                });
-//            }
-//        }).start();
-//    }
 
     //显示报表
     void showCombinedChart() {
@@ -666,7 +651,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         result = f1 + "%";
         tvRateOfChange.setText(result);
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
-            Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
                 case "#F2E1AC":
                     ivRateOfChange.setImageResource(R.drawable.up_yellowarrow);
@@ -685,7 +669,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                     break;
             }
         } else {
-            Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
                 case "#F2E1AC":
                     ivRateOfChange.setImageResource(R.drawable.down_yellowarrow);

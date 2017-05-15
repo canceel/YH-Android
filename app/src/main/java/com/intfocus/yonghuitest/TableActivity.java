@@ -2,8 +2,10 @@ package com.intfocus.yonghuitest;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -45,6 +47,10 @@ import com.intfocus.yonghuitest.bean.table.MainData;
 import com.intfocus.yonghuitest.bean.table.SortData;
 import com.intfocus.yonghuitest.bean.table.TableBarChart;
 import com.intfocus.yonghuitest.bean.table.TableChart;
+import com.intfocus.yonghuitest.util.ApiHelper;
+import com.intfocus.yonghuitest.util.FileUtil;
+import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
 import com.intfocus.yonghuitest.util.Utils;
 import com.intfocus.yonghuitest.util.WidgetUtil;
@@ -52,9 +58,12 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.touch.OnItemMoveListener;
 import com.yanzhenjie.recyclerview.swipe.touch.OnItemStateChangedListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +79,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private static long DOUBLE_CLICK_TIME = 200;
     private static long mLastTime;
     private static long mCurTime;
+    @BindView(R.id.tv_banner_name)
+    TextView tvBannerName;
     @BindView(R.id.iv_menu)
     ImageView ivMenu;
     @BindView(R.id.tv_title)
@@ -90,6 +101,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     ListView barChartListView;
     @BindView(R.id.tv_head)
     TextView tvHead;
+    @BindView(R.id.anim_loading)
+    RelativeLayout mAnimLoading;
 
     private ImageView ivCheckAll;
     private SwipeMenuRecyclerView recyclerView;
@@ -145,6 +158,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private TableBarChartAdapter tableBarChartAdapter;
     private Context mContext;
     private String[] mColorList;
+    private int groupID;
+    private String reportID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,8 +178,48 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         textViews = new ArrayList<>();
         mColorList = new String[]{"#F2836B","#F2836B","#F2E1AC","#F2E1AC","#63A69F","#63A69F"};
 
+        Intent intent = getIntent();
+        groupID = intent.getIntExtra("groupID", -1);
+        reportID = intent.getStringExtra("reportID");
+        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, 5, reportID);
+        new LoadReportData().execute();
+    }
+
+    /*
+     * 下载数据
+     */
+    class LoadReportData extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String response = null;
+            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", groupID), 5, reportID);
+//            String jsonFilePath = String.format("%s/assets/javascripts/%s", assetsPath, jsonFileName);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
+            boolean dataState = ApiHelper.reportJsonData(mContext, String.format("%d", groupID), "5", reportID);
+            if (dataState && new File(jsonFilePath).exists()) {
+                response = FileUtil.readFile(jsonFilePath);
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response != null) {
+                fillTableData(response);
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mAnimLoading.setVisibility(View.GONE);
+                }
+            }, 300);
+            super.onPostExecute(response);
+        }
+    }
+
+    void fillTableData(String json) {
         gson = new Gson();
-        JsonObject returnData = new JsonParser().parse(Utils.getJson(this, "report_v5.json")).getAsJsonObject();
+        JsonObject returnData = new JsonParser().parse(json).getAsJsonObject();
         originTableData = gson.fromJson(returnData, TableChart.class);
         changeTableChartData = gson.fromJson(returnData, TableChart.class);
         showTableData = gson.fromJson(returnData, TableChart.class);
@@ -174,11 +229,13 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             filters.addAll(originTableData.config.filter);
             //初始化数据时，记录head的初始位置，供以后选列使用
             List<Head> heads = new ArrayList<>();
+
             for (int i = 0; i < originTableData.table.head.size(); i++) {
                 Head head = originTableData.table.head.get(i);
                 head.originPosition = i;
                 heads.add(head);
             }
+
             originTableData.table.head = heads;
             changeTableChartData.table.head = heads;
 //            headDatas.addAll(heads);
@@ -186,7 +243,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
             mainDatas.addAll(originTableData.table.main_data);
             filterMainDatas.addAll(mainDatas);
-
+            tvBannerName.setText(originTableData.name);
 
             // 默认第一列为关键列
             originTableData.table.head.get(0).isKeyColumn = true;
@@ -246,10 +303,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         });
     }
 
-    void fillTableData() {
-
-    }
-
     void setKeyColumn(int keyColumn) {
         if (leftDatas == null) {
             leftDatas = new ArrayList<>();
@@ -262,19 +315,15 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             leftDatas.add(mainData.get(keyColumn).getValue());
         }
 
-        Log.i("TableValue", leftDatas.toString() + keyColumn);
-
         // 默认第一列为关键列
         originTableData.table.head.get(keyColumn).isKeyColumn = true;
         tvTitle.setText(originTableData.table.head.get(keyColumn).getValue());
 
         // 关键列绑定适配器
         if (adapter == null) {
-            Log.i("TableValue", "is null adapter");
             adapter = new TableLeftListAdapter(mContext, leftDatas, rowHeight);
             leftListView.setAdapter(adapter);
         } else {
-            Log.i("TableValue", "isn't null adapter");
             adapter.notifyDataSetChanged();
         }
     }
@@ -373,7 +422,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
      * @param clickView
      */
     void showComplaintsPopWindow(View clickView) {
-        contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu, null);
+        contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v5, null);
         //设置弹出框的宽度和高度
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -389,18 +438,18 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 //        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
         popupWindow.showAsDropDown(clickView);
 
-        contentView.findViewById(R.id.ll_sound).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WidgetUtil.showToastShort(mContext, "语音播报");
-            }
-        });
-        contentView.findViewById(R.id.ll_filter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WidgetUtil.showToastShort(mContext, "筛选");
-            }
-        });
+//        contentView.findViewById(R.id.ll_sound).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                WidgetUtil.showToastShort(mContext, "语音播报");
+//            }
+//        });
+//        contentView.findViewById(R.id.ll_filter).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                WidgetUtil.showToastShort(mContext, "筛选");
+//            }
+//        });
         contentView.findViewById(R.id.ll_xuanlie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -891,7 +940,14 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             for (List<MainData> mainData : filterMainDatas) {
                 TableBarChart tableBarChart = new TableBarChart();
                 tableBarChart.setData(mainData.get(position).getValue());
-                tableBarChart.setColor(mColorList[position]);
+                if ("null".equals(String.valueOf(mainData.get(position).getColor()))) {
+                    tableBarChart.setColor("#595b57");
+                    Log.i("valueColor", "is null");
+                }
+                else {
+                    tableBarChart.setColor(mColorList[mainData.get(position).getColor()]);
+                    Log.i("valueColor", mColorList[mainData.get(position).getColor()]);
+                }
                 tableBarCharts.add(tableBarChart);
             }
             Double maxValue = Utils.getMaxValue(tableBarCharts);

@@ -13,8 +13,8 @@
         <com.jonas.jgraph.graph.NChart
             android:id="@+id/nchart_linefragment"
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/space_default_small_s"
             android:layout_height="0dp"
+            android:layout_margin="@dimen/space_default_small_s"
             android:layout_weight="1" />
 
         <android.support.constraint.ConstraintLayout
@@ -47,7 +47,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_vpitem" />
 
-            <TextView
+            <com.intfocus.yonghuitest.kpi.view.AutoTextView
+                android:maxLines="1"
                 android:id="@+id/tv_number_vpitem"
                 style="@style/tv_mererMinTitle_stytle"
                 android:layout_width="wrap_content"
@@ -56,12 +57,14 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/argb_font_yellow"
                 android:textSize="@dimen/font_large_xs"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.505"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <TextView
                 android:id="@+id/tv_vpitem_unit"
@@ -83,7 +86,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.intfocus.yonghuitest.view.MeterCursor
+                <com.intfocus.yonghuitest.kpi.view.MeterCursor
                     android:id="@+id/img_vpitem"
                     android:layout_width="@dimen/space_default_large_s"
                     android:layout_height="@dimen/space_default_large_s" />

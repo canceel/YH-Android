@@ -56,15 +56,16 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final List<Product> datas = homeMetrics.products;
         final Product product = datas.get(position);
         final List<Item> items = product.items;
+        Log.i("itemSelected", items.size() + " is item size");
         if (items.size() == 6) {
             viewHolder.ll6.setVisibility(View.VISIBLE);
             Item item = items.get(5);
-            viewHolder.ll6.setBackgroundResource(item.isSelected ?
-                    R.drawable.background_square_green_boder_white :
-                    R.drawable.background_square_black_boder_white);
-            viewHolder.ll6.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                    viewHolder.ll6.setBackgroundResource(item.isSelected ?
+                            R.drawable.background_square_green_boder_white :
+                            R.drawable.background_square_black_boder_white);
+                    viewHolder.ll6.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
                     mLastTime = mCurTime;
                     mCurTime = System.currentTimeMillis();
                     if (mCurTime - mLastTime < DOUBLE_CLICK_TIME) {
@@ -136,8 +137,8 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             viewHolder.tvSubData4.setText(item.sub_data.getData() + "");
         } else {
             if (dataSize > 1) {
-                viewHolder.ll6.setVisibility(View.INVISIBLE);
-                viewHolder.ll5.setVisibility(View.INVISIBLE);
+                viewHolder.ll6.setVisibility(View.GONE);
+                viewHolder.ll5.setVisibility(View.GONE);
             } else {
                 viewHolder.ll6.setVisibility(View.GONE);
                 viewHolder.ll5.setVisibility(View.GONE);
@@ -168,8 +169,8 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             viewHolder.tvSubData3.setText(item.sub_data.getData() + "");
         } else {
             if (dataSize > 1) {
-                viewHolder.ll6.setVisibility(View.INVISIBLE);
-                viewHolder.ll5.setVisibility(View.INVISIBLE);
+                viewHolder.ll6.setVisibility(View.GONE);
+                viewHolder.ll5.setVisibility(View.GONE);
                 viewHolder.ll4.setVisibility(View.INVISIBLE);
                 viewHolder.ll3.setVisibility(View.INVISIBLE);
             } else {
@@ -203,8 +204,8 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             viewHolder.tvSubData2.setText(item.sub_data.getData() + "");
         } else {
             if (dataSize > 1) {
-                viewHolder.ll6.setVisibility(View.INVISIBLE);
-                viewHolder.ll5.setVisibility(View.INVISIBLE);
+                viewHolder.ll6.setVisibility(View.GONE);
+                viewHolder.ll5.setVisibility(View.GONE);
                 viewHolder.ll4.setVisibility(View.INVISIBLE);
                 viewHolder.ll3.setVisibility(View.INVISIBLE);
             } else {
@@ -239,7 +240,6 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public int getArrowImg(Item item) {
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
-            Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
                 case "#F2E1AC" :
                     return R.drawable.up_yellowarrow;
@@ -254,7 +254,6 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return R.drawable.up_redarrow;
             }
         } else {
-            Log.i("arrow", item.state.getArrow() + "  " + item.state.getColor());
             switch (item.state.getColor()) {
                 case "#F2E1AC" :
                     return R.drawable.down_yellowarrow;
@@ -356,6 +355,5 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface MetricsListener {
         void itemSelected(int page, int position, boolean isDoubleClick);
     }
-
 
 }

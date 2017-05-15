@@ -17,7 +17,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.intfocus.yonghuitest.kpi.view.AutoTextView
+        android:maxLines="1"
         android:id="@+id/tv_number_vpitem"
         style="@style/tv_mererMinTitle_stytle"
         android:layout_width="wrap_content"

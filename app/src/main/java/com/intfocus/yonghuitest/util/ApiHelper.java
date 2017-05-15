@@ -172,6 +172,53 @@ public class ApiHelper {
         return true;
     }
 
+    /*
+     *  获取报表 JSON 数据
+     */
+    public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
+        String urlString = String.format(K.kReportJsonDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+        String assetsPath = FileUtil.sharedPath(context);
+        Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
+        String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, templateID, reportID);
+        String cachedZipPath = FileUtil.dirPath(context, K.kCachedDirName, String.format("%s.zip", jsonFileName));
+        Map<String, String> response = HttpUtil.downloadZip(urlString, cachedZipPath, headers);
+        String jsonFilePath = FileUtil.dirPath(context, K.kCachedDirName, jsonFileName);
+
+        //添加code字段是否存在。原因:网络不好的情况下response为{}
+        if (!response.containsKey(URLs.kCode)) {
+            return false;
+        }
+
+        String codeStatus = response.get(URLs.kCode);
+        switch (codeStatus) {
+            case "200":
+
+            case "201":
+                break;
+            case "304":
+                if (new File(jsonFilePath).exists()) {
+                    return true;
+                }
+                break;
+            default:
+                return false;
+        }
+
+        try {
+            ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+
+            InputStream zipStream = new FileInputStream(cachedZipPath);
+            FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.kCachedDirName), true);
+            zipStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            deleteHeadersFile(assetsPath);
+            return false;
+        }
+        return true;
+    }
+
+
     public static void deleteHeadersFile(String assetsPath) {
         String headersFilePath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
         if ((new File(headersFilePath)).exists()) {

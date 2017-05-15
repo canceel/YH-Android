@@ -9,8 +9,11 @@
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionBar">
+        android:layout_height="45dp"
+        android:background="@color/actionBar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/bannerLogo"
@@ -21,50 +24,55 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/banner_logo"/>
 
-        <ImageView
-            android:id="@+id/bannerSetting"
-            style="@style/BannerRightButton"
-            android:layout_alignBottom="@+id/colorViewLayout"
-            android:layout_marginTop="0dp"
-            android:onClick="launchDropMenuActivity"
-            android:src="@drawable/banner_setting"/>
-
         <RelativeLayout
-            android:id="@+id/colorViewLayout"
-            android:layout_width="35dp"
-            android:layout_height="5dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="6dp">
+            style="@style/BannerRightButton"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content">
 
             <ImageView
-                android:id="@+id/colorView0"
-                style="@style/ColorViewStyle0"/>
+                android:id="@+id/bannerSetting"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:onClick="launchDropMenuActivity"
+                android:src="@drawable/banner_setting"/>
 
-            <ImageView
-                android:id="@+id/colorView1"
-                style="@style/ColorViewStyle1"/>
+            <RelativeLayout
+                android:id="@+id/colorViewLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp">
 
-            <ImageView
-                android:id="@+id/colorView2"
-                style="@style/ColorViewStyle2"/>
+                <ImageView
+                    android:id="@+id/colorView0"
+                    style="@style/ColorViewStyle0"/>
 
-            <ImageView
-                android:id="@+id/colorView3"
-                style="@style/ColorViewStyle3"/>
+                <ImageView
+                    android:id="@+id/colorView1"
+                    style="@style/ColorViewStyle1"/>
 
-            <ImageView
-                android:id="@+id/colorView4"
-                style="@style/ColorViewStyle4"/>
+                <ImageView
+                    android:id="@+id/colorView2"
+                    style="@style/ColorViewStyle2"/>
+
+                <ImageView
+                    android:id="@+id/colorView3"
+                    style="@style/ColorViewStyle3"/>
+
+                <ImageView
+                    android:id="@+id/colorView4"
+                    style="@style/ColorViewStyle4"/>
+            </RelativeLayout>
+
         </RelativeLayout>
-
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="horizontal">

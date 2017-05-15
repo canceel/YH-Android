@@ -31,7 +31,7 @@
     <string name="text_scan">扫一扫</string>
     <string name="text_search">搜索</string>
     <string name="text_user_info">个人信息</string>
-    <string name="text_voice">语音播报</string>
+    <string name="text_sound">语音播报</string>
     <string name="title_activity_developer">DeveloperActivity</string>
     <string name="title_activity_speech">SpeechActivity</string>
     <string name="findPassword">找回密码</string>

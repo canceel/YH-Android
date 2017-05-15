@@ -156,13 +156,13 @@ public class FileUtil {
                 }
                 inStream.close();
             }
+            Log.i("response",  "file is copy");
         }
         catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 
         }
-
     }
 
     /*
@@ -281,6 +281,7 @@ public class FileUtil {
         ZipInputStream zipInputStream = new ZipInputStream(inputStream);
         // 读取一个进入点
         ZipEntry zipEntry = zipInputStream.getNextEntry();
+        Log.i("response", outputDirectory + File.separator + zipEntry.getName());
         // 使用1Mbuffer
         byte[] buffer = new byte[10 * 1024 * 1024];
         // 解压时字节计数

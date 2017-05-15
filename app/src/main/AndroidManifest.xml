@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.intfocus.yonghuitest"
-    android:versionCode="292"
-    android:versionName="1.6.8"
+    android:versionCode="306"
+    android:versionName="1.7.6"
     android:hardwareAccelerated="false">
 
     <!-- 扫描条形码或二维码 -->
@@ -82,17 +82,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".dashboard.kpi.MeterDetalActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MainActivity"
+            android:name=".kpi.ui.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/baseKPI" />
         <activity
             android:name=".InputBarCodeActivity"
             android:screenOrientation="portrait"

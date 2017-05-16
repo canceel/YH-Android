@@ -15,7 +15,7 @@ import java.util.List;
  * Created by CANC on 2017/4/19.
  */
 
-public class TableContentListAdapter extends CommonAdapter<List<MainData>> {
+public class TableContentListAdapter extends ContentCommonAdapter<List<MainData>> {
     private int rowHeight;//1行,2行,3行
     private List<Head> heads;
     private TableContentItemAdapter.ContentItemListener listener;
@@ -35,12 +35,15 @@ public class TableContentListAdapter extends CommonAdapter<List<MainData>> {
     }
 
     @Override
-    public void convert(ViewHolder holder, List<MainData> mainData) {
-        RecyclerView recyclerView = holder.getView(R.id.recycler_view);
-        TableContentItemAdapter adapter = new TableContentItemAdapter(context, heads, mainData, rowHeight, listener);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
-        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapter);
+    public void convert(boolean isNew, RecyclerView recyclerView, List<MainData> mainData) {
+        if (isNew) {
+            TableContentItemAdapter adapter = new TableContentItemAdapter(context, heads, mainData, rowHeight, listener);
+            recyclerView.setAdapter(adapter);
+        }
+        else {
+            TableContentItemAdapter adapter = (TableContentItemAdapter) recyclerView.getAdapter();
+            adapter.setData(heads, mainData, rowHeight);
+        }
+
     }
 }

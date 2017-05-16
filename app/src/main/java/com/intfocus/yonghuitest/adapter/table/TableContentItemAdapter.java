@@ -18,7 +18,7 @@ import java.util.List;
  * Created by CANC on 2017/4/6.
  */
 
-public class TableContentItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TableContentItemAdapter extends RecyclerView.Adapter<TableContentItemAdapter.TableHeadHolder> {
     private Context context;
     private List<MainData> mainData;
     private List<Head> heads;
@@ -37,22 +37,27 @@ public class TableContentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TableContentItemAdapter.TableHeadHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View contentView = inflater.inflate(R.layout.item_table_main_item, parent, false);
-        return new TableHeadHolder(contentView);
+        return new TableContentItemAdapter.TableHeadHolder(contentView);
+    }
+
+    public void setData(List<Head> heads, List<MainData> mainData, int rowHeight){
+        this.heads = heads;
+        this.mainData = mainData;
+        this.rowHeight = rowHeight;
+        this.notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(TableContentItemAdapter.TableHeadHolder holder, final int position) {
         if (!heads.get(position).isShow() || heads.get(position).isKeyColumn) {
-            TableHeadHolder viewHolder = (TableHeadHolder) holder;
-            viewHolder.tvMain.setVisibility(View.GONE);
+            holder.tvMain.setVisibility(View.GONE);
         }
         else {
-            TableHeadHolder viewHolder = (TableHeadHolder) holder;
-            viewHolder.tvMain.setText(mainData.get(position).getValue());
-            viewHolder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
-            viewHolder.tvMain.setOnClickListener(new View.OnClickListener() {
+            holder.tvMain.setText(mainData.get(position).getValue());
+            holder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
+            holder.tvMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     listener.ItemClick(position);

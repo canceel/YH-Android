@@ -720,8 +720,6 @@ public class NChart extends View implements ValueAnimator.AnimatorUpdateListener
         mCrosses = false;
         pathLine.reset();
 
-        Log.i("chartpoint", "在画曲线");
-
         ArrayList<Float> ys = new ArrayList<>();
         for (NExcel mExcel : mExcels) {
             float y = mExcel.getMidPointF().y;

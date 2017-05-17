@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.kpi.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,6 +122,7 @@ public class CurveLineFragment extends BaseTableFragment {
             List<NExcel> nExcelList = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 nExcelList.add(new NExcel(chart_data[i], ""));
+                Log.i("chatdata", chart_data[i] + "");
             }
             mChart.setScrollAble(false);
             mChart.setFixedWidth(7);

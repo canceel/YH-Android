@@ -43,7 +43,6 @@ public abstract class CommonAdapter <T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
             ViewHolder holder;
 
             holder = ViewHolder.get(context, convertView, parent, layoutId, position);
@@ -51,7 +50,6 @@ public abstract class CommonAdapter <T> extends BaseAdapter {
             convert(holder, getItem(position));
 
             convertView = holder.getConvertView();
-        }
 
         return convertView;
     }

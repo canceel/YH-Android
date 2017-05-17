@@ -140,6 +140,11 @@ public class Utils {
             if (mainDataStr.contains("%")) {
                 mainDataStr = mainDataStr.replace("%", "");
             }
+
+            if (mainDataStr.contains(",")) {
+                mainDataStr = mainDataStr.replace(",", "");
+            }
+
             if (Utils.isNumber(mainDataStr)) {
                 doubles.add(Double.parseDouble(mainDataStr));
             }

@@ -437,19 +437,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         //进入退出的动画
 //        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
         popupWindow.showAsDropDown(clickView);
-
-//        contentView.findViewById(R.id.ll_sound).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                WidgetUtil.showToastShort(mContext, "语音播报");
-//            }
-//        });
-//        contentView.findViewById(R.id.ll_filter).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                WidgetUtil.showToastShort(mContext, "筛选");
-//            }
-//        });
         contentView.findViewById(R.id.ll_xuanlie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -915,16 +902,15 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             sortMainDatas.add(mainDatas.get(integer));
         }
 
-        mainDatas.clear();
-        mainDatas.addAll(sortMainDatas);
-        contentListAdapter.notifyDataSetChanged();
+
+        contentListAdapter.setData(sortMainDatas);
 //        setKeyColumn(keyLinePosition);
         //为默认关键列添加数据
         leftDatas.clear();
         for (List<MainData> mainData : mainDatas) {
             leftDatas.add(mainData.get(keyLinePosition).getValue());
         }
-        adapter.notifyDataSetChanged();
+        adapter.setData(leftDatas);
 
 //        filterSelected();
     }

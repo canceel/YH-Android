@@ -41,7 +41,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="计同店同比"
+                android:text=""
                 android:textColor="@color/argb_font_cont_333"
                 android:textSize="@dimen/font_default"
                 app:layout_constraintLeft_toLeftOf="parent"

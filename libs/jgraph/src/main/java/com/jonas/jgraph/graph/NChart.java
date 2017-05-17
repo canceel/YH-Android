@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -699,7 +700,13 @@ public class NChart extends View implements ValueAnimator.AnimatorUpdateListener
             } else {
                 mPointPaint.setColor(mPointColor);
             }
-            canvas.drawCircle(midPointF.x, midPointF.y, mLinePointRadio, mPointPaint);
+
+            if (excel.equals("")) {
+                canvas.drawCircle(midPointF.x, midPointF.y, 0, mPointPaint);
+            }
+            else {
+                canvas.drawCircle(midPointF.x, midPointF.y, mLinePointRadio, mPointPaint);
+            }
         }
     }
 
@@ -712,6 +719,8 @@ public class NChart extends View implements ValueAnimator.AnimatorUpdateListener
         mLinePaint.setColor(Color.RED);
         mCrosses = false;
         pathLine.reset();
+
+        Log.i("chartpoint", "在画曲线");
 
         ArrayList<Float> ys = new ArrayList<>();
         for (NExcel mExcel : mExcels) {
@@ -732,12 +741,18 @@ public class NChart extends View implements ValueAnimator.AnimatorUpdateListener
             pathLine.lineTo(midPointF.x, mHeight / 2f + (midPointF.y - mHeight / 2f) * ratio);
             if (midPointF.y == minY || midPointF.y == maxY) {
                 mCurvePaint.setStyle(Paint.Style.FILL);
-                canvas.drawCircle(midPointF.x, mHeight / 2f + (midPointF.y - mHeight / 2f) * ratio, mLinePointRadio, mCurvePaint);
+                if (excel.getNum() == 0) {
+                    canvas.drawCircle(midPointF.x, mHeight / 2f + (midPointF.y - mHeight / 2f) * ratio, 0, mCurvePaint);
+                }
+                else {
+                    canvas.drawCircle(midPointF.x, mHeight / 2f + (midPointF.y - mHeight / 2f) * ratio, mLinePointRadio, mCurvePaint);
+                }
+
                 mCurvePaint.setStyle(Paint.Style.STROKE);
 
                 float textMarging = mTextMarging + mLinePointRadio;
                 int index = 0;
-                if (size <= i + 1)
+                    if (size <= i + 1)
                     index = i - 1;
                 else
                     index = i + 1;

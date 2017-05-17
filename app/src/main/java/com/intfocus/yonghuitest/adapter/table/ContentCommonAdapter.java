@@ -45,10 +45,6 @@ public abstract class ContentCommonAdapter <T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        ContentViewHolder holder;
-//        holder = ContentViewHolder.get(context, convertView, parent, layoutId, position);
-//        convert((RecyclerView) holder.getView(R.id.recycler_view), getItem(position));
-//        convertView = holder.getConvertView();
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(layoutId, parent, false);

@@ -124,10 +124,10 @@ public class BrokenLineFragment extends BaseTableFragment {
             }
         }
 
-        if (high_light.arrow == 0)
-            img_cursor.setVisibility(View.GONE);
-        else
+        if (high_light.arrow >= 0)
             img_cursor.setVisibility(View.VISIBLE);
+        else
+            img_cursor.setVisibility(View.GONE);
         img_cursor.setCursorState(high_light.arrow);
 
         int[] chart_data = entity.data.chart_data;

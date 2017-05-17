@@ -65,6 +65,7 @@ public class MeterMode extends AbstractMode {
             public void run() {
                 urlString = getKpiUrl();
                 if (!urlString.isEmpty()) {
+                    Log.i("kpiUrl", urlString);
                     Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
                     String result = response.get("body");
                     if (StringUtil.isEmpty(result)) {

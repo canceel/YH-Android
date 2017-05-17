@@ -115,7 +115,7 @@ public class BarFragment_Top extends BaseTableFragment {
 
 
         MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.percentage) {//显示百分比
+        if (high_light.compare != 0) {//显示百分比
             float compare = (float) (high_light.number / high_light.compare * 100);
             if (high_light.number-high_light.compare>0) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
@@ -129,8 +129,6 @@ public class BarFragment_Top extends BaseTableFragment {
         else
             img_cursor.setVisibility(View.VISIBLE);
         img_cursor.setCursorState(high_light.arrow);
-
-
 
         int[] chart_data = entity.data.chart_data;
         int size = chart_data.length;

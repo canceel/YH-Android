@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.intfocus.yonghuitest"
-    android:versionCode="306"
-    android:versionName="1.7.6"
+    android:versionCode="309"
+    android:versionName="1.7.9"
     android:hardwareAccelerated="false">
 
     <!-- 扫描条形码或二维码 -->

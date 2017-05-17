@@ -114,7 +114,7 @@ public class BarFragment_Bottom extends BaseTableFragment {
         tv_unit.setText(entity.unit);
 
         MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.percentage) {//显示百分比
+        if (high_light.compare != 0) {//显示百分比
             float compare = (float) (high_light.number / high_light.compare * 100);
             if (high_light.number-high_light.compare>0) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
@@ -123,10 +123,10 @@ public class BarFragment_Bottom extends BaseTableFragment {
             }
         }
 
-        if (high_light.arrow == 0)
-            img_cursor.setVisibility(View.GONE);
-        else
+        if (high_light.arrow >= 0)
             img_cursor.setVisibility(View.VISIBLE);
+        else
+            img_cursor.setVisibility(View.GONE);
         img_cursor.setCursorState(high_light.arrow);
 
         int[] chart_data = entity.data.chart_data;

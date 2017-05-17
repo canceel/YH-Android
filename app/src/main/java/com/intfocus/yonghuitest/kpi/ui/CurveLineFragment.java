@@ -103,7 +103,7 @@ public class CurveLineFragment extends BaseTableFragment {
         tv_number.setText(number + entity.unit);
 
         MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.percentage) {//显示
+        if (high_light.arrow >= 0) {//显示
             img_cursor.setCursorState(high_light.arrow);
             if (high_light.arrow < 3) {//上箭头
                 tv_compare.setText("+" + high_light.compare + "%");

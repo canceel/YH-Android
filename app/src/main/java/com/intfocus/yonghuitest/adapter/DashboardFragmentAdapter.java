@@ -10,7 +10,7 @@ import com.intfocus.yonghuitest.dashboard.fragment.AnalysisFragment;
 import com.intfocus.yonghuitest.dashboard.fragment.AppFragment;
 import com.intfocus.yonghuitest.dashboard.fragment.KpiFragment;
 import com.intfocus.yonghuitest.dashboard.fragment.MessageFragment;
-import com.intfocus.yonghuitest.kpi.ui.MeterFragment;
+import com.intfocus.yonghuitest.dashboard.kpi.ui.MeterFragment;
 
 /**
  * Created by liuruilin on 2017/3/23.

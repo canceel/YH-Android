@@ -9,12 +9,8 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
 
 /**
  * Created by liuruilin on 2017/4/24.

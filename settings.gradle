@@ -1,7 +1,7 @@
-include ':app', ':pull-to-refresh', ':umeng-social', ':android-pdfview', 'umeng-push', ':PushSDK', ':HomeMetrics', ':switchText', ':jgraph'
+include ':app', ':pull-to-refresh', ':android-pdfview', ':HomeMetrics', ':switchText', ':jgraph', ':PushSDK'
 project(':android-pdfview').projectDir = new File('libs/android-pdfview')
-project(':umeng-social').projectDir = new File('libs/umeng-social')
 project(':pull-to-refresh').projectDir = new File('libs/pull-to-refresh')
 project(':HomeMetrics').projectDir = new File('libs/HomeMetrics')
 project(':switchText').projectDir = new File('libs/switchText')
 project(':jgraph').projectDir = new File('libs/jgraph')
+project(':PushSDK').projectDir = new File('libs/PushSDK')

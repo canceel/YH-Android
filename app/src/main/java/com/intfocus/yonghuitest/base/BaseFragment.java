@@ -1,31 +1,15 @@
 package com.intfocus.yonghuitest.base;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
-import com.intfocus.yonghuitest.HomeTricsActivity;
-import com.intfocus.yonghuitest.kpi.ui.MainActivity;
-import com.intfocus.yonghuitest.SubjectActivity;
-import com.intfocus.yonghuitest.TableActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
@@ -39,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

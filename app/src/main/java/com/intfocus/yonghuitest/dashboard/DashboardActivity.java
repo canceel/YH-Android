@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -18,11 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
@@ -48,9 +43,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.intfocus.yonghuitest.base.BaseActivity.dip2px;
+import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 
-public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
+public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback{
     private DashboardFragmentAdapter mDashboardFragmentAdapter;
     private PopupWindow popupWindow;
     private SharedPreferences mSharedPreferences;
@@ -80,7 +75,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
         initUserIDColorView();
         bindFragment();
-        HttpUtil.checkAssetsUpdated(mContext);
+//        HttpUtil.checkAssetsUpdated(mContext);
     }
 
     @Override
@@ -320,6 +315,12 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         }
         refreshTabView();
         mSharedPreferences.edit().putInt("LastTab", mViewPager.getCurrentItem()).commit();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        mViewPager.setCurrentItem(PAGE_MESSAGE);
+        refreshTabView();
     }
 
     /*

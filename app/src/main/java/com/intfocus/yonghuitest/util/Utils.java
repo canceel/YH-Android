@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.intfocus.yonghuitest.bean.table.SortData;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
  */
 
 public class Utils {
-    /**
+     /**
      * 从asset路径下读取对应文件转String输出
      *
      * @param mContext

@@ -130,11 +130,11 @@
 
         <ImageView
             android:id="@+id/bannerBack"
-            style="@style/BannerBackWhiteButton"
+            style="@style/BannerBackButton"
             android:onClick="dismissActivity"/>
 
         <TextView
-            style="@style/BannerBackWhiteText"
+            style="@style/BannerBackText"
             android:layout_toRightOf="@id/bannerBack"
             android:onClick="dismissActivity"/>
     </RelativeLayout>

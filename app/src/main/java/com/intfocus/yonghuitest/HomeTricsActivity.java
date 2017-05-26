@@ -2,13 +2,12 @@ package com.intfocus.yonghuitest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,13 +17,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +48,12 @@ import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
+import com.intfocus.yonghuitest.util.ValueFormatter;
 import com.intfocus.yonghuitest.util.WidgetUtil;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yonghui.homemetrics.data.response.HomeData;
 import com.yonghui.homemetrics.data.response.HomeMetrics;
 import com.yonghui.homemetrics.data.response.Item;
@@ -60,7 +62,9 @@ import com.yonghui.homemetrics.utils.ReorganizeTheDataUtils;
 import com.yonghui.homemetrics.utils.Utils;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -68,10 +72,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.intfocus.yonghuitest.util.URLs.kBannerName;
 
@@ -81,51 +81,51 @@ import static com.intfocus.yonghuitest.util.URLs.kBannerName;
 
 public class HomeTricsActivity extends BaseActivity implements ProductListAdapter.ProductListListener
         , MetricsAdapter.MetricsListener, OnChartValueSelectedListener {
-    @BindView(R.id.product_recycler_view)
+    @ViewInject(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
-    @BindView(R.id.tv_title)
+    @ViewInject(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.anim_loading)
+    @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
-    @BindView(R.id.metrics_recycler_view)
+    @ViewInject(R.id.metrics_recycler_view)
     RecyclerView metricsRecyclerView;
-    @BindView(R.id.iv_back)
+    @ViewInject(R.id.iv_back)
     ImageView ivBack;
-    @BindView(R.id.rl_title)
+    @ViewInject(R.id.rl_title)
     RelativeLayout rlTitle;
-    @BindView(R.id.tv_data_title)
+    @ViewInject(R.id.tv_data_title)
     TextView tvDataTitle;
-    @BindView(R.id.ll_bottom)
+    @ViewInject(R.id.ll_bottom)
     LinearLayout llBottom;
-    @BindView(R.id.tv_date_time)
+    @ViewInject(R.id.tv_date_time)
     TextView tvDateTime;
-    @BindView(R.id.iv_warning)
+    @ViewInject(R.id.iv_warning)
     ImageView ivWarning;
-    @BindView(R.id.ll_data_title)
+    @ViewInject(R.id.ll_data_title)
     RelativeLayout llDataTitle;
-    @BindView(R.id.tv_sale_sort)
+    @ViewInject(R.id.tv_sale_sort)
     TextView tvSaleSort;
-    @BindView(R.id.tv_name_sort)
+    @ViewInject(R.id.tv_name_sort)
     TextView tvNameSort;
-    @BindView(R.id.iv_name_sort)
+    @ViewInject(R.id.iv_name_sort)
     ImageView ivNameSort;
-    @BindView(R.id.iv_sale_sort)
+    @ViewInject(R.id.iv_sale_sort)
     ImageView ivSaleSort;
-    @BindView(R.id.combined_chart)
+    @ViewInject(R.id.combined_chart)
     CombinedChart combinedChart;
-    @BindView(R.id.rl_chart)
+    @ViewInject(R.id.rl_chart)
     LinearLayout rlChart;
-    @BindView(R.id.tv_main_data)
+    @ViewInject(R.id.tv_main_data)
     TextView tvMainData;
-    @BindView(R.id.tv_main_data_name)
+    @ViewInject(R.id.tv_main_data_name)
     TextView tvMainDataName;
-    @BindView(R.id.tv_sub_data)
+    @ViewInject(R.id.tv_sub_data)
     TextView tvSubData;
-    @BindView(R.id.tv_rate_of_change)
+    @ViewInject(R.id.tv_rate_of_change)
     TextView tvRateOfChange;
-    @BindView(R.id.iv_rate_of_change)
+    @ViewInject(R.id.iv_rate_of_change)
     ImageView ivRateOfChange;
-    @BindView(R.id.bannerSetting)
+    @ViewInject(R.id.bannerSetting)
     ImageView mBannerSetting;
 
     private Gson gson;
@@ -177,13 +177,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometrics);
+        x.view().inject(this);
         mContext = this;
-        ButterKnife.bind(this);
+
         initUserIDColorView();
 
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
         tvBannerName = intent.getStringExtra(kBannerName);
+        tvTitle.setText(tvBannerName);
         new LoadReportData().execute();
     }
 
@@ -212,9 +214,10 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
     private void initView() {
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mTfLight = Typeface.createFromAsset(getAssets( ), "OpenSans-Light.ttf");
+        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         mBannerSetting.setVisibility(View.VISIBLE);
+        ivNameSort.setVisibility(View.GONE);
 
         metricsAdapter = new MetricsAdapter(mContext, null, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -267,8 +270,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         xAxisValue = xAxisList.toArray(new String[xAxisList.size()]);
     }
 
-    @OnClick({R.id.iv_warning, R.id.tv_name_sort, R.id.tv_sale_sort, R.id.iv_back})
-    public void onClick(View view) {
+    @Event(value = {R.id.iv_warning, R.id.tv_name_sort, R.id.tv_sale_sort, R.id.iv_back})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_warning:
                 if (isShowChartData) {
@@ -288,7 +291,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 products = ReorganizeTheDataUtils.sortData(products, itemSelected, isAsc);
                 adapter.setDatas(products, itemSelected, maxValue);
                 ivSaleSort.setRotation(isAsc ? 0 : 180);
-                ivNameSort.setRotation(isAsc ? 0 : 180);
                 break;
             case R.id.iv_back:
                 onBackPressed();
@@ -309,7 +311,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
      * @param clickView
      */
     void showComplaintsPopWindow(View clickView) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_hometrics, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v3, null);
         //设置弹出框的宽度和高度
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -338,32 +340,23 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 new LoadReportData().execute();
             }
         });
-    }
-
-    /*
-	 * 标题栏设置按钮下拉菜单点击响应事件
-	 */
-    private final AdapterView.OnItemClickListener mDropMenuListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                long arg3) {
-            mMenuWindow.dismiss();
-            switch (listItem.get(arg2).get("ItemText").toString()) {
-                case "刷新":
-                    mAnimLoading.setVisibility(View.VISIBLE);
-                    if (isShowChartData) {
-                        metricsRecyclerView.setVisibility(View.VISIBLE);
-                        rlChart.setVisibility(View.GONE);
-                        ivWarning.setImageResource(R.drawable.btn_inf);
-                        isShowChartData = false;
-                    }
-                    new LoadReportData().execute();
-                    break;
-
-                default:
-                    break;
+        contentView.findViewById(R.id.ll_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //分享
+                actionShare2Weixin();
+                popupWindow.dismiss();
             }
-        }
-    };
+        });
+        contentView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //评论
+                actionLaunchCommentActivity();
+                popupWindow.dismiss();
+            }
+        });
+    }
 
     @Override
     public void productSelected(int position) {
@@ -420,7 +413,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 }
             }
         }
-        tvTitle.setText(tvBannerName);
         tvNameSort.setText(homeMetrics.getHead());
         tvDateTime.setText(homeMetrics.getPeriod());
         tvDataTitle.setText(product.getName());
@@ -736,5 +728,56 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 e.printStackTrace();
             }
         }
+    }
+
+    /*
+     * 分享截图至微信
+     */
+    public void actionShare2Weixin() {
+////        UMImage image = new UMImage(this, file);
+//        new ShareAction(this)
+//                .withText("截图分享")
+//                .setPlatform(SHARE_MEDIA.WEIXIN)
+//                .setDisplayList(SHARE_MEDIA.WEIXIN)
+////                .withMedia(image)
+//                .setCallback(umShareListener)
+//                .open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+            WidgetUtil.showToastShort(mContext, "分享失败");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    /*
+     * 评论
+     */
+    public void actionLaunchCommentActivity() {
+        Intent intent = new Intent(mContext, CommentActivity.class);
+        intent.putExtra(URLs.kBannerName, tvBannerName);
+        mContext.startActivity(intent);
     }
 }

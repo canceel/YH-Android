@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,16 +19,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
@@ -49,6 +52,9 @@ import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +67,12 @@ import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
 public class SubjectActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
-	private Boolean isInnerLink, isSupportSearch;
+	@ViewInject(R.id.ll_shaixuan)
+	LinearLayout llShaixuan;
+	@ViewInject(R.id.ll_copylink)
+	LinearLayout llCopyLinkl;
+
+	private Boolean isInnerLink, isSupportSearch = false;
 	private String templateID, reportID;
 	private PDFView mPDFView;
 	private File pdfFile;
@@ -82,12 +93,12 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 		/*
 		 * 判断当前设备版本，5.0 以上 Android 系统使用才 enableSlowWholeDocumentDraw();
 		 */
-        if (Build.VERSION.SDK_INT > 20) {
-            enableSlowWholeDocumentDraw();
-        }
+		if (Build.VERSION.SDK_INT > 20) {
+			enableSlowWholeDocumentDraw();
+		}
         setContentView(R.layout.activity_subject);
 
-        mContext = SubjectActivity.this;
+        mContext = this;
 
 		/*
 		 * JSON Data
@@ -193,7 +204,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         bannerName = intent.getStringExtra(URLs.kBannerName);
         objectID = intent.getIntExtra(URLs.kObjectId, -1);
         objectType = intent.getIntExtra(URLs.kObjectType, -1);
-        isInnerLink = !(link.startsWith("http://") || link.startsWith("https://"));
+        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
         mTitle.setText(bannerName);
 
         if (link.toLowerCase().endsWith(".pdf")) {
@@ -207,91 +218,73 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
-        initDropMenuItem();
-        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-        popupWindow.showAsDropDown(mBannerSetting, dip2px(this, -47), dip2px(this, 10));
-
-		/*
-		 * 用户行为记录, 单独异常处理，不可影响用户体验
-		 */
-		try {
-			logParams = new JSONObject();
-			logParams.put("action", "点击/报表/下拉菜单");
-			new Thread(mRunnableForLogger).start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		showComplaintsPopWindow(v);
 	}
-
-	/*
-	 * 初始化标题栏下拉菜单
+	/**
+	 * 显示菜单
+	 *
+	 * @param clickView
 	 */
-	private void initDropMenuItem() {
-		listItem = new ArrayList<>();
-		String[] itemName = {"分享", "评论", "刷新"};
-		int[] itemImage = {R.drawable.banner_share,
-					R.drawable.banner_comment,
-					R.drawable.btn_refresh};
-//					mTts.isSpeaking() ? R.drawable.btn_stop : R.drawable.btn_play};
-		for (int i = 0; i < itemName.length; i++) {
-			HashMap<String, Object> map = new HashMap<>();
-			map.put("ItemImage", itemImage[i]);
-			map.put("ItemText", itemName[i]);
-			listItem.add(map);
-		}
-
-		if (FileUtil.reportIsSupportSearch(mAppContext, String.format("%d", groupID), templateID, reportID)) {
-			HashMap<String, Object> map = new HashMap<>();
-			map.put("ItemImage",R.drawable.banner_search);
-			map.put("ItemText","筛选");
-			listItem.add(map);
-		}
-
+	void showComplaintsPopWindow(View clickView) {
+		View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
+		x.view().inject(this, contentView);
 		if (!isInnerLink) {
-			HashMap<String, Object> map = new HashMap<>();
-			map.put("ItemImage",R.drawable.banner_copy);
-			map.put("ItemText","拷贝链接");
-			listItem.add(map);
+			llCopyLinkl.setVisibility(View.VISIBLE);
 		}
-
-		SimpleAdapter mSimpleAdapter = new SimpleAdapter(this, listItem, R.layout.menu_list_items, new String[]{"ItemImage", "ItemText"}, new int[]{R.id.img_menu_item, R.id.text_menu_item});
-		initDropMenu(mSimpleAdapter, mDropMenuListener);
-	}
-
-	/*
-	  * 标题栏设置按钮下拉菜单点击响应事件
-	  */
-	private final AdapterView.OnItemClickListener mDropMenuListener = new AdapterView.OnItemClickListener() {
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-								long arg3) {
-			popupWindow.dismiss();
-
-			switch (listItem.get(arg2).get("ItemText").toString()) {
-				case "筛选":
-					actionLaunchReportSelectorActivity(arg1);
-					break;
-
-				case "拷贝链接":
-					actionCopyLink(arg1);
-					break;
-
-				case "分享":
-					actionShare2Weixin(arg1);
-					break;
-
-				case "评论":
-					actionLaunchCommentActivity(arg1);
-					break;
-
-				case "刷新":
-					refresh(arg1);
-					break;
-
-				default:
-					break;
+		if (isSupportSearch) {
+			llShaixuan.setVisibility(View.VISIBLE);
+		}
+		//设置弹出框的宽度和高度
+		popupWindow = new PopupWindow(contentView,
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		popupWindow.setFocusable(true);// 取得焦点
+		//注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		//点击外部消失
+		popupWindow.setOutsideTouchable(true);
+		//设置可以点击
+		popupWindow.setTouchable(true);
+		//进入退出的动画
+//        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
+		popupWindow.showAsDropDown(clickView);
+		contentView.findViewById(R.id.ll_share).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// 分享
+				actionShare2Weixin(view);
 			}
-		}
-	};
+		});
+		contentView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// 评论
+				actionLaunchCommentActivity(view);
+			}
+		});
+		contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// 筛选
+				actionLaunchReportSelectorActivity(view);
+			}
+		});
+		contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// 拷贝外部链接
+				actionCopyLink(view);
+			}
+		});
+		contentView.findViewById(R.id.ll_refresh).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				animLoading.setVisibility(View.VISIBLE);
+				// 刷新
+				refresh(view);
+			}
+		});
+	}
 
 	public void onResume() {
 
@@ -544,12 +537,17 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      * 内部报表具有筛选功能时，调用筛选项界面
      */
     public void actionLaunchReportSelectorActivity(View v) {
-        Intent intent = new Intent(mContext, ReportSelectorAcitity.class);
-        intent.putExtra(URLs.kBannerName, bannerName);
-        intent.putExtra(URLs.kGroupId, groupID);
-        intent.putExtra("reportID", reportID);
-        intent.putExtra("templateID", templateID);
-        mContext.startActivity(intent);
+		if (isSupportSearch) {
+			Intent intent = new Intent(mContext, ReportSelectorAcitity.class);
+			intent.putExtra(URLs.kBannerName, bannerName);
+			intent.putExtra(URLs.kGroupId, groupID);
+			intent.putExtra("reportID", reportID);
+			intent.putExtra("templateID", templateID);
+			mContext.startActivity(intent);
+		} else {
+			WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+		}
+
     }
 
 	/*
@@ -597,11 +595,11 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     toast("截图失败");
                     return;
                 }
-                Canvas canvas = new Canvas(imgBmp);
-                Paint paint = new Paint();
-                int iHeight = imgBmp.getHeight();
-                canvas.drawBitmap(imgBmp, 0, iHeight, paint);
-                mWebView.draw(canvas);
+				Canvas canvas = new Canvas(imgBmp);
+				Paint paint = new Paint();
+				int iHeight = imgBmp.getHeight();
+				canvas.drawBitmap(imgBmp, 0, iHeight, paint);
+				mWebView.draw(canvas);
             } else {
                 imgBmp = mWebView.getDrawingCache();
             }
@@ -615,46 +613,45 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         File file = new File(filePath);
         if (file.exists() && file.length() > 0) {
             UMImage image = new UMImage(SubjectActivity.this, file);
-
+			Log.d("plat","platform"+"1");
             new ShareAction(this)
-                    .withTitle("分享截图")
+					.withText("截图分享")
                     .setPlatform(SHARE_MEDIA.WEIXIN)
                     .setDisplayList(SHARE_MEDIA.WEIXIN)
                     .setCallback(umShareListener)
-                    .withMedia(image)
-                    .open();
+					.open();
         } else {
             toast("截图失败,请尝试系统截图");
         }
     }
 
-    private final UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat", "platform" + platform);
-        }
+	private UMShareListener umShareListener = new UMShareListener() {
+		@Override
+		public void onStart(SHARE_MEDIA platform) {
+			//分享开始的回调
+		}
+		@Override
+		public void onResult(SHARE_MEDIA platform) {
+			Log.d("plat","platform"+platform);
 
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            toast("分享失败啦");
-            try {
-                logParams = new JSONObject();
-                logParams.put("action", "扫码/截图");
-                logParams.put("obj_title", "功能: \"扫码/截图\",报错:" + t.getMessage());
-                new Thread(mRunnableForLogger).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
-            }
-        }
+			//" 分享成功啦"
 
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            // 取消分享
-        }
-    };
+		}
+
+		@Override
+		public void onError(SHARE_MEDIA platform, Throwable t) {
+			//Toast.makeText(MainActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+			if(t!=null){
+				Log.d("throw","throw:"+t.getMessage());
+			}
+		}
+
+		@Override
+		public void onCancel(SHARE_MEDIA platform) {
+			Log.d("throw","throw:"+" 分享取消了");
+			//Toast.makeText(MainActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+		}
+	};
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -671,17 +668,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         intent.putExtra(URLs.kObjectId, objectID);
         intent.putExtra(URLs.kObjectType, objectType);
         mContext.startActivity(intent);
-
-        /*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-         */
-        try {
-            logParams = new JSONObject();
-            logParams.put(URLs.kAction, "点击/主题页面/评论");
-            new Thread(mRunnableForLogger).start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /*
@@ -715,25 +701,11 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 }
                 urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
                 ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-
                 boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
-
                 if (reportDataState) {
                     new Thread(mRunnableForDetecting).start();
                 } else {
                     showWebViewExceptionForWithoutNetwork();
-                }
-
-                /*
-                 * 用户行为记录, 单独异常处理，不可影响用户体验
-                 */
-                try {
-                    logParams = new JSONObject();
-                    logParams.put(URLs.kAction, "刷新/浏览器");
-                    logParams.put(URLs.kObjTitle, urlString);
-                    new Thread(mRunnableForLogger).start();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -800,9 +772,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
                 new Thread(mRunnableForLogger).start();
-
                 //点击两次还是有异常 异常报出
-                if (loadCount < 2) {
+                if (loadCount > 2) {
                     showWebViewExceptionForWithoutNetwork();
                     loadCount++;
                 }

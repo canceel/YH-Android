@@ -51,8 +51,8 @@ public class SettingPreferenceActivity extends BaseActivity {
     }
 
     /*
-         * Switch 状态初始化
-         */
+     * Switch 状态初始化
+     */
     private void initSwitchPreference() {
         mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         mScreenLockSwitch.setChecked(mSharedPreferences.getBoolean("ScreenLock", false));

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/argb_theme_default">
 
-    <com.intfocus.yonghuitest.kpi.view.MyScrollView
+    <com.intfocus.yonghuitest.dashboard.kpi.view.MyScrollView
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,5 +16,5 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal" />
-    </com.intfocus.yonghuitest.kpi.view.MyScrollView>
+    </com.intfocus.yonghuitest.dashboard.kpi.view.MyScrollView>
 </FrameLayout>

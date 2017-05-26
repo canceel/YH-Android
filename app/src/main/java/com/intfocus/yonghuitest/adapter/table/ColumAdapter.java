@@ -41,7 +41,6 @@ public class ColumAdapter extends SwipeMenuAdapter<ColumAdapter.ColumViewHolder>
         this.mOnItemClickListener = onItemClickListener;
     }
 
-
     @Override
     public View onCreateContentView(ViewGroup parent, int viewType) {
         return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_column, parent, false);

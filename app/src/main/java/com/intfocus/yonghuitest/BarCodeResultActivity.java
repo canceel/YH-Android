@@ -27,11 +27,6 @@ import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.URLs;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -378,52 +373,10 @@ public class BarCodeResultActivity extends BaseActivity {
 
         File file = new File(filePath);
         if (file.exists() && file.length() > 0) {
-            UMImage image = new UMImage(BarCodeResultActivity.this, file);
 
-            new ShareAction(this)
-                    .withTitle("分享截图")
-                    .setPlatform(SHARE_MEDIA.WEIXIN)
-                    .setDisplayList(SHARE_MEDIA.WEIXIN)
-                    .setCallback(umShareListener)
-                    .withMedia(image)
-                    .open();
         } else {
             toast("截图失败,请尝试系统截图");
         }
-    }
-
-    private final UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat", "platform" + platform);
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(BarCodeResultActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if (t != null) {
-                try {
-                    logParams = new JSONObject();
-                    logParams.put("action", "扫码/拍照");
-                    logParams.put("obj_title", "功能: \"头像上传，拍照\",报错: \"not find SdCard\"");
-                    new Thread(mRunnableForLogger).start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.d("throw", "throw:" + t.getMessage());
-            }
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(BarCodeResultActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     private class JavaScriptInterface{

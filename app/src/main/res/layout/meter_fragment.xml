@@ -56,7 +56,8 @@
                     <!--android:text="实时数据"-->
                     <!--android:textSize="18sp" />-->
 
-                    <com.intfocus.yonghuitest.kpi.view.WidthHeightLinearLayou
+                    <com.intfocus.yonghuitest.dashboard.kpi.view.WidthHeightLinearLayou
+                        android:id="@+id/whl_vp_meter"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="8dp"
@@ -74,7 +75,7 @@
                             android:clipChildren="false"
                             android:minHeight="120dp"
                             android:overScrollMode="never"/>
-                    </com.intfocus.yonghuitest.kpi.view.WidthHeightLinearLayou>
+                    </com.intfocus.yonghuitest.dashboard.kpi.view.WidthHeightLinearLayou>
 
 
                     <LinearLayout

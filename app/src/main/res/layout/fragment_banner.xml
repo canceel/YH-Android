@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/space_default_small"
     android:background="@drawable/shadow_rect"
-    tools:context="com.intfocus.yonghuitest.kpi.ui.MDRPUnitBannerFragment">
+    tools:context=".dashboard.kpi.ui.MDRPUnitBannerFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

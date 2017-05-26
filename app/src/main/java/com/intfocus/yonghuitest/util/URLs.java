@@ -29,6 +29,7 @@ public class URLs implements Serializable {
     public final static String kLoading                  = "loading";
     public final static String kFonts                    = "fonts";
     public final static String kImages                   = "images";
+    public final static String kIcons                   = "icons";
     public final static String kStylesheets              = "stylesheets";
     public final static String kJavaScripts              = "javascripts";
     public final static String kBarCodeScan              = "BarCodeScan";

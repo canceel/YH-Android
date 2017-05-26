@@ -32,6 +32,12 @@
     <string name="text_search">搜索</string>
     <string name="text_user_info">个人信息</string>
     <string name="text_sound">语音播报</string>
+    <string name="text_share">分享</string>
+    <string name="text_comment">评论</string>
+    <string name="text_refresh">刷新</string>
+    <string name="text_shaixuan">筛选</string>
+    <string name="text_copylink">拷贝链接</string>
+    <string name="text_hangjgao">行高</string>
     <string name="title_activity_developer">DeveloperActivity</string>
     <string name="title_activity_speech">SpeechActivity</string>
     <string name="findPassword">找回密码</string>

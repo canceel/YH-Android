@@ -25,12 +25,11 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/argb_font_cont_333"
             android:textSize="@dimen/font_default"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.intfocus.yonghuitest.kpi.view.AutoTextView
+        <com.intfocus.yonghuitest.dashboard.kpi.view.AutoTextView
             android:maxLines="1"
             android:id="@+id/tv_number_vpitem"
             style="@style/tv_mererMinTitle_stytle"
@@ -40,7 +39,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:textColor="@color/argb_font_yellow"
             android:textSize="@dimen/font_large_xs"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
@@ -53,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:textColor="@color/argb_unitcolor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -67,7 +64,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.intfocus.yonghuitest.kpi.view.MeterCursor
+            <com.intfocus.yonghuitest.dashboard.kpi.view.MeterCursor
                 android:id="@+id/img_vpitem"
                 android:layout_width="@dimen/space_default_large_s"
                 android:layout_height="@dimen/space_default_large_s" />
@@ -77,8 +74,7 @@
                 style="@style/AppTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_default_small"
-                android:textColor="@color/argb_font_yellow" />
+                android:layout_marginTop="@dimen/space_default_small" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

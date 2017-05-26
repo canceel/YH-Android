@@ -29,6 +29,14 @@ public abstract class BaseTableFragment<Target extends Subject> extends Abstract
         super.onDestroyView();
     }
 
+    public String formatNumber(String number) {
+        if (number.contains(".")) {
+            number = number.replaceAll("0+?$", "");//去掉多余的0
+            number = number.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return number;
+    }
+
 
 /*    @Override
     public void startActivity(Intent intent) {

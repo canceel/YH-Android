@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.kpi.constant.Permissions;
+import com.intfocus.yonghuitest.dashboard.kpi.constant.Permissions;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;

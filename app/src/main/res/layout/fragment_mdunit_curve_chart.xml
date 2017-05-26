@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.intfocus.yonghuitest.kpi.ui.MDRPUnitCurveChartFragment">
+    tools:context=".dashboard.kpi.ui.MDRPUnitCurveChartFragment">
 
     <LinearLayout
         android:id="@+id/ll_mdrpUnit_curvechart"

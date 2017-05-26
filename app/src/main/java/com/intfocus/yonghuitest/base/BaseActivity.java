@@ -54,6 +54,7 @@ import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.umeng.message.PushAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,6 +108,9 @@ public class BaseActivity extends Activity {
 
         mMyApp = (YHApplication)this.getApplication();
         mAppContext = mMyApp.getAppContext();
+
+        //统计应用启动数据
+        PushAgent.getInstance(mAppContext).onAppStart();
 
         sharedPath = FileUtil.sharedPath(mAppContext);
         assetsPath = sharedPath;
@@ -479,8 +483,8 @@ public class BaseActivity extends Activity {
             switch (message.what) {
                 case 200:
                 case 304:
+
                     final String localHtmlPath = String.format("file:///%s", (String) message.obj);
-                    LogUtil.d("localHtmlPath111", localHtmlPath);
                     weakActivity.get().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

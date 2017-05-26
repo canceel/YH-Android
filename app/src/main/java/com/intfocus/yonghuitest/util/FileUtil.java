@@ -370,6 +370,9 @@ public class FileUtil {
 
                 String folderPath = sharedPath;
                 if (isInAssets) {
+                    if (fileName.equals("icons")) {
+                        fileName = "images";
+                    }
                     folderPath = String.format("%s/assets/%s/", sharedPath, fileName);
                 } else {
                     File file = new File(zipFolderPath);
@@ -586,6 +589,14 @@ public class FileUtil {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+     * 检查设备是否存在SDCard的工具方法
+     */
+    public static boolean hasSdcard() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
     }
 
     public static void initLocalNotifications(Context mContext) {

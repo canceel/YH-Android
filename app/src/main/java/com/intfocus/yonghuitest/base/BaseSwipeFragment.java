@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.kpi.mode.MeterMode;
+import com.intfocus.yonghuitest.dashboard.kpi.mode.MeterMode;
 
 /**
  * Created by liuruilin on 2017/5/11.

@@ -113,6 +113,11 @@ public class ApiHelper {
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
         String urlString = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
+        String headerPath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+        File headerFile = new File(headerPath);
+        if (headerFile.exists()) {
+            headerFile.delete();
+        }
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
         String jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
         String cachedZipPath = FileUtil.dirPath(context, K.kCachedDirName, String.format("%s.zip", jsFileName));
@@ -141,7 +146,7 @@ public class ApiHelper {
             String contentDis = response.get("Content-Disposition");
 
             //获取的内容为 group_%s_template_%s_report_%s.js.zip
-            String subContentDis = contentDis.substring(contentDis.indexOf("\"")+1, contentDis.lastIndexOf("\""));
+            String subContentDis = contentDis.substring(contentDis.indexOf("\"") + 1, contentDis.lastIndexOf("\""));
 
             jsFileName = subContentDis.replace(".zip", "");
             String javascriptPath = String.format("%s/assets/javascripts/%s", assetsPath, jsFileName);
@@ -153,7 +158,7 @@ public class ApiHelper {
             zipStream.close();
             String jsFilePath = FileUtil.dirPath(context, K.kCachedDirName, jsFileName);
             File jsFile = new File(jsFilePath);
-            if(jsFile.exists()) {
+            if (jsFile.exists()) {
                 FileUtil.copyFile(jsFilePath, javascriptPath);
                 jsFile.delete();
             }
@@ -161,7 +166,7 @@ public class ApiHelper {
 
             String searchItemsPath = String.format("%s.search_items", javascriptPath);
             File searchItemsFile = new File(searchItemsPath);
-            if(searchItemsFile.exists()) {
+            if (searchItemsFile.exists()) {
                 searchItemsFile.delete();
             }
         } catch (IOException e) {
@@ -231,7 +236,7 @@ public class ApiHelper {
      */
     public static void writeComment(int userID, int objectType, int objectID, Map params) throws UnsupportedEncodingException {
         String urlString = String.format(K.kCommentAPIPath, K.kBaseUrl, userID, objectID,
-            objectType);
+                objectType);
 
         Map<String, String> response = HttpUtil.httpPost(urlString, params);
         Log.i("WriteComment", response.get("code"));
@@ -247,6 +252,7 @@ public class ApiHelper {
             Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
 
             Map<String, String> response = HttpUtil.httpGet(urlKey, headers);
+
             String statusCode = response.get(URLs.kCode);
             retMap.put(URLs.kCode, statusCode);
 
@@ -317,7 +323,7 @@ public class ApiHelper {
     /**
      * 从缓存头文件中，获取指定链接的ETag/Last-Modified
      *
-     * @param urlKey 链接
+     * @param urlKey     链接
      * @param assetsPath 缓存头文件相对文件夹
      */
     public static Map<String, String> checkResponseHeader(String urlKey, String assetsPath) {
@@ -352,9 +358,9 @@ public class ApiHelper {
     /**
      * 把服务器响应的ETag/Last-Modified存入本地
      *
-     * @param urlKey 链接
+     * @param urlKey     链接
      * @param assetsPath 缓存头文件相对文件夹
-     * @param response 服务器响应的ETag/Last-Modifiede
+     * @param response   服务器响应的ETag/Last-Modifiede
      */
     public static void storeResponseHeader(String urlKey, String assetsPath, Map<String, String> response) {
         try {
@@ -384,7 +390,7 @@ public class ApiHelper {
     /**
      * 合并两个JSONObject
      *
-     * @param obj JSONObject
+     * @param obj   JSONObject
      * @param other JSONObject
      * @return 合并后的JSONObject
      */
@@ -405,8 +411,8 @@ public class ApiHelper {
     /**
      * 下载文件
      *
-     * @param context 上下文
-     * @param urlString 下载链接
+     * @param context    上下文
+     * @param urlString  下载链接
      * @param outputFile 写入本地文件路径
      */
     public static void downloadFile(Context context, String urlString, File outputFile) {
@@ -450,8 +456,8 @@ public class ApiHelper {
 
     /**
      * 上传锁屏信息
-     * @param state 是否启用锁屏
      *
+     * @param state    是否启用锁屏
      * @param deviceID 设备标识
      * @param password 锁屏密码
      */
@@ -470,7 +476,7 @@ public class ApiHelper {
      * 上传用户行为
      *
      * @param context 上下文
-     * @param param 用户行为
+     * @param param   用户行为
      */
     public static void actionLog(Context context, JSONObject param) {
         try {
@@ -492,7 +498,7 @@ public class ApiHelper {
             userParams.put("user_pass", userJSON.getString(URLs.kPassword));
             params.put("user", userParams);
 
-            Log.i("logger",params.toString());
+            Log.i("logger", params.toString());
             String urlString = String.format(K.kActionLogAPIPath, K.kBaseUrl);
             HttpUtil.httpPost(urlString, params);
         } catch (JSONException | PackageManager.NameNotFoundException e) {
@@ -501,19 +507,19 @@ public class ApiHelper {
     }
 
     /**
-     *  消息推送， 设备标识
+     * 消息推送， 设备标识
      *
-     *  @param deviceUUID  设备ID
-     *
-     *  @return 服务器是否更新成功
+     * @param deviceUUID 设备ID
+     * @return 服务器是否更新成功
      */
     private static boolean pushDeviceToken(Context context, String deviceUUID) {
         try {
             String pushConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kPushConfigFileName);
             JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
 
-            if(!pushJSON.has(K.kPushDeviceToken) || pushJSON.getString(K.kPushDeviceToken).length() != 44) return false;
-            if(pushJSON.has(K.kPushIsValid) && pushJSON.getBoolean(K.kPushIsValid)) return true;
+            if (!pushJSON.has(K.kPushDeviceToken) || pushJSON.getString(K.kPushDeviceToken).length() != 44)
+                return false;
+            if (pushJSON.has(K.kPushIsValid) && pushJSON.getBoolean(K.kPushIsValid)) return true;
 
             /**
              *  必须符合以下两条件:
@@ -536,16 +542,16 @@ public class ApiHelper {
     }
 
     /**
-     *  二维码扫描
+     * 二维码扫描
      *
-     *  @param groupID    群组ID
-     *  @param roleID     角色ID
-     *  @param userNum    用户编号
-     *  @param storeID    门店ID
-     *  @param codeInfo   条形码信息
-     *  @param codeType   条形码或二维码
+     * @param groupID  群组ID
+     * @param roleID   角色ID
+     * @param userNum  用户编号
+     * @param storeID  门店ID
+     * @param codeInfo 条形码信息
+     * @param codeType 条形码或二维码
      */
-    public static Map<String,String> barCodeScan(String groupID, String roleID, String userNum, String storeID, String codeInfo, String codeType) {
+    public static Map<String, String> barCodeScan(String groupID, String roleID, String userNum, String storeID, String codeInfo, String codeType) {
         try {
             JSONObject params = new JSONObject();
             params.put(URLs.kCodeInfo, codeInfo);
@@ -555,7 +561,7 @@ public class ApiHelper {
             // Map<String, String> response = HttpUtil.httpPost(urlString, params);
 
             return (Map<String, String>) HttpUtil.httpGet(urlString, new HashMap());
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }

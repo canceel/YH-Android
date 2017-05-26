@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.adapter.table;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class TableContentItemAdapter extends RecyclerView.Adapter<TableContentIt
         return new TableContentItemAdapter.TableHeadHolder(contentView);
     }
 
-    public void setData(List<Head> heads, List<MainData> mainData, int rowHeight){
+    public void setData(List<Head> heads, List<MainData> mainData, int rowHeight) {
         this.heads = heads;
         this.mainData = mainData;
         this.rowHeight = rowHeight;
@@ -53,8 +54,8 @@ public class TableContentItemAdapter extends RecyclerView.Adapter<TableContentIt
     public void onBindViewHolder(TableContentItemAdapter.TableHeadHolder holder, final int position) {
         if (!heads.get(position).isShow() || heads.get(position).isKeyColumn) {
             holder.tvMain.setVisibility(View.GONE);
-        }
-        else {
+        } else {
+            holder.tvMain.setVisibility(View.VISIBLE);
             holder.tvMain.setText(mainData.get(position).getValue());
             holder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
             holder.tvMain.setOnClickListener(new View.OnClickListener() {

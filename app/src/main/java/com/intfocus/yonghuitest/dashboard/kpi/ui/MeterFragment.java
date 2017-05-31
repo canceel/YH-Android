@@ -291,6 +291,8 @@ public class MeterFragment extends BaseSwipeFragment {
                             intent.putExtra(URLs.kLink, link);
                             intent.putExtra(URLs.kObjectId, 1);
                             intent.putExtra(URLs.kObjectType, 1);
+                            intent.putExtra("groupID", groupID);
+                            intent.putExtra("reportID", reportID);
                             startActivity(intent);
                             break;
 
@@ -301,6 +303,8 @@ public class MeterFragment extends BaseSwipeFragment {
                             intent.putExtra(URLs.kBannerName, bannerName);
                             intent.putExtra(URLs.kObjectId, 1);
                             intent.putExtra(URLs.kObjectType, 1);
+                            intent.putExtra("groupID", groupID);
+                            intent.putExtra("reportID", reportID);
                             intent.putExtra("urlString", urlString);
                             startActivity(intent);
                             break;
@@ -312,6 +316,8 @@ public class MeterFragment extends BaseSwipeFragment {
                             intent.putExtra(URLs.kBannerName, bannerName);
                             intent.putExtra(URLs.kObjectId, 1);
                             intent.putExtra(URLs.kObjectType, 1);
+                            intent.putExtra("groupID", groupID);
+                            intent.putExtra("reportID", reportID);
                             intent.putExtra("urlString", urlString);
                             startActivity(intent);
                             break;

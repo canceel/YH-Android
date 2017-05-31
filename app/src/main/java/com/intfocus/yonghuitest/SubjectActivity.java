@@ -803,11 +803,11 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = null;
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-            if (new File(selectedItemPath).exists()) {
-                item = FileUtil.readFile(selectedItemPath);
-            }
-            return item;
+			String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+			if (new File(selectedItemPath).exists()) {
+				item = FileUtil.readFile(selectedItemPath);
+			}
+			return item;
         }
 
         @JavascriptInterface

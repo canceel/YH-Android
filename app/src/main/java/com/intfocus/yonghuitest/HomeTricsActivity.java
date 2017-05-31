@@ -70,6 +70,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,7 +174,11 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     private Context mContext;
     private String urlString;
     private String tvBannerName;
+    private int groupID;
+    private String reportID;
     private String selectedProductName;
+    private int objectID, objectType;
+
 
     private ArrayList<HashMap<String, Object>> listItem;
 
@@ -188,7 +193,11 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
+        groupID = intent.getIntExtra("groupID", -1);
+        reportID = intent.getStringExtra("reportID");
         tvBannerName = intent.getStringExtra(kBannerName);
+        objectID = intent.getIntExtra(URLs.kObjectId, -1);
+        objectType = intent.getIntExtra(URLs.kObjectType, -1);
         tvTitle.setText(tvBannerName);
         new LoadReportData().execute();
     }
@@ -205,12 +214,27 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
         @Override
         protected void onPostExecute(Map<String, String> response) {
+            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", groupID), 3, reportID);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
                 initData("{\"data\":" + response.get("body") + "}");
 //                initData(response.get("body"));
                 setData(false, true);
                 mAnimLoading.setVisibility(View.GONE);
+                try {
+                    FileUtil.writeFile(jsonFilePath, "{\"data\":" + response.get("body") + "}");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                if (new File(jsonFilePath).exists()) {
+                    initView();
+                    initData(FileUtil.readFile(jsonFilePath));
+                    setData(false, true);
+                    mAnimLoading.setVisibility(View.GONE);
+                }
             }
             super.onPostExecute(response);
         }
@@ -372,7 +396,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             for (int i = 0; i < homeMetrics.products.size(); i++) {
                 if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
                     homeMetrics.products.get(i).isSelected = true;
-                    Log.i("testlog", homeMetrics.products.get(i).getName() + "in selected");
                 } else {
                     homeMetrics.products.get(i).isSelected = false;
                 }
@@ -426,7 +449,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 for (int i = 0; i < homeMetrics.products.size(); i++) {
                     if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
                         homeMetrics.products.get(i).isSelected = true;
-                        Log.i("testlog", homeMetrics.products.get(i).getName());
                     } else {
                         homeMetrics.products.get(i).isSelected = false;
                     }
@@ -446,7 +468,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 //            Product product = homeMetrics.products.get(productSelected);
             Item item = product.items.get(itemSelected);
             items.add(item);
-            Log.i("testlog", item.getName() + "in homeMetric     " + item.main_data.getData());
         }
         initChart(showAnimation);
         combinedChart.invalidate();
@@ -817,6 +838,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     public void actionLaunchCommentActivity() {
         Intent intent = new Intent(mContext, CommentActivity.class);
         intent.putExtra(URLs.kBannerName, tvBannerName);
+        intent.putExtra(URLs.kObjectId, objectID);
+        intent.putExtra(URLs.kObjectType, objectType);
         mContext.startActivity(intent);
     }
 }

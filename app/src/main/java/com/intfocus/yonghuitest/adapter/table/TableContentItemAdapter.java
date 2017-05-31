@@ -15,6 +15,8 @@ import com.intfocus.yonghuitest.util.Utils;
 
 import java.util.List;
 
+import static android.text.TextUtils.TruncateAt.MIDDLE;
+
 /**
  * Created by CANC on 2017/4/6.
  */
@@ -57,7 +59,9 @@ public class TableContentItemAdapter extends RecyclerView.Adapter<TableContentIt
         } else {
             holder.tvMain.setVisibility(View.VISIBLE);
             holder.tvMain.setText(mainData.get(position).getValue());
-            holder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 50 * rowHeight);
+            holder.tvMain.setEllipsize(MIDDLE);
+            holder.tvMain.setMaxLines(rowHeight);
+            holder.tvMain.getLayoutParams().height = Utils.dpToPx(context, 25 * rowHeight);
             holder.tvMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

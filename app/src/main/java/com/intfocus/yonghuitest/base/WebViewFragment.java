@@ -168,6 +168,8 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                                 homeTricsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
                                 homeTricsIntent.putExtra("urlString", urlString);
+                                homeTricsIntent.putExtra("groupID", groupID);
+                                homeTricsIntent.putExtra("reportID", reportID);
                                 homeTricsIntent.putExtra(URLs.kBannerName, bannerName);
                                 homeTricsIntent.putExtra(URLs.kObjectId, objectID);
                                 homeTricsIntent.putExtra(URLs.kObjectType, 2);

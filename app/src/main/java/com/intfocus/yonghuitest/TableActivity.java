@@ -165,8 +165,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     //是否全选
     private boolean isSelectedAll = true;
     private int selectedNum = 0;
-    private int rowHeight = 1;//初始行距
-    private int currentHeight = 1;//当前行距
+    private int rowHeight = 2;//初始行距
+    private int currentHeight = 2;//当前行距
     //过滤字段
     private List<Filter> filters;
     private TableFilterListAdapter tableFilterListAdapter;
@@ -258,7 +258,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", groupID), 5, reportID);
             String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
             boolean dataState = ApiHelper.reportJsonData(mContext, String.format("%d", groupID), "5", reportID);
-            if (dataState && new File(jsonFilePath).exists()) {
+            if (dataState || new File(jsonFilePath).exists()) {
                 response = FileUtil.readFile(jsonFilePath);
             }
             return response;

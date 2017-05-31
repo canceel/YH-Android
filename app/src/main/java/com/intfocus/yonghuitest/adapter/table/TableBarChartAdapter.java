@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.adapter.table;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -60,7 +61,7 @@ public class TableBarChartAdapter extends CommonAdapter<TableBarChart> {
         viewBar.setBackgroundColor(Color.parseColor(color));
 
         LayoutParams layoutParams = (LayoutParams) viewBar.getLayoutParams();
-        double a = (mainData / maxValue);
+        double a = Math.abs(mainData) / maxValue;
         layoutParams.width = (int) (screenWidth * 3 / 4 * a);
         viewBar.setLayoutParams(layoutParams);
         llLayout.setOnClickListener(new View.OnClickListener() {

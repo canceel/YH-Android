@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -46,6 +47,7 @@ import com.intfocus.yonghuitest.adapter.metrics.ProductListAdapter;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.ValueFormatter;
@@ -54,6 +56,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.yonghui.homemetrics.data.response.HomeData;
 import com.yonghui.homemetrics.data.response.HomeMetrics;
 import com.yonghui.homemetrics.data.response.Item;
@@ -170,6 +173,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     private Context mContext;
     private String urlString;
     private String tvBannerName;
+    private String selectedProductName;
 
     private ArrayList<HashMap<String, Object>> listItem;
 
@@ -359,9 +363,21 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     }
 
     @Override
-    public void productSelected(int position) {
+    public void productSelected(String productName, int position) {
         lastProductSelected = productSelected;
         productSelected = position;
+        selectedProductName = productName;
+        for (HomeMetrics homeMetrics : homeMetricses) {
+            //设置下方选中
+            for (int i = 0; i < homeMetrics.products.size(); i++) {
+                if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
+                    homeMetrics.products.get(i).isSelected = true;
+                    Log.i("testlog", homeMetrics.products.get(i).getName() + "in selected");
+                } else {
+                    homeMetrics.products.get(i).isSelected = false;
+                }
+            }
+        }
 //        itemSelected = 0;
         setData(isAsc, true);
     }
@@ -383,6 +399,13 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
      * @param showAnimation 是否展示动画
      */
     private void setData(final boolean isNeedSort, final boolean showAnimation) {
+        /**
+         * homeMetrics 一个时间维度
+         * products 一个时间维度所有数据的集合
+         * items 一个时间维度的一个门店的数据
+         * dataSelect 选择是时间维度
+         * productSelect 选择的一个时间维度某个门店
+         */
         items.clear();
         homeMetrics = datas.get(dateSelected);
         if (isNeedSort) {
@@ -394,28 +417,42 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         List<Product> sortProducts = new ArrayList<>();
         sortProducts.addAll(products);
         maxValue = ReorganizeTheDataUtils.sortData(sortProducts, itemSelected, false).get(0).items.get(itemSelected).main_data.getData();
+        if (null == selectedProductName) {
+            selectedProductName = products.get(0).getName();
+        }
+        if (product == null || lastProductSelected != productSelected) {
+            for (HomeMetrics homeMetrics : homeMetricses) {
+                //设置下方选中
+                for (int i = 0; i < homeMetrics.products.size(); i++) {
+                    if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
+                        homeMetrics.products.get(i).isSelected = true;
+                        Log.i("testlog", homeMetrics.products.get(i).getName());
+                    } else {
+                        homeMetrics.products.get(i).isSelected = false;
+                    }
+                }
+            }
+            product = products.get(productSelected);
+        }
         //给报表使用的数据,已经排序，则提取得报表数据也要排序后得字段
         for (HomeMetrics homeMetrics : homeMetricses) {
-            Product product = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc).get(productSelected);
+            int selectedNumber = productSelected;
+            for (int i = 0; i < homeMetrics.products.size(); i++) {
+                if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
+                    selectedNumber = i;
+                }
+            }
+            Product product = ReorganizeTheDataUtils.sortData(homeMetrics.products, itemSelected, isAsc).get(selectedNumber);
+//            Product product = homeMetrics.products.get(productSelected);
             Item item = product.items.get(itemSelected);
             items.add(item);
+            Log.i("testlog", item.getName() + "in homeMetric     " + item.main_data.getData());
         }
         initChart(showAnimation);
         combinedChart.invalidate();
-        if (product == null || lastProductSelected != productSelected) {
-            product = products.get(productSelected);
-            //设置下方选中
-            for (int i = 0; i < products.size(); i++) {
-                if (i == productSelected) {
-                    products.get(i).isSelected = true;
-                } else {
-                    products.get(i).isSelected = false;
-                }
-            }
-        }
         tvNameSort.setText(homeMetrics.getHead());
         tvDateTime.setText(homeMetrics.getPeriod());
-        tvDataTitle.setText(product.getName());
+        tvDataTitle.setText(selectedProductName);
         //设置指标选中状态
         for (int i = 0; i < product.items.size(); i++) {
             if (i == itemSelected) {
@@ -480,7 +517,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         leftAxis.setTextColor(ContextCompat.getColor(mContext, R.color.co4));
 
-        updateTitle(items.get(itemSelected));
+        updateTitle(items.get(dateSelected));
         XAxis xAxis = combinedChart.getXAxis();
         xAxis.setTypeface(mTfLight);
         xAxis.setEnabled(true);//设置轴启用或禁用 如果禁用以下的设置全部不生效
@@ -576,7 +613,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     public void onValueSelected(Entry e, Highlight h) {
         Log.d("X:", e.getX() + "");
         Log.d("Y:", e.getX() + "");
-        int dateSelected = ((int) e.getX() - 1);
+        dateSelected = ((int) e.getX() - 1);
         changeDate(dateSelected);
         updateTitle(items.get(dateSelected));
     }
@@ -629,7 +666,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         tvMainDataName.setText(item.getName());
         BigDecimal bigDecimal = new BigDecimal(item.main_data.getData());
         double mainData = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        tvMainData.setText(item.main_data.getData() + "");
+        tvMainData.setText(mainData + "");
         BigDecimal bigDecimal1 = new BigDecimal(item.sub_data.getData());
         double subData = bigDecimal1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         tvSubData.setText(subData + "");
@@ -645,15 +682,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             switch (item.state.getColor()) {
                 case "#F2E1AC":
-                    ivRateOfChange.setImageResource(R.drawable.up_yellowarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_yellow_up);
                     break;
 
                 case "#F2836B":
-                    ivRateOfChange.setImageResource(R.drawable.up_redarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_red_up);
                     break;
 
                 case "#63A69F":
-                    ivRateOfChange.setImageResource(R.drawable.up_greenarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_green_up);
                     break;
 
                 default:
@@ -663,15 +700,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         } else {
             switch (item.state.getColor()) {
                 case "#F2E1AC":
-                    ivRateOfChange.setImageResource(R.drawable.down_yellowarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_yellow_down);
                     break;
 
                 case "#F2836B":
-                    ivRateOfChange.setImageResource(R.drawable.down_redarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_red_down);
                     break;
 
                 case "#63A69F":
-                    ivRateOfChange.setImageResource(R.drawable.down_greenarrow);
+                    ivRateOfChange.setImageResource(R.drawable.arrow_green_down);
                     break;
 
                 default:
@@ -734,14 +771,16 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
      * 分享截图至微信
      */
     public void actionShare2Weixin() {
-////        UMImage image = new UMImage(this, file);
-//        new ShareAction(this)
-//                .withText("截图分享")
-//                .setPlatform(SHARE_MEDIA.WEIXIN)
-//                .setDisplayList(SHARE_MEDIA.WEIXIN)
-////                .withMedia(image)
-//                .setCallback(umShareListener)
-//                .open();
+        Bitmap bmpScrennShot = ImageUtil.takeScreenShot(HomeTricsActivity.this);
+        if (bmpScrennShot == null) {toast("截图失败");}
+        UMImage image = new UMImage(this, bmpScrennShot);
+        new ShareAction(this)
+                .withText("截图分享")
+                .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setDisplayList(SHARE_MEDIA.WEIXIN)
+                .withMedia(image)
+                .setCallback(umShareListener)
+                .open();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {

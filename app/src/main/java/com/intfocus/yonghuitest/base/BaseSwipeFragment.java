@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.dashboard.kpi.mode.MeterMode;
+import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.WidgetUtil;
 
 /**
  * Created by liuruilin on 2017/5/11.
@@ -24,6 +26,11 @@ public abstract class BaseSwipeFragment extends BaseTableFragment<MeterMode> imp
 
     @Override
     public void onRefresh() {
-        getModel().requestData();
+        if (HttpUtil.isConnected(getContext())) {
+            getModel().requestData();
+        } else {
+            mSwipeLayout.setRefreshing(false);
+            WidgetUtil.showToastShort(getContext(), "请检查网络");
+        }
     }
 }

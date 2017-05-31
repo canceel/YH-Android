@@ -29,7 +29,6 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_bar_code_scanner);
-
         mContext = this;
 
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.bar_code_scanner_frame);

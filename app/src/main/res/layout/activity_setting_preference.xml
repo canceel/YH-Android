@@ -48,10 +48,10 @@
 
         <TextView
             style="@style/SettingKey"
-            android:text="微信分享长图"/>
+            android:text="报表操作"/>
 
         <Switch
-            android:id="@+id/switch_screenshot"
+            android:id="@+id/switch_report_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"/>
@@ -64,16 +64,14 @@
 
         <TextView
             style="@style/SettingKey"
-            android:text="报表操作"/>
+            android:text="微信分享长图"/>
 
         <Switch
-            android:id="@+id/switch_report_copy"
+            android:id="@+id/switch_screenshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
-
-    <!--<View style="@style/Divider"/>-->
 
     <RelativeLayout style="@style/SettingGroup"
                     android:paddingLeft="10dp"

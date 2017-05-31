@@ -161,7 +161,7 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                                 intent.putExtra(URLs.kBannerName, bannerName);
                                 intent.putExtra(URLs.kLink, link);
                                 intent.putExtra(URLs.kObjectId, objectID);
-                                intent.putExtra(URLs.kObjectType, 1);
+                                intent.putExtra(URLs.kObjectType, 2);
                                 startActivity(intent);
                             } else if (templateID.equals("3")) {
                                 Intent homeTricsIntent = new Intent(mContext, HomeTricsActivity.class);
@@ -169,6 +169,8 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                                 urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
                                 homeTricsIntent.putExtra("urlString", urlString);
                                 homeTricsIntent.putExtra(URLs.kBannerName, bannerName);
+                                homeTricsIntent.putExtra(URLs.kObjectId, objectID);
+                                homeTricsIntent.putExtra(URLs.kObjectType, 2);
                                 mContext.startActivity(homeTricsIntent);
                             } else if (templateID.equals("5")) {
                                 Intent superTableIntent = new Intent(mContext, TableActivity.class);
@@ -176,6 +178,8 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                                 superTableIntent.putExtra(URLs.kBannerName, bannerName);
                                 superTableIntent.putExtra("groupID", groupID);
                                 superTableIntent.putExtra("reportID", reportID);
+                                superTableIntent.putExtra(URLs.kObjectId, objectID);
+                                superTableIntent.putExtra(URLs.kObjectType, 2);
                                 mContext.startActivity(superTableIntent);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -205,7 +209,7 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                         intent.putExtra(URLs.kBannerName, bannerName);
                         intent.putExtra(URLs.kLink, link);
                         intent.putExtra(URLs.kObjectId, objectID);
-                        intent.putExtra(URLs.kObjectType, 1);
+                        intent.putExtra(URLs.kObjectType, 2);
                         startActivity(intent);
                     }
                 }

@@ -14,6 +14,7 @@ import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
+import com.intfocus.yonghuitest.util.HttpUtil;
 
 import java.io.File;
 
@@ -125,6 +126,7 @@ public class SettingPreferenceActivity extends BaseActivity {
     public void clearUserCache(View v) {
         String userspace = FileUtil.userspace(mContext);
         new File(userspace).delete();
+        HttpUtil.checkAssetsUpdated(mContext);
         Toast.makeText(mContext, "缓存已清理", Toast.LENGTH_SHORT).show();
     }
 }

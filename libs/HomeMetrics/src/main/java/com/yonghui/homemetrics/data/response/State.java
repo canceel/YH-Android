@@ -23,10 +23,28 @@ public class State {
     }
 
     public String getColor() {
+        if (color.equals("#F2E1AC")) {
+            color = "#F4BC45";
+        }
+        else if (color.equals("#F2836B")) {
+            color = "#F57685";
+        }
+        else if (color.equals("#63A69F")) {
+            color = "#91C941";
+        }
         return color;
     }
 
     public void setColor(String color) {
+        if (color.equals("#F2E1AC")) {
+            color = "#F4BC45";
+        }
+        else if (color.equals("#F2836B")) {
+            color = "#F57685";
+        }
+        else if (color.equals("#63A69F")) {
+            color = "#91C941";
+        }
         this.color = color;
     }
 }

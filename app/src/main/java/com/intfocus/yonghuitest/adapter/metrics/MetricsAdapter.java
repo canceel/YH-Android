@@ -233,7 +233,7 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         });
         viewHolder.tvHead1.setText(item.getName());
-        viewHolder.ivArrow1.setImageResource(getArrowImg(item));
+        viewHolder.ivArrow2.setImageResource(getArrowImg(item));
         viewHolder.tvMainData1.setText(item.main_data.getData() + "");
         viewHolder.tvSubData1.setText(item.sub_data.getData() + "");
     }
@@ -242,30 +242,30 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             switch (item.state.getColor()) {
                 case "#F2E1AC" :
-                    return R.drawable.up_yellowarrow;
+                    return R.drawable.arrow_yellow_up;
 
                 case "#F2836B" :
-                    return R.drawable.up_redarrow;
+                    return R.drawable.arrow_red_up;
 
                 case "#63A69F" :
-                    return R.drawable.up_greenarrow;
+                    return R.drawable.arrow_green_up;
 
                 default:
-                    return R.drawable.up_redarrow;
+                    return R.drawable.arrow_yellow_up;
             }
         } else {
             switch (item.state.getColor()) {
                 case "#F2E1AC" :
-                    return R.drawable.down_yellowarrow;
+                    return R.drawable.arrow_yellow_down;
 
                 case "#F2836B" :
-                    return R.drawable.down_redarrow;
+                    return R.drawable.arrow_red_down;
 
                 case "#63A69F" :
-                    return R.drawable.down_greenarrow;
+                    return R.drawable.arrow_green_down;
 
                 default:
-                    return R.drawable.up_redarrow;
+                    return R.drawable.arrow_yellow_up;
             }
         }
     }

@@ -80,7 +80,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 	private int groupID, objectID, objectType;
 	private String userNum;
 	private RelativeLayout bannerView;
-	private ArrayList<HashMap<String, Object>> listItem;
 	private Context mContext;
 	private int loadCount = 0;
 	private TextView mTitle;
@@ -788,10 +787,10 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
                 FileUtil.writeFile(searchItemsPath, arrayString);
 
-                /**
-                 *  判断筛选的条件: arrayString 数组不为空
-                 *  报表第一次加载时，此处为判断筛选功能的关键点
-                 */
+				/**
+				 *  判断筛选的条件: arrayString 数组不为空
+				 *  报表第一次加载时，此处为判断筛选功能的关键点
+				 */
                 isSupportSearch = FileUtil.reportIsSupportSearch(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
                 if (isSupportSearch) {
                     displayBannerTitleAndSearchIcon();

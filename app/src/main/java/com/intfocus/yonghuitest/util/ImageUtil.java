@@ -1,12 +1,18 @@
 package com.intfocus.yonghuitest.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
 
 import java.io.File;
 
@@ -75,4 +81,35 @@ public class ImageUtil {
         return intentFromGallery;
     }
 
+    public static Bitmap takeScreenShot(Activity activity) {
+         /*获取windows中最顶层的view*/
+        View view = activity.getWindow().getDecorView();
+
+        //允许当前窗口保存缓存信息
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+
+        //获取状态栏高度
+        Rect rect = new Rect();
+        view.getWindowVisibleDisplayFrame(rect);
+        int statusBarHeight = rect.top;
+
+        WindowManager windowManager = activity.getWindowManager();
+
+        //获取屏幕宽和高
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(outMetrics);
+        int width = outMetrics.widthPixels;
+        int height = outMetrics.heightPixels;
+
+        //去掉状态栏
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, statusBarHeight, width,
+                height-statusBarHeight);
+
+        //销毁缓存信息
+        view.destroyDrawingCache();
+        view.setDrawingCacheEnabled(false);
+
+        return bitmap;
+    }
 }

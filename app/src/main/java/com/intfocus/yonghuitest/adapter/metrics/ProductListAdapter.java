@@ -57,7 +57,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ProductListHolder viewHolder = (ProductListHolder) holder;
-        Product product = datas.get(position);
+        final Product product = datas.get(position);
         if (product.items.size() > itemSelected) {
             Item item = product.items.get(itemSelected);
             if (product.isSelected) {
@@ -69,15 +69,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.tvProductName.setTextColor(ContextCompat.getColor(context, R.color.co3));
                 viewHolder.tvProductNumber.setTextColor(ContextCompat.getColor(context, R.color.co3));
             }
-            viewHolder.llLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.productSelected(position);
-                }
-            });
 
             viewHolder.viewBar.setVisibility(View.VISIBLE);
             viewHolder.tvProductName.setText(product.getName());
+            viewHolder.llLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.productSelected(product.getName(), position);
+                }
+            });
 
             BigDecimal bigDecimal = new BigDecimal(item.main_data.getData());
             double mainData = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -119,6 +119,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public interface ProductListListener {
-        void productSelected(int position);
+        void productSelected(String procudtName, int position);
     }
 }

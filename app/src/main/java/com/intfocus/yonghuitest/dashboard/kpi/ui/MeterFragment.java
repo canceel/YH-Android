@@ -289,6 +289,7 @@ public class MeterFragment extends BaseSwipeFragment {
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra(URLs.kBannerName, bannerName);
                             intent.putExtra(URLs.kLink, link);
+                            intent.putExtra(URLs.kObjectId, 1);
                             intent.putExtra(URLs.kObjectType, 1);
                             startActivity(intent);
                             break;
@@ -298,6 +299,8 @@ public class MeterFragment extends BaseSwipeFragment {
                             urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra(URLs.kBannerName, bannerName);
+                            intent.putExtra(URLs.kObjectId, 1);
+                            intent.putExtra(URLs.kObjectType, 1);
                             intent.putExtra("urlString", urlString);
                             startActivity(intent);
                             break;
@@ -307,6 +310,8 @@ public class MeterFragment extends BaseSwipeFragment {
                             urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra(URLs.kBannerName, bannerName);
+                            intent.putExtra(URLs.kObjectId, 1);
+                            intent.putExtra(URLs.kObjectType, 1);
                             intent.putExtra("urlString", urlString);
                             startActivity(intent);
                             break;
@@ -323,6 +328,7 @@ public class MeterFragment extends BaseSwipeFragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra(URLs.kBannerName, bannerName);
                 intent.putExtra(URLs.kLink, link);
+                intent.putExtra(URLs.kObjectId, 1);
                 intent.putExtra(URLs.kObjectType, 1);
                 startActivity(intent);
             }

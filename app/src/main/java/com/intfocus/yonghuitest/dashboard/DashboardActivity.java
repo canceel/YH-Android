@@ -22,11 +22,13 @@ import android.widget.Toast;
 
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.ResetPasswordActivity;
 import com.intfocus.yonghuitest.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
 import com.intfocus.yonghuitest.adapter.MenuAdapter;
 import com.intfocus.yonghuitest.setting.SettingActivity;
+import com.intfocus.yonghuitest.setting.SettingListActivity;
 import com.intfocus.yonghuitest.setting.ThursdaySayActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -75,7 +77,8 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
         initUserIDColorView();
         bindFragment();
-//        HttpUtil.checkAssetsUpdated(mContext);
+        HttpUtil.checkAssetsUpdated(mContext);
+        checkUserModifiedInitPassword(); // 检测用户密码
     }
 
     @Override
@@ -380,6 +383,36 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
             pushMessageJSON.put("state", true);
             FileUtil.writeFile(pushMessagePath, pushMessageJSON.toString());
         } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+ * 用户编号
+ */
+    public void checkUserModifiedInitPassword() {
+        try {
+            if (!user.getString(URLs.kPassword).equals(URLs.MD5(K.kInitPassword))) {
+                return;
+            }
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(DashboardActivity.this);
+            alertDialog.setTitle("温馨提示");
+            alertDialog.setMessage("安全起见，请在【个人信息】-【基本信息】-【修改登录密码】页面修改初始密码");
+
+            alertDialog.setPositiveButton("立即前往", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(DashboardActivity.this, ResetPasswordActivity.class);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("稍后修改", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 返回DashboardActivity
+                        }
+                    });
+            alertDialog.show();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

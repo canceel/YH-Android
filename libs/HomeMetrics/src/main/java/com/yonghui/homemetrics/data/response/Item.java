@@ -6,7 +6,6 @@ package com.yonghui.homemetrics.data.response;
 
 public class Item {
 
-
     /**
      * name : 综合毛利
      */

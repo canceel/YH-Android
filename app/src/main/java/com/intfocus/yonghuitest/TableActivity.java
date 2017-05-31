@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,12 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat.LayoutParams;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,6 +59,7 @@ import com.intfocus.yonghuitest.bean.table.TableChart;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
 import com.intfocus.yonghuitest.util.URLs;
@@ -178,6 +183,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private int groupID;
     private String reportID;
     private String mBannerName;
+    private int objectID, objectType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -199,6 +205,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         Intent intent = getIntent();
         groupID = intent.getIntExtra("groupID", -1);
         reportID = intent.getStringExtra("reportID");
+        objectID = intent.getIntExtra(URLs.kObjectId, -1);
+        objectType = intent.getIntExtra(URLs.kObjectType, -1);
         mBannerName = intent.getStringExtra(kBannerName);
         tvBannerName.setText(mBannerName);
         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, 5, reportID);
@@ -227,13 +235,12 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         Boolean isLandscape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         if (isLandscape) {
-
-            mAnimLoading.setVisibility(View.VISIBLE);
+//            mAnimLoading.setVisibility(View.VISIBLE);
             WindowManager.LayoutParams lp = getWindow().getAttributes();
             lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
             getWindow().setAttributes(lp);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            new LoadReportData().execute();
+//            new LoadReportData().execute();
         } else {
             WindowManager.LayoutParams attr = getWindow().getAttributes();
             attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -261,7 +268,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         protected void onPostExecute(String response) {
             if (response != null) {
                 fillTableData(response);
-//                fillTableData(Utils.getJson(mContext, "report_v5.json"));
             }
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -539,8 +545,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     public void actionLaunchCommentActivity() {
         Intent intent = new Intent(mContext, CommentActivity.class);
         intent.putExtra(URLs.kBannerName, mBannerName);
-        intent.putExtra(URLs.kObjectId, 0);
-        intent.putExtra(URLs.kObjectType, 5);
+        intent.putExtra(URLs.kObjectId, objectID);
+        intent.putExtra(URLs.kObjectType, objectType);
         mContext.startActivity(intent);
     }
 
@@ -594,51 +600,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             }
         });
     }
-
-    /**
-     * 当Item移动的时候。
-     */
-    private OnItemMoveListener onItemMoveListener = new OnItemMoveListener() {
-        @Override
-        public boolean onItemMove(int fromPosition, int toPosition) {
-            Collections.swap(changeTableChartData.table.head, fromPosition, toPosition);
-            columnAdapter.notifyItemMoved(fromPosition, toPosition);
-            return true;
-        }
-
-        @Override
-        public void onItemDismiss(int position) {
-            columnAdapter.notifyItemRemoved(position);
-            Toast.makeText(mContext, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    /**
-     * Item的拖拽/侧滑删除时，手指状态发生变化监听。
-     */
-    private OnItemStateChangedListener mOnItemStateChangedListener = new OnItemStateChangedListener() {
-        @Override
-        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-            if (actionState == OnItemStateChangedListener.ACTION_STATE_DRAG) {
-//            mActionBar.setSubtitle("状态：拖拽");
-                // 拖拽的时候背景就透明了，这里我们可以添加一个特殊背景。
-                viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.background));
-            } else if (actionState == OnItemStateChangedListener.ACTION_STATE_SWIPE) {
-//            mActionBar.setSubtitle("状态：滑动删除");
-            } else if (actionState == OnItemStateChangedListener.ACTION_STATE_IDLE) {
-//            mActionBar.setSubtitle("状态：手指松开");
-                // 在手松开的时候还原背景。
-                ViewCompat.setBackground(viewHolder.itemView, ContextCompat.getDrawable(mContext, R.drawable.select_white));
-                for (int i = 0; i < changeTableChartData.table.head.size(); i++) {
-                    Head head = changeTableChartData.table.head.get(i);
-                    if (head.isKeyColumn) {
-//                        Collections.swap(changeTableChartData.table.head, i, 0);
-                    }
-                }
-                columnAdapter.setDatas(changeTableChartData);
-            }
-        }
-    };
 
     //选列
     @Override
@@ -1079,7 +1040,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                 tableBarChart.setColor("#595b57");
             } else {
                 tableBarChart.setColor(mColorList[mainData.get(position).getColor()]);
-                Log.i("valueColor", mColorList[mainData.get(position).getColor()]);
             }
             tableBarCharts.add(tableBarChart);
         }
@@ -1164,12 +1124,14 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
      * 分享截图至微信
      */
     public void actionShare2Weixin() {
-//        UMImage image = new UMImage(this, file);
+        Bitmap bmpScrennShot = ImageUtil.takeScreenShot(TableActivity.this);
+        if (bmpScrennShot == null) {toast("截图失败");}
+        UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")
                 .setPlatform(SHARE_MEDIA.WEIXIN)
                 .setDisplayList(SHARE_MEDIA.WEIXIN)
-//                .withMedia(image)
+                .withMedia(image)
                 .setCallback(umShareListener)
                 .open();
     }

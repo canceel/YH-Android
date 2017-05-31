@@ -18,6 +18,7 @@ import com.jonas.jgraph.graph.NChart;
 import com.jonas.jgraph.models.NExcel;
 
 import org.greenrobot.eventbus.EventBus;
+import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -30,19 +31,17 @@ import java.util.List;
  */
 public class CurveLineFragment extends BaseTableFragment {
     private MererEntity entity;
-    private int[] colors = Constant.colorsRGY;
+    private int[]colors = Constant.colorsRGY;
     private View rootView;
 
     @ViewInject(R.id.ll_ragment_curve)
     private View ll_ragmentlayout;
-
     @ViewInject(R.id.tv_title_vpitem)
     private TextView tv_title;
     @ViewInject(R.id.tv_number_vpitem)
     private TextView tv_number;
     @ViewInject(R.id.tv_compare_vpitem)
     private TextView tv_compare;
-
     @ViewInject(R.id.img_vpitem)
     private MeterCursor img_cursor;
 
@@ -110,9 +109,9 @@ public class CurveLineFragment extends BaseTableFragment {
             img_cursor.setCursorState(high_light.arrow);
             float compare = (float) ((high_light.number - high_light.compare) / high_light.compare * 100);
             if (high_light.arrow < 3) {//上箭头
-                tv_compare.setText("+" + compare + "%");
+                tv_compare.setText("+" + df.format(compare) + "%");
             } else {
-                tv_compare.setText("" + compare + "%");
+                tv_compare.setText("" + df.format(compare) + "%");
             }
             tv_compare.setTextColor(colors[high_light.arrow]);
             tv_number.setTextColor(colors[high_light.arrow]);

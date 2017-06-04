@@ -56,7 +56,6 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final List<Product> datas = homeMetrics.products;
         final Product product = datas.get(position);
         final List<Item> items = product.items;
-        Log.i("itemSelected", items.size() + " is item size");
         if (items.size() == 6) {
             viewHolder.ll6.setVisibility(View.VISIBLE);
             Item item = items.get(5);
@@ -241,13 +240,13 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getArrowImg(Item item) {
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             switch (item.state.getColor()) {
-                case "#F2E1AC" :
+                case "#F4BC45" :
                     return R.drawable.arrow_yellow_up;
 
-                case "#F2836B" :
+                case "#F57685" :
                     return R.drawable.arrow_red_up;
 
-                case "#63A69F" :
+                case "#91C941" :
                     return R.drawable.arrow_green_up;
 
                 default:
@@ -255,13 +254,13 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         } else {
             switch (item.state.getColor()) {
-                case "#F2E1AC" :
+                case "#F4BC45" :
                     return R.drawable.arrow_yellow_down;
 
-                case "#F2836B" :
+                case "#F57685" :
                     return R.drawable.arrow_red_down;
 
-                case "#63A69F" :
+                case "#91C941" :
                     return R.drawable.arrow_green_down;
 
                 default:

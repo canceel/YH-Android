@@ -84,7 +84,7 @@ public class MDRPUnitCurveChartFragment extends BaseTableFragment<MDRPUnitCurveC
      * 图表点击事件统一处理方法
      */
     public void onMessageEvent(final MDRPUnitCurveChartEntity entity) {
-        if (entity != null && entity.stateCode == 200) {
+        if (entity != null && entity.getStateCode() == 200) {
             dealData(entity);
         }
     }
@@ -93,7 +93,7 @@ public class MDRPUnitCurveChartFragment extends BaseTableFragment<MDRPUnitCurveC
      * 绑定数据
      */
     private void dealData(MDRPUnitCurveChartEntity result) {
-        final String[] xLabel = result.xAxis;
+        final String[] xLabel = result.getXAxis();
         String[] yLabel = new String[5];
         int[] color = null;
         int YMaxValue;
@@ -101,9 +101,9 @@ public class MDRPUnitCurveChartFragment extends BaseTableFragment<MDRPUnitCurveC
         ArrayList<Float> series2 = new ArrayList<>();
         ArrayList<Float> seriesA = new ArrayList<>();
 
-        ArrayList<MDRPUnitCurveChartEntity.SeriesEntity> arrays = result.series;
+        ArrayList<MDRPUnitCurveChartEntity.SeriesEntity> arrays = result.getSeries();
         if (arrays.size() == 2) {
-            String datas = arrays.get(0).data;
+            String datas = arrays.get(0).getData();
             if (datas.startsWith("[{")) {
                 ArrayList<MDRPUitlSeries> list = (ArrayList<MDRPUitlSeries>) JSON.parseArray(datas, MDRPUitlSeries.class);
                 color = new int[list.size()];
@@ -113,7 +113,7 @@ public class MDRPUnitCurveChartFragment extends BaseTableFragment<MDRPUnitCurveC
                     series1.add(series.value);
                 }
             }
-            String datass = arrays.get(1).data;
+            String datass = arrays.get(1).getData();
             datass = datass.trim().substring(1, datass.length() - 1).trim();
             String[] topW = datass.trim().split("[^\\d]");
             for (String s : topW) {

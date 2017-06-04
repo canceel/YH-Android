@@ -607,7 +607,7 @@ public class HttpUtil {
         checkAssetUpdated(context, URLs.kLoading, false);
         checkAssetUpdated(context, URLs.kFonts, true);
         checkAssetUpdated(context, URLs.kImages, true);
-        checkAssetUpdated(context, URLs.kImages, true);
+        checkAssetUpdated(context, URLs.kIcons, true);
         checkAssetUpdated(context, URLs.kStylesheets, true);
         checkAssetUpdated(context, URLs.kJavaScripts, true);
         checkAssetUpdated(context, URLs.kBarCodeScan, false);

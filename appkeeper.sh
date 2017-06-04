@@ -59,6 +59,7 @@ download_assets() {
   check_assets "assets"
   check_assets "fonts"
   check_assets "images"
+  check_assets "icons"
   check_assets "javascripts"
   check_assets "stylesheets"
   check_assets "loading"
@@ -87,6 +88,14 @@ case "$1" in
   github)
     bundle exec ruby config/app_keeper.rb --github
   ;;
+  updata:yhtest)
+    downloadurl="https://development.shengyiplus.com"
+    download_assets
+    ;;
+  updata:yh)
+    downloadurl="https://yonghui.idata.mobi"
+    download_assets
+    ;;
   view)
     bundle exec ruby config/app_keeper.rb --view
   ;;

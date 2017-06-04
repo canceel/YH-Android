@@ -77,6 +77,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kAppVersion = "app_version";
   public final static String kFontsMd5 = "fonts_md5";
   public final static String kImagesMd5 = "images_md5";
+  public final static String kIconsMd5 = "icons_md5";
   public final static String kStylesheetsMd5 = "stylesheets_md5";
   public final static String kJavaScriptsMd5 = "javascripts_md5";
   public final static String kInfo = "info";

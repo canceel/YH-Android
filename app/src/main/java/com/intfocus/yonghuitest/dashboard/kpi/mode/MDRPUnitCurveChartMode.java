@@ -45,7 +45,7 @@ public class MDRPUnitCurveChartMode extends AbstractMode {
                 } catch (Exception e) {
                     e.printStackTrace();
                     MDRPUnitCurveChartEntity entity = new MDRPUnitCurveChartEntity();
-                    entity.stateCode = 400;
+                    entity.setStateCode(400);
                     dataCallback(entity, "onMessageEvent");
                 }
             }

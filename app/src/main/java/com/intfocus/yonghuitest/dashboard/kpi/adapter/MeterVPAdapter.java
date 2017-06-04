@@ -40,7 +40,7 @@ public class MeterVPAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         MererEntity entity = topDatas.get(position);
         Fragment fragment = null;
-        switch (entity.dashboard_type) {
+        switch (entity.getDashboard_type()) {
             case "line"://折线图
                 fragment = CurveLineFragment.newInstance(entity);
                 break;

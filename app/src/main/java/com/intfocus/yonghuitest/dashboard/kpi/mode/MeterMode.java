@@ -148,13 +148,15 @@ public class MeterMode extends AbstractMode {
 
             if (jsonObject.has("data")) {
                 String data = jsonObject.getString("data");
+                data = data.replace("\"arrow\":null", "\"arrow\":-1");
+                data = data.replace("\"number\":null", "\"number\":0.123456789");
                 data = data.replace("null", "0");
                 ArrayList<MererEntity> datas = (ArrayList<MererEntity>) JSON.parseArray(data, MererEntity.class);
                 ArrayList<MererEntity> topData = new ArrayList<>();
                 Iterator<MererEntity> iterator = datas.iterator();
                 while (iterator.hasNext()) {
                     MererEntity entity = iterator.next();
-                    if (entity.is_stick) {
+                    if (entity.is_stick()) {
                         topData.add(entity);
                         iterator.remove();
                     }

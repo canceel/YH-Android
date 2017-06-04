@@ -57,7 +57,7 @@ public class SaleDataAdapter extends RecyclerView.Adapter<SaleDataAdapter.SaleDa
 //        lparams.width = 100;
 //        lparams.height = 200;
         ViewGroup.LayoutParams lparams = null;
-        switch (holder.entity.dashboard_type) {
+        switch (holder.entity.getDashboard_type()) {
             case "line"://折线图
             case "bar"://柱状图
                 lparams = new ViewGroup.LayoutParams(viewWidth, viewHeigt*2);
@@ -93,7 +93,7 @@ public class SaleDataAdapter extends RecyclerView.Adapter<SaleDataAdapter.SaleDa
             this.layout = (FrameLayout) view;
             entity = bodyDatas.get(viewType);
             Fragment fragment = null;
-            switch (entity.dashboard_type) {
+            switch (entity.getDashboard_type()) {
                 case "line"://折线图
                     fragment = BrokenLineFragment.newInstance(entity);
                     break;

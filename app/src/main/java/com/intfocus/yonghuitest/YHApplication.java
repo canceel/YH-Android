@@ -151,10 +151,10 @@ public class YHApplication extends Application {
 
     private void initXutils() {
         x.Ext.init(this);
-        x.Ext.setDebug(BuildConfig.DEBUG);
-//        if (!org.xutils.BuildConfig.DEBUG) {
-//            x.Ext.setDebug(org.xutils.BuildConfig.DEBUG);
-//        }
+//        x.Ext.setDebug(BuildConfig.DEBUG);
+        if (!org.xutils.BuildConfig.DEBUG) {
+            x.Ext.setDebug(org.xutils.BuildConfig.DEBUG);
+        }
     }
 
 //    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {

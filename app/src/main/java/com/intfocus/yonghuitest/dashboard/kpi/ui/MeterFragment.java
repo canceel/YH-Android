@@ -70,6 +70,10 @@ public class MeterFragment extends BaseSwipeFragment {
 
     JSONObject user;
 
+    ArrayList<String> gropsNameList;
+
+    ArrayList<ArrayList<MererEntity>> entityList;
+
     @ViewInject(R.id.tv_realtime_title_meter)
     AdvTextSwitcher tv_realtime_title;
 
@@ -83,17 +87,10 @@ public class MeterFragment extends BaseSwipeFragment {
     MeterVPAdapter vpAdapter;
     ArrayList<MererEntity> topDatas = new ArrayList<>();
 
-
     HashMap<String, ArrayList<MererEntity>> gropsName = new HashMap();
-
 
     @ViewInject(R.id.meter_group)
     LinearLayout ll_meterGroupContainer;
-
-//    @ViewInject(R.id.recyclerview_meter)
-//    RecyclerView recyclerView;
-//    SaleDataAdapter recycleAdapter;
-//    ArrayList<MererEntity> bodyDatas = new ArrayList<>();
 
     @Override
     public Subject setSubject() {
@@ -117,6 +114,8 @@ public class MeterFragment extends BaseSwipeFragment {
             initView();
             getModel().requestData();
         }
+        gropsNameList = new ArrayList<>();
+        entityList = new ArrayList<>();
         mAnimLoading = (RelativeLayout) rootView.findViewById(R.id.anim_loading);
         String userConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kUserConfigFileName);
         if ((new File(userConfigPath)).exists()) {
@@ -185,13 +184,13 @@ public class MeterFragment extends BaseSwipeFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MeterRequestResult result) {
-        if (!result.isSuccress) {
-            ToastUtil.showToast(ctx, "数据请求失败，errorCode:" + result.stateCode);
+        if (!result.isSuccess()) {
+            ToastUtil.showToast(ctx, "数据请求失败，errorCode:" + result.getStateCode());
             return;
         }
         topDatas.clear();
-        if (!result.topDatas.isEmpty()) {
-            topDatas.addAll(result.topDatas);
+        if (!result.getTopDatas().isEmpty()) {
+            topDatas.addAll(result.getTopDatas());
         } else {
             mWHllayout.setVisibility(View.GONE);
         }
@@ -200,14 +199,16 @@ public class MeterFragment extends BaseSwipeFragment {
         gropsName.clear();
         ll_meterGroupContainer.removeAllViews();
 
-        Iterator<MererEntity> iterator = result.bodyDatas.iterator();
+        Iterator<MererEntity> iterator = result.getBodyDatas().iterator();
         while (iterator.hasNext()) {
             MererEntity entity = iterator.next();
-            String group_name = entity.group_name;
+            String group_name = entity.getGroup_name();
             if (!StringUtil.isEmpty(group_name)) {
                 ArrayList<MererEntity> list = gropsName.get(group_name);
                 if (list == null || list.isEmpty()) {
                     list = new ArrayList();
+                    gropsNameList.add(group_name);
+                    entityList.add(list);
                     gropsName.put(group_name, list);
                 }
                 list.add(entity);
@@ -215,12 +216,12 @@ public class MeterFragment extends BaseSwipeFragment {
         }
 
         Set<String> set = gropsName.keySet();
-        for (String s : set) {
-            ArrayList<MererEntity> list = gropsName.get(s);
+        for (int i = 0; i < set.size(); i++) {
+            ArrayList<MererEntity> list = entityList.get(i);
             LayoutInflater inflater = LayoutInflater.from(ctx);
             View view = inflater.inflate(R.layout.item_meter_group, null);
             TextView tv_title = (TextView) view.findViewById(R.id.tv_item_meter_group);
-            tv_title.setText(list.get(0).group_name);
+            tv_title.setText(list.get(0).getGroup_name());
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_meter);
             initRecycleView(recyclerView, list);
             ll_meterGroupContainer.addView(view);
@@ -263,8 +264,8 @@ public class MeterFragment extends BaseSwipeFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MeterClickEventEntity entity) {
         if (entity != null) {
-            String link = "/" + entity.entity.target_url;
-            String bannerName = entity.entity.title;
+            String link = "/" + entity.getEntity().getTarget_url();
+            String bannerName = entity.getEntity().getTitle();
 
             if (link.indexOf("original/kpi") > 0) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -298,7 +299,8 @@ public class MeterFragment extends BaseSwipeFragment {
 
                         case "3":
                             intent = new Intent(ctx, HomeTricsActivity.class);
-                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
+                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                                    K.kBaseUrl, groupID, templateID, reportID);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra(URLs.kBannerName, bannerName);
                             intent.putExtra(URLs.kObjectId, 1);
@@ -311,7 +313,8 @@ public class MeterFragment extends BaseSwipeFragment {
 
                         case "5":
                             intent = new Intent(ctx, TableActivity.class);
-                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, templateID, reportID);
+                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                                    K.kBaseUrl, groupID, templateID, reportID);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra(URLs.kBannerName, bannerName);
                             intent.putExtra(URLs.kObjectId, 1);

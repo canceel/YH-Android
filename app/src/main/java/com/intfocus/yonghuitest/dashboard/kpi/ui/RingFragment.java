@@ -70,15 +70,15 @@ public class RingFragment extends Fragment {
     }
 
     private void init() {
-        tv_title.setText(entity.title);
-        MererEntity.LineEntity.HighLight highLight = entity.data.high_light;
-        ringChart.setMaxProgress(highLight.compare);
-        ringChart.setShowProgress(highLight.number);
+        tv_title.setText(entity.getTitle());
+        MererEntity.LineEntity.HighLight highLight = entity.getData().getHigh_light();
+        ringChart.setMaxProgress(highLight.getCompare());
+        ringChart.setShowProgress(highLight.getNumber());
         String unit;
-        if (highLight.percentage)
+        if (highLight.getPercentage())
             unit = "%";
         else
-            unit = entity.unit;
+            unit = entity.getUnit();
         ringChart.setUnit(unit);
 
         rootView.setOnClickListener(new View.OnClickListener() {

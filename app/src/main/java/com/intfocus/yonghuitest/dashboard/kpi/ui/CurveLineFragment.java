@@ -85,7 +85,7 @@ public class CurveLineFragment extends BaseTableFragment {
     }
 
     private void init() {
-        if (entity.is_stick) {
+        if (entity.is_stick()) {
             mChart.setInterceptAnimate(true);
         } else {
             rootView.post(new Runnable() {
@@ -100,26 +100,26 @@ public class CurveLineFragment extends BaseTableFragment {
             });
         }
 
-        tv_title.setText(entity.title);
-        double number = entity.data.high_light.number;
-        tv_number.setText(formatNumber(String.valueOf(df.format(number))) + entity.unit);
+        tv_title.setText(entity.getTitle());
+        double number = entity.getData().getHigh_light().getNumber();
+        tv_number.setText(formatNumber(String.valueOf(df.format(number))) + entity.getUnit());
 
-        MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.arrow >= 0) {//显示
-            img_cursor.setCursorState(high_light.arrow);
-            float compare = (float) ((high_light.number - high_light.compare) / high_light.compare * 100);
-            if (high_light.arrow < 3) {//上箭头
+        MererEntity.LineEntity.HighLight high_light = entity.getData().getHigh_light();
+        if (high_light.getArrow() >= 0) {//显示
+            img_cursor.setCursorState(high_light.getArrow());
+            float compare = (float) ((high_light.getNumber() - high_light.getCompare()) / high_light.getCompare() * 100);
+            if (high_light.getArrow() < 3) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
             } else {
                 tv_compare.setText("" + df.format(compare) + "%");
             }
-            tv_compare.setTextColor(colors[high_light.arrow]);
-            tv_number.setTextColor(colors[high_light.arrow]);
+            tv_compare.setTextColor(colors[high_light.getArrow()]);
+            tv_number.setTextColor(colors[high_light.getArrow()]);
         } else {
             img_cursor.setVisibility(View.GONE);
         }
 
-        int[] chart_data = entity.data.chart_data;
+        int[] chart_data = entity.getData().getChart_data();
         int size = chart_data.length;
 
         if (size > 0) {
@@ -129,10 +129,10 @@ public class CurveLineFragment extends BaseTableFragment {
             }
             mChart.setScrollAble(false);
             mChart.setFixedWidth(7);
-            mChart.setActivationColor(colors[high_light.arrow]);
+            mChart.setActivationColor(colors[high_light.getArrow()]);
             mChart.setNormalColor(Color.parseColor("#4EB5D7"));
             mChart.setTextPrintColor(Color.parseColor("#4EB5D7"));
-            mChart.setDrawTextUnit(entity.unit);
+            mChart.setDrawTextUnit(entity.getUnit());
             mChart.setBarStanded(7);
             mChart.setBarAniStyle(NChart.ChartAniStyle.LINE_RIPPLE);//TODO 动画效果
             mChart.setChartStyle(NChart.ChartStyle.CLOSELINE);//TODO 曲线图

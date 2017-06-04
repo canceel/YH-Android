@@ -28,6 +28,7 @@ import java.util.Map;
 
 import static com.intfocus.yonghuitest.util.K.kAppVersion;
 import static com.intfocus.yonghuitest.util.K.kFontsMd5;
+import static com.intfocus.yonghuitest.util.K.kIconsMd5;
 import static com.intfocus.yonghuitest.util.K.kImagesMd5;
 import static com.intfocus.yonghuitest.util.K.kInfo;
 import static com.intfocus.yonghuitest.util.K.kUserName;
@@ -86,12 +87,12 @@ public class ApiHelper {
             JSONObject assetsJSON = userJSON.getJSONObject(URLs.kAssets);
             userJSON.put(kFontsMd5, assetsJSON.getString(kFontsMd5));
             userJSON.put(kImagesMd5, assetsJSON.getString(kImagesMd5));
+            userJSON.put(kIconsMd5, assetsJSON.getString(kIconsMd5));
             userJSON.put(K.kStylesheetsMd5, assetsJSON.getString(K.kStylesheetsMd5));
             userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
 
             FileUtil.writeFile(userConfigPath, userJSON.toString());
 
-            Log.i("CurrentUser", userJSON.toString());
             if (response.get(URLs.kCode).equals("200")) {
                 // 第三方消息推送，设备标识
                 ApiHelper.pushDeviceToken(context, userJSON.getString("device_uuid"));

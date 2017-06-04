@@ -1,11 +1,14 @@
 package com.intfocus.yonghuitest.dashboard.kpi.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
@@ -42,6 +45,8 @@ public class NumberFragment extends BaseTableFragment {
     private TextView tv_compare;
     @ViewInject(R.id.img_vpitem)
     private MeterCursor img_cursor;
+    @ViewInject(R.id.ll_vp)
+    private LinearLayout ll_vp;
 
     DecimalFormat df = new DecimalFormat("#.00");
 
@@ -82,35 +87,40 @@ public class NumberFragment extends BaseTableFragment {
 
 
     private void init() {
-        tv_title.setText(entity.title);
-        double number = entity.data.high_light.number;
-        if (number==0)
-            tv_number.setText("0");
-        else
+        tv_title.setText(entity.getTitle());
+        double number = entity.getData().getHigh_light().getNumber();
+        if (number == 0.123456789) {
+//            tv_title.setTextSize(20);
+            tv_number.setVisibility(View.GONE);
+            ll_vp.setVisibility(View.GONE);
+            tv_unit.setVisibility(View.GONE);
+        }
+        else {
             tv_number.setText(formatNumber(String.valueOf(df.format(number))));
+        }
 
-        tv_number.setTextColor(colors[entity.data.high_light.arrow]);
-        tv_unit.setText(entity.unit);
+        tv_unit.setText(entity.getUnit());
 
-        MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.compare != 0) {//显示百分比
-            float compare = (float) ((high_light.number - high_light.compare) / high_light.compare * 100);
-            if (high_light.number-high_light.compare>0) {//上箭头
+            MererEntity.LineEntity.HighLight high_light = entity.getData().getHigh_light();
+            if (high_light.getCompare() != 0) {//显示百分比
+            float compare = (float) ((high_light.getNumber() - high_light.getCompare()) / high_light.getCompare() * 100);
+            if (high_light.getNumber() - high_light.getCompare() > 0) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
             } else {
                 tv_compare.setText("" + df.format(compare) + "%");
             }
         }
 
-        if (high_light.arrow >= 0) {
+        if (high_light.getArrow() >= 0) {
             img_cursor.setVisibility(View.VISIBLE);
-            tv_compare.setTextColor(colors[high_light.arrow]);
-            tv_number.setTextColor(colors[high_light.arrow]);
+            tv_compare.setTextColor(colors[high_light.getArrow()]);
+            tv_number.setTextColor(colors[high_light.getArrow()]);
         } else {
             img_cursor.setVisibility(View.GONE);
+            tv_number.setTextColor(Color.BLACK);
         }
 
-        img_cursor.setCursorState(high_light.arrow);
+        img_cursor.setCursorState(high_light.getArrow());
 
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override

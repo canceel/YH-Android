@@ -56,12 +56,12 @@ public class MDetalRootPageMode extends AbstractMode {
                                     String entityKey = reader.readString();
                                     if ("type".equals(entityKey)) {
                                         String name = reader.readObject().toString();
-                                        entity.type = name;
+                                        entity.setType(name);
                                         datas.add(entity);
                                     } else if ("config".equals(entityKey)) {
                                         entity = new MDetalUnitEntity();
                                         String data = reader.readObject().toString();
-                                        entity.config = data;
+                                        entity.setConfig(data);
                                     }
                                 }
                                 reader.endObject();

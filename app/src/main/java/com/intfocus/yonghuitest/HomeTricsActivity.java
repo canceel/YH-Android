@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,7 +17,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -307,6 +305,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                     rlChart.setVisibility(View.GONE);
                     ivWarning.setImageResource(R.drawable.btn_inf);
                     isShowChartData = false;
+//                    setData(false,true);
                 } else {
                     showPopWindows();
                 }
@@ -409,7 +408,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     public void itemSelected(int page, int position, boolean isDoubleClick) {
         this.isDoubleClick = isDoubleClick;
         //设置排序栏数据
-        Log.i("itemSelected", "" + page + "    " + position);
         itemSelected = page * 4 + position;
         setData(false, true);
         if (isDoubleClick) {
@@ -449,13 +447,23 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 for (int i = 0; i < homeMetrics.products.size(); i++) {
                     if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
                         homeMetrics.products.get(i).isSelected = true;
+                        productSelected = i;
                     } else {
                         homeMetrics.products.get(i).isSelected = false;
                     }
                 }
             }
-            product = products.get(productSelected);
+
+            for (Product product1 : homeMetrics.products) {
+                if (product1.getName().equals(selectedProductName)) {
+                    product = product1;
+                }
+            }
+            Log.i("testlog", product.getName());
+            lastProductSelected = productSelected;
         }
+
+
         //给报表使用的数据,已经排序，则提取得报表数据也要排序后得字段
         for (HomeMetrics homeMetrics : homeMetricses) {
             int selectedNumber = productSelected;
@@ -483,8 +491,8 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             }
         }
         //重组指标数据
-        homeMetrics = ReorganizeTheDataUtils.groupByNumber(product, 4, true);
-        metricsAdapter.setDatas(homeMetrics);
+        HomeMetrics homeMetrics1 = ReorganizeTheDataUtils.groupByNumber(product, 4, true);
+        metricsAdapter.setDatas(homeMetrics1);
         //设置排序栏显示文字
         tvSaleSort.setText(product.items.get(itemSelected).getName());
         adapter.setDatas(products, itemSelected, maxValue);
@@ -702,15 +710,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         tvRateOfChange.setText(result);
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             switch (item.state.getColor()) {
-                case "#F2E1AC":
+                case "#F4BC45":
                     ivRateOfChange.setImageResource(R.drawable.arrow_yellow_up);
                     break;
 
-                case "#F2836B":
+                case "#F57685":
                     ivRateOfChange.setImageResource(R.drawable.arrow_red_up);
                     break;
 
-                case "#63A69F":
+                case "#91C941":
                     ivRateOfChange.setImageResource(R.drawable.arrow_green_up);
                     break;
 
@@ -720,15 +728,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             }
         } else {
             switch (item.state.getColor()) {
-                case "#F2E1AC":
+                case "#F4BC45":
                     ivRateOfChange.setImageResource(R.drawable.arrow_yellow_down);
                     break;
 
-                case "#F2836B":
+                case "#F57685":
                     ivRateOfChange.setImageResource(R.drawable.arrow_red_down);
                     break;
 
-                case "#63A69F":
+                case "#91C941":
                     ivRateOfChange.setImageResource(R.drawable.arrow_green_down);
                     break;
 

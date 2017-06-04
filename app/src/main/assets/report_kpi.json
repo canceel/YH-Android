@@ -1,159 +1,171 @@
 {
   "data": [
     {
-      "is_stick": true,
-      "title": "实时数据",
-      "group_name": "仪表盘测试一",
-      "dashboard_type": "ring",
-      "target_url": "https://www.baidu.com",
-      "unit": "元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "21100",
-          "compare": "28800",
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
       "is_stick": false,
-      "title": "实时数据一",
-      "group_name": "仪表盘",
-      "dashboard_type": "ring",
-      "target_url": "mobile/v2/group/%@/template/4/report/8",
-      "unit": "万",
+      "title": "品类实时销售概况",
+      "group_name": "品类教练实时",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/4/report/30",
+      "unit": "万元",
       "data": {
         "high_light": {
           "percentage": false,
-          "number": "88",
-          "compare": "100",
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "实时数据二",
-      "group_name": "仪表盘",
-      "dashboard_type": "bar",
-      "target_url": "mobile/v2/group/%@/template/4/report/9",
-      "unit": "元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "29900",
-          "compare": "28800",
-          "arrow": 1
-        },
-        "chart_data": [
-          32300.0,
-          26800.0,
-          27600.0,
-          29900.0,
-          28800.0
-        ]
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "实时数据三",
-      "group_name": "仪表盘",
-      "dashboard_type": "line",
-      "target_url": "mobile/v2/group/%@/template/4/report/11",
-      "unit": "元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "22200",
-          "compare": "28800",
+          "number": "1804",
+          "compare": "6237",
           "arrow": 3
         },
         "chart_data": [
-          32300.0,
-          26800.0,
-          27600.0,
-          29900.0
+          1065.9,
+          3078.44,
+          4945.31,
+          4955.99,
+          3592.71,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
         ]
       }
     },
     {
       "is_stick": false,
-      "title": "实时数据四",
-      "group_name": "仪表盘",
+      "title": "同大区门店实时销售",
+      "group_name": "品类教练实时",
       "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/4/report/13",
-      "unit": "",
+      "target_url": "mobile/v2/group/%@/template/2/report/31",
+      "unit": "万元",
       "data": {
         "high_light": {
-          "percentage": true,
-          "number": "0.017",
-          "compare": "0.023",
+          "percentage": false,
+          "number": "5",
+          "compare": "22",
+          "arrow": 3
+        },
+        "chart_data": [
+          1.6183599853515624,
+          8.3836796875,
+          12.8889,
+          12.339,
+          10.4633,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "is_stick": false,
+      "title": "品类同大区销售概况",
+      "group_name": "品类教练专题",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/2/report/63",
+      "unit": "万元",
+      "data": {
+        "high_light": {
+          "percentage": false,
+          "number": "76374",
+          "compare": null,
           "arrow": null
         },
         "chart_data": []
       }
     },
     {
-      "is_stick": true,
-      "title": "实时数据",
-      "group_name": "仪表盘测试二",
-      "dashboard_type": "bar",
-      "target_url": "mobile/v2/group/%@/template/4/report/5",
+      "is_stick": false,
+      "title": "品类同赛马群销售概况",
+      "group_name": "品类教练专题",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/2/report/64",
+      "unit": "万元",
+      "data": {
+        "high_light": {
+          "percentage": false,
+          "number": "76374",
+          "compare": null,
+          "arrow": null
+        },
+        "chart_data": []
+      }
+    },
+    {
+      "is_stick": false,
+      "title": "品类同大区进销存概况",
+      "group_name": "品类教练专题",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/4/report/65",
+      "unit": "万",
+      "data": {
+        "high_light": {
+          "percentage": false,
+          "number": "14",
+          "compare": null,
+          "arrow": null
+        },
+        "chart_data": []
+      }
+    },
+    {
+      "is_stick": false,
+      "title": "品类同赛马群进销存概况",
+      "group_name": "品类教练专题",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/2/report/66",
+      "unit": "万",
+      "data": {
+        "high_light": {
+          "percentage": false,
+          "number": "14",
+          "compare": null,
+          "arrow": null
+        },
+        "chart_data": []
+      }
+    },
+    {
+      "is_stick": false,
+      "title": "门店销售概况",
+      "group_name": "门店概况",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/2/report/49",
+      "unit": "万元",
+      "data": {
+        "high_light": {
+          "percentage": false,
+          "number": "741",
+          "compare": "959",
+          "arrow": 3
+        },
+        "chart_data": []
+      }
+    },
+    {
+      "is_stick": false,
+      "title": "门店负毛利概况",
+      "group_name": "门店概况",
+      "dashboard_type": "number",
+      "target_url": "mobile/v2/group/%@/template/2/report/61",
       "unit": "元",
       "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "29900",
-          "compare": "27700",
-          "arrow": 1
-        },
-        "chart_data": [
-          32300.0,
-          26800.0,
-          27600.0,
-          29900.0,
-          28800.0
-        ]
-      }
-    },
-    {
-      "is_stick": true,
-      "title": "实时数据",
-      "group_name": "仪表盘测试三",
-      "dashboard_type": "line",
-      "target_url": "mobile/v2/group/%@/template/4/report/6",
-      "unit": "万",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "255",
-          "compare": "268",
-          "arrow": 4
-        },
-        "chart_data": [
-          323.0,
-          268.0,
-          276.0,
-          299.0
-        ]
-      }
-    },
-    {
-      "is_stick": true,
-      "title": "实时数据",
-      "group_name": "仪表盘测试八",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/4/report/21",
-      "unit": "万",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "456",
-          "compare": "666",
-          "arrow": 3
+          "high_light": {
+            "percentage": false,
+            "number": "-1082.56",
+            "compare": null,
+            "arrow": null
         },
         "chart_data": []
       }

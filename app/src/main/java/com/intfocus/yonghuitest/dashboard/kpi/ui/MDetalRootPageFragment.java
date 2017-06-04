@@ -84,7 +84,7 @@ public class MDetalRootPageFragment extends BaseTableFragment<MDetalRootPageMode
      * 图表点击事件统一处理方法
      */
     public void onMessageEvent(final MDetalRootPageRequestResult entity) {
-        if (entity != null && entity.stateCode == 200) {
+        if (entity != null && entity.getStateCode() == 200) {
             act.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -98,19 +98,19 @@ public class MDetalRootPageFragment extends BaseTableFragment<MDetalRootPageMode
      * 绑定数据
      */
     private void bindData(MDetalRootPageRequestResult result) {
-        ArrayList<MDetalUnitEntity> datas = result.datas;
+        ArrayList<MDetalUnitEntity> datas = result.getDatas();
         int size = datas.size();
         Random random = new Random();
         for (int i = 0; i < size; i++) {
             Fragment fragment = null;
             MDetalUnitEntity entity = datas.get(i);
-            switch (entity.type) {
+            switch (entity.getType()) {
                 case "banner"://标题栏
-                    fragment = MDRPUnitBannerFragment.newInstance(entity.config);
+                    fragment = MDRPUnitBannerFragment.newInstance(entity.getConfig());
                     break;
 
                 case "chart"://曲线图表
-                    fragment = MDRPUnitCurveChartFragment.newInstance(entity.config);
+                    fragment = MDRPUnitCurveChartFragment.newInstance(entity.getConfig());
                     break;
 
                 case "info"://一般标签(附标题)

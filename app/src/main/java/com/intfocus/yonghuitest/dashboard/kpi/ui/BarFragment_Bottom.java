@@ -90,7 +90,7 @@ public class BarFragment_Bottom extends BaseTableFragment {
 
 
     private void init() {
-        if (entity.is_stick) {
+        if (entity.is_stick()) {
             mChart.setInterceptAnimate(true);
         } else {
             rootView.post(new Runnable() {
@@ -106,34 +106,34 @@ public class BarFragment_Bottom extends BaseTableFragment {
             });
         }
 
-        tv_title.setText(entity.title);
-        double number = entity.data.high_light.number;
+        tv_title.setText(entity.getTitle());
+        double number = entity.getData().getHigh_light().getNumber();
         if (number==0)
             tv_number.setText("0");
         else
             tv_number.setText(formatNumber(String.valueOf(df.format(number))));
-        tv_unit.setText(entity.unit);
+        tv_unit.setText(entity.getUnit());
 
-        MererEntity.LineEntity.HighLight high_light = entity.data.high_light;
-        if (high_light.compare != 0) {//显示百分比
-            float compare = (float) ((high_light.number - high_light.compare) / high_light.compare * 100);
-            if (high_light.number-high_light.compare>0) {//上箭头
+        MererEntity.LineEntity.HighLight high_light = entity.getData().getHigh_light();
+        if (high_light.getCompare() != 0) {//显示百分比
+            float compare = (float) ((high_light.getNumber() - high_light.getCompare()) / high_light.getCompare() * 100);
+            if (high_light.getNumber()-high_light.getCompare()>0) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
             } else {
                 tv_compare.setText("" + df.format(compare) + "%");
             }
         }
 
-        if (high_light.arrow >= 0) {
+        if (high_light.getArrow() >= 0) {
             img_cursor.setVisibility(View.VISIBLE);
-            tv_compare.setTextColor(colors[high_light.arrow]);
-            tv_number.setTextColor(colors[high_light.arrow]);
+            tv_compare.setTextColor(colors[high_light.getArrow()]);
+            tv_number.setTextColor(colors[high_light.getArrow()]);
         }
         else
             img_cursor.setVisibility(View.GONE);
-        img_cursor.setCursorState(high_light.arrow);
+        img_cursor.setCursorState(high_light.getArrow());
 
-        int[] chart_data = entity.data.chart_data;
+        int[] chart_data = entity.getData().getChart_data();
         int size = chart_data.length;
 
         if (size > 0) {
@@ -143,10 +143,10 @@ public class BarFragment_Bottom extends BaseTableFragment {
             }
             mChart.setScrollAble(false);
             mChart.setFixedWidth(16);
-            mChart.setActivationColor(colors[high_light.arrow]);
+            mChart.setActivationColor(colors[high_light.getArrow()]);
             mChart.setNormalColor(Color.parseColor("#4EB5D7"));
             mChart.setTextPrintColor(Color.parseColor("#4EB5D7"));
-            mChart.setDrawTextUnit(entity.unit);
+            mChart.setDrawTextUnit(entity.getUnit());
             mChart.setBarStanded(10);
             mChart.setBarAniStyle(NChart.ChartAniStyle.BAR_UP);//TODO 动画效果
             mChart.setChartStyle(NChart.ChartStyle.BAR);//TODO 曲线图

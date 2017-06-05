@@ -622,7 +622,7 @@ public class HttpUtil {
         }
     }
 
-    private static boolean checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
+    public static boolean checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
         try {
             boolean isShouldUpdateAssets = false;
             String sharedPath = FileUtil.sharedPath(context);

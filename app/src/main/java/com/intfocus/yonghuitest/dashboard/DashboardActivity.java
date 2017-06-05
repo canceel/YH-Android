@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.intfocus.yonghuitest.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
 import com.intfocus.yonghuitest.adapter.MenuAdapter;
+import com.intfocus.yonghuitest.bean.dashboard.ResourceUpdataResult;
+import com.intfocus.yonghuitest.event.ResourceUpdataEvent;
 import com.intfocus.yonghuitest.setting.SettingActivity;
 import com.intfocus.yonghuitest.setting.SettingListActivity;
 import com.intfocus.yonghuitest.setting.ThursdaySayActivity;
@@ -37,6 +40,9 @@ import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.TabView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,14 +76,17 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        EventBus.getDefault().register(this);
         mApp = (YHApplication) this.getApplication();
         mAppContext = mApp.getAppContext();
         mContext = this;
+        initUserIDColorView();
         mSharedPreferences = getSharedPreferences("DashboardPreferences", MODE_PRIVATE);
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
-        initUserIDColorView();
-        bindFragment();
-        HttpUtil.checkAssetsUpdated(mContext);
+        mViewPager = (ViewPager) findViewById(R.id.content_view);
+        initTabView();
+        initViewPaper(mDashboardFragmentAdapter);
+        ResourceUpdataEvent.Companion.checkResourceFileUpdated(mContext);
         checkUserModifiedInitPassword(); // 检测用户密码
     }
 
@@ -87,14 +96,25 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        dealSendMessage();
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(ResourceUpdataResult result) {
+        if (result.isUpdata()) {
+            mViewPager.setAdapter(null);
+            mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
+            initViewPaper(mDashboardFragmentAdapter);
+        }
+
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        dealSendMessage();
     }
 
     @Override
@@ -237,10 +257,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         startActivity(intent);
     }
 
-    /*
-     * 初始化 TabView 和 ViewPaper
-     */
-    private void bindFragment() {
+    private void initTabView() {
         mTabKPI = (TabView) findViewById(R.id.tab_kpi);
         mTabAnalysis = (TabView) findViewById(R.id.tab_analysis);
         mTabAPP = (TabView) findViewById(R.id.tab_app);
@@ -251,9 +268,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mTabAnalysis.setOnClickListener(mTabChangeListener);
         mTabAPP.setOnClickListener(mTabChangeListener);
         mTabMessage.setOnClickListener(mTabChangeListener);
+    }
 
-        mViewPager = (ViewPager) findViewById(R.id.content_view);
-        mViewPager.setAdapter(mDashboardFragmentAdapter);
+    /**
+     * @param dashboardFragmentAdapter
+     */
+    private void initViewPaper(DashboardFragmentAdapter dashboardFragmentAdapter) {
+        mViewPager.setAdapter(dashboardFragmentAdapter);
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setCurrentItem(mSharedPreferences.getInt("LastTab", 0));
         mTabView[mViewPager.getCurrentItem()].setActive(true);

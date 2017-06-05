@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest.adapter.table;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;

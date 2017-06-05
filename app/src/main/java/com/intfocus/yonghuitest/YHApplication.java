@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.setting.SettingActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
@@ -25,6 +26,8 @@ import com.pgyersdk.crash.PgyCrashManager;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -151,21 +154,18 @@ public class YHApplication extends Application {
 
     private void initXutils() {
         x.Ext.init(this);
-//        x.Ext.setDebug(BuildConfig.DEBUG);
-        if (!org.xutils.BuildConfig.DEBUG) {
-            x.Ext.setDebug(org.xutils.BuildConfig.DEBUG);
-        }
+        x.Ext.setDebug(BuildConfig.DEBUG);
     }
 
-//    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {
-//        @Override
-//        public void dealWithCustomAction(Context context, UMessage uMessage) {
-//            super.dealWithCustomAction(context, uMessage);
-//            Intent intent = new Intent(context, SettingActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//        }
-//    };
+    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {
+        @Override
+        public void dealWithCustomAction(Context context, UMessage uMessage) {
+            super.dealWithCustomAction(context, uMessage);
+            Intent intent = new Intent(context, DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    };
 
     /*
      * 程序终止时会执行以下代码

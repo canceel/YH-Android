@@ -137,7 +137,7 @@ public class ApiHelper {
             case "201":
                 break;
             case "304":
-                return true;
+                break;
             default:
                 return false;
         }

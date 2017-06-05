@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.dashboard.kpi.constant.Constant;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -134,6 +136,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 				animLoading.setVisibility(View.GONE);
 				isWeiXinShared = true;
 				LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
+
+//				view.loadUrl("javascript:window.AndroidJSBridge.showSource('<head>'+" +
+//						"document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 
 				// 报表缓存列表:是否把报表标题存储
 				if (reportDataState && url.contains("report_"+reportID)){
@@ -719,6 +724,16 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     private class JavaScriptInterface extends JavaScriptBase {
+		@JavascriptInterface
+		public void showSource(String html) {
+			String htmlFilePath = Environment.getExternalStorageDirectory() + "/" + "content.html";
+			Log.i("testlog", htmlFilePath);
+			try {
+				FileUtil.writeFile(htmlFilePath, html);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
         /*
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
@@ -773,8 +788,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 new Thread(mRunnableForLogger).start();
                 //点击两次还是有异常 异常报出
                 if (loadCount > 2) {
-                    showWebViewExceptionForWithoutNetwork();
-                    loadCount++;
+//                    showWebViewExceptionForWithoutNetwork();
+//                    loadCount++;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -1,7 +1,4 @@
 package com.intfocus.yonghuitest.dashboard.kpi.entity
-
-import android.content.Intent
-
 import java.io.Serializable
 
 /**
@@ -47,7 +44,7 @@ class MererEntity : Serializable {
 
         inner class HighLight : Serializable {
             var percentage: Boolean = false //是否显示百分比0、1
-            var number: Double? = null //高亮数字
+            var number: Double? = 0.toDouble() //高亮数字
             var compare: Double = 0.toDouble() //百分比
             var arrow: Int? = null //决定箭头方向和颜色
         }

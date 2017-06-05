@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId 'com.intfocus.yonghuitest'
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
     }
     if (System.getenv().containsKey("KEYSTORE"))
         signingConfigs {
@@ -52,7 +52,7 @@ repositories {
     }
 }
 
-def SUPPORT_VERSION = "24.2.1"
+def SUPPORT_VERSION = "25.3.1"
 
 dependencies {
     compile 'com.android.support:appcompat-v7:' + SUPPORT_VERSION
@@ -73,8 +73,8 @@ dependencies {
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
     compile files('libs/SocialSDK_WeiXin_Full.jar')
-//    compile 'org.xutils:xutils:3.5.0'
-    compile files('libs/xutils-3.2.2.jar')
+    compile 'org.xutils:xutils:3.5.0'
+//    compile files('libs/xutils-3.2.2.jar')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.4.2'

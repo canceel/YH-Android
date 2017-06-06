@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.intfocus.yonghuitest.util.K.kAppVersion;
+import static com.intfocus.yonghuitest.util.K.kAssetsMd5;
 import static com.intfocus.yonghuitest.util.K.kFontsMd5;
 import static com.intfocus.yonghuitest.util.K.kIconsMd5;
 import static com.intfocus.yonghuitest.util.K.kImagesMd5;

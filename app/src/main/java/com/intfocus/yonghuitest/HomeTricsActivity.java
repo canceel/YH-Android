@@ -459,7 +459,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                     product = product1;
                 }
             }
-            Log.i("testlog", product.getName());
             lastProductSelected = productSelected;
         }
 

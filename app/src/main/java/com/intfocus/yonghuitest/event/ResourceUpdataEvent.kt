@@ -15,9 +15,9 @@ import org.xutils.common.Callback.ProgressCallback
 import org.xutils.x
 import android.R.attr.path
 import android.util.Log
+import org.greenrobot.eventbus.Subscribe
 import org.xutils.common.Callback
 import org.xutils.http.RequestParams
-
 
 
 /**
@@ -29,22 +29,16 @@ class ResourceUpdataEvent {
         val assetsFileNames = arrayOf(URLs.kFonts, URLs.kImages, URLs.kIcons, URLs.kStylesheets,
                 URLs.kJavaScripts)
 
-        fun checkResourceFileUpdated(context: Context){
-            var isUpdata = false
+        fun checkResourceFileUpdated(context: Context) {
             for (resourceFileName in resourceFileNames) {
-                isUpdata = checkAssetUpdated(context, resourceFileName, false)
-                if (!isUpdata)
-                    continue
+                checkAssetUpdated(context, resourceFileName, false)
             }
 
             for (assetsFileName in assetsFileNames) {
-                isUpdata = checkAssetUpdated(context, assetsFileName, true)
-                if (!isUpdata)
-                    continue
+                checkAssetUpdated(context, assetsFileName, true)
             }
 
-            EventBus.getDefault().post(ResourceUpdataResult(isUpdata))
-        }
+    }
 
         fun checkAssetUpdated(context: Context, assetName: String, isInAssets: Boolean): Boolean {
             try {
@@ -62,10 +56,12 @@ class ResourceUpdataEvent {
                     return false
                 }
 
+                EventBus.getDefault().post(ResourceUpdataResult(true))
+
                 var downloadResourceUrl = String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName)
 
                 if (downloadFile(downloadResourceUrl, assetZipPath)) {
-
+                    FileUtil.checkAssets(context, assetName, isInAssets)
                 }
 
                 return true
@@ -80,32 +76,23 @@ class ResourceUpdataEvent {
             var isSuccess = false
             val requestParams = RequestParams(url)
             requestParams.saveFilePath = path
-            x.http().get(requestParams, object : Callback.ProgressCallback<File> {
-                override fun onWaiting() {}
 
-                override fun onStarted() {}
-
+            x.http().get(requestParams, object : Callback.CommonCallback<File> {
                 override fun onCancelled(cex: CancelledException?) {
                 }
 
-                override fun onLoading(total: Long, current: Long, isDownloading: Boolean) {
-                }
-
                 override fun onSuccess(result: File) {
-                    Log.i("testlog", "is Success")
+                    EventBus.getDefault().post(ResourceUpdataResult(false))
                     isSuccess = true
                 }
 
                 override fun onError(ex: Throwable, isOnCallback: Boolean) {
                     ex.printStackTrace()
                 }
+
                 override fun onFinished() {}
             })
-            return isSuccess
-        }
-
-        fun unZip(path: String) {
-
+            return false
         }
     }
 }

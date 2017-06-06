@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.dashboard;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,9 +11,11 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.TimeUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
+import com.intfocus.yonghuitest.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
 import com.intfocus.yonghuitest.SubjectActivity;
@@ -39,6 +43,7 @@ import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.TabView;
+import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,6 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 
@@ -66,6 +72,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private ViewPager mViewPager;
     private TabView mTabKPI, mTabAnalysis, mTabAPP, mTabMessage;
     private Context mContext, mAppContext;
+    public ProgressDialog mProgressDialog;
 
     public static final int PAGE_KPI = 0;
     public static final int PAGE_ANALYSIS = 1;
@@ -86,7 +93,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mViewPager = (ViewPager) findViewById(R.id.content_view);
         initTabView();
         initViewPaper(mDashboardFragmentAdapter);
-        ResourceUpdataEvent.Companion.checkResourceFileUpdated(mContext);
+        HttpUtil.checkAssetsUpdated(mContext);
         checkUserModifiedInitPassword(); // 检测用户密码
     }
 
@@ -99,16 +106,6 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(ResourceUpdataResult result) {
-        if (result.isUpdata()) {
-            mViewPager.setAdapter(null);
-            mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
-            initViewPaper(mDashboardFragmentAdapter);
-        }
-
     }
 
     @Override

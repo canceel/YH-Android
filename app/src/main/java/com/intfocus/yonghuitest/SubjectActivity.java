@@ -727,7 +727,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 		@JavascriptInterface
 		public void showSource(String html) {
 			String htmlFilePath = Environment.getExternalStorageDirectory() + "/" + "content.html";
-			Log.i("testlog", htmlFilePath);
 			try {
 				FileUtil.writeFile(htmlFilePath, html);
 			} catch (IOException e) {

@@ -1,28 +1,20 @@
 package com.intfocus.yonghuitest;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat.LayoutParams;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,7 +28,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -58,7 +49,6 @@ import com.intfocus.yonghuitest.bean.table.TableBarChart;
 import com.intfocus.yonghuitest.bean.table.TableChart;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
-import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
@@ -71,11 +61,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-import com.yanzhenjie.recyclerview.swipe.touch.OnItemMoveListener;
-import com.yanzhenjie.recyclerview.swipe.touch.OnItemStateChangedListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -83,7 +69,6 @@ import org.xutils.x;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.intfocus.yonghuitest.util.URLs.kBannerName;

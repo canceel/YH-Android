@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.intfocus.yonghuitest.util.K.kAppVersion;
+import static com.intfocus.yonghuitest.util.K.kAssetsMd5;
 import static com.intfocus.yonghuitest.util.K.kFontsMd5;
 import static com.intfocus.yonghuitest.util.K.kIconsMd5;
 import static com.intfocus.yonghuitest.util.K.kImagesMd5;
@@ -265,6 +267,7 @@ public class ApiHelper {
                 ApiHelper.storeResponseHeader(urlKey, assetsPath, response);
 
                 String htmlContent = response.get(URLs.kBody);
+
                 htmlContent = htmlContent.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath));
                 htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath));
                 htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath));

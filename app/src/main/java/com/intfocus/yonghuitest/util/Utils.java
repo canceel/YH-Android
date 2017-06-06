@@ -3,13 +3,10 @@ package com.intfocus.yonghuitest.util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.intfocus.yonghuitest.bean.table.SortData;
 import com.intfocus.yonghuitest.bean.table.TableBarChart;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

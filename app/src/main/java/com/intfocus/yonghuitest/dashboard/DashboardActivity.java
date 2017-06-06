@@ -63,16 +63,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private DashboardFragmentAdapter mDashboardFragmentAdapter;
     private PopupWindow popupWindow;
     private SharedPreferences mSharedPreferences;
-    private ArrayList<HashMap<String, Object>> listItem;
     private TabView[] mTabView;
     private JSONObject user;
     private int userID;
-    private MenuAdapter mSimpleAdapter;
     private YHApplication mApp;
     private ViewPager mViewPager;
     private TabView mTabKPI, mTabAnalysis, mTabAPP, mTabMessage;
     private Context mContext, mAppContext;
-    public ProgressDialog mProgressDialog;
 
     public static final int PAGE_KPI = 0;
     public static final int PAGE_ANALYSIS = 1;
@@ -83,7 +80,6 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        EventBus.getDefault().register(this);
         mApp = (YHApplication) this.getApplication();
         mAppContext = mApp.getAppContext();
         mContext = this;
@@ -105,7 +101,6 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

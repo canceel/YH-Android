@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--头像-->
+        <ImageView
+            android:id="@+id/iv_user_icon"
+            android:layout_width="96.5dp"
+            android:layout_height="96.5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/pic_sh"/>
+
+        <!--用户名-->
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_user_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="用户名"
+            android:textColor="@color/black"
+            android:textSize="@dimen/user_name_size"/>
+
+        <!--登陆地点-->
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="上次登陆: 上海"
+            android:textSize="12sp"
+            android:layout_below="@+id/tv_user_name"
+            android:layout_marginTop="5dp"/>
+
+        <!--单值-->
+        <include layout="@layout/items_single_value"></include>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ll_single_value"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <View style="@style/SmallDivider"/>
+
+            <!--用户角色-->
+            <RelativeLayout
+                android:id="@+id/rl_user_role"
+                style="@style/rl_list_user_item">
+
+                <ImageView
+                    android:id="@+id/iv_user_role"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_person"/>
+
+                <TextView
+                    android:id="@+id/tv_user_role"
+                    style="@style/tv_list_user_item"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_user_role"
+                    android:text="@string/text_user_role"/>
+
+                <TextView
+                    android:id="@+id/tv_user_role_value"
+                    style="@style/tv_list_user_item"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="40dp"
+                    android:text="小店长"/>
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_user_group"
+                style="@style/rl_list_user_item"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/iv_user_group"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_department"/>
+
+                <TextView
+                    android:id="@+id/tv_user_group"
+                    style="@style/tv_list_user_item"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_user_group"
+                    android:text="@string/text_user_group"/>
+
+                <TextView
+                    android:id="@+id/tv_user_group_value"
+                    style="@style/tv_list_user_item"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="40dp"
+                    android:text="营运团队"/>
+
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_password_alter"
+                style="@style/rl_list_user_item">
+
+                <ImageView
+                    android:id="@+id/iv_password_alter"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_lock"/>
+
+                <TextView
+                    style="@style/tv_list_user_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_password_alter"
+                    android:text="@string/text_password_alter"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:src="@drawable/list_ic_arroow"/>
+
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_issue"
+                style="@style/rl_list_user_item"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/iv_issue_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/list_ic_sign"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_issue"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_feedback"/>
+
+                <TextView
+                    style="@style/tv_list_user_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_issue"
+                    android:text="@string/text_issue"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:src="@drawable/list_ic_arroow"/>
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+
+            <View
+                style="@style/SmallDivider"
+                android:layout_marginTop="40.5dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_favorite"
+                style="@style/rl_list_user_item"
+                android:layout_marginTop="1dp">
+
+                <ImageView
+                    android:id="@+id/iv_favorite_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/list_ic_sign"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_favorite"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_save"/>
+
+                <TextView
+                    style="@style/tv_list_user_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_favorite"
+                    android:text="@string/text_favorite"/>
+
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_setting"
+                style="@style/rl_list_user_item"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    style="@style/iv_list_user_item"
+                    android:src="@drawable/list_ic_set"/>
+
+                <TextView
+                    style="@style/tv_list_user_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13.5dp"
+                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginRight="13.5dp"
+                    android:layout_toRightOf="@+id/iv_setting"
+                    android:text="@string/text_setting"/>
+            </RelativeLayout>
+
+            <View style="@style/SmallDivider"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
+

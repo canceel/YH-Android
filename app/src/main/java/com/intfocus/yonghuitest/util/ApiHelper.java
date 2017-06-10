@@ -42,6 +42,8 @@ public class ApiHelper {
      */
     public static String authentication(Context context, String username, String password) {
         String responseState = "success", urlString = String.format(K.kUserAuthenticateAPIPath, K.kBaseUrl, "android", username, password);
+        Log.i("testlog", urlString);
+
         try {
             JSONObject device = new JSONObject();
             device.put("name", android.os.Build.MODEL);

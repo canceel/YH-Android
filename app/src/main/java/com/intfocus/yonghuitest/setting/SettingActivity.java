@@ -28,11 +28,8 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.LoginActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
-import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.CircleImageView;
 

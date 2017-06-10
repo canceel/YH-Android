@@ -23,4 +23,15 @@
     <dimen name="graph_underbar">40dip</dimen>
     <dimen name="markerview_width">100dip</dimen>
     <dimen name="markerview_height">105dip</dimen>
+
+    <!--个人信息页-->
+    <dimen name="menu_text_size">18sp</dimen>
+    <dimen name="user_name_size">18sp</dimen>
+    <dimen name="location_text_size">18sp</dimen>
+    <dimen name="single_value_above_size">15.5dp</dimen>
+    <dimen name="single_value_text_size_large">40sp</dimen>
+    <dimen name="single_value_text_size_medium">18sp</dimen>
+    <dimen name="single_value_text_size_small">14sp</dimen>
+    <dimen name="list_text_size">16sp</dimen>
+    <dimen name="logout_text_size">18sp</dimen>
 </resources>

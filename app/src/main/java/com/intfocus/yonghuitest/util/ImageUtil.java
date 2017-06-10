@@ -1,7 +1,9 @@
 package com.intfocus.yonghuitest.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -11,8 +13,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.intfocus.yonghuitest.SubjectActivity;
 
 import java.io.File;
 
@@ -112,4 +118,6 @@ public class ImageUtil {
 
         return bitmap;
     }
+
+
 }

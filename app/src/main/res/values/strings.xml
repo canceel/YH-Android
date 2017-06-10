@@ -20,14 +20,17 @@
     <string name="eight">8</string>
     <string name="nine">9</string>
     <string name="period">.</string>
+
     <string name="login_submit">登录</string>
     <string name="login_password_placeholder">密码</string>
     <string name="login_username_placeholder">账户名</string>
     <string name="login_slogan_text">融合共享，成于至善</string>
+
     <string name="text_kpi">仪表盘</string>
     <string name="text_analysis">分析</string>
     <string name="text_app">应用</string>
     <string name="text_message">消息</string>
+
     <string name="text_scan">扫一扫</string>
     <string name="text_search">搜索</string>
     <string name="text_user_info">个人信息</string>
@@ -38,6 +41,24 @@
     <string name="text_shaixuan">筛选</string>
     <string name="text_copylink">拷贝链接</string>
     <string name="text_hangjgao">行高</string>
+
+    <!--个人信息-->
+    <string name="text_user_role">用户角色</string>
+    <string name="text_user_group">归属部门</string>
+    <string name="text_password_alter">密码修改</string>
+    <string name="text_issue">问题反馈</string>
+    <string name="text_setting">我的设置</string>
+    <string name="text_favorite">文章收藏</string>
+    <string name="text_user_number">累计登陆</string>
+    <string name="text_report_number">浏览报表</string>
+    <string name="text_beyond">超越用户</string>
+
+    <string name="text_phone_number">请输入手机号</string>
+    <string name="text_input_code">请输入验证码</string>
+    <string name="text_get_code">获取验证码</string>
+    <string name="text_new_password">请输入新密码</string>
+    <string name="text_confirm_password">请再次输入新密码</string>
+
     <string name="title_activity_developer">DeveloperActivity</string>
     <string name="title_activity_speech">SpeechActivity</string>
     <string name="findPassword">找回密码</string>

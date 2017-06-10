@@ -128,4 +128,14 @@
     <color name="sequence5">#f57658</color>
     <color name="sequence6">#f4bc45</color>
     <color name="sequence7">#3cc7c9</color>
+
+    <!--个人信息页-->
+    <color name="tab_layout_line">#6aa657</color>
+    <color name="user_info_item_background">#fbfcf5</color>
+    <color name="item_line">#d2d2d2</color>
+    <color name="logout_line">#848484</color>
+    <color name="logout_text">#010101</color>
+    <color name="location_text">#6e6e6e</color>
+    <color name="location_color">#6aa657</color>
+    <color name="hint_text_color">#bdbdbd</color>
 </resources>

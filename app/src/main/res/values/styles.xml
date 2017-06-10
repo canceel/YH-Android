@@ -128,6 +128,12 @@
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
+    <style name="SmallDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/item_line</item>
+    </style>
+
     <style name="BannerTitle">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
@@ -312,6 +318,39 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:listDivider">@drawable/theme_devider</item>
         <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="rl_list_user_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@color/user_info_item_background</item>
+    </style>
+
+    <style name="iv_list_user_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">23.5dp</item>
+        <item name="android:layout_marginTop">10.5dp</item>
+        <item name="android:layout_marginBottom">10.5dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="tv_list_user_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/list_text_size</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ll_list_password_alter_items">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/background_password_alter</item>
     </style>
 
 </resources>

@@ -19,7 +19,6 @@ import com.intfocus.yonghuitest.HomeTricsActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.SubjectActivity;
 import com.intfocus.yonghuitest.TableActivity;
-import com.intfocus.yonghuitest.dashboard.kpi.ui.MainActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -37,7 +36,7 @@ import java.io.IOException;
  * Created by liuruilin on 2017/3/30.
  */
 
-public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WebViewFragment extends BaseHomeFragment implements SwipeRefreshLayout.OnRefreshListener {
     public void initSwipeLayout(View view) {
         mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
@@ -132,6 +131,11 @@ public class WebViewFragment extends BaseFragment implements SwipeRefreshLayout.
                     startActivity(browserIntent);
                 }
             });
+        }
+
+        @JavascriptInterface
+        public void setDashboardDataCount(String str, int i) {
+
         }
 
         /*

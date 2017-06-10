@@ -1,5 +1,7 @@
 package com.intfocus.yonghuitest.bean.table;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**

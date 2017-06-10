@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.dashboard.kpi.utils.DisplayUtil;
+import com.intfocus.yonghuitest.util.DisplayUtil;
 import com.intfocus.yonghuitest.util.K;
 
 

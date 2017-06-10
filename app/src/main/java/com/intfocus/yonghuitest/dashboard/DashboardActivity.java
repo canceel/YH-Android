@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest.dashboard;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,31 +10,24 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.TimeUtils;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
-import com.intfocus.yonghuitest.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
 import com.intfocus.yonghuitest.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
-import com.intfocus.yonghuitest.adapter.MenuAdapter;
-import com.intfocus.yonghuitest.bean.dashboard.ResourceUpdataResult;
-import com.intfocus.yonghuitest.event.ResourceUpdataEvent;
 import com.intfocus.yonghuitest.setting.SettingActivity;
-import com.intfocus.yonghuitest.setting.SettingListActivity;
 import com.intfocus.yonghuitest.setting.ThursdaySayActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -43,23 +35,16 @@ import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.TabView;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
 
 import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 
-public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback{
+public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
     private DashboardFragmentAdapter mDashboardFragmentAdapter;
     private PopupWindow popupWindow;
     private SharedPreferences mSharedPreferences;
@@ -70,6 +55,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private ViewPager mViewPager;
     private TabView mTabKPI, mTabAnalysis, mTabAPP, mTabMessage;
     private Context mContext, mAppContext;
+    private RelativeLayout mActionBar;
 
     public static final int PAGE_KPI = 0;
     public static final int PAGE_ANALYSIS = 1;
@@ -87,6 +73,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mSharedPreferences = getSharedPreferences("DashboardPreferences", MODE_PRIVATE);
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.content_view);
+        mActionBar = (RelativeLayout) findViewById(R.id.actionBar);
         initTabView();
         initViewPaper(mDashboardFragmentAdapter);
         HttpUtil.checkAssetsUpdated(mContext);
@@ -313,18 +300,22 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         if (state == 2) {
             switch (mViewPager.getCurrentItem()) {
                 case PAGE_KPI:
+                    mActionBar.setVisibility(View.VISIBLE);
                     mTabKPI.setActive(true);
                     break;
 
                 case PAGE_ANALYSIS:
+                    mActionBar.setVisibility(View.VISIBLE);
                     mTabAnalysis.setActive(true);
                     break;
 
                 case PAGE_APP:
+                    mActionBar.setVisibility(View.VISIBLE);
                     mTabAPP.setActive(true);
                     break;
 
                 case PAGE_MESSAGE:
+                    mActionBar.setVisibility(View.GONE);
                     mTabMessage.setActive(true);
                     break;
             }
@@ -364,13 +355,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                     case "report":
                         Intent subjectIntent = new Intent(this, SubjectActivity.class);
                         subjectIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        try{
+                        try {
                             subjectIntent.putExtra(URLs.kLink, pushMessageJSON.getString("url"));
                             subjectIntent.putExtra(URLs.kBannerName, pushMessageJSON.getString("title"));
                             subjectIntent.putExtra(URLs.kObjectId, pushMessageJSON.getInt("obj_id"));
                             subjectIntent.putExtra(URLs.kObjectType, pushMessageJSON.getInt("obj_type"));
                             startActivity(subjectIntent);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Toast.makeText(DashboardActivity.this, "推送消息的格式有误", Toast.LENGTH_SHORT);
                             e.printStackTrace();
                         }
@@ -401,8 +392,8 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     }
 
     /*
- * 用户编号
- */
+     * 用户编号
+     */
     public void checkUserModifiedInitPassword() {
         try {
             if (!user.getString(URLs.kPassword).equals(URLs.MD5(K.kInitPassword))) {
@@ -419,11 +410,11 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                     startActivity(intent);
                 }
             }).setNegativeButton("稍后修改", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 返回DashboardActivity
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // 返回DashboardActivity
+                }
+            });
             alertDialog.show();
         } catch (JSONException e) {
             e.printStackTrace();

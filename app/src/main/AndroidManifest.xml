@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="338"
-          android:versionName="2.0.8">
+          android:versionCode="340"
+          android:versionName="2.1.0">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -76,9 +76,9 @@
             android:name=".TableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
-        <!-- 忘记密码页 -->
+        <!-- 修改页 -->
         <activity
-            android:name=".ForgetPasswordActivity"
+            android:name=".dashboard.message.PassWordAlterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
@@ -187,6 +187,10 @@
 
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.kpi.entity.Main2Activity">
+        </activity>
+        <activity android:name=".dashboard.message.FavoriteActivity">
+        </activity>
+        <activity android:name=".dashboard.message.IssueActivity">
         </activity>
     </application>
 

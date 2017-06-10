@@ -1,23 +1,17 @@
 package com.intfocus.yonghuitest.event
 
 import android.content.Context
-import android.os.AsyncTask
 import com.intfocus.yonghuitest.bean.dashboard.ResourceUpdataResult
-import com.intfocus.yonghuitest.util.*
-import com.intfocus.yonghuitest.util.HttpUtil.checkAssetUpdated
+import com.intfocus.yonghuitest.util.FileUtil
+import com.intfocus.yonghuitest.util.K
+import com.intfocus.yonghuitest.util.URLs
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
-import java.io.File
-import org.xutils.common.Callback.CancelledException
-import com.intfocus.yonghuitest.dashboard.kpi.ui.MainActivity
-import android.app.ProgressDialog.STYLE_HORIZONTAL
-import org.xutils.common.Callback.ProgressCallback
-import org.xutils.x
-import android.R.attr.path
-import android.util.Log
-import org.greenrobot.eventbus.Subscribe
 import org.xutils.common.Callback
+import org.xutils.common.Callback.CancelledException
 import org.xutils.http.RequestParams
+import org.xutils.x
+import java.io.File
 
 
 /**

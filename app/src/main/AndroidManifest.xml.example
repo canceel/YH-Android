@@ -62,7 +62,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.yonghuitest.SubjectActivity"
+            android:name="com.intfocus.yonghuitest.subject.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme" />

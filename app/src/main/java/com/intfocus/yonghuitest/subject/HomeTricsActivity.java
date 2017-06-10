@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.subject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +40,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.intfocus.yonghuitest.CommentActivity;
+import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.adapter.metrics.MetricsAdapter;
 import com.intfocus.yonghuitest.adapter.metrics.ProductListAdapter;
 import com.intfocus.yonghuitest.base.BaseActivity;

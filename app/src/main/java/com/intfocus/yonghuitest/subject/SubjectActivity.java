@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.subject;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -34,6 +34,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.intfocus.yonghuitest.CommentActivity;
+import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.ReportSelectorAcitity;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;

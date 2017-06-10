@@ -68,12 +68,12 @@
 
         <!-- 模板三 -->
         <activity
-            android:name=".HomeTricsActivity"
+            android:name=".subject.HomeTricsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <activity
-            android:name=".TableActivity"
+            android:name=".subject.TableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
         <!-- 修改页 -->
@@ -113,7 +113,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 模板二/主题页面 -->
         <activity
-            android:name=".SubjectActivity"
+            android:name=".subject.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
@@ -134,7 +134,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
-            android:name=".BarCodeResultActivity"
+            android:name=".subject.BarCodeResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->

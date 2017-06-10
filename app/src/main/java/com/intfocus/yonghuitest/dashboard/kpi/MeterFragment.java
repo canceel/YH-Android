@@ -19,10 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.HomeTricsActivity;
+import com.intfocus.yonghuitest.subject.HomeTricsActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.SubjectActivity;
-import com.intfocus.yonghuitest.TableActivity;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
+import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.base.BaseSwipeHomeFragment;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.adapter.kpi.MarginDecoration;

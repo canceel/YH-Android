@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.subject;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -32,6 +32,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.intfocus.yonghuitest.CommentActivity;
+import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.adapter.table.ColumAdapter;
 import com.intfocus.yonghuitest.adapter.table.TableBarChartAdapter;
 import com.intfocus.yonghuitest.adapter.table.TableContentItemAdapter;

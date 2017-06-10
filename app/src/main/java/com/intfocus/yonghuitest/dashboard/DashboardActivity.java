@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
-import com.intfocus.yonghuitest.SubjectActivity;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
 import com.intfocus.yonghuitest.setting.SettingActivity;

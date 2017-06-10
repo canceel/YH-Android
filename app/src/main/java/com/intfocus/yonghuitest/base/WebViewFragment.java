@@ -15,10 +15,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.intfocus.yonghuitest.HomeTricsActivity;
+import com.intfocus.yonghuitest.subject.HomeTricsActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.SubjectActivity;
-import com.intfocus.yonghuitest.TableActivity;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
+import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;

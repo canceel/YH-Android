@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.subject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +20,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.google.gson.JsonParser;
+import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.StoreSelectorActivity;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;

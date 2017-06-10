@@ -5,7 +5,6 @@ import java.util.ArrayList
 
 /**
  * 仪表盘实体对象
- * Created by zbaoliang on 17-4-28.
  */
 class MDRPUnitCurveChartEntity : Serializable {
     var chart_type: String? = null

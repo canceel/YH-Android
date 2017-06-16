@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest.adapter.kpi;
+package com.intfocus.yonghuitest.adapter.dashboard;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

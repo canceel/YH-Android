@@ -333,7 +333,7 @@ public class BaseActivity extends Activity {
         }
 
         public String getLoadLocalHtmlUrl(){
-            String htmlName = HttpUtil.UrlToFileName(mUrlString);
+            String htmlName = HttpUtil.urlToFileName(mUrlString);
             String htmlPath = String.format("%s/%s", mAssetsPath, htmlName);
             return htmlPath;
         }

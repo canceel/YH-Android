@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.mode
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.bean.dashboard.UserInfoBean
 import com.intfocus.yonghuitest.bean.dashboard.UserInfoRequest
@@ -16,22 +17,17 @@ import java.util.*
 /**
  * Created by liuruilin on 2017/6/7.
  */
-class UserInfoMode(var ctx : Context) : AbstractMode() {
+class UserInfoMode(ctx : Context) : AbstractMode() {
     lateinit var urlString: String
     var result : String? = null
     val mSharedPreferences : SharedPreferences = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
-    var mUserInfo : UserInfoBean? = null
+    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
     var mUserInfoString : String? = null
     var gson = Gson()
 
     fun getUrl(): String {
         var url = "http://192.168.0.137:3000/api/v1/user/1/mine/user_info"
         return url
-    }
-
-    init {
-        mUserInfoString = mSharedPreferences.getString("UserInfoBean", "")
-        mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
     }
 
     override fun requestData() {
@@ -42,14 +38,12 @@ class UserInfoMode(var ctx : Context) : AbstractMode() {
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = UserInfoRequest(true, 400)
-                    result1.userInfoBean = mUserInfo
                     EventBus.getDefault().post(result1)
                     return@Runnable
                 }
                 analysisData(result)
             } else {
                 val result1 = UserInfoRequest(true, 400)
-                result1.userInfoBean = mUserInfo
                 EventBus.getDefault().post(result1)
                 return@Runnable
             }
@@ -67,7 +61,6 @@ class UserInfoMode(var ctx : Context) : AbstractMode() {
                 val code = jsonObject.getInt("code")
                 if (code != 200) {
                     val result1 = UserInfoRequest(true, code)
-                    result1.userInfoBean = mUserInfo
                     EventBus.getDefault().post(result1)
                     return result1
                 }
@@ -75,7 +68,7 @@ class UserInfoMode(var ctx : Context) : AbstractMode() {
 
             if (jsonObject.has("data")) {
                 var data = jsonObject.getString("data")
-                mSharedPreferences.edit().putString("UserInfoBean", data).commit()
+                mSharedPreferences.edit().putString("UserInfo", data).commit()
                 var userInfo = gson.fromJson(data, UserInfoBean::class.java)
                 val result1 = UserInfoRequest(true, 200)
                 result1.userInfoBean = userInfo
@@ -85,13 +78,15 @@ class UserInfoMode(var ctx : Context) : AbstractMode() {
         } catch (e: JSONException) {
             e.printStackTrace()
             val result1 = UserInfoRequest(true, -1)
-            result1.userInfoBean = mUserInfo
             EventBus.getDefault().post(result1)
         }
 
         val result1 = UserInfoRequest(true, 0)
-        result1.userInfoBean = mUserInfo
         EventBus.getDefault().post(result1)
         return result1
+    }
+
+    fun uplodeUserIcon(bitmap: Bitmap) {
+
     }
 }

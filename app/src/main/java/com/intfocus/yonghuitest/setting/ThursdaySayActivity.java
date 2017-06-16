@@ -12,10 +12,10 @@ import com.intfocus.yonghuitest.util.URLs;
 
 /**
  * Created by 40284 on 2016/9/10.
-            */
-    public class ThursdaySayActivity extends BaseActivity {
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+ */
+public class ThursdaySayActivity extends BaseActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thursday_say);
 

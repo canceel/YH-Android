@@ -353,7 +353,7 @@ public class HttpUtil {
         return retMap;
     }
 
-    public static String UrlToFileName(String urlString) {
+    public static String urlToFileName(String urlString) {
         String path = "default";
         try {
             urlString = urlString.replace(K.kBaseUrl, "");

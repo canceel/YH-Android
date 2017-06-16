@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="340"
-          android:versionName="2.1.0">
+          android:versionCode="358"
+          android:versionName="2.1.8">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -69,6 +69,16 @@
         <!-- 模板三 -->
         <activity
             android:name=".subject.HomeTricsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <!-- 问题反馈 -->
+        <activity
+            android:name=".dashboard.message.IssueActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <!--公告详情-->
+        <activity
+            android:name=".dashboard.message.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
@@ -186,11 +196,7 @@
             android:value="Umeng"/>
 
         <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.kpi.entity.Main2Activity">
-        </activity>
         <activity android:name=".dashboard.message.FavoriteActivity">
-        </activity>
-        <activity android:name=".dashboard.message.IssueActivity">
         </activity>
     </application>
 

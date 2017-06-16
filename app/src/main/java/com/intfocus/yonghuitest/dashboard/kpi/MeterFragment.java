@@ -25,9 +25,9 @@ import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.base.BaseSwipeHomeFragment;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
-import com.intfocus.yonghuitest.adapter.kpi.MarginDecoration;
-import com.intfocus.yonghuitest.adapter.kpi.MeterVPAdapter;
-import com.intfocus.yonghuitest.adapter.kpi.SaleDataAdapter;
+import com.intfocus.yonghuitest.adapter.dashboard.MarginDecoration;
+import com.intfocus.yonghuitest.adapter.dashboard.MeterVPAdapter;
+import com.intfocus.yonghuitest.adapter.dashboard.SaleDataAdapter;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterClickEventEntity;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterRequestResult;
@@ -60,7 +60,7 @@ import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 import sumimakito.android.advtextswitcher.Switcher;
 
 /**
- * 仪表盘
+ * 主页 - 仪表盘
  */
 public class MeterFragment extends BaseSwipeHomeFragment {
 
@@ -184,7 +184,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MeterRequestResult result) {
-        if (!result.isSuccess()) {
+        if (!result.isSuccess() || result == null) {
             ToastUtil.showToast(ctx, "数据请求失败，errorCode:" + result.getStateCode());
             return;
         }

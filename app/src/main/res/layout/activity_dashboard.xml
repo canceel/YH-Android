@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="42dp"
         android:background="@color/actionBar"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -82,21 +82,21 @@
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_kpi_s"
             app:src="@drawable/tab_kpi"
-            app:text="仪表盘"/>
+            app:text="生意概况"/>
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_analysis"
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_analysis_s"
             app:src="@drawable/tab_analysis"
-            app:text="分析"/>
+            app:text="报表"/>
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_app"
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_app_s"
             app:src="@drawable/tab_app"
-            app:text="应用"/>
+            app:text="专题"/>
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_message"
@@ -104,7 +104,7 @@
             app:active="false"
             app:active_src="@drawable/tab_message_s"
             app:src="@drawable/tab_message"
-            app:text="消息"/>
+            app:text="我的"/>
 
     </LinearLayout>
 

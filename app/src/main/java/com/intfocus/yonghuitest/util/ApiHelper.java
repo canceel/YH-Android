@@ -3,12 +3,15 @@ package com.intfocus.yonghuitest.util;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.intfocus.yonghuitest.bean.UserBean;
 
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONException;
@@ -27,13 +30,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.intfocus.yonghuitest.util.K.kAppVersion;
 import static com.intfocus.yonghuitest.util.K.kAssetsMd5;
+import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
 import static com.intfocus.yonghuitest.util.K.kFontsMd5;
 import static com.intfocus.yonghuitest.util.K.kIconsMd5;
 import static com.intfocus.yonghuitest.util.K.kImagesMd5;
 import static com.intfocus.yonghuitest.util.K.kInfo;
+import static com.intfocus.yonghuitest.util.K.kUserDeviceId;
+import static com.intfocus.yonghuitest.util.K.kUserId;
 import static com.intfocus.yonghuitest.util.K.kUserName;
+import static com.intfocus.yonghuitest.util.URLs.kGroupId;
+import static com.intfocus.yonghuitest.util.URLs.kRoleId;
 
 public class ApiHelper {
     /*
@@ -42,7 +51,6 @@ public class ApiHelper {
      */
     public static String authentication(Context context, String username, String password) {
         String responseState = "success", urlString = String.format(K.kUserAuthenticateAPIPath, K.kBaseUrl, "android", username, password);
-        Log.i("testlog", urlString);
 
         try {
             JSONObject device = new JSONObject();
@@ -96,6 +104,15 @@ public class ApiHelper {
             userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
 
             FileUtil.writeFile(userConfigPath, userJSON.toString());
+
+            SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+            mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
+            mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
+            mUserSP.edit().putInt(kRoleId, userJSON.getInt(kRoleId)).commit();
+            mUserSP.edit().putInt(kUserId, userJSON.getInt(kUserId)).commit();
+            mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
+            mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
+
 
             if (response.get(URLs.kCode).equals("200")) {
                 // 第三方消息推送，设备标识
@@ -261,7 +278,7 @@ public class ApiHelper {
             String statusCode = response.get(URLs.kCode);
             retMap.put(URLs.kCode, statusCode);
 
-            String htmlName = HttpUtil.UrlToFileName(urlString);
+            String htmlName = HttpUtil.urlToFileName(urlString);
             String htmlPath = String.format("%s/%s", assetsPath, htmlName);
             retMap.put("path", htmlPath);
 

@@ -5,41 +5,6 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        style="@style/TitleStyle"
-        android:background="@color/text_white">
-
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:text="取消"
-            android:textColor="@color/text_black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="选列"
-            android:textColor="@color/text_black"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:paddingRight="16dp"
-            android:text="应用"
-            android:textColor="@color/text_black"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

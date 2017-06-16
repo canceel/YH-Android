@@ -59,6 +59,11 @@
     <string name="text_new_password">请输入新密码</string>
     <string name="text_confirm_password">请再次输入新密码</string>
 
+    <string name="text_system_notice">系统公告</string>
+    <string name="text_work_notice">业务公告</string>
+    <string name="text_warning_system">预警体系</string>
+    <string name="text_report_comment">报表评论</string>
+
     <string name="title_activity_developer">DeveloperActivity</string>
     <string name="title_activity_speech">SpeechActivity</string>
     <string name="findPassword">找回密码</string>

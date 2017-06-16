@@ -1,18 +1,19 @@
 package com.intfocus.yonghuitest.mode;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.intfocus.yonghuitest.bean.UserBean;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.Message;
 import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterRequestResult;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.URLs;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.StringUtil;
 
@@ -20,14 +21,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.intfocus.yonghuitest.util.K.kUserId;
+import static android.content.Context.MODE_PRIVATE;
+import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
 import static com.intfocus.yonghuitest.util.URLs.kGroupId;
+import static com.intfocus.yonghuitest.util.URLs.kRoleId;
 
 /**
  * 仪表盘-数据处理模块
@@ -39,43 +41,27 @@ public class MeterMode extends AbstractMode {
     String urlString;
     String messageUrlString;
     JSONObject user;
+    SharedPreferences mUserSP;
 
     public MeterMode(Context ctx) {
         this.ctx = ctx;
     }
 
     public String getKpiUrl() {
-        String url;
-        try {
-            String userConfigPath = String.format("%s/%s", com.intfocus.yonghuitest.util.FileUtil.basePath(ctx), K.kUserConfigFileName);
-            if ((new File(userConfigPath)).exists()) {
-                user = com.intfocus.yonghuitest.util.FileUtil.readConfigFile(userConfigPath);
-            }
-            String currentUIVersion = URLs.currentUIVersion(ctx);
-            url = String.format(K.kKPIMobileDataPath, K.kBaseUrl, currentUIVersion, user.getString(
-                    kGroupId), user.getString(URLs.kRoleId));
-        } catch (JSONException e) {
-            url = null;
-            e.printStackTrace();
-        }
+        mUserSP = ctx.getSharedPreferences("UserBean", MODE_PRIVATE);
+        String url = String.format(K.kKPIMobileDataPath, K.kBaseUrl, mUserSP.getString(kCurrentUIVersion, "v2"),
+                                String.valueOf(mUserSP.getInt(kGroupId,0)), String.valueOf(mUserSP.getInt(kRoleId, 0)));
+        Log.i("testlog", url);
         return url;
     }
 
     public String getMessageUrl() {
-        String url;
-        try {
-            String userConfigPath = String.format("%s/%s", com.intfocus.yonghuitest.util.FileUtil.basePath(ctx), K.kUserConfigFileName);
-            if ((new File(userConfigPath)).exists()) {
-                user = com.intfocus.yonghuitest.util.FileUtil.readConfigFile(userConfigPath);
-            }
-            url = String.format(K.kMessageDataMobilePath, K.kBaseUrl, user.getString(URLs.kRoleId), user.getString(
-                    kGroupId), user.getString(kUserId));
-        } catch (JSONException e) {
-            url = null;
-            e.printStackTrace();
-        }
+        String url = String.format(K.kMessageDataMobilePath, K.kBaseUrl, UserBean.INSTANCE.getUser_role_id(),
+                UserBean.INSTANCE.getUser_group_id(),
+                UserBean.INSTANCE.getUser_id());
         return url;
     }
+
     @Override
     public void requestData() {
         new Thread(new Runnable() {
@@ -94,12 +80,10 @@ public class MeterMode extends AbstractMode {
                     analysisData(result);
                 }
                 else {
-                    MeterRequestResult result1 = new MeterRequestResult(true, 400);
+                    MeterRequestResult result1 = new MeterRequestResult(false, 400);
                     EventBus.getDefault().post(result1);
                     return;
                 }
-
-
             }
         }).start();
     }
@@ -169,10 +153,10 @@ public class MeterMode extends AbstractMode {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            MeterRequestResult result1 = new MeterRequestResult(true, -1);
+            MeterRequestResult result1 = new MeterRequestResult(false, -1);
             EventBus.getDefault().post(result1);
         }
-        MeterRequestResult result1 = new MeterRequestResult(true, 0);
+        MeterRequestResult result1 = new MeterRequestResult(false, 0);
         EventBus.getDefault().post(result1);
         return result1;
     }

@@ -38,7 +38,7 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPager
 
     override fun getItem(position: Int): Fragment {
         when (position) {
-            DashboardActivity.PAGE_KPI -> return mKpiFragment
+            DashboardActivity.PAGE_KPI -> return mMeterFragment
             DashboardActivity.PAGE_ANALYSIS -> return mAnalysisFragment
             DashboardActivity.PAGE_APP -> return mAppFragment
             DashboardActivity.PAGE_MESSAGE -> return mMessageFragment

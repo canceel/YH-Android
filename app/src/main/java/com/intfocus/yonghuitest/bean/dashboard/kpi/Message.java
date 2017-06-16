@@ -9,4 +9,6 @@ import java.util.List;
 public class Message {
     public int code;
     public List<MessageData> data;
+
+
 }

@@ -30,7 +30,6 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="actionBarSize">50dp</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
@@ -43,6 +42,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
 
     <style name="ButtonBar">
         <item name="android:paddingLeft">2dp</item>
@@ -329,7 +329,7 @@
     <style name="iv_list_user_item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">23.5dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_marginTop">10.5dp</item>
         <item name="android:layout_marginBottom">10.5dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -351,6 +351,15 @@
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/background_password_alter</item>
+    </style>
+
+
+    <style name="tv_notice_List_title_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

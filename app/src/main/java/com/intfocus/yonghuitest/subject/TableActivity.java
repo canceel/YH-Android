@@ -525,7 +525,6 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         });
     }
 
-
     /*
      * 评论
      */
@@ -549,15 +548,11 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         ivCheckAll.setImageResource(isSelectedAll ? R.drawable.btn_selected : R.drawable.btn_unselected);
         recyclerView = (SwipeMenuRecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
-//        menuRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
-        // 触摸拖拽的代码在Adapter中：SwipeMenuRecyclerView#startDrag(ViewHolder);
         columnAdapter = new ColumAdapter(recyclerView, originTableData, this);
         recyclerView.setAdapter(columnAdapter);
 
         recyclerView.setLongPressDragEnabled(true); // 开启拖拽。
         recyclerView.setItemViewSwipeEnabled(false); // 关闭滑动删除。
-//        recyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
-//        recyclerView.setOnItemStateChangedListener(mOnItemStateChangedListener);
         commonDialog.setContentView(view);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -981,7 +976,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
     //表格中数据点击
     @Override
-    public void ItemClick(int position) {
+    public void itemClick(int position) {
         mLastTime = mCurTime;
         mCurTime = System.currentTimeMillis();
         //双击显示条形图

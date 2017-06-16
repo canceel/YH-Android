@@ -154,6 +154,7 @@ public class FileUtil {
                     System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
+                fs.close();
                 inStream.close();
             }
             Log.i("response",  "file is copy");

@@ -68,7 +68,7 @@
                     android:id="@+id/tv_user_role"
                     style="@style/tv_list_user_item"
                     android:layout_marginBottom="13.5dp"
-                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="13.5dp"
                     android:layout_toRightOf="@+id/iv_user_role"
                     android:text="@string/text_user_role"/>
@@ -77,7 +77,7 @@
                     android:id="@+id/tv_user_role_value"
                     style="@style/tv_list_user_item"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="30dp"
                     android:text="小店长"/>
             </RelativeLayout>
 
@@ -97,7 +97,7 @@
                     android:id="@+id/tv_user_group"
                     style="@style/tv_list_user_item"
                     android:layout_marginBottom="13.5dp"
-                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="13.5dp"
                     android:layout_toRightOf="@+id/iv_user_group"
                     android:text="@string/text_user_group"/>
@@ -106,7 +106,7 @@
                     android:id="@+id/tv_user_group_value"
                     style="@style/tv_list_user_item"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="30dp"
                     android:text="营运团队"/>
 
             </RelativeLayout>
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="13.5dp"
-                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="13.5dp"
                     android:layout_toRightOf="@+id/iv_password_alter"
                     android:text="@string/text_password_alter"/>
@@ -137,7 +137,7 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="30dp"
                     android:src="@drawable/list_ic_arroow"/>
 
             </RelativeLayout>
@@ -169,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="13.5dp"
-                    android:layout_marginLeft="13.5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="13.5dp"
                     android:layout_toRightOf="@+id/iv_issue"
                     android:text="@string/text_issue"/>
@@ -179,7 +179,7 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="30dp"
                     android:src="@drawable/list_ic_arroow"/>
             </RelativeLayout>
 
@@ -245,6 +245,29 @@
             </RelativeLayout>
 
             <View style="@style/SmallDivider"/>
+
+            <View style="@style/SmallDivider"
+                android:layout_marginTop="30dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_logout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/user_info_item_background">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="退出登录"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
+            <View style="@style/SmallDivider"
+                android:layout_marginBottom="15dp"/>
+
+
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

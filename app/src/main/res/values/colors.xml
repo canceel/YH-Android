@@ -138,4 +138,8 @@
     <color name="location_text">#6e6e6e</color>
     <color name="location_color">#6aa657</color>
     <color name="hint_text_color">#bdbdbd</color>
+
+    <color name="user_info_base">#6aa657</color>
+
+    <color name="list_title_base">#6aa657</color>
 </resources>

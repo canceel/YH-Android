@@ -48,6 +48,14 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kForgetPwdMobilePath      = "%s/mobile/%s/forget_user_password";
 
   /**
+   * MinePage#API
+   */
+  public final static String kNoticeListPath           = "%s/api/v1/user/%s/type/%s/page/%s/limit/%s/notices";
+  public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
+  public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
+  public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
+
+  /**
    *  Config#Application
    */
   public final static String kConfigDirName             = "Configs";
@@ -86,6 +94,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kUserId = "user_id";
   public final static String kUserName = "user_name";
   public final static String kUserDeviceId = "user_device_id";
+  public final static String kCurrentUIVersion = "current_ui_version";
 
   /**
    * Config#Push Message

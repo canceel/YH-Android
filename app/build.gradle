@@ -89,6 +89,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    compile 'com.kyleduo.switchbutton:library:1.4.6'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }

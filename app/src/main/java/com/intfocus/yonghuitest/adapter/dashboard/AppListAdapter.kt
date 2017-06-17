@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.adapter.dashboard
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,10 @@ import com.intfocus.yonghuitest.bean.dashboard.ListGroupBean
 /**
  * Created by liuruilin on 2017/6/15.
  */
-class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>,
-                                var listener: AppListAdapter.AppListListener)
+class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?, var listener: AppListItemAdapter.ItemListener)
                                     : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
 
     var inflater = LayoutInflater.from(ctx)
-
-    fun setData() {
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListAdapter.AppListViewHolder{
         val contentView = inflater.inflate(R.layout.item_app_list, parent, false)
@@ -29,8 +25,9 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>,
     }
 
     override fun onBindViewHolder(holder: AppListAdapter.AppListViewHolder, position: Int) {
-        holder.tvAppListTitle.text = appListDatas[position].group_name
-        holder.gvAppListItem.adapter = AppListItemAdapter(ctx, appListDatas[position].group_data)
+        Log.i("testlog", appListDatas!![position].group_name)
+        holder.tvAppListTitle.text = appListDatas!![position].group_name
+        holder.gvAppListItem.adapter = AppListItemAdapter(ctx, appListDatas!![position].data, listener)
     }
 
     override fun getItemCount(): Int {
@@ -41,9 +38,5 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>,
     class AppListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var tvAppListTitle = itemView.findViewById(R.id.tv_app_list_title) as TextView
         var gvAppListItem = itemView.findViewById(R.id.gv_app_list_item) as GridView
-    }
-
-    interface AppListListener {
-        fun itemClick(position: Int)
     }
 }

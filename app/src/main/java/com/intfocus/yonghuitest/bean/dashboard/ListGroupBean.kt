@@ -5,5 +5,5 @@ package com.intfocus.yonghuitest.bean.dashboard
  */
 class ListGroupBean {
     var group_name: String? = null
-    var group_data: List<GroupDataBean>? = null
+    var data: List<GroupDataBean>? = null
 }

@@ -72,7 +72,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
         if (!noticeListString.equals("")) {
             var noticeListBean = gson.fromJson(noticeListString, NoticeListBean::class.java)
             datas = noticeListBean!!.data
-            val mLayoutManager = LinearLayoutManager(context)
+            val mLayoutManager = LinearLayoutManager(ctx)
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             rv_notice_list.layoutManager = mLayoutManager
             rv_notice_list.adapter = NoticeListAdapter(ctx, datas, this)

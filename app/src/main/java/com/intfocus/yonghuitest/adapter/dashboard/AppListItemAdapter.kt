@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.dashboard.GroupDataBean
 
 /**
  * Created by liuruilin on 2017/6/16.
  */
-class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : BaseAdapter() {
+class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var listener: AppListItemAdapter.ItemListener) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
 
     override fun getCount(): Int {
@@ -36,16 +38,24 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : Ba
             convertView = mInflater.inflate(R.layout.item_app_list_gv, null)
 
             // construct an item tag
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.iv_app_item_img) as ImageView, convertView!!.findViewById(R.id.tv_app_item_name) as TextView)
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_app_item) as LinearLayout,
+                    convertView!!.findViewById(R.id.iv_app_item_img) as ImageView,
+                    convertView!!.findViewById(R.id.tv_app_item_name) as TextView)
             convertView!!.tag = viewTag
         } else {
             viewTag = convertView.tag as ItemViewTag
         }
+
         viewTag.mName.text = datas!![position].name
-        viewTag.mIcon.setImageResource(R.drawable.default_icon)
+        Glide.with(ctx).load(datas!![position].icon_link).into(viewTag.mIcon)
+        viewTag.llItem.setOnClickListener { listener.itemClick(datas!![position].name, datas!![position].link_path) }
 
         return convertView
     }
 
-    internal inner class ItemViewTag(var mIcon: ImageView, var mName: TextView)
+    internal inner class ItemViewTag(var llItem: LinearLayout, var mIcon: ImageView, var mName: TextView)
+
+    interface ItemListener {
+        fun itemClick(name: String?, url: String?)
+    }
 }

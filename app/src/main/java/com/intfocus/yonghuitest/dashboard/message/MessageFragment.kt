@@ -32,11 +32,11 @@ class MessageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
     fun initViewPager() {
         fragmentList.add(NoticeFragment())
-//        fragmentList.add(UserFragment())
+        fragmentList.add(InstituteFragment())
         fragmentList.add(UserFragment())
 
         titleList.add("公告预警")
-//        titleList.add("数据学院")
+        titleList.add("数据学院")
         titleList.add("个人信息")
 
         mViewPagerAdapter = MessageViewPagerAdapter(childFragmentManager, fragmentList, titleList)

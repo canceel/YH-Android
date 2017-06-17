@@ -2,11 +2,16 @@ package com.intfocus.yonghuitest.mode
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
+import com.intfocus.yonghuitest.bean.dashboard.ListPageResult
 import com.intfocus.yonghuitest.bean.dashboard.NoticeContentBean
 import com.intfocus.yonghuitest.bean.dashboard.NoticeContentRequest
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
+import com.intfocus.yonghuitest.util.URLs.kGroupId
+import com.intfocus.yonghuitest.util.URLs.kRoleId
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
@@ -20,35 +25,37 @@ import java.util.HashMap
  */
 class ListPageMode(ctx: Context) : AbstractMode() {
     lateinit var urlString: String
+    lateinit var type: String
     var result: String? = null
-    val mListPageSP: SharedPreferences = ctx.getSharedPreferences("NoticeContent", Context.MODE_PRIVATE)
+    val mListPageSP: SharedPreferences = ctx.getSharedPreferences("ListPage", Context.MODE_PRIVATE)
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
     var gson = Gson()
-    var id = ""
 
     fun getUrl(): String {
-        var url = "http://development.shengyiplus.com/api/v1/user/" + mUserSP.getInt(K.kUserId,0).toString() + "/notice/" + id
+        var url = String.format(K.KAppListPath, K.kBaseUrl,
+                mUserSP.getInt(kGroupId,0).toString(), mUserSP.getInt(kRoleId,0).toString())
         return url
     }
 
-    fun requestData(id: String) {
-        this.id = id
+    fun requestData(type: String) {
+        this.urlString = getUrl()
+        this.type = type
         requestData()
     }
     override fun requestData() {
         Thread(Runnable {
-            urlString = getUrl()
+            urlString = urlString
             if (!urlString.isEmpty()) {
                 val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
-                    val result1 = NoticeContentRequest(false, 400)
+                    val result1 = ListPageResult(false, 400)
                     EventBus.getDefault().post(result1)
                     return@Runnable
                 }
                 analysisData(result)
             } else {
-                val result1 = NoticeContentRequest(false, 400)
+                val result1 = ListPageResult(false, 400)
                 EventBus.getDefault().post(result1)
                 return@Runnable
             }
@@ -59,34 +66,34 @@ class ListPageMode(ctx: Context) : AbstractMode() {
      * 解析数据
      * @param result
      */
-    private fun analysisData(result: String?): NoticeContentRequest {
+    private fun analysisData(result: String?): ListPageResult {
         try {
             val jsonObject = JSONObject(result)
             if (jsonObject.has("code")) {
                 val code = jsonObject.getInt("code")
                 if (code != 200) {
-                    val result1 = NoticeContentRequest(false, code)
+                    val result1 = ListPageResult(false, code)
                     EventBus.getDefault().post(result1)
                     return result1
                 }
             }
 
             if (jsonObject.has("data")) {
-                var resultStr = jsonObject.get("data").toString()
-                mNoticeContentSP.edit().putString("NoticeContent", resultStr).commit()
-                var noticeContent = gson.fromJson(resultStr, NoticeContentBean::class.java)
-                val result1 = NoticeContentRequest(true, 200)
-                result1.noticeContent = noticeContent
+                var resultStr = jsonObject.toString()
+                mListPageSP.edit().putString(type, resultStr).commit()
+                var listPageData = gson.fromJson(resultStr, ListPageBean::class.java)
+                val result1 = ListPageResult(true, 200)
+                result1.categroy_list = listPageData.data
                 EventBus.getDefault().post(result1)
                 return result1
             }
         } catch (e: JSONException) {
             e.printStackTrace()
-            val result1 = NoticeContentRequest(false, -1)
+            val result1 = ListPageResult(false, -1)
             EventBus.getDefault().post(result1)
         }
 
-        val result1 = NoticeContentRequest(false, 0)
+        val result1 = ListPageResult(false, 0)
         EventBus.getDefault().post(result1)
         return result1
     }

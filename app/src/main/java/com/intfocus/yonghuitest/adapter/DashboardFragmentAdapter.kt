@@ -21,7 +21,7 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPager
     private var mKpiFragment = KpiFragment()
     private var mMeterFragment = MeterFragment()
     private var mAnalysisFragment = AnalysisFragment()
-    private var mAppFragment = AppFragment()
+    private var mAppFragment = com.intfocus.yonghuitest.dashboard.App.AppFragment()
     private var mMessageFragment = MessageFragment()
 
     override fun getCount(): Int {

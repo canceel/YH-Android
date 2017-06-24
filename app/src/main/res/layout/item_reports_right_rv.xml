@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_reports_right_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="帮助文档"
+            android:textColor="@color/list_title_base"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <com.intfocus.yonghuitest.view.MyGridView
+        android:id="@+id/gv_reports_right_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:verticalSpacing="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:numColumns="3">
+    </com.intfocus.yonghuitest.view.MyGridView>
+
+</LinearLayout>

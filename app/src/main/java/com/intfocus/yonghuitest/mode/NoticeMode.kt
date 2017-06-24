@@ -10,6 +10,7 @@ import com.intfocus.yonghuitest.bean.dashboard.NoticeListRquest
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.K.kUserId
+import com.intfocus.yonghuitest.util.URLs
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
@@ -34,7 +35,8 @@ class NoticeMode(ctx: Context) : AbstractMode() {
 
     fun getUrl(): String {
         var url = String.format(K.kNoticeListPath, K.kBaseUrl,
-                                mUserSP.getInt(kUserId,0).toString(), getNoticeType(), page, 10.toString())
+                                mUserSP.getString(URLs.kUserNum,""), getNoticeType(), page, 10.toString())
+        Log.i("testlog", url)
         return url
     }
 
@@ -90,7 +92,7 @@ class NoticeMode(ctx: Context) : AbstractMode() {
                 EventBus.getDefault().post(result1)
                 return result1
             }
-
+            Log.i("testlog", jsonObject.toString())
             mNoticeListSP.edit().putString("NoticeList", jsonObject.toString()).commit()
             var mNoticeList = gson.fromJson(jsonObject.toString(), NoticeListBean::class.java)
             val result1 = NoticeListRquest(true, 200)

@@ -12,9 +12,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.intfocus.yonghuitest.bean.dashboard.ResourceUpdataResult;
-
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 

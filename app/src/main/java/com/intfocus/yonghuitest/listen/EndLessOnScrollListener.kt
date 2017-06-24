@@ -30,8 +30,8 @@ abstract class EndLessOnScrollListener(var llManager: LinearLayoutManager) : Rec
         super.onScrolled(recyclerView, dx, dy)
 
         visibleItemCount = recyclerView!!.childCount
-        totalItemCount = llManager!!.getItemCount()
-        firstVisibleItem = llManager!!.findFirstVisibleItemPosition()
+        totalItemCount = llManager.itemCount
+        firstVisibleItem = llManager.findFirstVisibleItemPosition()
         if (loading) {
             if (totalItemCount > previousTotal) {
                 //说明数据已经加载结束

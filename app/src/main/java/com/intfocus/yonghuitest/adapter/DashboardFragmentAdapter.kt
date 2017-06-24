@@ -4,13 +4,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.ViewGroup
+import com.intfocus.yonghuitest.dashboard.App.AppFragment
 
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
-import com.intfocus.yonghuitest.dashboard.fragment.AnalysisFragment
-import com.intfocus.yonghuitest.dashboard.fragment.AppFragment
-import com.intfocus.yonghuitest.dashboard.fragment.KpiFragment
-import com.intfocus.yonghuitest.dashboard.message.MessageFragment
-import com.intfocus.yonghuitest.dashboard.kpi.MeterFragment
+import com.intfocus.yonghuitest.dashboard.kpi.KpiFragment
+import com.intfocus.yonghuitest.dashboard.mine.MessageFragment
+import com.intfocus.yonghuitest.dashboard.old_kpi.MeterFragment
+import com.intfocus.yonghuitest.dashboard.report.ReportFragment
 
 /**
  * Created by liuruilin on 2017/3/23.
@@ -18,10 +18,10 @@ import com.intfocus.yonghuitest.dashboard.kpi.MeterFragment
 
 class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     private val PAGER_COUNT = 4
-    private var mKpiFragment = KpiFragment()
-    private var mMeterFragment = MeterFragment()
-    private var mAnalysisFragment = AnalysisFragment()
-    private var mAppFragment = com.intfocus.yonghuitest.dashboard.App.AppFragment()
+//    private var mKpiFragment = KpiFragment()
+    private var mMeterFragment = KpiFragment()
+    private var mAnalysisFragment = ReportFragment()
+    private var mAppFragment = AppFragment()
     private var mMessageFragment = MessageFragment()
 
     override fun getCount(): Int {
@@ -39,9 +39,9 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPager
     override fun getItem(position: Int): Fragment {
         when (position) {
             DashboardActivity.PAGE_KPI -> return mMeterFragment
-            DashboardActivity.PAGE_ANALYSIS -> return mAnalysisFragment
+            DashboardActivity.PAGE_REPORTS -> return mAnalysisFragment
             DashboardActivity.PAGE_APP -> return mAppFragment
-            DashboardActivity.PAGE_MESSAGE -> return mMessageFragment
+            DashboardActivity.PAGE_MINE -> return mMessageFragment
         }
         return mMeterFragment
     }

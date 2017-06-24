@@ -46,7 +46,7 @@ class MererEntity : java.io.Serializable {
             var percentage: Boolean = false //是否显示百分比0、1
             var number: Double? = 0.toDouble() //高亮数字
             var compare: Double = 0.toDouble() //百分比
-            var arrow: Int? = null //决定箭头方向和颜色
+            var arrow: Int = 0 //决定箭头方向和颜色
         }
     }
 }

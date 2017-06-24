@@ -30,10 +30,22 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/actionBar</item>
+        <item name="colorPrimaryDark">@color/actionBar</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
-        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+    </style>
+
+
+    <!-- Application theme. -->
+    <style name="AppDashboardTheme" parent="Theme.AppCompat.Light">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <!-- 将 Activity 的 Theme 设置成透明 -->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
@@ -249,11 +261,11 @@
 
     <style name="LoginActivityLineView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginRight">15dp</item>
         <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:background">@color/colors0</item>
+        <item name="android:background">@color/black</item>
     </style>
 
     <style name="TitleStyle">

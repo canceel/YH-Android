@@ -21,8 +21,9 @@ class NoticeListAdapter(val context: Context,
 
     var inflater = LayoutInflater.from(context)
 
-    fun setData() {
-
+    fun setData(data: List<NoticeListDataBean>?) {
+        this.noticeListDatas = data
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeListAdapter.NoticeListHolder {
@@ -31,16 +32,18 @@ class NoticeListAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: NoticeListHolder, position: Int) {
-        holder.tvNoticeType.text = getTypeStr(noticeListDatas!![position].type)
-        holder.tvNoticeTitle.text = noticeListDatas!![position].title
-        holder.tvNoticeTime.text = noticeListDatas!![position].time
-        holder.tvNoticeListContent.text = noticeListDatas!![position].abstracts
-        holder.llNoticeListItem.setOnClickListener { listener.itemClick(noticeListDatas!![position].id) }
-        if (noticeListDatas!![position].see) {
-            holder.ivNoticePoint.visibility = View.INVISIBLE
-        }
-        else {
-            holder.ivNoticePoint.visibility = View.VISIBLE
+        if (noticeListDatas != null) {
+            holder.tvNoticeType.text = getTypeStr(noticeListDatas!![position].type)
+            holder.tvNoticeTitle.text = noticeListDatas!![position].title
+            holder.tvNoticeTime.text = noticeListDatas!![position].time
+            holder.tvNoticeListContent.text = noticeListDatas!![position].abstracts
+            holder.llNoticeListItem.setOnClickListener { listener.itemClick(noticeListDatas!![position].id) }
+            if (noticeListDatas!![position].see) {
+                holder.ivNoticePoint.visibility = View.INVISIBLE
+            }
+            else {
+                holder.ivNoticePoint.visibility = View.VISIBLE
+            }
         }
     }
 

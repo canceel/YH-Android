@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="358"
-          android:versionName="2.1.8">
+          android:versionCode="366"
+          android:versionName="2.2.6">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -58,7 +58,8 @@
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme">
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -73,12 +74,12 @@
             android:theme="@style/AppTheme"/>
         <!-- 问题反馈 -->
         <activity
-            android:name=".dashboard.message.IssueActivity"
+            android:name=".dashboard.mine.IssueActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!--公告详情-->
         <activity
-            android:name=".dashboard.message.NoticeContentActivity"
+            android:name=".dashboard.mine.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
@@ -86,9 +87,14 @@
             android:name=".subject.TableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
-        <!-- 修改页 -->
+        <!-- 忘记密码 -->
         <activity
-            android:name=".dashboard.message.PassWordAlterActivity"
+            android:name=".ForgetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <!-- 修改密码页 -->
+        <activity
+            android:name=".dashboard.mine.PassWordAlterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
@@ -120,7 +126,7 @@
         <activity
             android:name=".dashboard.DashboardActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppDashboardTheme"/>
         <!-- 模板二/主题页面 -->
         <activity
             android:name=".subject.SubjectActivity"
@@ -196,7 +202,7 @@
             android:value="Umeng"/>
 
         <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.message.FavoriteActivity">
+        <activity android:name=".dashboard.mine.FavoriteActivity">
         </activity>
     </application>
 

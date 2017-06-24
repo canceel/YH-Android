@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="com.intfocus.yonghuitest.dashboard.kpi.MeterFragment"
+        android:name="com.intfocus.yonghuitest.dashboard.old_kpi.MeterFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="MeterFragment" />

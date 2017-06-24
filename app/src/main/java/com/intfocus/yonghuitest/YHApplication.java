@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -167,6 +168,11 @@ public class YHApplication extends Application {
         }
     };
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
     /*
      * 程序终止时会执行以下代码
      */

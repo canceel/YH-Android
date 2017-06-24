@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.intfocus.yonghuitest.BarCodeScannerActivity;
@@ -38,6 +39,7 @@ import com.intfocus.yonghuitest.view.TabView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +48,6 @@ import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 
 public class DashboardActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
     private DashboardFragmentAdapter mDashboardFragmentAdapter;
-    private PopupWindow popupWindow;
     private SharedPreferences mSharedPreferences;
     private TabView[] mTabView;
     private JSONObject user;
@@ -55,12 +56,11 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private ViewPager mViewPager;
     private TabView mTabKPI, mTabAnalysis, mTabAPP, mTabMessage;
     private Context mContext, mAppContext;
-    private RelativeLayout mActionBar;
 
     public static final int PAGE_KPI = 0;
-    public static final int PAGE_ANALYSIS = 1;
+    public static final int PAGE_REPORTS = 1;
     public static final int PAGE_APP = 2;
-    public static final int PAGE_MESSAGE = 3;
+    public static final int PAGE_MINE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +69,10 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mApp = (YHApplication) this.getApplication();
         mAppContext = mApp.getAppContext();
         mContext = this;
-        initUserIDColorView();
+        initUser();
         mSharedPreferences = getSharedPreferences("DashboardPreferences", MODE_PRIVATE);
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.content_view);
-        mActionBar = (RelativeLayout) findViewById(R.id.actionBar);
         initTabView();
         initViewPaper(mDashboardFragmentAdapter);
         HttpUtil.checkAssetsUpdated(mContext);
@@ -121,7 +120,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     /*
      * 初始化用户信息
      */
-    private void initUserIDColorView() {
+    private void initUser() {
         String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
         if ((new File(userConfigPath)).exists()) {
             try {
@@ -129,72 +128,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                 if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
                     userID = user.getInt("user_id");
                 }
-                WidgetUtil.initUserIDColorView(getWindow().getDecorView(), userID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    /*
-     * 标题栏点击设置按钮显示下拉菜单
-     */
-    public void launchDropMenuActivity(View v) {
-        showComplaintsPopWindow(v);
-    }
-
-    /**
-     * 显示菜单
-     *
-     * @param clickView
-     */
-    void showComplaintsPopWindow(View clickView) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_dashboard, null);
-        //设置弹出框的宽度和高度
-        popupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);// 取得焦点
-        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        //点击外部消失
-        popupWindow.setOutsideTouchable(true);
-        //设置可以点击
-        popupWindow.setTouchable(true);
-        //进入退出的动画
-//        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
-        popupWindow.showAsDropDown(clickView);
-
-        contentView.findViewById(R.id.ll_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startBarCodeActivity();
-            }
-        });
-        contentView.findViewById(R.id.ll_sound).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WidgetUtil.showToastShort(mContext, "功能正在开发中");
-                popupWindow.dismiss();
-            }
-        });
-        contentView.findViewById(R.id.ll_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WidgetUtil.showToastShort(mContext, "功能正在开发中");
-                popupWindow.dismiss();
-            }
-        });
-        contentView.findViewById(R.id.ll_user_info).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSettingActivity();
-                popupWindow.dismiss();
-            }
-        });
-    }
-
-    private void startBarCodeActivity() {
+    public void startBarCodeActivity(View v) {
         if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
@@ -271,13 +211,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                     mViewPager.setCurrentItem(PAGE_KPI);
                     break;
                 case R.id.tab_analysis:
-                    mViewPager.setCurrentItem(PAGE_ANALYSIS);
+                    mViewPager.setCurrentItem(PAGE_REPORTS);
                     break;
                 case R.id.tab_app:
                     mViewPager.setCurrentItem(PAGE_APP);
                     break;
                 case R.id.tab_message:
-                    mViewPager.setCurrentItem(PAGE_MESSAGE);
+                    mViewPager.setCurrentItem(PAGE_MINE);
                     break;
                 default:
                     break;
@@ -300,22 +240,18 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         if (state == 2) {
             switch (mViewPager.getCurrentItem()) {
                 case PAGE_KPI:
-                    mActionBar.setVisibility(View.VISIBLE);
                     mTabKPI.setActive(true);
                     break;
 
-                case PAGE_ANALYSIS:
-                    mActionBar.setVisibility(View.VISIBLE);
+                case PAGE_REPORTS:
                     mTabAnalysis.setActive(true);
                     break;
 
                 case PAGE_APP:
-                    mActionBar.setVisibility(View.VISIBLE);
                     mTabAPP.setActive(true);
                     break;
 
-                case PAGE_MESSAGE:
-                    mActionBar.setVisibility(View.GONE);
+                case PAGE_MINE:
                     mTabMessage.setActive(true);
                     break;
             }
@@ -324,9 +260,10 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mSharedPreferences.edit().putInt("LastTab", mViewPager.getCurrentItem()).commit();
     }
 
+    // 公告栏点击事件
     @Override
     public void onItemClick(int position) {
-        mViewPager.setCurrentItem(PAGE_MESSAGE);
+        mViewPager.setCurrentItem(PAGE_MINE);
         refreshTabView();
     }
 
@@ -367,7 +304,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                         }
                         break;
                     case "analyse":
-                        mViewPager.setCurrentItem(PAGE_ANALYSIS);
+                        mViewPager.setCurrentItem(PAGE_REPORTS);
                         mTabView[mViewPager.getCurrentItem()].setActive(true);
                         break;
                     case "app":
@@ -375,7 +312,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                         mTabView[mViewPager.getCurrentItem()].setActive(true);
                         break;
                     case "message":
-                        mViewPager.setCurrentItem(PAGE_MESSAGE);
+                        mViewPager.setCurrentItem(PAGE_MINE);
                         mTabView[mViewPager.getCurrentItem()].setActive(true);
                         break;
                     case "thursday_say":

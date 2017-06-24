@@ -38,6 +38,7 @@ public class K extends PrivateURLs implements Serializable {
    */
   public final static String kKPIMobilePath            = "%s/mobile/%s/group/%s/role/%s/kpi";
   public final static String kKPIMobileDataPath        = "%s/mobile/%s/data/group/%s/role/%s/kpi";
+  public final static String kKPIApiDataPath           = "%s/api/v1/group/%s/role/%s/kpi";
   public final static String kMessageDataMobilePath    = "%s/api/v1/role/%s/group/%s/user/%s/message";
   public final static String kMessageMobilePath        = "%s/mobile/%s/role/%s/group/%s/user/%s/message";
   public final static String kAppMobilePath            = "%s/mobile/%s/role/%s/app";
@@ -50,11 +51,13 @@ public class K extends PrivateURLs implements Serializable {
   /**
    * MinePage#API
    */
+  public final static String KUserInfoPath             = "%s/api/v1/user/%s/group/%s/role/%s/statistics";
   public final static String kNoticeListPath           = "%s/api/v1/user/%s/type/%s/page/%s/limit/%s/notices";
   public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
   public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
   public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
   public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
+  public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
 
   /**
    *  Config#Application

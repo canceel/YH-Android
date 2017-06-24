@@ -14,7 +14,7 @@ import com.intfocus.yonghuitest.constant.Constant;
  */
 public class MeterCursor extends android.support.v7.widget.AppCompatImageView {
 
-    private int[] colors = Constant.colorsRGY;
+    private int[] colors = Constant.INSTANCE.getColorsRGY();
 
     private int state = 0;
 

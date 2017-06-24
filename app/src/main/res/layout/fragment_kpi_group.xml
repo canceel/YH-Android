@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:background="@drawable/a_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/list_title_sign"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_kpi_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="9dp"
+            android:text="经营预警"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <View style="@style/SmallDivider"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_kpi_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

@@ -23,5 +23,5 @@ class NoticeListBean {
     var page_size : Int = 0
     var total_page : Int = 0
     var code : Int = 0
-    var data : MutableList<NoticeListDataBean>? = null
+    var data : List<NoticeListDataBean> = listOf()
 }

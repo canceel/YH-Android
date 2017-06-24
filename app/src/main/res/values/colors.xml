@@ -4,6 +4,7 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="actionBar">#51aa38</color>
+    <color name="dashboardActionBar">#ffffff</color>
     <color name="colorPrimary">#51aa38</color>
 
     <color name="colors0">#ffffff</color>
@@ -142,4 +143,7 @@
     <color name="user_info_base">#6aa657</color>
 
     <color name="list_title_base">#6aa657</color>
+    <color name="number_unit_color">#808080</color>
+    <color name="base_background">#f7fef5</color>
+
 </resources>

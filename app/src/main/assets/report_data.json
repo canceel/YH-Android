@@ -1,366 +1,190 @@
 {
   "code": 200,
-  "message": "获取报表列表成功",
+  "message": "获取数据列表成功",
   "data": [
     {
-      "category": "所有报表",
+      "group_name": "top_data",
       "data": [
-            {
-              "group_name": "Bravo分析",
-              "data": [
-            {
-              "id": 116,
-              "name": "绿标当天销售速报",
-              "group_name": "Bravo分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/data.pdf",
-              "publicly": null,
-              "icon": "icon-绿标当天销售速报.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-绿标当天销售速报.png",
-              "group_id": 116,
-              "health_value": 0,
-              "group_order": 13,
-              "item_order": 11,
-              "created_at": null
+        {
+          "title": "第二集群实时销售",
+          "dashboard_type": "number1",
+          "target_url": "mobile/v2/group/%@/template/4/report/30",
+          "unit": "万元",
+          "memo1": "昨日总销售额",
+          "memo2": null,
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "1804",
+              "compare": "6237",
+              "arrow": 3
             },
-            {
-              "id": 19,
-              "name": "招商分析",
-              "group_name": "Bravo分析",
-              "link_path": "/mobile/v2/group/%@/template/4/report/19",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 19,
-              "health_value": 0,
-              "group_order": 13,
-              "item_order": 17,
-              "created_at": "2017-05-14T17:17:49.000+08:00"
-            },
-            {
-              "id": 37,
-              "name": "集群销售跟踪表",
-              "group_name": "Bravo分析",
-              "link_path": "/mobile/v2/group/%@/template/4/report/37",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 37,
-              "health_value": 0,
-              "group_order": 13,
-              "item_order": 18,
-              "created_at": "2017-05-14T17:17:49.000+08:00"
-            },
-            {
-              "id": 125,
-              "name": "中类品项追踪月报",
-              "group_name": "Bravo分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/pdf/groupTypeMonthlyReportSept.pdf",
-              "publicly": null,
-              "icon": "icon-4中类品项追踪月报-Bravo.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-4中类品项追踪月报-Bravo.png",
-              "group_id": 125,
-              "health_value": 0,
-              "group_order": 13,
-              "item_order": 19,
-              "created_at": "2017-02-07T14:06:30.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "Bravo实时销售",
+          "is_stick": true
         },
         {
-          "group_name": "新店开业",
-          "data": [
-            {
-              "id": 127,
-              "name": "新店实时销售",
-              "group_name": "新店开业",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/newShopSale.pdf",
-              "publicly": null,
-              "icon": "icon-5新店实时销售.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-5新店实时销售.png",
-              "group_id": 127,
-              "health_value": 0,
-              "group_order": 43,
-              "item_order": 1,
-              "created_at": "2016-11-10T19:30:47.000+08:00"
-            }
-          ]
+          "title": "第二集群商行实时销售",
+          "dashboard_type": "number1",
+          "target_url": "mobile/v2/group/%@/template/2/report/36",
+          "unit": "万元",
+          "memo1": "昨日总销售额",
+          "memo2": null,
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "1804",
+              "compare": "6237",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "Bravo实时销售",
+          "is_stick": true
+        }
+      ]
+    },
+    {
+      "group_name": "异常预警",
+      "data": [
+        {
+          "title": "个单量异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "target_url": "mobile/v2/group/%@/template/2/report/67",
+          "unit": "万元",
+          "memo1": "当前 41 项个单量异常预警",
+          "memo2": null,
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "3248",
+              "compare": "7.63",
+              "arrow": 1
+            },
+            "chart_data": []
+          },
+          "group_name": "异常预警",
+          "is_stick": false
         },
         {
-          "group_name": "Bravo目标管理",
-          "data": [
-            {
-              "id": 13,
-              "name": "第二集群目标",
-              "group_name": "Bravo目标管理",
-              "link_path": "/mobile/v2/group/%@/template/4/report/13",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 13,
-              "health_value": 0,
-              "group_order": 45,
-              "item_order": 1,
-              "created_at": "2017-05-14T17:09:41.000+08:00"
+          "title": "生鲜负毛利实时预警(门店)",
+          "dashboard_type": "number2",
+          "target_url": "mobile/v2/group/%@/template/2/report/68",
+          "unit": "万元",
+          "memo1": "当前 6 项负毛利过高预警",
+          "memo2": null,
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "3248",
+              "compare": "-13.39",
+              "arrow": 3
             },
-            {
-              "id": 17,
-              "name": "第二集群目标(商行)",
-              "group_name": "Bravo目标管理",
-              "link_path": "/mobile/v2/group/%@/template/4/report/17",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 17,
-              "health_value": 0,
-              "group_order": 45,
-              "item_order": 2,
-              "created_at": "2017-05-14T17:17:49.000+08:00"
-            },
-            {
-              "id": 18,
-              "name": "集群对标分析",
-              "group_name": "Bravo目标管理",
-              "link_path": "/mobile/v2/group/%@/template/4/report/18",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 18,
-              "health_value": 0,
-              "group_order": 45,
-              "item_order": 3,
-              "created_at": "2017-05-14T17:17:49.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "异常预警",
+          "is_stick": false
         },
         {
-          "group_name": "股份本部及第三集群财务分析",
-          "data": [
-            {
-              "id": 130,
-              "name": "股份本部及第三集群部门费用",
-              "group_name": "股份本部及第三集群财务分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf",
-              "publicly": null,
-              "icon": "icon-10股份本部及第三集群部门费用.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-10股份本部及第三集群部门费用.png",
-              "group_id": 130,
-              "health_value": 0,
-              "group_order": 49,
-              "item_order": 1,
-              "created_at": "2016-07-04T16:59:55.000+08:00"
+          "title": "生鲜定价毛利异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "target_url": "mobile/v2/group/%@/template/2/report/70",
+          "unit": "万元",
+          "memo1": "当前 204 项定价过高预警",
+          "memo2": null,
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "3248",
+              "compare": "-13.39",
+              "arrow": 3
             },
-            {
-              "id": 131,
-              "name": "分子公司及第三集群利润表",
-              "group_name": "股份本部及第三集群财务分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/branchOfficeThreeProfit.pdf",
-              "publicly": null,
-              "icon": "icon-10分子公司及第三集群利润表.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-10分子公司及第三集群利润表.png",
-              "group_id": 131,
-              "health_value": 0,
-              "group_order": 49,
-              "item_order": 4,
-              "created_at": "2016-08-08T14:47:54.000+08:00"
+            "chart_data": []
+          },
+          "group_name": "异常预警",
+          "is_stick": false
+        }
+      ]
+    },
+    {
+      "group_name": "Bravo销售概况",
+      "data": [
+        {
+          "title": "第二集群销售额",
+          "dashboard_type": "number3",
+          "target_url": "mobile/v2/group/%@/template/4/report/8",
+          "unit": "万元",
+          "memo1": "昨日总销售额",
+          "memo2": "周同比增长率",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "5898",
+              "compare": "5579",
+              "arrow": 1
             },
-            {
-              "id": 132,
-              "name": "一、二集群门店销售利润表",
-              "group_name": "股份本部及第三集群财务分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/onetwoColonySaleProfit.pdf",
-              "publicly": null,
-              "icon": "icon-10一、二集群门店销售利润表.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-10一、二集群门店销售利润表.png",
-              "group_id": 132,
-              "health_value": 0,
-              "group_order": 49,
-              "item_order": 5,
-              "created_at": "2016-08-08T14:48:32.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "Bravo销售概况",
+          "is_stick": false
         },
         {
-          "group_name": "股份本部及第三集群人事分析",
-          "data": [
-            {
-              "id": 128,
-              "name": "人力编制跟踪表",
-              "group_name": "股份本部及第三集群人事分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/group/staffEstablishing.pdf",
-              "publicly": null,
-              "icon": "icon-9人力编制跟踪表.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-9人力编制跟踪表.png",
-              "group_id": 128,
-              "health_value": 0,
-              "group_order": 49,
-              "item_order": 2,
-              "created_at": "2016-07-06T19:59:02.000+08:00"
+          "title": "第二集群月累计同店同比",
+          "dashboard_type": "number3",
+          "target_url": "mobile/v2/group/%@/template/4/report/9",
+          "unit": "万元",
+          "memo1": "月累计销售额",
+          "memo2": "月累计同比增长率",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "29661",
+              "compare": "-7.28",
+              "arrow": 4
             },
-            {
-              "id": 129,
-              "name": "人力费用跟踪表",
-              "group_name": "股份本部及第三集群人事分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/group/manpowerCost.pdf",
-              "publicly": null,
-              "icon": "icon-9人力费用跟踪表.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-9人力费用跟踪表.png",
-              "group_id": 129,
-              "health_value": 0,
-              "group_order": 49,
-              "item_order": 3,
-              "created_at": "2016-07-06T19:59:45.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "Bravo销售概况",
+          "is_stick": false
         },
         {
-          "group_name": "第二集群月度经营分析",
-          "data": [
-            {
-              "id": 133,
-              "name": "第二集群本部人力编制报表",
-              "group_name": "第二集群月度经营分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/humanEstablishment.pdf",
-              "publicly": null,
-              "icon": "icon-11第二集群本部人力编制报表.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-11第二集群本部人力编制报表.png",
-              "group_id": 133,
-              "health_value": 0,
-              "group_order": 51,
-              "item_order": 1,
-              "created_at": "2016-11-10T11:28:42.000+08:00"
+          "title": "第二集群客流",
+          "dashboard_type": "number3",
+          "target_url": "mobile/v2/group/%@/template/4/report/10",
+          "unit": "万次",
+          "memo1": "昨日客流",
+          "memo2": "周同比增长率",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "94",
+              "compare": "5.62",
+              "arrow": 1
             },
-            {
-              "id": 134,
-              "name": "第二集群门店销售利润",
-              "group_name": "第二集群月度经营分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/profits.pdf",
-              "publicly": null,
-              "icon": "icon-11第二集群门店销售利润.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-11第二集群门店销售利润.png",
-              "group_id": 134,
-              "health_value": 0,
-              "group_order": 51,
-              "item_order": 2,
-              "created_at": "2016-11-10T11:29:26.000+08:00"
-            },
-            {
-              "id": 135,
-              "name": "第二集群经营情况概览",
-              "group_name": "第二集群月度经营分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/operatingCondition.pdf",
-              "publicly": null,
-              "icon": "icon-11第二集群经营情况概览.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-11第二集群经营情况概览.png",
-              "group_id": 135,
-              "health_value": 0,
-              "group_order": 51,
-              "item_order": 3,
-              "created_at": "2016-11-10T11:29:30.000+08:00"
-            },
-            {
-              "id": 136,
-              "name": "第二集群各部门费用",
-              "group_name": "第二集群月度经营分析",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/departmentCost.pdf",
-              "publicly": null,
-              "icon": "icon-11第二集群各部门费用.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-11第二集群各部门费用.png",
-              "group_id": 136,
-              "health_value": 0,
-              "group_order": 51,
-              "item_order": 4,
-              "created_at": "2016-11-10T11:29:35.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "Bravo销售概况",
+          "is_stick": false
         },
         {
-          "group_name": "学习文档",
-          "data": [
-            {
-              "id": 110,
-              "name": "赛马规则",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/horseRacing20170215.pdf",
-              "publicly": false,
-              "icon": "icon-赛马规则.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-赛马规则.png",
-              "group_id": 110,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 1,
-              "created_at": "2017-03-16T15:08:30.000+08:00"
+          "title": "第二集群客单价",
+          "dashboard_type": "number3",
+          "target_url": "mobile/v2/group/%@/template/4/report/11",
+          "unit": "元",
+          "memo1": "昨日客单价",
+          "memo2": "周同比增长率",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "61.85",
+              "compare": "-0.34",
+              "arrow": 4
             },
-            {
-              "id": 113,
-              "name": "六大异常产生原因及分析方法",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/sixExceptionsAnalysis.pdf",
-              "publicly": null,
-              "icon": "icon-六大异常产生原因及分析方法.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-六大异常产生原因及分析方法.png",
-              "group_id": 113,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 2,
-              "created_at": "2017-03-16T15:21:38.000+08:00"
-            },
-            {
-              "id": 114,
-              "name": "门店负毛利分析方法",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/fmlAnalysis.pdf",
-              "publicly": null,
-              "icon": "icon-门店负毛利分析方法.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-门店负毛利分析方法.png",
-              "group_id": 114,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 3,
-              "created_at": "2017-03-16T15:22:26.000+08:00"
-            },
-            {
-              "id": 112,
-              "name": "生鲜定价毛利率上限规则",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/freshProfitRateRule.pdf",
-              "publicly": null,
-              "icon": "icon-生鲜定价毛利率上限规则.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-生鲜定价毛利率上限规则.png",
-              "group_id": 112,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 4,
-              "created_at": "2017-03-16T15:23:15.000+08:00"
-            },
-            {
-              "id": 111,
-              "name": "2017赛马指标计算规则",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/horseRacingRules.pdf",
-              "publicly": null,
-              "icon": "icon-赛马指标计算规则-2017.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-赛马指标计算规则-2017.png",
-              "group_id": 111,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 5,
-              "created_at": "2017-03-18T00:44:41.000+08:00"
-            },
-            {
-              "id": 115,
-              "name": "负库存原因分析处理方法",
-              "group_name": "学习文档",
-              "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/pdf/singlefkcskuanalysis.pdf",
-              "publicly": false,
-              "icon": "icon-default.png",
-              "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
-              "group_id": 115,
-              "health_value": 0,
-              "group_order": 53,
-              "item_order": 6,
-              "created_at": "2017-05-02T14:14:17.000+08:00"
-            }
-          ]
+            "chart_data": []
+          },
+          "group_name": "Bravo销售概况",
+          "is_stick": false
         }
       ]
     }

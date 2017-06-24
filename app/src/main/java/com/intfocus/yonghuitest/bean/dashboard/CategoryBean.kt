@@ -6,4 +6,5 @@ package com.intfocus.yonghuitest.bean.dashboard
 class CategoryBean {
     var category: String? = null
     var data: List<ListGroupBean>? = null
+    var isSelected: Boolean = false
 }

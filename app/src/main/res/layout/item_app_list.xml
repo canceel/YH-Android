@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
     android:layout_margin="8dp">
@@ -30,15 +30,16 @@
             android:textColor="@color/list_title_base"/>
     </LinearLayout>
 
-    <GridView
+    <com.intfocus.yonghuitest.view.MyGridView
         android:id="@+id/gv_app_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:verticalSpacing="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:numColumns="4">
-    </GridView>
+    </com.intfocus.yonghuitest.view.MyGridView>
 
 </LinearLayout>

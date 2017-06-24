@@ -6,69 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".dashboard.DashboardActivity">
 
-    <RelativeLayout
-        android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@color/actionBar"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:id="@+id/bannerLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/banner_logo"/>
-
-        <RelativeLayout
-            style="@style/BannerRightButton"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content">
-
-            <ImageView
-                android:id="@+id/bannerSetting"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:onClick="launchDropMenuActivity"
-                android:src="@drawable/banner_setting"/>
-
-            <RelativeLayout
-                android:id="@+id/colorViewLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="5dp">
-
-                <ImageView
-                    android:id="@+id/colorView0"
-                    style="@style/ColorViewStyle0"/>
-
-                <ImageView
-                    android:id="@+id/colorView1"
-                    style="@style/ColorViewStyle1"/>
-
-                <ImageView
-                    android:id="@+id/colorView2"
-                    style="@style/ColorViewStyle2"/>
-
-                <ImageView
-                    android:id="@+id/colorView3"
-                    style="@style/ColorViewStyle3"/>
-
-                <ImageView
-                    android:id="@+id/colorView4"
-                    style="@style/ColorViewStyle4"/>
-            </RelativeLayout>
-
-        </RelativeLayout>
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
@@ -102,8 +39,8 @@
             android:id="@+id/tab_message"
             style="@style/ToolBarTab"
             app:active="false"
-            app:active_src="@drawable/tab_message_s"
-            app:src="@drawable/tab_message"
+            app:active_src="@drawable/tab_mine_s"
+            app:src="@drawable/tab_mine"
             app:text="我的"/>
 
     </LinearLayout>
@@ -112,10 +49,7 @@
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/actionBar"
-        android:layout_above="@+id/view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_above="@+id/view">
     </android.support.v4.view.ViewPager>
 
     <View

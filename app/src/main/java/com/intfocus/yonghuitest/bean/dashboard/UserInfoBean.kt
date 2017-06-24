@@ -7,24 +7,24 @@ package com.intfocus.yonghuitest.bean.dashboard
 class UserInfoBean {
 
     /**
-     * user_name : 厄齐尔
-     * role : 小店长
-     * group : 信息部
-     * location : 上海
-     * time : 20170101
-     * days : 10
-     * readed_num : 10
-     * percent : 10
-     * icon : 123
+     * user_num : 13162726850
+     * user_name : 刘锐麟
+     * login_duration : 50
+     * browse_report_count : 6
+     * surpass_percentage : 37.4
+     * login_count : 1197
+     * browse_count : 19
+     * browse_distinct_count : 6
+     * code : 200
      */
 
+    var user_num: String? = null
     var user_name: String? = null
-    var role: String? = null
-    var group: String? = null
-    var location: String? = null
-    var time: String? = null
-    var days: String? = null
-    var readed_num: String? = null
-    var percent: String? = null
-    var icon: String? = null
+    var login_duration: String? = null
+    var browse_report_count: String? = null
+    var surpass_percentage: Double = 0.toDouble()
+    var login_count: String? = null
+    var browse_count: String? = null
+    var browse_distinct_count: String? = null
+    var code: Int = 0
 }

@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CAMERA };
     private SharedPreferences mSharedPreferences;
-    private RelativeLayout loginLayout;
+    private LinearLayout loginLayout;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -153,7 +153,7 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-        loginLayout = (RelativeLayout) findViewById(R.id.login_layout);
+        loginLayout = (LinearLayout) findViewById(R.id.login_layout);
         Button mSubmit = (Button) findViewById(R.id.btn_login);
         controlKeyboardLayout(loginLayout, mSubmit);
 

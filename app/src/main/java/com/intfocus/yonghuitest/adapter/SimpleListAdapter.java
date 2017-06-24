@@ -21,7 +21,7 @@ public class SimpleListAdapter extends SimpleAdapter {
     private List<? extends Map<String, ?>> listItem;
 
     public SimpleListAdapter(Context context, List<? extends Map<String, ?>> data,
-                       int resource, String[] from, int[] to) {
+                             int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
         this.mContext = context;
         this.listItem = data;

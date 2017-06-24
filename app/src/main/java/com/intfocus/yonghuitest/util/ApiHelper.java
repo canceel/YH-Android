@@ -43,6 +43,7 @@ import static com.intfocus.yonghuitest.util.K.kUserId;
 import static com.intfocus.yonghuitest.util.K.kUserName;
 import static com.intfocus.yonghuitest.util.URLs.kGroupId;
 import static com.intfocus.yonghuitest.util.URLs.kRoleId;
+import static com.intfocus.yonghuitest.util.URLs.kUserNum;
 
 public class ApiHelper {
     /*
@@ -104,12 +105,15 @@ public class ApiHelper {
             userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
 
             FileUtil.writeFile(userConfigPath, userJSON.toString());
-
+            Log.i("testlog", userJSON.toString());
             SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
             mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
             mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
             mUserSP.edit().putInt(kRoleId, userJSON.getInt(kRoleId)).commit();
             mUserSP.edit().putInt(kUserId, userJSON.getInt(kUserId)).commit();
+            mUserSP.edit().putString(URLs.kRoleName, userJSON.getString(URLs.kRoleName)).commit();
+            mUserSP.edit().putString(URLs.kGroupName, userJSON.getString(URLs.kGroupName)).commit();
+            mUserSP.edit().putString(kUserNum, userJSON.getString(kUserNum)).commit();
             mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
             mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
 

@@ -11,6 +11,7 @@ android {
         applicationId 'com.intfocus.yonghuitest'
         minSdkVersion 16
         targetSdkVersion 26
+        multiDexEnabled true
     }
     if (System.getenv().containsKey("KEYSTORE"))
         signingConfigs {
@@ -85,13 +86,13 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.yanzhenjie:recyclerview-swipe:1.0.4'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'pub.devrel:easypermissions:0.4.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.kyleduo.switchbutton:library:1.4.6'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
 }

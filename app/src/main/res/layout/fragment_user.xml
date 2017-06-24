@@ -25,7 +25,7 @@
             android:layout_below="@id/iv_user_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="用户名"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/user_name_size"/>
 
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="上次登陆: 上海"
+            android:text="暂无上次登录地点信息"
             android:textSize="12sp"
             android:layout_below="@+id/tv_user_name"
             android:layout_marginTop="5dp"/>
@@ -78,7 +78,7 @@
                     style="@style/tv_list_user_item"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
-                    android:text="小店长"/>
+                    android:text=""/>
             </RelativeLayout>
 
             <View style="@style/SmallDivider"/>
@@ -107,7 +107,7 @@
                     style="@style/tv_list_user_item"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
-                    android:text="营运团队"/>
+                    android:text=""/>
 
             </RelativeLayout>
 
@@ -192,7 +192,8 @@
             <RelativeLayout
                 android:id="@+id/rl_favorite"
                 style="@style/rl_list_user_item"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_favorite_point"

@@ -208,17 +208,17 @@ public class CustomCurveChart extends View {
         switch (colorList[index]) {
             case 1:
             case 2:
-                color = Constant.colorsRGY[0];
+                color = Constant.INSTANCE.getColorsRGY()[0];
                 break;
 
             case 3:
             case 4:
-                color = Constant.colorsRGY[1];
+                color = Constant.INSTANCE.getColorsRGY()[1];
                 break;
 
             case 5:
             case 6:
-                color = Constant.colorsRGY[2];
+                color = Constant.INSTANCE.getColorsRGY()[2];
                 break;
             default:
                 color = defauteolor;

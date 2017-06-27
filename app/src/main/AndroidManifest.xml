@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="366"
-          android:versionName="2.2.6">
+          android:versionCode="386"
+          android:versionName="2.3.6">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -19,8 +19,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 获取MAC地址 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 获取网络状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 获取设备信息 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
+    <uses-permission
+        android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
@@ -53,19 +55,36 @@
             </intent-filter>
         </service>
 
-        <!-- 登录页面 -->
+        <service
+            android:name="com.squareup.leakcanary.internal.HeapAnalyzerService"
+            android:enabled="false"
+            android:process=":leakcanary" />
+        <service
+            android:name="com.squareup.leakcanary.DisplayLeakService"
+            android:enabled="false" />
+
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name"
+            android:name=".login.LauncherActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:theme="@style/AppTheme">
+            android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- 登录 -->
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <!-- 引导页 -->
+        <activity
+            android:name=".login.GuidePageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GuidePageTheme"/>
 
         <!-- 模板三 -->
         <activity
@@ -77,7 +96,7 @@
             android:name=".dashboard.mine.IssueActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <!--公告详情-->
+        <!-- 公告详情 -->
         <activity
             android:name=".dashboard.mine.NoticeContentActivity"
             android:screenOrientation="portrait"
@@ -204,6 +223,7 @@
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.FavoriteActivity">
         </activity>
+
     </application>
 
 </manifest>

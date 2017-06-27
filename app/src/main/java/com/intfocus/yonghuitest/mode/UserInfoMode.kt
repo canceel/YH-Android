@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
@@ -72,6 +73,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                 }
             }
 
+            Log.i("testlog", jsonObject.toString())
             mSharedPreferences.edit().putString("UserInfo", jsonObject.toString()).commit()
             var userInfo = gson.fromJson(jsonObject.toString(), UserInfoBean::class.java)
             val result1 = UserInfoRequest(true, 200)
@@ -93,13 +95,31 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
         Thread(Runnable {
             var format = SimpleDateFormat("yyyyMMddHHmmss")
             var date = Date(System.currentTimeMillis())
-            var iconUpdateUrlString = String.format(K.kUploadGravatarAPIPath, PrivateURLs.kBaseUrl, mUserSP.getString(kUserDeviceId, ""), mUserSP.getInt(kUserId, 0).toString())
+            var iconUpdateUrlString = String.format(K.kUploadGravatarAPIPath, PrivateURLs.kBaseUrl, mUserSP.getInt(kUserDeviceId, 0).toString(), mUserSP.getInt(kUserId, 0).toString())
             File(imgPath).delete()
             var gravatarImgPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
-//            var gravatarFileName = gravatarImgPath.substring(gravatarImgPath.lastIndexOf("/") + 1, gravatarImgPath.length)
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var response = HttpUtil.httpPostFile(iconUpdateUrlString, "image/jpg", "gravatar", gravatarImgPath)
             Log.i("testlog", response.toString())
         }).start()
+    }
+
+    fun modifiedUserConfig(isLogin: Boolean) {
+        try {
+            val configJSON = JSONObject()
+            configJSON.put("is_login", isLogin)
+            val userConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kUserConfigFileName)
+            var userJSON = FileUtil.readConfigFile(userConfigPath)
+
+            userJSON = ApiHelper.mergeJson(userJSON, configJSON)
+            FileUtil.writeFile(userConfigPath, userJSON.toString())
+
+            val settingsConfigPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kSettingConfigFileName)
+            FileUtil.writeFile(settingsConfigPath, userJSON.toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
     }
 }

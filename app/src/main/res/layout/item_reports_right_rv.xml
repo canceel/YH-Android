@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
@@ -17,9 +17,8 @@
             android:id="@+id/tv_reports_right_list_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:text="帮助文档"
-            android:textColor="@color/list_title_base"
+            android:textColor="@color/black"
             android:textSize="14sp"/>
     </LinearLayout>
 
@@ -29,9 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:verticalSpacing="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+        android:verticalSpacing="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:numColumns="3">
     </com.intfocus.yonghuitest.view.MyGridView>
 

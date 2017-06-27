@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -22,9 +23,11 @@ import com.intfocus.yonghuitest.mode.ReportsListMode
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
+import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs
 import com.intfocus.yonghuitest.util.URLs.kGroupId
+import com.intfocus.yonghuitest.util.WidgetUtil
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_reports.*
 import org.greenrobot.eventbus.EventBus
@@ -35,7 +38,7 @@ import org.json.JSONException
 /**
  * Created by liuruilin on 2017/6/15.
  */
-class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapter.ReportLeftListListener, ReportsRightGVAdapter.ItemListener{
+class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapter.ReportLeftListListener, ReportsRightGVAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
     var rootView : View? = null
     var datas: List<CategoryBean>? = null
@@ -57,6 +60,7 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        initSwipeLayout()
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -64,6 +68,24 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
         super.onDestroyView()
         EventBus.getDefault().unregister(this)
     }
+
+    fun initSwipeLayout() {
+        swipe_container.setOnRefreshListener(this)
+        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light)
+        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
+    }
+
+    override fun onRefresh() {
+        if (HttpUtil.isConnected(context)) {
+            model.requestData()
+        } else {
+            swipe_container.isRefreshing = false
+            WidgetUtil.showToastShort(context, "请检查网络")
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(requestReport: ReportListPageRequest) {
@@ -77,6 +99,7 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
             reportsRightAdapter = ReportsRightRVAdapter(ctx, datas!![0].data, this)
             rv_reports_group_list.adapter = reportsRightAdapter
         }
+        swipe_container.isRefreshing = false
     }
 
     override fun reportLeftItemClick(sign: ImageView, position: Int) {

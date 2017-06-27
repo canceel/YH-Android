@@ -117,7 +117,6 @@ public class ApiHelper {
             mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
             mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
 
-
             if (response.get(URLs.kCode).equals("200")) {
                 // 第三方消息推送，设备标识
                 ApiHelper.pushDeviceToken(context, userJSON.getString("device_uuid"));

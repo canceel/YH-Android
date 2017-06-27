@@ -92,7 +92,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/*
-		 * 判断当前设备版本，5.0 以上 Android 系统使用才 enableSlowWholeDocumentDraw();
+		 * 判断当前设备版本，5.0 以 上 Android 系统使用才 enableSlowWholeDocumentDraw();
 		 */
 		if (Build.VERSION.SDK_INT > 20) {
 			enableSlowWholeDocumentDraw();
@@ -136,9 +136,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 				animLoading.setVisibility(View.GONE);
 				isWeiXinShared = true;
 				LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
-
-//				view.loadUrl("javascript:window.AndroidJSBridge.showSource('<head>'+" +
-//						"document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 
 				// 报表缓存列表:是否把报表标题存储
 				if (reportDataState && url.contains("report_"+reportID)){
@@ -799,6 +796,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         public void reportSearchItems(final String arrayString) {
             try {
                 String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+				Log.i("testlog", arrayString);
                 FileUtil.writeFile(searchItemsPath, arrayString);
 
 				/**

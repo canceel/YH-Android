@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -33,13 +34,11 @@ import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
-import com.intfocus.yonghuitest.util.DisplayUtil
-import com.intfocus.yonghuitest.util.K
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_kpi.*
-import kotlinx.android.synthetic.main.fragment_message.*
+import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,14 +48,12 @@ import sumimakito.android.advtextswitcher.Switcher
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener  {
+class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView : View? = null
     var gson = Gson()
     lateinit var mUserSP : SharedPreferences
-    var top_fragment: MutableList<Fragment> = mutableListOf()
-    var kpi_datas: MutableList<KpiGroup> = mutableListOf()
     val FIRST_PAGE_INDEX: Int = 0
 
     override fun setSubject(): Subject {
@@ -82,7 +79,25 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener  
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initAffiche()
+        initSwipeLayout()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    fun initSwipeLayout() {
+        swipe_container.setOnRefreshListener(this)
+        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light)
+        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
+    }
+
+    override fun onRefresh() {
+        if (HttpUtil.isConnected(context)) {
+            model.requestData()
+        } else {
+            swipe_container.isRefreshing = false
+            WidgetUtil.showToastShort(context, "请检查网络")
+        }
     }
 
     @Subscribe (threadMode = ThreadMode.MAIN)
@@ -90,7 +105,10 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener  
         ll_kpi_groups.removeAllViews()
         ll_kpi_groups.setBackgroundResource(R.color.base_background)
 
+        var top_fragment: MutableList<Fragment> = mutableListOf()
+        var kpi_datas: MutableList<KpiGroup> = mutableListOf()
         var datas = result.kpi_data
+
         for (kpiGroupDatas in datas!!.data!!.iterator()) {
             if (kpiGroupDatas.group_name.equals("top_data")) {
                 for (kpiGroupItem in kpiGroupDatas!!.data!!.iterator()) {
@@ -123,6 +141,7 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener  
             }
         }
 
+        swipe_container.isRefreshing = false
         rootView!!.invalidate()
     }
 

@@ -33,15 +33,10 @@
 
     </LinearLayout>
 
-    <View style="@style/SmallDivider"
-          android:layout_marginLeft="5dp"
-          android:layout_marginRight="5dp"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_kpi_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
     </android.support.v7.widget.RecyclerView>

@@ -12,23 +12,21 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.LoginActivity
+import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.bean.dashboard.UserInfoBean
 import com.intfocus.yonghuitest.bean.dashboard.UserInfoRequest
 import com.intfocus.yonghuitest.mode.UserInfoMode
 import com.intfocus.yonghuitest.setting.SettingActivity
-import com.intfocus.yonghuitest.util.HttpUtil
+import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.util.ImageUtil.*
-import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
-import com.intfocus.yonghuitest.util.URLs
-import com.intfocus.yonghuitest.util.WidgetUtil
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -37,6 +35,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
+import org.xutils.image.ImageOptions
+import org.xutils.x
 import java.io.File
 import java.util.*
 
@@ -44,13 +44,15 @@ import java.util.*
  * Created by liuruilin on 2017/6/7.
  */
 class UserFragment : BaseModeFragment<UserInfoMode>() {
-    lateinit var ctx : Context
-    lateinit var mUserInfoSP : SharedPreferences
-    lateinit var mUserSP : SharedPreferences
-    var mUserInfo : UserInfoBean? = null
-    var mUserInfoString : String? = null
-    var rootView : View? = null
+    lateinit var ctx: Context
+    lateinit var mUserInfoSP: SharedPreferences
+    lateinit var mUserSP: SharedPreferences
+    var mUserInfo: UserInfoBean? = null
+    var mUserInfoString: String? = null
+    var rootView: View? = null
     var gson = Gson()
+    var imageOptions: ImageOptions? = null
+    var localImageOptions: ImageOptions? = null
 
     /* 请求识别码 */
     private val CODE_GALLERY_REQUEST = 0xa0
@@ -80,6 +82,18 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        imageOptions = ImageOptions.Builder()
+                .setSize(DisplayUtil.dip2px(ctx, 96.5f), DisplayUtil.dip2px(ctx, 96.5f))
+                .setCircular(true)
+                .setLoadingDrawableId(R.drawable.pic_sh)
+                .setFailureDrawableId(R.drawable.pic_sh)
+                .build()
+
+        localImageOptions = ImageOptions.Builder()
+                .setSize(DisplayUtil.dip2px(ctx, 96.5f), DisplayUtil.dip2px(ctx, 96.5f))
+                .setCircular(true)
+                .build()
+
         initView()
         super.onActivityCreated(savedInstanceState)
     }
@@ -93,8 +107,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_login_number.text = mUserInfo!!.login_count
             tv_report_number.text = mUserInfo!!.browse_count
             tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
-            tv_user_role_value.text = mUserSP.getString(URLs.kRoleName, "")
-            tv_user_group_value.text = mUserSP.getString(URLs.kGroupName, "")
+            tv_user_role_value.text = mUserInfo!!.role_name
+            tv_user_group_value.text = mUserInfo!!.group_name
+            x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
+            Log.i("testlog", mUserInfo!!.gravatar)
         }
         iv_user_icon.setOnClickListener { showPhotoSelectDialog(this.context) }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
@@ -105,7 +121,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun setData(result : UserInfoRequest) {
+    fun setData(result: UserInfoRequest) {
         if (result.isSuccess && result.userInfoBean != null) {
             var user = result.userInfoBean
             tv_user_name.text = user!!.user_name
@@ -113,31 +129,32 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_login_number.text = user!!.login_count
             tv_report_number.text = user!!.browse_count
             tv_beyond_number.text = user!!.surpass_percentage.toString()
-            tv_user_role_value.text = mUserSP.getString(URLs.kRoleName, "")
-            tv_user_group_value.text = mUserSP.getString(URLs.kGroupName, "")
+            tv_user_role_value.text = user!!.role_name
+            tv_user_group_value.text = user!!.group_name
+            x.image().bind(iv_user_icon, user!!.gravatar, imageOptions)
         }
     }
 
     fun startPassWordAlterActivity() {
-        var intent =  Intent(activity, PassWordAlterActivity::class.java)
+        var intent = Intent(activity, PassWordAlterActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     fun startFavoriteActivity() {
-        var intent =  Intent(activity, FavoriteActivity::class.java)
+        var intent = Intent(activity, FavoriteActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     fun startIssueActivity() {
-        var intent =  Intent(activity, IssueActivity::class.java)
+        var intent = Intent(activity, IssueActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     fun startSettingActivity() {
-        var intent =  Intent(activity, SettingActivity::class.java)
+        var intent = Intent(activity, SettingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
@@ -157,9 +174,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         K.kBaseUrl,
                         activity.getSharedPreferences("UserBean", MODE_PRIVATE).getInt(kUserDeviceId, 0).toString())
                 val response = HttpUtil.httpPost(postUrl, HashMap<String, String>())
-                activity.runOnUiThread(Runnable {
+                activity.runOnUiThread({
                     if (response["code"] == "200") {
-//                        modifiedUserConfig(false)
+                        model.modifiedUserConfig(false)
                         val intent = Intent()
                         intent.setClass(activity, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -187,7 +204,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 startActivityForResult(cropIntent, CODE_RESULT_REQUEST)
             }
             CODE_CAMERA_REQUEST -> {
-                var cropIntent : Intent
+                var cropIntent: Intent
                 val tempFile = File(Environment.getExternalStorageDirectory(), "icon.jpg")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val photoURI = FileProvider.getUriForFile(ctx,
@@ -226,7 +243,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         var imgPath = Environment.getExternalStorageDirectory().toString() + "/icon.jpg"
         val bitmap = BitmapFactory.decodeFile(imgPath)
         if (bitmap != null) {
-            iv_user_icon.setImageBitmap(bitmap)
+            iv_user_icon.setImageBitmap(DisplayUtil.makeRoundCorner(bitmap))
             model.uplodeUserIcon(bitmap, imgPath)
         }
     }

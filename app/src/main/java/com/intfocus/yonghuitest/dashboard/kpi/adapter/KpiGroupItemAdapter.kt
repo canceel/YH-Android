@@ -48,7 +48,7 @@ class KpiGroupItemAdapter(ctx: Context, internal var fm: FragmentManager, intern
         var lparams: ViewGroup.LayoutParams
         when (holder.datas.dashboard_type) {
             "number2" -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt)
-            "number3" -> lparams = ViewGroup.LayoutParams(view2width, (viewHeigt * 0.5).toInt())
+            "number3" -> lparams = ViewGroup.LayoutParams(view2width, (viewHeigt * 0.4).toInt())
             else -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt)
         }
         holder.layout.layoutParams = lparams

@@ -24,6 +24,7 @@ import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.pgyersdk.crash.PgyCrashManager;
+import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -117,7 +118,7 @@ public class YHApplication extends Application {
         /*
          *  监测内存泄漏
          */
-        // refWatcher = LeakCanary.install(this);
+         refWatcher = LeakCanary.install(this);
 
         /*
          * 注册推送服务，每次调用register方法都会回调该接口

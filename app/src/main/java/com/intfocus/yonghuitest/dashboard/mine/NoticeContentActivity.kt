@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.dashboard.mine
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.dashboard.NoticeContentRequest
 import com.intfocus.yonghuitest.mode.NoticeContentMode
@@ -14,7 +15,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class NoticeContentActivity : AbstractActivity<NoticeContentMode>() {
-    lateinit var ctx : Context
+    lateinit var ctx: Context
 
     override fun setSubject(): Subject {
         ctx = this
@@ -45,14 +46,17 @@ class NoticeContentActivity : AbstractActivity<NoticeContentMode>() {
             tv_notice_content_title.text = result.noticeContent!!.title
             tv_notice_content_time.text = result.noticeContent!!.time
             tv_notice_content.text = result.noticeContent!!.content
+        } else {
+            WidgetUtil.showToastLong(ctx, "文章加载失败, 请重试!")
         }
-        else {
-        WidgetUtil.showToastLong(ctx, "文章加载失败, 请重试!")
-    }
     }
 
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
+    }
+
+    fun dismissActivity(v: View) {
+        this.onBackPressed()
     }
 }

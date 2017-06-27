@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.adapter.MessageViewPagerAdapter
 import com.intfocus.yonghuitest.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_message.*
+import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
@@ -21,7 +21,7 @@ class MessageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     val FIRST_PAGE_INDEX: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_message, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_mine, container, false)
         return view
     }
 

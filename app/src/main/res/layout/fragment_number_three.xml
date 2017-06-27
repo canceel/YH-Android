@@ -97,7 +97,7 @@
     <View
         android:id="@+id/iv_number_three_divider"
         style="@style/SmallDivider"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"/>
 
 </RelativeLayout>

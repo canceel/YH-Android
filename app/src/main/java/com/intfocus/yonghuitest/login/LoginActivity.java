@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.login;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -16,16 +16,16 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.intfocus.yonghuitest.ForgetPasswordActivity;
+import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
@@ -75,14 +75,6 @@ public class LoginActivity extends BaseActivity {
             intent.putExtra(kFromActivity, intent.getStringExtra(kFromActivity));
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             LoginActivity.this.startActivity(intent);
-
-            finish();
-        }
-        else if (mSharedPreferences.getBoolean("ScreenLock", false)) {
-            intent = new Intent(this, ConfirmPassCodeActivity.class);
-            intent.putExtra("is_from_login", true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            this.startActivity(intent);
 
             finish();
         }
@@ -155,7 +147,7 @@ public class LoginActivity extends BaseActivity {
 
         loginLayout = (LinearLayout) findViewById(R.id.login_layout);
         Button mSubmit = (Button) findViewById(R.id.btn_login);
-        controlKeyboardLayout(loginLayout, mSubmit);
+//        controlKeyboardLayout(loginLayout, mSubmit);
 
         /*
          * 检测登录界面，版本是否升级

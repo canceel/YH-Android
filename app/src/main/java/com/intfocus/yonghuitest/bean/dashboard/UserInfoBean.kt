@@ -20,6 +20,9 @@ class UserInfoBean {
 
     var user_num: String? = null
     var user_name: String? = null
+    var gravatar: String? = null
+    var group_name: String? = null
+    var role_name: String? = null
     var login_duration: String? = null
     var browse_report_count: String? = null
     var surpass_percentage: Double = 0.toDouble()

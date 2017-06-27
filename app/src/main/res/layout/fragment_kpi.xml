@@ -49,6 +49,11 @@
               android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -123,5 +128,7 @@
                 android:src="@drawable/kpi_logo"/>
         </LinearLayout>
     </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

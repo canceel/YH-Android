@@ -8,9 +8,9 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.dashboard.GroupDataBean
+import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/6/16.
@@ -47,7 +47,7 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var 
         }
 
         viewTag.mName.text = datas!![position].name
-        Glide.with(ctx).load(datas!![position].icon_link).into(viewTag.mIcon)
+        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         viewTag.llItem.setOnClickListener { listener.itemClick(datas!![position].name, datas!![position].link_path) }
 
         return convertView

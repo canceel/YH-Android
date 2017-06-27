@@ -34,7 +34,6 @@ class KpiMode(var ctx: Context): AbstractMode() {
     fun getUrl(): String {
         var url = String.format(K.kKPIApiDataPath, K.kBaseUrl,
                 mUserSP.getInt(URLs.kGroupId, 0).toString(), mUserSP.getInt(URLs.kRoleId, 0).toString())
-        Log.i("testlog", url)
         return url
     }
 

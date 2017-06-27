@@ -20,7 +20,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:maxWidth="60dp"
-        android:text="生意人帮助文档"
+        android:text="生意人帮助文档生意人帮助文档"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@color/black"
         android:textAlignment="center"
         android:textSize="12sp"/>

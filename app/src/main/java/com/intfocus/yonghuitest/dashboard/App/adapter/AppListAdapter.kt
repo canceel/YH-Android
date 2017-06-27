@@ -25,7 +25,6 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?, v
     }
 
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
-        Log.i("testlog", appListDatas!![position].group_name)
         holder.tvAppListTitle.text = appListDatas!![position].group_name
         holder.gvAppListItem.adapter = AppListItemAdapter(ctx, appListDatas!![position].data, listener)
     }

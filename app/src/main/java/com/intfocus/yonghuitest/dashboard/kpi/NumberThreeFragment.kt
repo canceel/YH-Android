@@ -56,7 +56,6 @@ class NumberThreeFragment(var datas: KpiGroupItem): BaseModeFragment<Subject>() 
     }
 
     fun init() {
-        Log.i("testlog", datas.title)
         tv_number_three_title.text = datas.title
         var number = datas.data!!.high_light!!.number
         tv_number_three_main.text = formatNumber(number)

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.YHApplication;
+import com.squareup.leakcanary.RefWatcher;
 import com.zbl.lib.baseframe.core.AbstractFragment;
 import com.zbl.lib.baseframe.core.Subject;
 
@@ -37,6 +39,12 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
         return number;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = YHApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
 /*    @Override
     public void startActivity(Intent intent) {

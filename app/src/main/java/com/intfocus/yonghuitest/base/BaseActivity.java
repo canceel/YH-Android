@@ -42,7 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.intfocus.yonghuitest.LoginActivity;
+import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.util.ApiHelper;
@@ -133,8 +133,6 @@ public class BaseActivity extends Activity {
             }
         }
 
-    // RefWatcher refWatcher = YHApplication.getRefWatcher(mContext);
-    // refWatcher.watch(this);
     }
 
     protected void onDestroy() {

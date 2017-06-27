@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.dashboard.App
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,9 @@ import com.intfocus.yonghuitest.bean.dashboard.AppListPageRequest
 import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
 import com.intfocus.yonghuitest.dashboard.App.mode.AppListMode
 import com.intfocus.yonghuitest.subject.SubjectActivity
+import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.util.WidgetUtil
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*
 import org.greenrobot.eventbus.EventBus
@@ -26,7 +29,7 @@ import org.greenrobot.eventbus.ThreadMode
  * 主页 - 专题
  * Created by liuruilin on 2017/6/15.
  */
-class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListener{
+class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
     var rootView : View? = null
     var datas: List<CategoryBean>? = null
@@ -46,12 +49,30 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        initSwipeLayout()
         super.onActivityCreated(savedInstanceState)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         EventBus.getDefault().unregister(this)
+    }
+
+    fun initSwipeLayout() {
+        swipe_container.setOnRefreshListener(this)
+        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light)
+        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
+    }
+
+    override fun onRefresh() {
+        if (HttpUtil.isConnected(context)) {
+            model.requestData()
+        } else {
+            swipe_container.isRefreshing = false
+            WidgetUtil.showToastShort(context, "请检查网络")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -63,6 +84,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
             rv_app_list.layoutManager = mLayoutManager
             rv_app_list.adapter = AppListAdapter(ctx, datas!![0].data, this)
         }
+        swipe_container.isRefreshing = false
     }
 
     override fun itemClick(bannerName: String?, link: String?) {

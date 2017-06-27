@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.intfocus.yonghuitest.bean.dashboard.NoticeListDataBean
 import com.intfocus.yonghuitest.bean.dashboard.NoticeListRquest
 import com.intfocus.yonghuitest.listen.EndLessOnScrollListener
 import com.intfocus.yonghuitest.mode.NoticeMode
+import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.WidgetUtil
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_notice.*
@@ -28,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode
  * Created by liuruilin on 2017/6/7.
  */
 
-class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeItemListener {
+class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeItemListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
     var rootView: View? = null
     var datas: MutableList<NoticeListDataBean>? = null
@@ -65,6 +67,23 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
         rl_notice_select.setOnClickListener { isShowNoticeList() }
         initView()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    fun initSwipeLayout() {
+        swipe_container.setOnRefreshListener(this)
+        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light)
+        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
+    }
+
+    override fun onRefresh() {
+        if (HttpUtil.isConnected(context)) {
+            model.requestData(1)
+        } else {
+            swipe_container.isRefreshing = false
+            WidgetUtil.showToastShort(context, "请检查网络")
+        }
     }
 
     fun initView() {
@@ -109,6 +128,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             datas!!.addAll(result.noticeListBean!!.data)
         }
         adapter.setData(datas)
+        swipe_container.isRefreshing = false
     }
 
     override fun itemClick(position: Int) {

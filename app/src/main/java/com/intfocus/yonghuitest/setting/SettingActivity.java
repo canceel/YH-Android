@@ -26,7 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
-import com.intfocus.yonghuitest.LoginActivity;
+import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;

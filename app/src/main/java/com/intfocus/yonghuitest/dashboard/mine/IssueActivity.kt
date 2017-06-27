@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
@@ -16,6 +17,7 @@ import com.intfocus.yonghuitest.mode.IssueMode
 import com.intfocus.yonghuitest.util.WidgetUtil
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
+import org.xutils.x
 
 class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemListener {
     val ctx = this
@@ -42,16 +44,20 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
 
     override fun onCreateFinish(p0: Bundle?) {
         supportActionBar!!.hide()
-        mIssueListStr = mIssueListSP.getString("IssueList", "")
-        if (!mIssueListStr.equals("")) {
-            mIssueList = gson.fromJson(mIssueListStr, IssueListBean::class.java)
-            showIssueDialog(mIssueList)
-        }
-        model.requestData()
+//        mIssueListStr = mIssueListSP.getString("IssueList", "")
+//        if (!mIssueListStr.equals("")) {
+//            mIssueList = gson.fromJson(mIssueListStr, IssueListBean::class.java)
+//            showIssueDialog(mIssueList)
+//        }
+//        model.requestData()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    fun submitIssue() {
+
     }
 
     /**
@@ -71,6 +77,9 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
         issueListDialog.setContentView(issueDialogView)
     }
 
+    fun dismissActivity(v: View) {
+        this.onBackPressed()
+    }
     override fun onBackPressed() {
         super.onBackPressed()
     }

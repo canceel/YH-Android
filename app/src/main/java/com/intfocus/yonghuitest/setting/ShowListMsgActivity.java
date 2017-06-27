@@ -160,6 +160,6 @@ public class ShowListMsgActivity extends BaseActivity {
     }
 
     public void dismissActivity(View v) {
-        ShowListMsgActivity.this.onBackPressed();
+        this.onBackPressed();
     }
 }

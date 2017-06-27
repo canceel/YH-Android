@@ -4,8 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import com.intfocus.yonghuitest.LoginActivity
+import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.util.ApiHelper
@@ -32,6 +33,10 @@ class PassWordAlterActivity : BaseActivity() {
         super.onDestroy()
     }
 
+    override fun dismissActivity(v: View) {
+        this.onBackPressed()
+    }
+
     fun submitPassword() {
         var oldPassword = et_old_password.text.toString()
         var newPassword = et_new_password.text.toString()
@@ -47,34 +52,34 @@ class PassWordAlterActivity : BaseActivity() {
             return
         }
         if (URLs.MD5(oldPassword) == user.get(URLs.kPassword)) {
-            val response = ApiHelper.resetPassword(user.get("user_id").toString(), URLs.MD5(newPassword))
+            Thread(Runnable {
+                val response = ApiHelper.resetPassword(user.get("user_id").toString(), URLs.MD5(newPassword))
+                val responseInfo = JSONObject(response[URLs.kBody])
 
-            val responseInfo = JSONObject(response[URLs.kBody])
+                runOnUiThread {
+                    if (response[URLs.kCode] == "200" || response[URLs.kCode] == "201") {
+                        val alertDialog = AlertDialog.Builder(this@PassWordAlterActivity)
+                        alertDialog.setTitle("温馨提示")
+                        alertDialog.setMessage("密码修改成功")
+                        alertDialog.setPositiveButton("重新登录") { _, _ ->
+                            modifiedUserConfig(false)
+                            val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
+                            mEditor.putBoolean("ScreenLock", false)
+                            mEditor.commit()
 
-            val alertDialog = AlertDialog.Builder(this@PassWordAlterActivity)
-            alertDialog.setTitle("温馨提示")
-            alertDialog.setMessage(responseInfo.getString("code"))
-
-            if (response[URLs.kCode] == "200" || response[URLs.kCode] == "201") {
-                alertDialog.setPositiveButton("重新登录") { _, _ ->
-                    modifiedUserConfig(false)
-                    val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
-                    mEditor.putBoolean("ScreenLock", false)
-                    mEditor.commit()
-
-                    val intent = Intent()
-                    intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                            val intent = Intent()
+                            intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        }
+                        alertDialog.show()
+                    } else {
+                        WidgetUtil.showToastShort(this, "密码修改失败")
+                    }
                 }
-                alertDialog.show()
-            } else {
-                alertDialog.setNegativeButton("好的") { dialog, _ -> dialog.dismiss() }
-                alertDialog.show()
-            }
-
+            }).start()
         } else {
-            Toast.makeText(this@PassWordAlterActivity, "原始密码输入有误", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PassWordAlterActivity, "旧密码输入有误", Toast.LENGTH_SHORT).show()
             Thread(mRunnableForDetecting).start()
         }
     }

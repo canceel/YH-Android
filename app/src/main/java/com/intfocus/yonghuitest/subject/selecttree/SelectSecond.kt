@@ -5,5 +5,5 @@ package com.intfocus.yonghuitest.subject.selecttree
  */
 class SelectSecond {
     var titles = ""
-    var infos: List<SelectThird>? = null
+    var infos: List<SelectSecond>? = null
 }

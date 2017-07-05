@@ -3,13 +3,11 @@ package com.intfocus.yonghuitest.mode
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Environment
-import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.bean.dashboard.*
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
-import okhttp3.*
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
@@ -18,8 +16,6 @@ import java.util.HashMap
 import org.xutils.http.RequestParams
 import org.xutils.x
 import java.io.File
-import java.net.UnknownHostException
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -121,7 +117,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         feedbackParams.put("platform", issueInfo.platform)
         feedbackParams.put("platform_version", issueInfo.platform_version)
         feedback.put("feedback", feedbackParams)
-        var str = Environment.getExternalStorageDirectory().toString() + "/" + "1.png"
+        var str = Environment.getExternalStorageDirectory().toString() + "/" + "guide_page_1.png"
         for (i in 0..2) {
             params.addBodyParameter("images", File(str), "multipart/form-data")
         }

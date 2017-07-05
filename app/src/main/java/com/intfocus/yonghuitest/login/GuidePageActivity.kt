@@ -25,9 +25,12 @@ class GuidePageActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         // 使背景填满整个屏幕,包括状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         }
         setContentView(R.layout.activity_guide_page)
 
@@ -72,7 +75,7 @@ class GuidePageActivity : BaseActivity() {
                         windowManager.defaultDisplay.getSize(size)
                         val width = size.x
                         //首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
-                        if (currentItem === imageViews.size - 1 && startX - endX > 0 && startX - endX >= width / 4) {
+                        if (currentItem === imageViews.size - 1 && startX - endX > 0 && startX - endX >= width / 20) {
                             startLoginActivity()
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left)
                         }

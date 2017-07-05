@@ -28,6 +28,8 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kActionLogAPIPath        = "%s/api/v1/android/logger";
   public final static String kPushDeviceTokenAPIPath  = "%s/api/v1/device/%s/push_token/%s";
   public final static String kBarCodeScanAPIPath      = "%s/api/v1/group/%s/role/%s/user/%s/store/%s/barcode_scan?code_info=%s&code_type=%s";
+  public final static String kBarCodeScanAPIViewPath  = "%s/mobile/v2/store/%s/barcode/%s/view";
+  public final static String kBarCodeScanAPIDataPath  = "%s/mobile/v2/store/%s/barcode/%s/attachment";
   public final static String kDownloadAssetsAPIPath   = "%s/api/v1/download/%s.zip";
   public final static String kUploadGravatarAPIPath   = "%s/api/v1/device/%s/upload/user/%s/gravatar";
   public final static String kDeviceTokenAPIPath      = "%s/api/v1/user/%s/devices";

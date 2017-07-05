@@ -13,6 +13,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
+import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -119,22 +123,29 @@ public class FileUtil {
      */
     public static String readFile(String pathName) {
         String string = null;
-        try {
-            InputStream inputStream = new FileInputStream(new File(pathName));
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+        File file = new File(pathName);
+        if (file.exists()) {
+            try {
+                InputStream inputStream = new FileInputStream(new File(pathName));
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                bufferedReader.close();
+                inputStreamReader.close();
+                string = stringBuilder.toString();
             }
-            bufferedReader.close();
-            inputStreamReader.close();
-            string = stringBuilder.toString();
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        else {
+            string = "";
         }
+
 
         return string;
     }
@@ -473,8 +484,18 @@ public class FileUtil {
      *  @return 是否支持筛选功能
      */
     public static boolean reportIsSupportSearch(Context context, String groupID, String templateID, String reportID) {
-        ArrayList<String> items = reportSearchItems(context, groupID, templateID, reportID);
-        return (items.size() > 0);
+        SelectItems items = reportSearchItems(context, groupID, templateID, reportID);
+        if (items == null) {
+            return false;
+        }
+
+        if (items != null) {
+            if (items.getData() == null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -492,6 +513,22 @@ public class FileUtil {
         return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
     }
 
+
+    /**
+     *  内部报表筛选文件路径
+     *
+     *  @param groupID    群组ID
+     *  @param templateID 模板ID
+     *  @param reportID   报表ID
+     *
+     *  @return 文件路径
+     */
+    public static String reportSelectDataPath(Context context, String groupID, String templateID, String reportID) {
+        String assetsPath = FileUtil.sharedPath(context);
+        String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
+        return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
+    }
+
     /**
      *  内部报表具有筛选功能时，选项列表
      *
@@ -501,20 +538,12 @@ public class FileUtil {
      *
      *  @return 选项列表
      */
-    public static ArrayList<String> reportSearchItems(Context context, String groupID, String templateID, String reportID) {
-        ArrayList<String> searchItems = new ArrayList<>();
+    public static SelectItems reportSearchItems(Context context, String groupID, String templateID, String reportID) {
         String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
-        if(new File(searchItemsPath).exists()) {
-            String itemsString = FileUtil.readFile(searchItemsPath);
-            StringTokenizer items = new StringTokenizer(itemsString, "::");
-            while (items.hasMoreTokens()) {
-                searchItems.add(items.nextToken());
-            }
-        }
-
-        return searchItems;
+        String itemsString = FileUtil.readFile(searchItemsPath);
+        Gson gson = new Gson();
+        return gson.fromJson(itemsString, SelectItems.class);
     }
-
 
     /**
      *  内部报表具有筛选功能时，用户选择的选项，默认第一个选项
@@ -532,7 +561,7 @@ public class FileUtil {
             selectedItem = FileUtil.readFile(selectedItemPath);
         }
 
-        return selectedItem.trim();
+        return selectedItem;
     }
     //json.put("size", searchItems.size());
     //for(int i = 0, len = searchItems.size(); i < len; i ++) {

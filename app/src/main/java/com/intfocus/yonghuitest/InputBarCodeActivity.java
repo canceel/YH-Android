@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
-import com.intfocus.yonghuitest.subject.BarCodeResultActivity;
+import com.intfocus.yonghuitest.scanner.BarCodeResultActivity;
+import com.intfocus.yonghuitest.scanner.ScannerResultActivity;
 import com.intfocus.yonghuitest.util.URLs;
 
 
@@ -29,7 +30,7 @@ public class InputBarCodeActivity extends BaseActivity {
                     return;
                 }
 
-                Intent intent = new Intent(InputBarCodeActivity.this, BarCodeResultActivity.class);
+                Intent intent = new Intent(InputBarCodeActivity.this, ScannerResultActivity.class);
                 intent.putExtra(URLs.kCodeInfo, barCodeStr);
                 intent.putExtra(URLs.kCodeType, "input");
                 startActivity(intent);

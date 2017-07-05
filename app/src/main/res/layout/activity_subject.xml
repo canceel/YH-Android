@@ -9,8 +9,10 @@
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionBar">
+        android:layout_height="45dp"
+        android:background="@color/actionBarV2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/bannerBack"
@@ -24,7 +26,10 @@
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="主题名称"
+            android:text="主题名称主题名称主题名称"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
             style="@style/BannerTitle" />
 
         <RelativeLayout
@@ -40,37 +45,7 @@
                 android:onClick="launchDropMenuActivity"
                 android:src="@drawable/banner_setting"/>
 
-            <RelativeLayout
-                android:id="@+id/colorViewLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="5dp">
-
-                <ImageView
-                    android:id="@+id/colorView0"
-                    style="@style/ColorViewStyle0"/>
-
-                <ImageView
-                    android:id="@+id/colorView1"
-                    style="@style/ColorViewStyle1"/>
-
-                <ImageView
-                    android:id="@+id/colorView2"
-                    style="@style/ColorViewStyle2"/>
-
-                <ImageView
-                    android:id="@+id/colorView3"
-                    style="@style/ColorViewStyle3"/>
-
-                <ImageView
-                    android:id="@+id/colorView4"
-                    style="@style/ColorViewStyle4"/>
-            </RelativeLayout>
-
         </RelativeLayout>
-
     </RelativeLayout>
 
     <FrameLayout
@@ -97,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:visibility="visible"
-                app:indicatorColor="@color/actionBar"
+                app:indicatorColor="@color/loading"
                 app:indicatorName="BallPulseIndicator"
                 />
         </RelativeLayout>

@@ -1,9 +1,5 @@
 package com.intfocus.yonghuitest.constant;
 
-/**
- * Created by zbaoliang on 16-11-30.
- */
-
 public class Permissions {
     /*
     group:android.permission-group.CONTACTS

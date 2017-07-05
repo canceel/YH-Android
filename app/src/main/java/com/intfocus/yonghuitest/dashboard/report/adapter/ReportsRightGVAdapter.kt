@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.report.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import org.xutils.x
  */
 class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var listener: ItemListener) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
+    var laryoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 100f))
 
     override fun getCount(): Int {
         return datas!!.size
@@ -42,17 +44,19 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?, v
                     convertView.findViewById(R.id.iv_reports_item_img) as ImageView,
                     convertView.findViewById(R.id.tv_reports_item_name) as TextView)
             convertView.tag = viewTag
+            convertView.layoutParams = laryoutParams
         } else {
-            viewTag = convertView.tag as ItemViewTag
-        }
+        viewTag = convertView.tag as ItemViewTag
+    }
 
-        var lparams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 95f))
+
 
         viewTag.llItem.setBackgroundResource(getItemBackground(position, datas!!.size))
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
-        viewTag.llItem.setOnClickListener { listener.reportItemClick(datas!![position].name, datas!![position].link_path) }
-        convertView.layoutParams = lparams
+        var link = datas!![position].link_path
+        var bannerName = datas!![position].name
+        viewTag.llItem.setOnClickListener { listener.reportItemClick(bannerName, link) }
         return convertView
     }
 

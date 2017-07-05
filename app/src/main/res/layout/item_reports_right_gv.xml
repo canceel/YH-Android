@@ -24,7 +24,7 @@
     <TextView
         android:id="@+id/tv_reports_item_name"
         android:layout_width="65dp"
-        android:layout_height="30dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:maxLines="2"

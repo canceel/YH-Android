@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="386"
-          android:versionName="2.3.6">
+          android:versionCode="396"
+          android:versionName="2.5.0">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -19,10 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 获取MAC地址 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 获取网络状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 获取设备信息 -->
-    <uses-permission
-        android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
@@ -36,7 +34,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
         <provider
@@ -46,7 +43,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/provider_paths"/>
         </provider>
 
         <service android:name="org.OpenUDID.OpenUDID_service">
@@ -54,14 +51,13 @@
                 <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
-
         <service
             android:name="com.squareup.leakcanary.internal.HeapAnalyzerService"
             android:enabled="false"
-            android:process=":leakcanary" />
+            android:process=":leakcanary"/>
         <service
             android:name="com.squareup.leakcanary.DisplayLeakService"
-            android:enabled="false" />
+            android:enabled="false"/>
 
         <activity
             android:name=".login.LauncherActivity"
@@ -84,13 +80,21 @@
         <activity
             android:name=".login.GuidePageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/GuidePageTheme"/>
+            android:theme="@style/LauncherTheme"/>
 
         <!-- 模板三 -->
         <activity
             android:name=".subject.HomeTricsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
+
+        <!-- 筛选 -->
+        <activity
+            android:name=".subject.SelectorTreeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+        </activity>
+
         <!-- 问题反馈 -->
         <activity
             android:name=".dashboard.mine.IssueActivity"
@@ -123,7 +127,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
-            android:name=".BarCodeScannerActivity"
+            android:name=".scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 个人信息 -->
@@ -169,7 +173,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
-            android:name=".subject.BarCodeResultActivity"
+            android:name=".scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
@@ -221,9 +225,8 @@
             android:value="Umeng"/>
 
         <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.mine.FavoriteActivity">
+        <activity android:name=".dashboard.mine.InstituteContentActivity">
         </activity>
-
     </application>
 
 </manifest>

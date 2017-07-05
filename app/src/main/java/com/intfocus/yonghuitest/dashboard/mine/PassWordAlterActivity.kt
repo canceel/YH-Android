@@ -54,8 +54,6 @@ class PassWordAlterActivity : BaseActivity() {
         if (URLs.MD5(oldPassword) == user.get(URLs.kPassword)) {
             Thread(Runnable {
                 val response = ApiHelper.resetPassword(user.get("user_id").toString(), URLs.MD5(newPassword))
-                val responseInfo = JSONObject(response[URLs.kBody])
-
                 runOnUiThread {
                     if (response[URLs.kCode] == "200" || response[URLs.kCode] == "201") {
                         val alertDialog = AlertDialog.Builder(this@PassWordAlterActivity)

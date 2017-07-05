@@ -3,10 +3,13 @@
     <color name="divider">#66898989</color>
     <color name="black_overlay">#66000000</color>
 
-    <color name="actionBar">#51aa38</color>
-    <color name="dashboardActionBar">#ffffff</color>
+    <color name="actionBarV2">#51aa38</color>
+    <color name="actionBar">#ffffff</color>
+
     <color name="colorPrimary">#51aa38</color>
     <color name="launch_color">#64B04B</color>
+    <color name="loading">#51aa38</color>
+    <color name="category">#6aa657</color>
 
     <color name="colors0">#ffffff</color>
     <color name="colors1">#ffcd0a</color>

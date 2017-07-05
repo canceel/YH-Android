@@ -34,10 +34,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ReportSelectorAcitity;
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -69,34 +71,35 @@ import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
 public class SubjectActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
-	@ViewInject(R.id.ll_shaixuan)
-	LinearLayout llShaixuan;
-	@ViewInject(R.id.ll_copylink)
-	LinearLayout llCopyLinkl;
+    @ViewInject(R.id.ll_shaixuan)
+    LinearLayout llShaixuan;
+    @ViewInject(R.id.ll_copylink)
+    LinearLayout llCopyLinkl;
 
-	private Boolean isInnerLink, isSupportSearch = false;
-	private String templateID, reportID;
-	private PDFView mPDFView;
-	private File pdfFile;
-	private String bannerName, link;
-	private int groupID, objectID, objectType;
-	private String userNum;
-	private RelativeLayout bannerView;
-	private Context mContext;
-	private int loadCount = 0;
-	private TextView mTitle;
-	private boolean reportDataState;
+    private Boolean isInnerLink, isSupportSearch = false;
+    private String templateID, reportID;
+    private PDFView mPDFView;
+    private File pdfFile;
+    private String bannerName, link;
+    private int groupID, objectID, objectType;
+    private String userNum;
+    private RelativeLayout bannerView;
+    private Context mContext;
+    private int loadCount = 0;
+    private TextView mTitle;
+    private boolean reportDataState;
+    private String selectItems;
 
-	@Override
-	@SuppressLint("SetJavaScriptEnabled")
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		/*
-		 * 判断当前设备版本，5.0 以 上 Android 系统使用才 enableSlowWholeDocumentDraw();
+    @Override
+    @SuppressLint("SetJavaScriptEnabled")
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /*
+         * 判断当前设备版本，5.0 以 上 Android 系统使用才 enableSlowWholeDocumentDraw();
 		 */
-		if (Build.VERSION.SDK_INT > 20) {
-			enableSlowWholeDocumentDraw();
-		}
+        if (Build.VERSION.SDK_INT > 20) {
+            enableSlowWholeDocumentDraw();
+        }
         setContentView(R.layout.activity_subject);
 
         mContext = this;
@@ -104,98 +107,89 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 		/*
 		 * JSON Data
 		 */
-		try {
-			groupID = user.getInt(URLs.kGroupId);
-			userNum = user.getString(URLs.kUserNum);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			groupID = -2;
-			userNum = "not-set";
-		}
+        try {
+            groupID = user.getInt(URLs.kGroupId);
+            userNum = user.getString(URLs.kUserNum);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            groupID = -2;
+            userNum = "not-set";
+        }
 
-		mWebView = (WebView) findViewById(R.id.browser);
-		initSubWebView();
+        mWebView = (WebView) findViewById(R.id.browser);
+        initSubWebView();
 
-		mWebView.setWebViewClient(new WebViewClient() {
-			@Override
-			public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
-				//返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-				view.loadUrl(url);
-				return true;
-			}
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
 
-			@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				super.onPageStarted(view, url, favicon);
-				LogUtil.d("onPageStarted", String.format("%s - %s", URLs.timestamp(), url));
-			}
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                LogUtil.d("onPageStarted", String.format("%s - %s", URLs.timestamp(), url));
+            }
 
-			@Override
-			public void onPageFinished(WebView view, String url) {
-				super.onPageFinished(view, url);
-				animLoading.setVisibility(View.GONE);
-				isWeiXinShared = true;
-				LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                animLoading.setVisibility(View.GONE);
+                isWeiXinShared = true;
+                LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
 
-				// 报表缓存列表:是否把报表标题存储
-				if (reportDataState && url.contains("report_"+reportID)){
-					try {
-						SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
-						SharedPreferences.Editor editor = sp.edit();
-						String cache = sp.getString("cache","");
-						JSONObject json;
-						if (cache.equals("")){
-							json = new JSONObject();
-							json.put("0", bannerName);
-						}else {
-							boolean isAdd = true;
-							json = new JSONObject(cache);
-							Iterator<String> it = json.keys();
-							while(it.hasNext()){
-								String key = it.next();
-								if (json.getString(key).equals(bannerName)){
-									isAdd = false;
-								}
-							}
-							if (isAdd){
-								json.put("" + json.length(), bannerName);
-							}
-						}
-						editor.putString("cache", json.toString());
-						editor.commit();
-						Log.d("cache111", sp.getString("cache",""));
-					}catch (JSONException e){
-						e.printStackTrace();
-					}
-				}
-			}
+                // 报表缓存列表:是否把报表标题存储
+                if (reportDataState && url.contains("report_" + reportID)) {
+                    try {
+                        SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        String cache = sp.getString("cache", "");
+                        JSONObject json;
+                        if (cache.equals("")) {
+                            json = new JSONObject();
+                            json.put("0", bannerName);
+                        } else {
+                            boolean isAdd = true;
+                            json = new JSONObject(cache);
+                            Iterator<String> it = json.keys();
+                            while (it.hasNext()) {
+                                String key = it.next();
+                                if (json.getString(key).equals(bannerName)) {
+                                    isAdd = false;
+                                }
+                            }
+                            if (isAdd) {
+                                json.put("" + json.length(), bannerName);
+                            }
+                        }
+                        editor.putString("cache", json.toString());
+                        editor.commit();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-				LogUtil.d("onReceivedError",
-						String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
-								failingUrl));
-			}
-		});
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                LogUtil.d("onReceivedError",
+                        String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
+                                failingUrl));
+            }
+        });
 
-		mWebView.requestFocus();
-		mWebView.setVisibility(View.VISIBLE);
-		mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
-		animLoading.setVisibility(View.VISIBLE);
-		initActiongBar();
+        mWebView.requestFocus();
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
+        animLoading.setVisibility(View.VISIBLE);
+        initActiongBar();
+    }
 
-		List<ImageView> colorViews = new ArrayList<>();
-		colorViews.add((ImageView) findViewById(R.id.colorView0));
-		colorViews.add((ImageView) findViewById(R.id.colorView1));
-		colorViews.add((ImageView) findViewById(R.id.colorView2));
-		colorViews.add((ImageView) findViewById(R.id.colorView3));
-		colorViews.add((ImageView) findViewById(R.id.colorView4));
-		initColorView(colorViews);
-	}
-
-	private void initActiongBar(){
-		bannerView = (RelativeLayout) findViewById(R.id.actionBar);
-		ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-		mTitle = (TextView) findViewById(R.id.bannerTitle);
+    private void initActiongBar() {
+        bannerView = (RelativeLayout) findViewById(R.id.actionBar);
+        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
+        mTitle = (TextView) findViewById(R.id.bannerTitle);
 
 		/*
          * Intent Data || JSON Data
@@ -219,273 +213,292 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
-		showComplaintsPopWindow(v);
-	}
-	/**
-	 * 显示菜单
-	 *
-	 * @param clickView
-	 */
-	void showComplaintsPopWindow(View clickView) {
-		View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
-		x.view().inject(this, contentView);
-		if (!isInnerLink) {
-			llCopyLinkl.setVisibility(View.VISIBLE);
-		}
-		if (isSupportSearch) {
-			llShaixuan.setVisibility(View.VISIBLE);
-		}
-		//设置弹出框的宽度和高度
-		popupWindow = new PopupWindow(contentView,
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-		popupWindow.setFocusable(true);// 取得焦点
-		//注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
-		popupWindow.setBackgroundDrawable(new BitmapDrawable());
-		//点击外部消失
-		popupWindow.setOutsideTouchable(true);
-		//设置可以点击
-		popupWindow.setTouchable(true);
-		//进入退出的动画
+        showComplaintsPopWindow(v);
+    }
+
+    /**
+     * 显示菜单
+     *
+     * @param clickView
+     */
+    void showComplaintsPopWindow(View clickView) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
+        x.view().inject(this, contentView);
+        if (!isInnerLink) {
+            llCopyLinkl.setVisibility(View.VISIBLE);
+        }
+        if (isSupportSearch) {
+            llShaixuan.setVisibility(View.VISIBLE);
+        }
+        //设置弹出框的宽度和高度
+        popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //点击外部消失
+        popupWindow.setOutsideTouchable(true);
+        //设置可以点击
+        popupWindow.setTouchable(true);
+        //进入退出的动画
 //        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
-		popupWindow.showAsDropDown(clickView);
-		contentView.findViewById(R.id.ll_share).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				// 分享
-				actionShare2Weixin(view);
-			}
-		});
-		contentView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				// 评论
-				actionLaunchCommentActivity(view);
-			}
-		});
-		contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				// 筛选
-				actionLaunchReportSelectorActivity(view);
-			}
-		});
-		contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				// 拷贝外部链接
-				actionCopyLink(view);
-			}
-		});
-		contentView.findViewById(R.id.ll_refresh).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				animLoading.setVisibility(View.VISIBLE);
-				// 刷新
-				refresh(view);
-			}
-		});
-	}
+        popupWindow.showAsDropDown(clickView);
+        contentView.findViewById(R.id.ll_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 分享
+                actionShare2Weixin(view);
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 评论
+                actionLaunchCommentActivity(view);
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 筛选
+                actionLaunchReportSelectorActivity(view);
+//                WidgetUtil.showToastShort(mAppContext, "暂无筛选功能");
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 拷贝外部链接
+                actionCopyLink(view);
+                popupWindow.dismiss();
+            }
+        });
+        contentView.findViewById(R.id.ll_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animLoading.setVisibility(View.VISIBLE);
+                popupWindow.dismiss();
+                // 刷新
+                refresh(view);
+            }
+        });
+    }
 
-	public void onResume() {
-
-		checkInterfaceOrientation(this.getResources().getConfiguration());
-		mMyApp.setCurrentActivity(this);
-		isWeiXinShared = false;
+    public void onResume() {
+        animLoading.setVisibility(View.VISIBLE);
+        checkInterfaceOrientation(this.getResources().getConfiguration());
+        mMyApp.setCurrentActivity(this);
+        isWeiXinShared = false;
 		/*
 		 * 判断是否允许浏览器复制
 		 */
-		isAllowBrowerCopy();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (isOffline){
-							mTitle.setText(bannerName + "(离线)");
-						}
-					}
-				});
-			}
-		}).start();
-		super.onResume();
-	}
+        isAllowBrowerCopy();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOffline) {
+                            mTitle.setText(bannerName + "(离线)");
+                        }
+                    }
+                });
+            }
+        }).start();
+        super.onResume();
+    }
 
-	protected void displayBannerTitleAndSearchIcon() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				String selectedItem = FileUtil.reportSelectedItem(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
-				if (selectedItem == null || selectedItem.length() == 0) {
-					ArrayList<String> items = FileUtil.reportSearchItems(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
-					if (items.size() > 0) {
-						selectedItem = items.get(0);
-					}
-					else {
-						selectedItem = String.format("%s(NONE)", bannerName);
-					}
-				}
-				TextView mTitle = (TextView) findViewById(R.id.bannerTitle);
-				mTitle.setText(selectedItem);
-			}
-		});
-	}
+    protected void displayBannerTitleAndSearchIcon() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String selectedItem = FileUtil.reportSelectedItem(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
+                if (selectedItem == null || selectedItem.length() == 0) {
+                    SelectItems items = FileUtil.reportSearchItems(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
+                    String firstName = "";
+                    String secondName = "";
+                    String thirdName = "";
+                    if (items.getData().size() != 0) {
+                        firstName = items.getData().get(0).getTitles();
 
-	/**
-	 * PDFView OnPageChangeListener CallBack
-	 *
-	 * @param page      the new page displayed, starting from 1
-	 * @param pageCount the total page count, starting from 1
-	 */
-	public void onPageChanged(int page, int pageCount) {
-		Log.i("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
-	}
+                        if (items.getData().get(0).getInfos().size() != 0) {
+                            secondName = "·" + items.getData().get(0).getInfos().get(0).getTitles();
 
-	public void loadComplete(int nbPages) {
-		Log.d("loadComplete", "load pdf done");
-	}
+                            if (items.getData().get(0).getInfos().get(0).getInfos().size() != 0) {
+                                thirdName = "·" + items.getData().get(0).getInfos().get(0).getInfos().get(0).getTitles();
+                            }
+                        }
+                    }
 
-	public void errorOccured(String errorType, String errorMessage) {
-		String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-				outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
+                    selectedItem = firstName + secondName + thirdName;
+                }
+                else {
+                    selectedItem = selectedItem.replace("||", "·");
+                }
+                TextView mTitle = (TextView) findViewById(R.id.bannerTitle);
+                mTitle.setText(selectedItem);
+            }
+        });
+    }
 
-		if (!(new File(htmlPath)).exists()) {
-			toast(String.format("链接打开失败: %s", link));
-			return;
-		}
+    /**
+     * PDFView OnPageChangeListener CallBack
+     *
+     * @param page      the new page displayed, starting from 1
+     * @param pageCount the total page count, starting from 1
+     */
+    public void onPageChanged(int page, int pageCount) {
+        Log.i("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
+    }
 
-		mWebView.setVisibility(View.VISIBLE);
-		mPDFView.setVisibility(View.INVISIBLE);
+    public void loadComplete(int nbPages) {
+        Log.d("loadComplete", "load pdf done");
+    }
 
-		String htmlContent = FileUtil.readFile(htmlPath);
-		htmlContent = htmlContent.replace("$exception_type$", errorType);
-		htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-		htmlContent = htmlContent.replace("$visit_url$", link);
+    public void errorOccured(String errorType, String errorMessage) {
+        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
+                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
 
-		try {
-			FileUtil.writeFile(outputPath, htmlContent);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        if (!(new File(htmlPath)).exists()) {
+            toast(String.format("链接打开失败: %s", link));
+            return;
+        }
 
-		Message message = mHandlerWithAPI.obtainMessage();
-		message.what = 200;
-		message.obj = outputPath;
+        mWebView.setVisibility(View.VISIBLE);
+        mPDFView.setVisibility(View.INVISIBLE);
 
-		mHandlerWithAPI.sendMessage(message);
-	}
+        String htmlContent = FileUtil.readFile(htmlPath);
+        htmlContent = htmlContent.replace("$exception_type$", errorType);
+        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
+        htmlContent = htmlContent.replace("$visit_url$", link);
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
+        try {
+            FileUtil.writeFile(outputPath, htmlContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		// 横屏时隐藏标题栏、导航栏
-		checkInterfaceOrientation(newConfig);
-	}
+        Message message = mHandlerWithAPI.obtainMessage();
+        message.what = 200;
+        message.obj = outputPath;
 
-	/*
-	 * 横屏 or 竖屏
-	 */
-	private void checkInterfaceOrientation(Configuration config) {
-		Boolean isLandscape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        mHandlerWithAPI.sendMessage(message);
+    }
 
-		bannerView.setVisibility(isLandscape ? View.GONE : View.VISIBLE);
-		if (isLandscape) {
-			WindowManager.LayoutParams lp = getWindow().getAttributes();
-			lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-			getWindow().setAttributes(lp);
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-		}
-		else {
-			WindowManager.LayoutParams attr = getWindow().getAttributes();
-			attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-			getWindow().setAttributes(attr);
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-		}
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
-		mWebView.post(new Runnable() {
-			@Override
-			public void run() {
-				loadHtml();
-			}
-		});
-	}
+        // 横屏时隐藏标题栏、导航栏
+        checkInterfaceOrientation(newConfig);
+    }
 
-	private void loadHtml() {
-		WebSettings webSettings = mWebView.getSettings();
-		if (isInnerLink) {
-			// format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
-			// deprecated
-			// format: /mobile/report/:report_id/group/:group_id
-			templateID = TextUtils.split(link, "/")[6];
-			reportID = TextUtils.split(link, "/")[8];
-			String urlPath = format(link.replace("%@", "%d"), groupID);
-			urlString = String.format("%s%s", K.kBaseUrl, urlPath);
-			webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    /*
+     * 横屏 or 竖屏
+     */
+    private void checkInterfaceOrientation(Configuration config) {
+        Boolean isLandscape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
-			/**
-			 * 内部报表具有筛选功能时
-			 *   - 如果用户已选择，则 banner 显示该选项名称
-			 *   - 未设置时，默认显示筛选项列表中第一个
-			 *
-			 *  初次加载时，判断筛选功能的条件还未生效
-			 *  此处仅在第二次及以后才会生效
-			 */
-			isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%d", groupID), templateID, reportID);
-			if (isSupportSearch) {
-				displayBannerTitleAndSearchIcon();
-			}
+        bannerView.setVisibility(isLandscape ? View.GONE : View.VISIBLE);
+        if (isLandscape) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            getWindow().setAttributes(lp);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            WindowManager.LayoutParams attr = getWindow().getAttributes();
+            attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().setAttributes(attr);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-				reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
-				String jsFileName = "";
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+    }
 
-				// 模板 4 的 groupID 为 0
-				if(Integer.valueOf(templateID) == 4){
-					jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
-				}else{
-					jsFileName = String.format("group_%s_template_%s_report_%s.js", String.format("%d", groupID), templateID, reportID);
-				}
-				String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
-				if(new File(javascriptPath).exists()){
-					new Thread(mRunnableForDetecting).start();
-				}else{
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							AlertDialog.Builder builder = new AlertDialog.Builder(SubjectActivity.this);
-							builder.setTitle("温馨提示")
-									.setMessage("报表数据下载失败,不再加载网页")
-									.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											dialog.dismiss();
-											SubjectActivity.this.finish();
-										}
-									});
-							builder.show();
-						}
-					});
-				}
-				}
-			}).start();
-		} else {
-			urlString = link;
+    private void loadHtml() {
+        WebSettings webSettings = mWebView.getSettings();
+        if (isInnerLink) {
+            // format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
+            // deprecated
+            // format: /mobile/report/:report_id/group/:group_id
+            templateID = TextUtils.split(link, "/")[6];
+            reportID = TextUtils.split(link, "/")[8];
+            String urlPath = format(link.replace("%@", "%d"), groupID);
+            urlString = String.format("%s%s", K.kBaseUrl, urlPath);
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if (urlString.toLowerCase().endsWith(".pdf")) {
-						new Thread(mRunnableForPDF).start();
-					} else {
+            /**
+             * 内部报表具有筛选功能时
+             *   - 如果用户已选择，则 banner 显示该选项名称
+             *   - 未设置时，默认显示筛选项列表中第一个
+             *
+             *  初次加载时，判断筛选功能的条件还未生效
+             *  此处仅在第二次及以后才会生效
+             */
+            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%d", groupID), templateID, reportID);
+            if (isSupportSearch) {
+                displayBannerTitleAndSearchIcon();
+            }
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+                    String jsFileName = "";
+
+                    // 模板 4 的 groupID 为 0
+                    if (Integer.valueOf(templateID) == 4) {
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
+                    } else {
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", String.format("%d", groupID), templateID, reportID);
+                    }
+                    String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
+                    if (new File(javascriptPath).exists()) {
+                        new Thread(mRunnableForDetecting).start();
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SubjectActivity.this);
+                                builder.setTitle("温馨提示")
+                                        .setMessage("报表数据下载失败,不再加载网页")
+                                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                SubjectActivity.this.finish();
+                                            }
+                                        });
+                                builder.show();
+                            }
+                        });
+                    }
+                }
+            }).start();
+        } else {
+            urlString = link;
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (urlString.toLowerCase().endsWith(".pdf")) {
+                        new Thread(mRunnableForPDF).start();
+                    } else {
                         /*
                          * 外部链接传参: user_num, timestamp
                          */
@@ -538,27 +551,25 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      * 内部报表具有筛选功能时，调用筛选项界面
      */
     public void actionLaunchReportSelectorActivity(View v) {
-		if (isSupportSearch) {
-			Intent intent = new Intent(mContext, ReportSelectorAcitity.class);
-			intent.putExtra(URLs.kBannerName, bannerName);
-			intent.putExtra(URLs.kGroupId, groupID);
-			intent.putExtra("reportID", reportID);
-			intent.putExtra("templateID", templateID);
-			mContext.startActivity(intent);
-		} else {
-			WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
-		}
-
+        if (isSupportSearch && selectItems != null) {
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+            Intent intent = new Intent(mContext, SelectorTreeActivity.class);
+            intent.putExtra("selectItems", selectItems);
+            intent.putExtra("selectedItemPath", selectedItemPath);
+            mContext.startActivity(intent);
+        } else {
+            WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+        }
     }
 
-	/*
-	 * 拷贝链接
-	 */
-	public void actionCopyLink(View v) {
-		ClipboardManager clipboardManager= (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-		clipboardManager.setText(link);
-		WidgetUtil.showToastShort(mContext, "链接已拷贝");
-	}
+    /*
+     * 拷贝链接
+     */
+    public void actionCopyLink(View v) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboardManager.setText(link);
+        WidgetUtil.showToastShort(mContext, "链接已拷贝");
+    }
 
     /*
      * 分享截图至微信
@@ -596,11 +607,11 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     toast("截图失败");
                     return;
                 }
-				Canvas canvas = new Canvas(imgBmp);
-				Paint paint = new Paint();
-				int iHeight = imgBmp.getHeight();
-				canvas.drawBitmap(imgBmp, 0, iHeight, paint);
-				mWebView.draw(canvas);
+                Canvas canvas = new Canvas(imgBmp);
+                Paint paint = new Paint();
+                int iHeight = imgBmp.getHeight();
+                canvas.drawBitmap(imgBmp, 0, iHeight, paint);
+                mWebView.draw(canvas);
             } else {
                 imgBmp = mWebView.getDrawingCache();
             }
@@ -614,45 +625,46 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         File file = new File(filePath);
         if (file.exists() && file.length() > 0) {
             UMImage image = new UMImage(SubjectActivity.this, file);
-			Log.d("plat","platform"+"1");
+            Log.d("plat", "platform" + "1");
             new ShareAction(this)
-					.withText("截图分享")
+                    .withText("截图分享")
                     .setPlatform(SHARE_MEDIA.WEIXIN)
                     .setDisplayList(SHARE_MEDIA.WEIXIN)
                     .setCallback(umShareListener)
-					.open();
+                    .open();
         } else {
             toast("截图失败,请尝试系统截图");
         }
     }
 
-	private UMShareListener umShareListener = new UMShareListener() {
-		@Override
-		public void onStart(SHARE_MEDIA platform) {
-			//分享开始的回调
-		}
-		@Override
-		public void onResult(SHARE_MEDIA platform) {
-			Log.d("plat","platform"+platform);
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
 
-			//" 分享成功啦"
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.d("plat", "platform" + platform);
 
-		}
+            //" 分享成功啦"
 
-		@Override
-		public void onError(SHARE_MEDIA platform, Throwable t) {
-			//Toast.makeText(MainActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-			if(t!=null){
-				Log.d("throw","throw:"+t.getMessage());
-			}
-		}
+        }
 
-		@Override
-		public void onCancel(SHARE_MEDIA platform) {
-			Log.d("throw","throw:"+" 分享取消了");
-			//Toast.makeText(MainActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-		}
-	};
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            //Toast.makeText(MainActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Log.d("throw", "throw:" + " 分享取消了");
+            //Toast.makeText(MainActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -684,6 +696,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void refresh(View v) {
+        if (isOffline) {
+            mTitle.setText(bannerName + "(离线)");
+        }
         animLoading.setVisibility(View.VISIBLE);
         new refreshTask().execute();
     }
@@ -721,15 +736,16 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     private class JavaScriptInterface extends JavaScriptBase {
-		@JavascriptInterface
-		public void showSource(String html) {
-			String htmlFilePath = Environment.getExternalStorageDirectory() + "/" + "content.html";
-			try {
-				FileUtil.writeFile(htmlFilePath, html);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+        @JavascriptInterface
+        public void showSource(String html) {
+            String htmlFilePath = Environment.getExternalStorageDirectory() + "/" + "content.html";
+            try {
+                FileUtil.writeFile(htmlFilePath, html);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         /*
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
@@ -782,11 +798,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
                 new Thread(mRunnableForLogger).start();
-                //点击两次还是有异常 异常报出
-                if (loadCount > 2) {
-//                    showWebViewExceptionForWithoutNetwork();
-//                    loadCount++;
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -795,16 +806,16 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             try {
+                Log.i("testlog", arrayString);
                 String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-				Log.i("testlog", arrayString);
+                selectItems = arrayString;
                 FileUtil.writeFile(searchItemsPath, arrayString);
 
-				/**
-				 *  判断筛选的条件: arrayString 数组不为空
-				 *  报表第一次加载时，此处为判断筛选功能的关键点
-				 */
-                isSupportSearch = FileUtil.reportIsSupportSearch(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
-                if (isSupportSearch) {
+                /**
+                 *  判断筛选的条件: arrayString 数组不为空
+                 *  报表第一次加载时，此处为判断筛选功能的关键点
+                 */
+                if (!arrayString.equals("{\"data\":[]}")) {
                     displayBannerTitleAndSearchIcon();
                 }
             } catch (IOException e) {
@@ -815,11 +826,12 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = null;
-			String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-			if (new File(selectedItemPath).exists()) {
-				item = FileUtil.readFile(selectedItemPath);
-			}
-			return item;
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+            if (new File(selectedItemPath).exists()) {
+                item = FileUtil.readFile(selectedItemPath);
+            }
+
+            return item;
         }
 
         @JavascriptInterface

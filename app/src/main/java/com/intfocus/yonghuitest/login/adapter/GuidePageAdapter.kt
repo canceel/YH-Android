@@ -68,8 +68,8 @@ class GuidePageAdapter(var ctx: Context, var imageViews: List<ImageView>,var ima
         val imageView = imageViews[position]
 //        imageView.setImageResource(imageIDList[position])
         val viewLayoutParams = ViewGroup.LayoutParams(
-                DisplayUtil.dip2px(ctx, 180f),
-                DisplayUtil.dip2px(ctx, 200f)
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
         )
         x.image().bind(imageView, imageIDList[position])
         container.addView(imageView, viewLayoutParams)//设置图片的宽高

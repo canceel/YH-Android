@@ -7,7 +7,7 @@ import java.io.Serializable
  */
 class KpiGroupItemHighLight: Serializable {
     var percentage: Boolean = false
-    var number: String? = null
-    var compare: String? = null
+    var number = ""
+    var compare = ""
     var arrow: Int = 0
 }

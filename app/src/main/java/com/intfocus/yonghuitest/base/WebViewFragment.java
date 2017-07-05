@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -15,6 +16,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.intfocus.yonghuitest.dashboard.mine.InstituteContentActivity;
+import com.intfocus.yonghuitest.scanner.ScannerResultActivity;
 import com.intfocus.yonghuitest.subject.HomeTricsActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.subject.SubjectActivity;
@@ -24,6 +27,7 @@ import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.URLs;
+import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.CustomWebView;
 
 import org.json.JSONException;
@@ -58,7 +62,14 @@ public class WebViewFragment extends BaseHomeFragment implements SwipeRefreshLay
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDefaultTextEncodingName("utf-8");
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setAppCacheMaxSize(1024*1024*8);
+        String appCachePath = act.getApplicationContext().getCacheDir().getAbsolutePath();
+        mWebView.getSettings().setAppCachePath(appCachePath);
+        mWebView.getSettings().setAllowFileAccess(true);
+
+        mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setDrawingCacheEnabled(true);
         mWebView.addJavascriptInterface(new JavaScriptBase(), URLs.kJSInterfaceName);
@@ -136,6 +147,15 @@ public class WebViewFragment extends BaseHomeFragment implements SwipeRefreshLay
         @JavascriptInterface
         public void setDashboardDataCount(String str, int i) {
 
+        }
+
+        @JavascriptInterface
+        public void openCotent(String id, String title) {
+            Log.i("testlog", "isRunning");
+            Intent intent = new Intent(mContext, InstituteContentActivity.class);
+            intent.putExtra("id", id);
+            intent.putExtra("title", title);
+            mContext.startActivity(intent);
         }
 
         /*

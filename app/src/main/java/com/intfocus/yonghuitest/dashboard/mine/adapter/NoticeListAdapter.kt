@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest.adapter.dashboard
+package com.intfocus.yonghuitest.dashboard.mine.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -17,7 +17,7 @@ import com.intfocus.yonghuitest.bean.dashboard.NoticeListDataBean
  */
 class NoticeListAdapter(val context: Context,
                         private var noticeListDatas: List<NoticeListDataBean>?,
-                        var listener: NoticeListAdapter.NoticeItemListener) : RecyclerView.Adapter<NoticeListAdapter.NoticeListHolder>() {
+                        var listener: NoticeItemListener) : RecyclerView.Adapter<NoticeListAdapter.NoticeListHolder>() {
 
     var inflater = LayoutInflater.from(context)
 
@@ -26,9 +26,9 @@ class NoticeListAdapter(val context: Context,
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeListAdapter.NoticeListHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeListHolder {
         val contentView = inflater.inflate(R.layout.item_notice_list, parent, false)
-        return NoticeListAdapter.NoticeListHolder(contentView)
+        return NoticeListHolder(contentView)
     }
 
     override fun onBindViewHolder(holder: NoticeListHolder, position: Int) {

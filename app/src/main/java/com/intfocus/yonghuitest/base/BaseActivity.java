@@ -106,7 +106,7 @@ public class BaseActivity extends Activity {
         displayMetrics = getResources().getDisplayMetrics();
         displayDpi = displayMetrics.densityDpi;
 
-        mMyApp = (YHApplication)this.getApplication();
+        mMyApp = (YHApplication) this.getApplication();
         mAppContext = mMyApp.getAppContext();
 
         //统计应用启动数据
@@ -153,13 +153,13 @@ public class BaseActivity extends Activity {
     @Override
     public Resources getResources() {
         Resources res = super.getResources();
-        Configuration config=new Configuration();
+        Configuration config = new Configuration();
         config.setToDefaults();
-        res.updateConfiguration(config,res.getDisplayMetrics());
+        res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
     }
 
-    private void clearReferences(){
+    private void clearReferences() {
         String currActivity = mMyApp.getCurrentActivity();
         if (this.equals(currActivity)) {
             mMyApp.setCurrentActivity(null);
@@ -176,7 +176,7 @@ public class BaseActivity extends Activity {
             return;
         }
 
-        String [] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
+        String[] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
         Field f = null;
         Object obj_get = null;
         for (String param : arr) {
@@ -323,14 +323,15 @@ public class BaseActivity extends Activity {
 
         private void showWebViewForWithoutNetwork() {
             mWebView.post(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     String urlStringForLoading = loadingPath("400");
                     mWebView.loadUrl(urlStringForLoading);
                 }
             });
         }
 
-        public String getLoadLocalHtmlUrl(){
+        public String getLoadLocalHtmlUrl() {
             String htmlName = HttpUtil.urlToFileName(mUrlString);
             String htmlPath = String.format("%s/%s", mAssetsPath, htmlName);
             return htmlPath;
@@ -396,7 +397,7 @@ public class BaseActivity extends Activity {
         @Override
         public void handleMessage(Message message) {
             BaseActivity activity = weakActivity.get();
-            if (activity == null)  return;
+            if (activity == null) return;
 
             switch (message.what) {
                 case 200:
@@ -406,26 +407,26 @@ public class BaseActivity extends Activity {
                     break;
                 case 400:
                 case 408:
-                    if (new File(getLoadLocalHtmlUrl()).exists()){
+                    if (new File(getLoadLocalHtmlUrl()).exists()) {
                         mWebView.loadUrl("file:///" + getLoadLocalHtmlUrl());
                         isOffline = true;
-                    }else {
+                    } else {
                         showWebViewForWithoutNetwork();
                     }
                     break;
                 case 401:
-                    if (new File(getLoadLocalHtmlUrl()).exists()){
+                    if (new File(getLoadLocalHtmlUrl()).exists()) {
                         mWebView.loadUrl("file:///" + getLoadLocalHtmlUrl());
                         isOffline = true;
-                    }else {
+                    } else {
                         showDialogForDeviceForbided();
                     }
                     break;
                 default:
-                    if (new File(getLoadLocalHtmlUrl()).exists()){
+                    if (new File(getLoadLocalHtmlUrl()).exists()) {
                         mWebView.loadUrl("file:///" + getLoadLocalHtmlUrl());
                         isOffline = true;
-                    }else {
+                    } else {
                         showWebViewForWithoutNetwork();
                     }
                     LogUtil.d("UnkownCode", String.format("%d", message.what));
@@ -445,7 +446,7 @@ public class BaseActivity extends Activity {
             weakActivity = new WeakReference<>(activity);
         }
 
-        public void setVariables(WebView webView, String sharedPath, String assetsPath ) {
+        public void setVariables(WebView webView, String sharedPath, String assetsPath) {
             mWebView = webView;
             mSharedPath = sharedPath;
             mAssetsPath = assetsPath;
@@ -457,7 +458,8 @@ public class BaseActivity extends Activity {
 
         private void showWebViewForWithoutNetwork() {
             mWebView.post(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     String urlStringForLoading = loadingPath("400");
                     mWebView.loadUrl(urlStringForLoading);
                 }
@@ -494,7 +496,7 @@ public class BaseActivity extends Activity {
                 case 400:
                 case 401:
                 case 408:
-                    if (new File((String)message.obj).exists()){
+                    if (new File((String) message.obj).exists()) {
                         weakActivity.get().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -502,13 +504,13 @@ public class BaseActivity extends Activity {
                             }
                         });
                         isOffline = true;
-                    }else {
+                    } else {
                         showWebViewForWithoutNetwork();
                     }
                     deleteHeadersFile();
                     break;
                 default:
-                    if (new File((String)message.obj).exists()){
+                    if (new File((String) message.obj).exists()) {
                         weakActivity.get().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -516,7 +518,7 @@ public class BaseActivity extends Activity {
                             }
                         });
                         isOffline = true;
-                    }else {
+                    } else {
                         showWebViewForWithoutNetwork();
                     }
                     String msg = String.format("访问服务器失败（%d)", message.what);
@@ -527,12 +529,12 @@ public class BaseActivity extends Activity {
         }
     }
 
-    public final Runnable  mRunnableForLogger = new Runnable() {
+    public final Runnable mRunnableForLogger = new Runnable() {
         @Override
         public void run() {
             try {
                 String action = logParams.getString(URLs.kAction);
-                if(action == null) {
+                if (action == null) {
                     return;
                 }
                 if (!action.contains("登录") && !action.equals("解屏") && !action.equals("点击/主页面/浏览器")) {
@@ -545,21 +547,6 @@ public class BaseActivity extends Activity {
             }
         }
     };
-
-    public void initColorView(List<ImageView> colorViews) {
-        String[] colors = {"#00ffff", "#ffcd0a", "#fd9053", "#dd0929", "#016a43", "#9d203c", "#093db5", "#6a3906", "#192162", "#000000"};
-        String userIDStr = String.format("%d", userID);
-        int numDiff = colorViews.size() - userIDStr.length();
-        numDiff = numDiff < 0 ? 0 : numDiff;
-
-        for (int i = 0; i < colorViews.size(); i++) {
-            int colorIndex = 0;
-            if (i >= numDiff) {
-                colorIndex = Character.getNumericValue(userIDStr.charAt(i - numDiff));
-            }
-            colorViews.get(i).setBackgroundColor(Color.parseColor(colors[colorIndex]));
-        }
-    }
 
     public void modifiedUserConfig(boolean isLogin) {
         try {
@@ -602,13 +589,13 @@ public class BaseActivity extends Activity {
      * 偶数: 正式版本，点击安装更新
      */
     public void checkPgyerVersionUpgrade(final Activity activity, final boolean isShowToast) {
-        UpdateManagerListener updateManagerListener = new UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.yonghuitest.fileprovider", new UpdateManagerListener() {
             @Override
             public void onUpdateAvailable(final String result) {
                 try {
                     final AppBean appBean = getAppBeanFromString(result);
 
-                    if(result == null || result.isEmpty()) {
+                    if (result == null || result.isEmpty()) {
                         return;
                     }
 
@@ -620,7 +607,7 @@ public class BaseActivity extends Activity {
 
                     JSONObject responseVersionJSON = response.getJSONObject(URLs.kData);
                     int newVersionCode = responseVersionJSON.getInt(kVersionCode);
-                    Log.i("1111", newVersionCode+"");
+                    Log.i("1111", newVersionCode + "");
                     String newVersionName = responseVersionJSON.getString("versionName");
 
                     if (currentVersionCode >= newVersionCode) {
@@ -674,19 +661,17 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onNoUpdateAvailable() {
-                if(isShowToast) {
+                if (isShowToast) {
                     toast("已是最新版本");
                 }
             }
-        };
-
-        PgyUpdateManager.register(activity, updateManagerListener);
+        });
     }
 
     /*
-	 * 标题栏设置按钮下拉菜单样式
+     * 标题栏设置按钮下拉菜单样式
 	 */
-    public void initDropMenu(SimpleAdapter adapter,AdapterView.OnItemClickListener itemClickListener) {
+    public void initDropMenu(SimpleAdapter adapter, AdapterView.OnItemClickListener itemClickListener) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null);
 
         ListView listView = (ListView) contentView.findViewById(R.id.list_dropmenu);
@@ -734,7 +719,7 @@ public class BaseActivity extends Activity {
                 FileUtil.writeFile(versionConfigPath, packageInfo.versionName);
 
                 // 强制消息配置，重新上传服务器
-                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(BaseActivity.this), K.kPushConfigFileName );
+                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(BaseActivity.this), K.kPushConfigFileName);
                 JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
                 pushJSON.put(K.kPushIsValid, false);
                 FileUtil.writeFile(pushConfigPath, pushJSON.toString());
@@ -750,8 +735,7 @@ public class BaseActivity extends Activity {
         try {
             if (null == toast) {
                 toast = Toast.makeText(mAppContext, info, Toast.LENGTH_SHORT);
-            }
-            else {
+            } else {
                 toast.setText(info); //若当前已有 Toast 在显示,则直接修改当前 Toast 显示的内容
             }
             toast.show();
@@ -772,9 +756,10 @@ public class BaseActivity extends Activity {
         @JavascriptInterface
         public void openURLWithSystemBrowser(final String url) {
             runOnUiThread(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     if (url == null || (!url.startsWith("http://") && !url.startsWith("https://"))) {
-                        toast(String.format("无效链接: %s",  url));
+                        toast(String.format("无效链接: %s", url));
                         return;
                     }
                     Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
@@ -808,7 +793,7 @@ public class BaseActivity extends Activity {
         });
     }
 
-    public void setAlertDialog(Context context, String message){
+    public void setAlertDialog(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("温馨提示")
                 .setMessage(message)

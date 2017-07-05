@@ -8,11 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View style="@style/SmallDivider"
+            android:layout_alignParentTop="true"/>
+
         <!--头像-->
         <ImageView
             android:id="@+id/iv_user_icon"
-            android:layout_width="96.5dp"
-            android:layout_height="96.5dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:src="@drawable/pic_sh"/>
@@ -102,9 +105,10 @@
                     android:layout_toRightOf="@+id/iv_user_group"
                     android:text="@string/text_user_group"/>
 
-                <TextView
+                <com.intfocus.yonghuitest.view.AutoTextView
                     android:id="@+id/tv_user_group_value"
                     style="@style/tv_list_user_item"
+                    android:maxWidth="200dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:text=""/>
@@ -187,7 +191,8 @@
 
             <View
                 style="@style/SmallDivider"
-                android:layout_marginTop="40.5dp"/>
+                android:layout_marginTop="40.5dp"
+                android:visibility="invisible"/>
 
             <RelativeLayout
                 android:id="@+id/rl_favorite"

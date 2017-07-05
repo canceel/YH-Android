@@ -73,7 +73,6 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                 }
             }
 
-            Log.i("testlog", jsonObject.toString())
             mSharedPreferences.edit().putString("UserInfo", jsonObject.toString()).commit()
             var userInfo = gson.fromJson(jsonObject.toString(), UserInfoBean::class.java)
             val result1 = UserInfoRequest(true, 200)
@@ -99,8 +98,6 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             File(imgPath).delete()
             var gravatarImgPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
             FileUtil.saveImage(gravatarImgPath, bitmap)
-            var response = HttpUtil.httpPostFile(iconUpdateUrlString, "image/jpg", "gravatar", gravatarImgPath)
-            Log.i("testlog", response.toString())
         }).start()
     }
 

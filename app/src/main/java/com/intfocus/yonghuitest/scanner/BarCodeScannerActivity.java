@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.scanner;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.intfocus.yonghuitest.InputBarCodeActivity;
+import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
-import com.intfocus.yonghuitest.subject.BarCodeResultActivity;
 import com.intfocus.yonghuitest.util.URLs;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerView.ResultHandler {
     private ZBarScannerView mScannerView;
     private Context mContext;
-    private static final int ZBAR_CAMERA_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -35,14 +35,6 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.bar_code_scanner_frame);
         mScannerView = new ZBarScannerView(this);
         contentFrame.addView(mScannerView);
-
-        List<ImageView> colorViews = new ArrayList<>();
-        colorViews.add((ImageView) findViewById(R.id.colorView0));
-        colorViews.add((ImageView) findViewById(R.id.colorView1));
-        colorViews.add((ImageView) findViewById(R.id.colorView2));
-        colorViews.add((ImageView) findViewById(R.id.colorView3));
-        colorViews.add((ImageView) findViewById(R.id.colorView4));
-        initColorView(colorViews);
 
         findViewById(R.id.inputBarCodeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +89,7 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
                 });
                 return;
             }
-            Intent intent = new Intent(mContext, BarCodeResultActivity.class);
+            Intent intent = new Intent(mContext, ScannerResultActivity.class);
             intent.putExtra(URLs.kCodeInfo, rawResult.getContents());
             intent.putExtra(URLs.kCodeType, rawResult.getBarcodeFormat().getName());
             mContext.startActivity(intent);

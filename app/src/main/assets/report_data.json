@@ -1,190 +1,52 @@
 {
-  "code": 200,
-  "message": "获取数据列表成功",
   "data": [
     {
-      "group_name": "top_data",
-      "data": [
-        {
-          "title": "第二集群实时销售",
-          "dashboard_type": "number1",
-          "target_url": "mobile/v2/group/%@/template/4/report/30",
-          "unit": "万元",
-          "memo1": "昨日总销售额",
-          "memo2": null,
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "1804",
-              "compare": "6237",
-              "arrow": 3
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo实时销售",
-          "is_stick": true
+      "titles": "201612",
+      "infos": [
+            {
+              "titles": "世界村店",
+              "infos": [
+                "休闲食品",
+                "健康有机生活馆",
+                "加工"
+          ]
         },
         {
-          "title": "第二集群商行实时销售",
-          "dashboard_type": "number1",
-          "target_url": "mobile/v2/group/%@/template/2/report/36",
-          "unit": "万元",
-          "memo1": "昨日总销售额",
-          "memo2": null,
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "1804",
-              "compare": "6237",
-              "arrow": 3
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo实时销售",
-          "is_stick": true
+          "titles": "东城万达店",
+          "infos": [
+            "后勤小店",
+            "家用文体家电",
+            "干性杂货日配"
+          ]
         }
       ]
     },
     {
-      "group_name": "异常预警",
-      "data": [
+      "titles": "201701",
+      "infos": [
         {
-          "title": "个单量异常实时预警(门店)",
-          "dashboard_type": "number2",
-          "target_url": "mobile/v2/group/%@/template/2/report/67",
-          "unit": "万元",
-          "memo1": "当前 41 项个单量异常预警",
-          "memo2": null,
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "3248",
-              "compare": "7.63",
-              "arrow": 1
-            },
-            "chart_data": []
-          },
-          "group_name": "异常预警",
-          "is_stick": false
+          "titles": "东方伟业广场店",
+          "infos": [
+            "后勤小店",
+            "干性杂货日配"
+          ]
         },
         {
-          "title": "生鲜负毛利实时预警(门店)",
-          "dashboard_type": "number2",
-          "target_url": "mobile/v2/group/%@/template/2/report/68",
-          "unit": "万元",
-          "memo1": "当前 6 项负毛利过高预警",
-          "memo2": null,
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "3248",
-              "compare": "-13.39",
-              "arrow": 3
-            },
-            "chart_data": []
-          },
-          "group_name": "异常预警",
-          "is_stick": false
+          "titles": "东方名城店",
+          "infos": [
+            "健康有机生活馆",
+            "家用文体家电",
+            "干性杂货日配"
+          ]
         },
         {
-          "title": "生鲜定价毛利异常实时预警(门店)",
-          "dashboard_type": "number2",
-          "target_url": "mobile/v2/group/%@/template/2/report/70",
-          "unit": "万元",
-          "memo1": "当前 204 项定价过高预警",
-          "memo2": null,
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "3248",
-              "compare": "-13.39",
-              "arrow": 3
-            },
-            "chart_data": []
-          },
-          "group_name": "异常预警",
-          "is_stick": false
-        }
-      ]
-    },
-    {
-      "group_name": "Bravo销售概况",
-      "data": [
-        {
-          "title": "第二集群销售额",
-          "dashboard_type": "number3",
-          "target_url": "mobile/v2/group/%@/template/4/report/8",
-          "unit": "万元",
-          "memo1": "昨日总销售额",
-          "memo2": "周同比增长率",
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "5898",
-              "compare": "5579",
-              "arrow": 1
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo销售概况",
-          "is_stick": false
-        },
-        {
-          "title": "第二集群月累计同店同比",
-          "dashboard_type": "number3",
-          "target_url": "mobile/v2/group/%@/template/4/report/9",
-          "unit": "万元",
-          "memo1": "月累计销售额",
-          "memo2": "月累计同比增长率",
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "29661",
-              "compare": "-7.28",
-              "arrow": 4
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo销售概况",
-          "is_stick": false
-        },
-        {
-          "title": "第二集群客流",
-          "dashboard_type": "number3",
-          "target_url": "mobile/v2/group/%@/template/4/report/10",
-          "unit": "万次",
-          "memo1": "昨日客流",
-          "memo2": "周同比增长率",
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "94",
-              "compare": "5.62",
-              "arrow": 1
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo销售概况",
-          "is_stick": false
-        },
-        {
-          "title": "第二集群客单价",
-          "dashboard_type": "number3",
-          "target_url": "mobile/v2/group/%@/template/4/report/11",
-          "unit": "元",
-          "memo1": "昨日客单价",
-          "memo2": "周同比增长率",
-          "data": {
-            "high_light": {
-              "percentage": false,
-              "number": "61.85",
-              "compare": "-0.34",
-              "arrow": 4
-            },
-            "chart_data": []
-          },
-          "group_name": "Bravo销售概况",
-          "is_stick": false
+          "titles": "中南城店",
+          "infos": [
+            "电商小店",
+            "肉禽水产",
+            "干性杂货日配",
+            "清洁用品"
+          ]
         }
       ]
     }

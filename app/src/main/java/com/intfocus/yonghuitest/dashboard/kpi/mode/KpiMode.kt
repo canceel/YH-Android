@@ -86,7 +86,7 @@ class KpiMode(var ctx: Context): AbstractMode() {
             }
 
             mNoticeListSP.edit().putString("KpiData", jsonObject.toString()).commit()
-            var mKpiData = gson.fromJson(jsonObject.toString(), KpiResultData::class.java)
+            var mKpiData = gson.fromJson(jsonObject.toString().replace("null", "\"\""), KpiResultData::class.java)
             val result1 = KpiRequest(true, 200)
             result1.kpi_data = mKpiData
             EventBus.getDefault().post(result1)

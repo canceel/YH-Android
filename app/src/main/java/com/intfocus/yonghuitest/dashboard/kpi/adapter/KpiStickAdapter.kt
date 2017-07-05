@@ -3,12 +3,13 @@ package com.intfocus.yonghuitest.dashboard.kpi.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.view.ViewGroup
 import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/23.
  */
-class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: MutableList<Fragment>) : FragmentStatePagerAdapter(fragmentManager) {
+class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: MutableList<Fragment>): FragmentStatePagerAdapter(fragmentManager) {
 
     var mCurrentFragment: Fragment? = null
 
@@ -25,4 +26,7 @@ class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: Mutab
         mCurrentFragment = mFragmentList[position]
     }
 
+    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
+        return super.instantiateItem(container, position)
+    }
 }

@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.view.WindowManager
 
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.dashboard.DashboardActivity
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity
+import com.intfocus.yonghuitest.subject.SelectorTreeActivity
 
 class LauncherActivity : AppCompatActivity() {
     private var mSharedPreferences: SharedPreferences? = null

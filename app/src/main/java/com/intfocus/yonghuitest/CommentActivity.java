@@ -54,14 +54,6 @@ public class CommentActivity extends BaseActivity {
         urlString = String.format(K.kCommentMobilePath, K.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);
 
         new Thread(mRunnableForDetecting).start();
-
-        List<ImageView> colorViews = new ArrayList<>();
-        colorViews.add((ImageView) findViewById(R.id.colorView0));
-        colorViews.add((ImageView) findViewById(R.id.colorView1));
-        colorViews.add((ImageView) findViewById(R.id.colorView2));
-        colorViews.add((ImageView) findViewById(R.id.colorView3));
-        colorViews.add((ImageView) findViewById(R.id.colorView4));
-        initColorView(colorViews);
     }
 
     protected void onResume() {

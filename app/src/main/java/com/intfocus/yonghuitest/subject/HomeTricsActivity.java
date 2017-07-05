@@ -790,7 +790,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
                     userID = user.getInt("user_id");
                 }
-                WidgetUtil.initUserIDColorView(getWindow().getDecorView(), userID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

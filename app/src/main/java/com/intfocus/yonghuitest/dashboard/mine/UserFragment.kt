@@ -83,14 +83,14 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         imageOptions = ImageOptions.Builder()
-                .setSize(DisplayUtil.dip2px(ctx, 96.5f), DisplayUtil.dip2px(ctx, 96.5f))
+                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .setCircular(true)
                 .setLoadingDrawableId(R.drawable.pic_sh)
                 .setFailureDrawableId(R.drawable.pic_sh)
                 .build()
 
         localImageOptions = ImageOptions.Builder()
-                .setSize(DisplayUtil.dip2px(ctx, 96.5f), DisplayUtil.dip2px(ctx, 96.5f))
+                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .setCircular(true)
                 .build()
 
@@ -104,13 +104,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
             tv_user_name.text = mUserInfo!!.user_name
             tv_location.text = "暂无上次登录地点信息"
-            tv_login_number.text = mUserInfo!!.login_count
-            tv_report_number.text = mUserInfo!!.browse_count
+            tv_login_number.text = mUserInfo!!.login_duration
+            tv_report_number.text = mUserInfo!!.browse_report_count
             tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
             tv_user_role_value.text = mUserInfo!!.role_name
             tv_user_group_value.text = mUserInfo!!.group_name
             x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
-            Log.i("testlog", mUserInfo!!.gravatar)
         }
         iv_user_icon.setOnClickListener { showPhotoSelectDialog(this.context) }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
@@ -126,12 +125,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             var user = result.userInfoBean
             tv_user_name.text = user!!.user_name
             tv_location.text = "暂无上次登录地点信息"
-            tv_login_number.text = user!!.login_count
-            tv_report_number.text = user!!.browse_count
-            tv_beyond_number.text = user!!.surpass_percentage.toString()
-            tv_user_role_value.text = user!!.role_name
-            tv_user_group_value.text = user!!.group_name
-            x.image().bind(iv_user_icon, user!!.gravatar, imageOptions)
+            tv_login_number.text = user.login_duration
+            tv_report_number.text = user.browse_report_count
+            tv_beyond_number.text = user.surpass_percentage.toString()
+            tv_user_role_value.text = user.role_name
+            tv_user_group_value.text = user.group_name
+            x.image().bind(iv_user_icon, user.gravatar, imageOptions)
         }
     }
 

@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest.dashboard.kpi
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -17,13 +16,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.adapter.MessageViewPagerAdapter
 import com.intfocus.yonghuitest.adapter.dashboard.MarginDecoration
 import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterClickEventEntity
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiGroupItemAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiStickAdapter
@@ -38,23 +36,26 @@ import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_kpi.*
-import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
 import sumimakito.android.advtextswitcher.Switcher
+import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener {
+class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
-    var rootView : View? = null
+    var rootView: View? = null
     var gson = Gson()
-    lateinit var mUserSP : SharedPreferences
+    lateinit var mUserSP: SharedPreferences
     val FIRST_PAGE_INDEX: Int = 0
+    var stickSzize: Int = 0
+    var timer = Timer()
+    lateinit var stickCycle : StickCycleTask
 
     override fun setSubject(): Subject {
         ctx = act.applicationContext
@@ -87,12 +88,15 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
         swipe_container.setOnRefreshListener(this)
         swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light)
-        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setDistanceToTriggerSync(300)// 设置手指在屏幕下拉多少距离会触发下拉刷新
         swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
     }
 
     override fun onRefresh() {
         if (HttpUtil.isConnected(context)) {
+            if (stickCycle != null) {
+                stickCycle.cancel()
+            }
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
@@ -100,8 +104,9 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
         }
     }
 
-    @Subscribe (threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(result: KpiRequest) {
+        stickCycle = StickCycleTask()
         ll_kpi_groups.removeAllViews()
         ll_kpi_groups.setBackgroundResource(R.color.base_background)
 
@@ -112,27 +117,33 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
         for (kpiGroupDatas in datas!!.data!!.iterator()) {
             if (kpiGroupDatas.group_name.equals("top_data")) {
                 for (kpiGroupItem in kpiGroupDatas!!.data!!.iterator()) {
-                    top_fragment!!.add(NumberOneFragment.newInstance(kpiGroupItem))
+                    top_fragment.add(NumberOneFragment.newInstance(kpiGroupItem))
                 }
-            }
-            else {
-                kpi_datas!!.add(kpiGroupDatas)
+            } else {
+                kpi_datas.add(kpiGroupDatas)
             }
         }
 
         if (top_fragment != null) {
+            stickSzize = top_fragment.size
             mViewPagerAdapter = KpiStickAdapter(childFragmentManager, top_fragment)
             mViewPagerAdapter.switchTo(FIRST_PAGE_INDEX)
 
             vp_kpi_stick.adapter = mViewPagerAdapter
             vp_kpi_stick.addOnPageChangeListener(this)
             vp_kpi_stick.currentItem = 0
+
+            indicator.setViewPager(vp_kpi_stick)
+            timer.schedule(stickCycle, 0, 5000)
         }
 
         if (kpi_datas != null) {
-            for (kpiGroup in kpi_datas!!.iterator()) {
+            for (kpiGroup in kpi_datas.iterator()) {
                 val inflater = LayoutInflater.from(ctx)
                 val view = inflater.inflate(R.layout.fragment_kpi_group, null)
+                var layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                layoutParams.setMargins(0, 0, 0, 10)
+                view.layoutParams = layoutParams
                 var tvKpiGroupName = view.findViewById(R.id.tv_kpi_group_name) as TextView
                 var rvKpiGroupItems = view.findViewById(R.id.rv_kpi_group) as RecyclerView
                 tvKpiGroupName.text = kpiGroup.group_name
@@ -147,16 +158,16 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
 
     private fun initRecycleView(recyclerView: RecyclerView, itemDatas: KpiGroup) {
         val offset = DisplayUtil.dip2px(ctx, -3.5f)
-        recyclerView.setPadding(offset, 0 - offset, offset, offset)
-        var layoutManager : StaggeredGridLayoutManager
+        recyclerView.setPadding(offset, 0 - offset, offset, 0 - offset + 3)
+
+        var layoutManager: StaggeredGridLayoutManager
         if (itemDatas.data!![0].dashboard_type.equals("number2")) {
             layoutManager = object : StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
                 override fun canScrollVertically(): Boolean {
                     return false
                 }
             }
-        }
-        else {
+        } else {
             layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
                 override fun canScrollVertically(): Boolean {
                     return false
@@ -186,7 +197,7 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
                 activity.runOnUiThread {
                     tv_kpi_notice.setTexts(texts)
                     tv_kpi_notice.setCallback(activity as DashboardActivity)
-                    Switcher().attach(tv_kpi_notice).setDuration(3000).start()
+                    Switcher().attach(tv_kpi_notice).setDuration(5000).start()
                     ll_kpi_notice.visibility = View.VISIBLE
                 }
             }
@@ -217,7 +228,7 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
                     val templateID = TextUtils.split(link, "/")[6]
                     val groupID = mUserSP.getInt(URLs.kGroupId, 0)
                     val reportID = TextUtils.split(link, "/")[8]
-                    var urlString = link
+                    var urlString: String
                     val intent: Intent
 
                     when (templateID) {
@@ -293,5 +304,18 @@ class KpiFragment: BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, 
                     // 返回 LoginActivity
                 }
         builder.show()
+    }
+
+    inner class StickCycleTask : TimerTask() {
+        override fun run() {
+            act.runOnUiThread {
+                if (vp_kpi_stick.currentItem + 1 < stickSzize) {
+                    vp_kpi_stick.currentItem = vp_kpi_stick.currentItem + 1
+                }
+                else {
+                    vp_kpi_stick.currentItem = 0
+                }
+            }
+        }
     }
 }

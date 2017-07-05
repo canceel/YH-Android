@@ -62,7 +62,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
         swipe_container.setOnRefreshListener(this)
         swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light)
-        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setDistanceToTriggerSync(300)// 设置手指在屏幕下拉多少距离会触发下拉刷新
         swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
     }
 

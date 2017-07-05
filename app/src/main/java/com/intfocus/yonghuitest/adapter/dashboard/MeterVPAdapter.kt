@@ -29,7 +29,7 @@ class MeterVPAdapter(internal var ctx: Context, fm: FragmentManager, internal va
 
     override fun getItem(position: Int): Fragment? {
         val entity = topDatas!![position]
-        var fragment: Fragment? = null
+        var fragment: Fragment
         when (entity.dashboard_type) {
             "line"//折线图
             -> fragment = CurveLineFragment.newInstance(entity)

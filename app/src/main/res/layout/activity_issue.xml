@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="45dp"
         android:background="@color/actionBar">
 
         <ImageView
@@ -25,7 +25,7 @@
             android:id="@+id/tv_title"
             style="@style/BannerTitle"
             android:text="生意人反馈收集"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"/>
     </RelativeLayout>
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="8dp"
-        android:background="@color/white"
+        android:background="@drawable/background_issue"
         android:layout_gravity="center_horizontal">
 
         <RelativeLayout
@@ -64,7 +64,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
             android:text="遇到问题了?很抱歉生意人给您带来了不好的体验,请您把遇到的问题反馈给我们,永辉生意人测试团队会尽快改进哦~"
-            android:textSize="9sp"
+            android:textSize="12sp"
             android:textColor="@color/black"/>
 
         <View style="@style/SmallDivider"
@@ -94,7 +94,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:textSize="9sp"
+                android:textSize="12sp"
                 android:hint="问题描述请直戳要点~如能附上具体操作步骤更佳,万分感谢!"/>
         </RelativeLayout>
 
@@ -122,7 +122,7 @@
                 android:layout_marginTop="10dp"
                 android:hint="请将你遇到问题的页面截图上传, 最多三张哦!"
                 android:textColor="@color/black"
-                android:textSize="9sp"/>
+                android:textSize="12sp"/>
 
             <ImageView
                 android:layout_width="28dp"
@@ -135,6 +135,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_issue_commit"
             android:layout_width="306dp"
             android:layout_height="44dp"
             android:layout_gravity="center_horizontal"

@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
 import android.app.Dialog
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -11,21 +12,24 @@ import android.view.View
 import android.widget.LinearLayout
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.adapter.dashboard.IssueListAdapter
+import com.intfocus.yonghuitest.dashboard.mine.adapter.IssueListAdapter
+import com.intfocus.yonghuitest.bean.dashboard.IssueCommitInfo
 import com.intfocus.yonghuitest.bean.dashboard.IssueListBean
 import com.intfocus.yonghuitest.mode.IssueMode
+import com.intfocus.yonghuitest.util.K
+import com.intfocus.yonghuitest.util.URLs
 import com.intfocus.yonghuitest.util.WidgetUtil
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
-import org.xutils.x
+import kotlinx.android.synthetic.main.activity_issue.*
 
 class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemListener {
     val ctx = this
     lateinit var issueListDialog: Dialog
     lateinit var mIssueListSP: SharedPreferences
-    var mIssueList: IssueListBean? = null
-    var mIssueListStr: String? = null
+    lateinit var mUserSP : SharedPreferences
     var gson = Gson()
+    var issueInfo = IssueCommitInfo()
 
     override fun setSubject(): Subject {
         return IssueMode(ctx)
@@ -35,6 +39,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_issue)
         mIssueListSP = getSharedPreferences("IssueList", MODE_PRIVATE)
+        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         onCreateFinish(savedInstanceState)
     }
 
@@ -44,20 +49,20 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
 
     override fun onCreateFinish(p0: Bundle?) {
         supportActionBar!!.hide()
-//        mIssueListStr = mIssueListSP.getString("IssueList", "")
-//        if (!mIssueListStr.equals("")) {
-//            mIssueList = gson.fromJson(mIssueListStr, IssueListBean::class.java)
-//            showIssueDialog(mIssueList)
-//        }
-//        model.requestData()
+        rl_issue_commit.setOnClickListener { commitIssue() }
     }
 
     override fun onDestroy() {
         super.onDestroy()
     }
 
-    fun submitIssue() {
-
+    fun commitIssue() {
+        issueInfo.issue_content = et_issue_content.text.toString()
+        issueInfo.app_version = mUserSP.getString(K.kAppVersion, "2.0+")
+        issueInfo.platform = mUserSP.getString("device_info", "android")
+        issueInfo.platform_version = mUserSP.getString("os_version", "0")
+        issueInfo.user_num = mUserSP.getString(URLs.kUserNum, "null")
+        model.commitIssue(issueInfo)
     }
 
     /**

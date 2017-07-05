@@ -1,10 +1,9 @@
-package com.intfocus.yonghuitest.adapter.dashboard
+package com.intfocus.yonghuitest.dashboard.mine.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -18,14 +17,14 @@ import com.intfocus.yonghuitest.bean.dashboard.IssueListDataBean
  */
 class IssueListAdapter(val context: Context,
                        private var issueListDatas: List<IssueListDataBean>?,
-                       var listener: IssueListAdapter.IssueItemListener) : RecyclerView.Adapter<IssueListAdapter.IssueListHolder>() {
+                       var listener: IssueItemListener) : RecyclerView.Adapter<IssueListAdapter.IssueListHolder>() {
 
     var inflater = LayoutInflater.from(context)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueListAdapter.IssueListHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueListHolder {
         val contentView = inflater.inflate(R.layout.item_issue_list, parent, false)
-        return IssueListAdapter.IssueListHolder(contentView)
+        return IssueListHolder(contentView)
     }
 
     override fun onBindViewHolder(holder: IssueListHolder, position: Int) {

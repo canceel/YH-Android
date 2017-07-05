@@ -152,6 +152,7 @@ public class YHApplication extends Application {
                 // 向服务器推送: 设备信息,
             }
         });
+        mPushAgent.setNotificationClickHandler(pushMessageHandler);
     }
 
     private void initXutils() {
@@ -165,6 +166,7 @@ public class YHApplication extends Application {
             super.dealWithCustomAction(context, uMessage);
             Intent intent = new Intent(context, DashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("fromMessage", true);
             startActivity(intent);
         }
     };

@@ -13,8 +13,8 @@
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@color/dashboardActionBar"
+        android:layout_height="45dp"
+        android:background="@color/actionBar"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -33,14 +33,15 @@
 
         <RelativeLayout
             style="@style/BannerRightButton"
-            android:layout_height="50dp"
             android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="0dp"
             android:onClick="startBarCodeActivity">
 
             <ImageView
                 android:id="@+id/bannerSetting"
-                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:src="@drawable/barcode_scan"/>
 
@@ -57,16 +58,32 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#f7fef5"
             android:orientation="vertical">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/vp_kpi_stick"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="150dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_kpi_stick"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"/>
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    app:ci_height="3dp"
+                    app:ci_width="3dp"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/ll_kpi_notice"
@@ -123,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="18dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/kpi_logo"/>
         </LinearLayout>

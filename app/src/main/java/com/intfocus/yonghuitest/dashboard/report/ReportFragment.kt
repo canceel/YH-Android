@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,7 +74,7 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
         swipe_container.setOnRefreshListener(this)
         swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light)
-        swipe_container.setDistanceToTriggerSync(200)// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        swipe_container.setDistanceToTriggerSync(300)// 设置手指在屏幕下拉多少距离会触发下拉刷新
         swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
     }
 
@@ -85,7 +86,6 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
             WidgetUtil.showToastShort(context, "请检查网络")
         }
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(requestReport: ReportListPageRequest) {

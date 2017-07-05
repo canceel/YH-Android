@@ -7,42 +7,34 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.intfocus.yonghuitest.BarCodeScannerActivity;
+import com.google.gson.Gson;
+import com.intfocus.yonghuitest.bean.User;
+import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
-import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.adapter.DashboardFragmentAdapter;
 import com.intfocus.yonghuitest.setting.SettingActivity;
-import com.intfocus.yonghuitest.setting.ThursdaySayActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.intfocus.yonghuitest.view.TabView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
-import java.io.IOException;
 
 import sumimakito.android.advtextswitcher.AdvTextSwitcher;
 
@@ -50,12 +42,13 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private DashboardFragmentAdapter mDashboardFragmentAdapter;
     private SharedPreferences mSharedPreferences;
     private TabView[] mTabView;
-    private JSONObject user;
+    private User user;
     private int userID;
     private YHApplication mApp;
     private ViewPager mViewPager;
     private TabView mTabKPI, mTabAnalysis, mTabAPP, mTabMessage;
     private Context mContext, mAppContext;
+    private Gson mGson;
 
     public static final int PAGE_KPI = 0;
     public static final int PAGE_REPORTS = 1;
@@ -69,6 +62,7 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         mApp = (YHApplication) this.getApplication();
         mAppContext = mApp.getAppContext();
         mContext = this;
+        mGson = new Gson();
         initUser();
         mSharedPreferences = getSharedPreferences("DashboardPreferences", MODE_PRIVATE);
         mDashboardFragmentAdapter = new DashboardFragmentAdapter(getSupportFragmentManager());
@@ -91,8 +85,12 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("fromMessage", false)) {
+            mViewPager.setCurrentItem(PAGE_MINE);
+            mTabView[mViewPager.getCurrentItem()].setActive(true);
+        }
         super.onWindowFocusChanged(hasFocus);
-        dealSendMessage();
     }
 
     @Override
@@ -123,40 +121,50 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
     private void initUser() {
         String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
         if ((new File(userConfigPath)).exists()) {
-            try {
-                user = FileUtil.readConfigFile(userConfigPath);
-                if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
-                    userID = user.getInt("user_id");
+                user = mGson.fromJson(FileUtil.readConfigFile(userConfigPath).toString(), User.class);
+                if (user.isIs_login()) {
+                    userID = user.getUser_id();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void startBarCodeActivity(View v) {
-        if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-            builder.setTitle("温馨提示")
-                    .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
-                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            goToAppSetting();
-                        }
-                    })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 返回DashboardActivity
-                        }
-                    });
-            builder.show();
-        } else {
-            Intent barCodeScannerIntent = new Intent(mContext, BarCodeScannerActivity.class);
-            mContext.startActivity(barCodeScannerIntent);
-        }
+            if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                builder.setTitle("温馨提示")
+                        .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                goToAppSetting();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 返回DashboardActivity
+                            }
+                        });
+                builder.show();
+                return;
+            }
+            else if (user.getStore_ids().size() == 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                builder.setTitle("温馨提示")
+                        .setMessage("抱歉, 您没有扫码权限")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                builder.show();
+                return;
+            }
+            else {
+                Intent barCodeScannerIntent = new Intent(mContext, BarCodeScannerActivity.class);
+                mContext.startActivity(barCodeScannerIntent);
+            }
     }
 
     private void startSettingActivity() {
@@ -279,61 +287,11 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
         }
     }
 
-    private void dealSendMessage() {
-        String pushMessagePath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kPushMessageFileName);
-        JSONObject pushMessageJSON = FileUtil.readConfigFile(pushMessagePath);
-        try {
-            if (pushMessageJSON.has("state") && pushMessageJSON.getBoolean("state")) {
-                return;
-            }
-            if (pushMessageJSON.has("type")) {
-                String type = pushMessageJSON.getString("type");
-                switch (type) {
-                    case "report":
-                        Intent subjectIntent = new Intent(this, SubjectActivity.class);
-                        subjectIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        try {
-                            subjectIntent.putExtra(URLs.kLink, pushMessageJSON.getString("url"));
-                            subjectIntent.putExtra(URLs.kBannerName, pushMessageJSON.getString("title"));
-                            subjectIntent.putExtra(URLs.kObjectId, pushMessageJSON.getInt("obj_id"));
-                            subjectIntent.putExtra(URLs.kObjectType, pushMessageJSON.getInt("obj_type"));
-                            startActivity(subjectIntent);
-                        } catch (Exception e) {
-                            Toast.makeText(DashboardActivity.this, "推送消息的格式有误", Toast.LENGTH_SHORT);
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "analyse":
-                        mViewPager.setCurrentItem(PAGE_REPORTS);
-                        mTabView[mViewPager.getCurrentItem()].setActive(true);
-                        break;
-                    case "app":
-                        mViewPager.setCurrentItem(PAGE_APP);
-                        mTabView[mViewPager.getCurrentItem()].setActive(true);
-                        break;
-                    case "message":
-                        mViewPager.setCurrentItem(PAGE_MINE);
-                        mTabView[mViewPager.getCurrentItem()].setActive(true);
-                        break;
-                    case "thursday_say":
-                        Intent blogLinkIntent = new Intent(DashboardActivity.this, ThursdaySayActivity.class);
-                        startActivity(blogLinkIntent);
-                }
-            }
-            refreshTabView();
-            pushMessageJSON.put("state", true);
-            FileUtil.writeFile(pushMessagePath, pushMessageJSON.toString());
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /*
      * 用户编号
      */
     public void checkUserModifiedInitPassword() {
-        try {
-            if (!user.getString(URLs.kPassword).equals(URLs.MD5(K.kInitPassword))) {
+            if (!user.getPassword().equals(URLs.MD5(K.kInitPassword))) {
                 return;
             }
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DashboardActivity.this);
@@ -353,8 +311,5 @@ public class DashboardActivity extends FragmentActivity implements ViewPager.OnP
                 }
             });
             alertDialog.show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 }

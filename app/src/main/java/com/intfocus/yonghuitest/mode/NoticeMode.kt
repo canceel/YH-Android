@@ -29,24 +29,18 @@ class NoticeMode(ctx: Context) : AbstractMode() {
     var mNoticeListSP = ctx.getSharedPreferences("NoticeList", Context.MODE_PRIVATE)
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
     var mNoticeListBean: NoticeListBean? = null
-    var mNoticeListString: String? = null
     var page = 1
     var gson = Gson()
 
     fun getUrl(): String {
         var url = String.format(K.kNoticeListPath, K.kBaseUrl,
                                 mUserSP.getString(URLs.kUserNum,""), getNoticeType(), page, 10.toString())
-        Log.i("testlog", url)
         return url
     }
 
     fun requestData(page : Int) {
         this.page = page
         requestData()
-    }
-
-    init {
-        mNoticeListString = mNoticeListSP.getString("NoticeList", "")
     }
 
     override fun requestData() {
@@ -92,7 +86,6 @@ class NoticeMode(ctx: Context) : AbstractMode() {
                 EventBus.getDefault().post(result1)
                 return result1
             }
-            Log.i("testlog", jsonObject.toString())
             mNoticeListSP.edit().putString("NoticeList", jsonObject.toString()).commit()
             var mNoticeList = gson.fromJson(jsonObject.toString(), NoticeListBean::class.java)
             val result1 = NoticeListRquest(true, 200)

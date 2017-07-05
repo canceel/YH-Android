@@ -62,6 +62,7 @@ class NumberThreeFragment(var datas: KpiGroupItem): BaseModeFragment<Subject>() 
         tv_number_three_unit.text = datas.unit
         tv_number_three_compare.text = datas.data!!.high_light!!.compare
         tv_number_three_sub.text = datas.memo1
+        rl_number_three_compare.setBackgroundColor(Constant.colorsRGY[datas.data!!.high_light!!.arrow])
         rl_kpi_number_three.setOnClickListener {
             EventBus.getDefault().post(datas)
         }

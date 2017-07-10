@@ -2,7 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:background="@drawable/a_bg"
     android:orientation="vertical">
 
@@ -35,7 +36,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_kpi_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
     </android.support.v7.widget.RecyclerView>

@@ -44,7 +44,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimary">@color/launch_color</item>
         <item name="colorPrimaryDark">@color/launch_color</item>
-        <item name="android:background">@drawable/launch_bg</item>
+        <!--<item name="android:background">@color/transparent</item>-->
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
@@ -58,7 +58,6 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimary">@color/launch_color</item>
         <item name="colorPrimaryDark">@color/launch_color</item>
-        <item name="android:background">@drawable/launch_bg</item>
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->

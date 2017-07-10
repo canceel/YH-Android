@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:onClick="launchDropMenuActivity"
+                android:onClick="showComplaintsPopWindow"
                 android:src="@drawable/banner_setting"/>
 
         </RelativeLayout>

@@ -22,7 +22,7 @@
             android:textSize="14sp"/>
     </LinearLayout>
 
-    <com.intfocus.yonghuitest.view.MyGridView
+    <com.intfocus.yh_android.view.MyGridView
         android:id="@+id/gv_reports_right_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +31,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:numColumns="3">
-    </com.intfocus.yonghuitest.view.MyGridView>
+    </com.intfocus.yh_android.view.MyGridView>
 
 </LinearLayout>

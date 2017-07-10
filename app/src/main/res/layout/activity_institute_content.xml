@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/iv_banner_back"
             style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
+            android:onClick="dismissActivity"/>
 
         <TextView
             style="@style/BannerBackText"
@@ -23,6 +23,9 @@
         <TextView
             android:id="@+id/tv_banner_title"
             android:text="数据学院"
+            android:maxWidth="235dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             style="@style/BannerTitle" />
 
         <View style="@style/SmallDivider"

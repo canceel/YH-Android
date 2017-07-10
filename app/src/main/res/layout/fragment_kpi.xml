@@ -61,7 +61,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#f7fef5"
             android:orientation="vertical">
 
@@ -129,12 +129,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_kpi_groups"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_kpi_groups"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical"/>
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:layout_width="wrap_content"

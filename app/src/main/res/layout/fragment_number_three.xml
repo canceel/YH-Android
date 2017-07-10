@@ -59,7 +59,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -71,7 +71,7 @@
             android:id="@+id/rl_number_three_compare"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_alignParentRight="true"
             android:background="@color/red">
 
             <TextView
@@ -88,11 +88,13 @@
             android:id="@+id/tv_number_three_compare_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/rl_number_three_compare"
             android:layout_marginTop="5dp"
             android:text="周同比增长率"
             android:textSize="9sp"
             android:textColor="@color/number_unit_color"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:id="@+id/iv_number_three_divider"

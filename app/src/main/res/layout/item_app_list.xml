@@ -32,7 +32,7 @@
             android:textColor="@color/list_title_base"/>
     </LinearLayout>
 
-    <com.intfocus.yonghuitest.view.MyGridView
+    <com.intfocus.yh_android.view.MyGridView
         android:id="@+id/gv_app_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,6 +42,6 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:numColumns="4">
-    </com.intfocus.yonghuitest.view.MyGridView>
+    </com.intfocus.yh_android.view.MyGridView>
 
 </LinearLayout>

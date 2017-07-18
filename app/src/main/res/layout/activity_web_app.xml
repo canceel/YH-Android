@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context="com.intfocus.yh_android.subject.SubjectActivity">
+
+    <RelativeLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/actionBar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/bannerBack"
+            style="@style/BannerBackButton"
+            android:onClick="dismissActivity" />
+
+        <TextView
+            android:id="@+id/tv_banner_back"
+            style="@style/BannerBackText"
+            android:layout_toRightOf="@id/bannerBack"
+            android:onClick="dismissActivity" />
+
+        <TextView
+            android:id="@+id/bannerTitle"
+            android:text="主题名称主题名称主题名称"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
+            style="@style/BannerTitle" />
+
+        <RelativeLayout
+            style="@style/BannerRightButton"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content">
+
+            <ImageView
+                android:id="@+id/bannerSetting"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:onClick="launchDropMenuActivity"
+                android:src="@drawable/banner_setting"/>
+        </RelativeLayout>
+
+        <View style="@style/SmallDivider"
+              android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/actionBar">
+
+        <WebView
+            android:id="@+id/browser"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layerType="software"
+            android:layout_below="@id/actionBar" />
+
+        <RelativeLayout
+            android:id="@+id/anim_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                app:indicatorColor="@color/loading"
+                app:indicatorName="BallPulseIndicator"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <com.joanzapata.pdfview.PDFView
+        android:id="@+id/pdfview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/actionBar" />
+
+</RelativeLayout>

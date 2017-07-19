@@ -34,4 +34,5 @@
     <dimen name="single_value_text_size_small">14sp</dimen>
     <dimen name="list_text_size">16sp</dimen>
     <dimen name="logout_text_size">18sp</dimen>
+    <dimen name="font_query_options_grouping_item">14sp</dimen>
 </resources>

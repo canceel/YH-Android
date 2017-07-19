@@ -149,5 +149,11 @@
     <color name="list_title_base">#6aa657</color>
     <color name="number_unit_color">#808080</color>
     <color name="base_background">#f7fef5</color>
+    <color name="query_options_title_color">#323232</color>
+    <color name="query_options_dividing_line_color">#D8D8D8</color>
+    <color name="query_options_grouping_text_color">#324408</color>
+    <color name="query_options_scroll_view_background_color">#eeeeee</color>
+    <color name="query_option_submit_color">#EA4335</color>
+    <color name="query_options_grouping_title_color">#333333</color>
 
 </resources>

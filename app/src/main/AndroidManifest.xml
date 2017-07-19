@@ -56,11 +56,13 @@
             android:name=".login.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- 登录 -->
@@ -219,6 +221,17 @@
 
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
+        </activity>
+        <activity
+            android:name=".subject.QueryOptionsActivity"
+            android:theme="@style/LauncherTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Main2Activity">
         </activity>
     </application>
 

@@ -89,7 +89,7 @@
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
 
-    <style name="ButtonBarButton" />
+    <style name="ButtonBarButton"/>
 
     <style name="ToolBarTab">
         <item name="android:layout_width">match_parent</item>
@@ -268,18 +268,22 @@
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:background">@color/colors0</item>
     </style>
+
     <style name="ColorViewStyle1" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:background">@color/colors1</item>
     </style>
+
     <style name="ColorViewStyle2" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:background">@color/colors2</item>
     </style>
+
     <style name="ColorViewStyle3" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@color/colors3</item>
     </style>
+
     <style name="ColorViewStyle4" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:background">@color/colors4</item>
@@ -337,11 +341,11 @@
     </style>
 
     <style name="tv_mererMinTitle_stytle">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">@dimen/font_medium</item>
-    <item name="android:textColor">@color/argb_font_cont_333</item>
-    <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/argb_font_cont_333</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="baseKPI" parent="Theme.AppCompat.Light.NoActionBar">
@@ -398,6 +402,25 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 查询选项页面 分组中查询类型标题样式 -->
+    <style name="query_options_group_title_item">
+        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/query_options_grouping_title_color</item>
+        <item name="android:textSize">@dimen/font_query_options_grouping_item</item>
+    </style>
+
+
+    <style name="ll_query_option_group_item">
+        <item name="android:visibility">visible</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:layout_marginRight">13dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
 </resources>

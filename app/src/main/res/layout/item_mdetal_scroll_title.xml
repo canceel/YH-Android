@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/argb_theme_default">
+    android:background="@color/argb_tab_button">
 
-    <com.intfocus.yh_android.view.MyScrollView
+    <com.intfocus.yonghuitest.view.MyScrollView
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,5 +16,5 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal" />
-    </com.intfocus.yh_android.view.MyScrollView>
+    </com.intfocus.yonghuitest.view.MyScrollView>
 </FrameLayout>

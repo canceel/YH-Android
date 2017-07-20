@@ -18,6 +18,7 @@
     <dimen name="font_default">14sp</dimen>
     <!-- 大标题 -->
     <dimen name="font_large_s">22sp</dimen>
+    <dimen name="font_large_ls">30sp</dimen>
     <dimen name="font_large_xs">36sp</dimen>
     <!-- 大标题 -->
     <dimen name="font_large">18sp</dimen>

@@ -36,7 +36,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_vpitem" />
 
-        <com.intfocus.yh_android.view.AutoTextView
+        <com.intfocus.yonghuitest.view.AutoTextView
             android:maxLines="1"
             android:id="@+id/tv_number_vpitem"
             style="@style/tv_mererMinTitle_stytle"
@@ -60,7 +60,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.intfocus.yh_android.view.MeterCursor
+            <com.intfocus.yonghuitest.view.MeterCursor
                 android:id="@+id/img_vpitem"
                 android:layout_width="@dimen/space_default_large_s"
                 android:layout_height="@dimen/space_default_large_s" />

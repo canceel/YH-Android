@@ -233,6 +233,8 @@
         </activity>
         <activity android:name=".Main2Activity">
         </activity>
+        <activity android:name=".scanner.QueryOptionsScannerActivity">
+        </activity>
     </application>
 
 </manifest>

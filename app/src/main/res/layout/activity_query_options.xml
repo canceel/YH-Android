@@ -11,16 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_search_back"
+            android:id="@+id/iv_query_options_back"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="17dp"
             android:clickable="true"
-            android:src="@drawable/icon_back_min"/>
+            android:src="@drawable/icon_selector_query_option_back"/>
 
         <TextView
             android:id="@+id/tv_search_btn"
@@ -34,13 +35,13 @@
             android:textSize="20sp"/>
 
         <ImageButton
-            android:id="@+id/ibtn_search"
+            android:id="@+id/ibtn_query_option_history"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginRight="17dp"
             android:background="#00000000"
             android:scaleType="fitXY"
-            android:src="@drawable/icon_history"/>
+            android:src="@drawable/icon_selector_query_option_history"/>
 
     </LinearLayout>
 
@@ -50,6 +51,7 @@
         android:background="@color/query_options_dividing_line_color"/>
 
     <ScrollView
+        android:id="@+id/sv_query_options"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/query_options_scroll_view_background_color">
@@ -83,7 +85,8 @@
                     android:background="#A2CF00"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_query_option_group_one"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="18dp"
@@ -107,8 +110,8 @@
                     android:background="#A2CF00"/>
 
                 <TextView
-                    android:id="@+id/tv_query_options_grouping"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_query_option_group_two"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="22dp"
                     android:layout_marginLeft="11dp"
@@ -121,7 +124,7 @@
                     android:id="@+id/ll_query_option_text_input"
                     style="@style/ll_query_option_group_item"
                     android:layout_height="50dp"
-                    android:layout_below="@id/tv_query_options_grouping">
+                    android:layout_below="@id/tv_query_option_group_two">
 
                     <TextView
                         style="@style/query_options_group_title_item"
@@ -171,7 +174,7 @@
                         <ImageView
                             android:id="@+id/ibtn_query_option_scan"
                             android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_height="match_parent"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="12dp"
@@ -202,9 +205,12 @@
 
                     <TextView
                         style="@style/query_options_group_title_item"
+                        android:layout_height="50dp"
+                        android:layout_gravity="top"
+                        android:gravity="center_vertical"
                         android:text="单选按钮"/>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="8dp"
@@ -221,7 +227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="40dp"
-                                android:button="@drawable/selector_query_option_radio_button"
+                                android:button="@drawable/icon_selector_query_option_radio_button"
                                 android:paddingLeft="10dp"
                                 android:text="选项1"
                                 android:textColor="@color/query_options_grouping_title_color"/>
@@ -229,13 +235,13 @@
                             <RadioButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:button="@drawable/selector_query_option_radio_button"
+                                android:button="@drawable/icon_selector_query_option_radio_button"
                                 android:paddingLeft="10dp"
                                 android:text="选项2"
                                 android:textColor="@color/query_options_grouping_title_color"/>
 
                         </RadioGroup>
-                    </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -253,9 +259,11 @@
 
                     <LinearLayout
                         android:id="@+id/ll_query_option_check_box_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="36dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="vertical">
 
 
@@ -265,49 +273,76 @@
                 <LinearLayout
                     android:id="@+id/ll_query_option_radio_box_spinner_input"
                     style="@style/ll_query_option_group_item"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/ll_query_option_check_box_input">
 
                     <TextView
                         style="@style/query_options_group_title_item"
+                        android:layout_height="50dp"
+                        android:layout_gravity="top"
+                        android:gravity="center_vertical"
                         android:text="单选下拉框"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/select_query_option_input_box_bg"
                         android:paddingLeft="36dp">
 
-                        <Spinner
-                            android:id="@+id/sp_query_option_radio_box"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="12dp"
+                            android:src="@drawable/icon_down_arrow"/>
+
+                        <ExpandableListView
+                            android:id="@+id/elv_query_option_radio_box"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="wrap_content"
+                            android:paddingRight="44dp"/>
                     </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_query_option_check_box_spinner_input"
+                    android:id="@+id/ll_query_option_check_box_drop_down_input"
                     style="@style/ll_query_option_group_item"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/ll_query_option_radio_box_spinner_input">
 
                     <TextView
                         style="@style/query_options_group_title_item"
+                        android:layout_height="50dp"
+                        android:layout_gravity="top"
+                        android:gravity="center_vertical"
                         android:text="多选下拉框"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/select_query_option_input_box_bg"
                         android:paddingLeft="36dp">
 
-                        <Spinner
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="12dp"
+                            android:src="@drawable/icon_down_arrow"/>
+
+                        <ExpandableListView
+                            android:id="@+id/elv_query_option_check_box"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"/>
+                            android:layout_height="wrap_content"
+                            android:paddingRight="44dp"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -315,7 +350,7 @@
                     android:id="@+id/ll_query_option_radio_list_input"
                     style="@style/ll_query_option_group_item"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ll_query_option_check_box_spinner_input">
+                    android:layout_below="@id/ll_query_option_check_box_drop_down_input">
 
                     <TextView
                         style="@style/query_options_group_title_item"
@@ -327,27 +362,32 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/query_options_text_background"
                         android:paddingLeft="36dp">
+
+                        <ImageView
+                            android:id="@+id/iv_query_option_radio_list_search"
+                            android:layout_width="22dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/icon_query_option_search_pressed"/>
 
                         <ListView
                             android:id="@+id/lv_query_option_radio_list"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
-                            android:layout_marginRight="36dp"
+                            android:layout_marginRight="12dp"
                             android:layout_marginTop="15dp"
+                            android:layout_toLeftOf="@+id/iv_query_option_radio_list_search"
                             android:divider="#00000000"
                             android:scrollbars="none"/>
 
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="8dp"
-                            android:src="@drawable/icon_query_option_search"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -372,12 +412,12 @@
                         <ImageButton
                             android:id="@+id/ibtn_query_time_select"
                             android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="12dp"
                             android:background="#00000000"
-                            android:src="@drawable/icon_calender"/>
+                            android:src="@drawable/icon_selector_query_option_calender"/>
 
                         <TextView
                             android:id="@+id/tv_query_option_time_select"
@@ -413,12 +453,12 @@
                         <ImageButton
                             android:id="@+id/ibtn_query_start_time_select"
                             android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="12dp"
                             android:background="#00000000"
-                            android:src="@drawable/icon_calender"/>
+                            android:src="@drawable/icon_selector_query_option_calender"/>
 
                         <TextView
                             android:id="@+id/tv_query_option_start_time"
@@ -452,12 +492,12 @@
                         <ImageButton
                             android:id="@+id/ibtn_query_end_time_select"
                             android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="12dp"
                             android:background="#00000000"
-                            android:src="@drawable/icon_calender"/>
+                            android:src="@drawable/icon_selector_query_option_calender"/>
 
                         <TextView
                             android:id="@+id/tv_query_option_end_time"

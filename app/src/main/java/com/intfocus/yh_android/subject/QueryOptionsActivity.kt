@@ -2,17 +2,24 @@ package com.intfocus.yh_android.subject
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.CheckBox
+import android.widget.RadioButton
+import android.widget.TextView
 import com.google.gson.Gson
 import com.intfocus.yh_android.R
 import com.intfocus.yh_android.bean.QueryOptions
+import com.intfocus.yh_android.scanner.QueryOptionsScannerActivity
+import com.intfocus.yh_android.subject.adapter.QueryOptionRadioListAdapter
+import com.intfocus.yh_android.util.DisplayUtil
 import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_query_options.*
 import java.text.SimpleDateFormat
@@ -23,48 +30,59 @@ class QueryOptionsActivity : AppCompatActivity() {
     private val testData = "{\n" +
             "\t\"data\":[\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"text_input\",\n" +
+            "\t\t\t\"typeName\":\"text_input\",\n" +
+            "\t\t\t\"typeId\":\"1\",\n" +
             "\t\t\t\"data\":[\"\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"scan_input\",\n" +
+            "\t\t\t\"typeName\":\"scan_input\",\n" +
+            "\t\t\t\"typeId\":\"2\",\n" +
             "\t\t\t\"data\":[\"\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"radio_box\",\n" +
+            "\t\t\t\"typeName\":\"radio_box\",\n" +
+            "\t\t\t\"typeId\":\"3\",\n" +
             "\t\t\t\"data\":[\"选项一\",\"选项二\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"check_box\",\n" +
+            "\t\t\t\"typeName\":\"check_box\",\n" +
+            "\t\t\t\"typeId\":\"4\",\n" +
             "\t\t\t\"data\":[\"优惠活动1\",\"优惠活动2\",\"优惠活动3\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"radio_box_spinner\",\n" +
+            "\t\t\t\"typeName\":\"radio_box_spinner\",\n" +
+            "\t\t\t\"typeId\":\"5\",\n" +
             "\t\t\t\"data\":[\"100%\",\"75%\",\"50%\",\"25%\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"check_box_spinner\",\n" +
+            "\t\t\t\"typeName\":\"check_box_spinner\",\n" +
+            "\t\t\t\"typeId\":\"5\",\n" +
             "\t\t\t\"data\":[\"100%\",\"75%\",\"50%\",\"25%\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"radio_list\",\n" +
-            "\t\t\t\"data\":[\"门店1\",\"门店2\",\"门店3\",\"门店4\"]\n" +
+            "\t\t\t\"typeName\":\"radio_list\",\n" +
+            "\t\t\t\"typeId\":\"6\",\n" +
+            "\t\t\t\"data\":[\"门店1\",\"门店2\",\"门店3\",\"门店4\",\"门店5\",\"门店6\",\"门店7\",\"门店8\",\"门店9\",\"门店10\",\"门店11\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"time_select\",\n" +
-            "\t\t\t\"data\":[\"20170717\"]\n" +
+            "\t\t\t\"typeName\":\"time_select\",\n" +
+            "\t\t\t\"typeId\":\"7\",\n" +
+            "\t\t\t\"data\":[\"\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\":\"start_and_end_time\",\n" +
-            "\t\t\t\"data\":[\"201707171438\",\"201707171439\"]\n" +
+            "\t\t\t\"typeName\":\"start_and_end_time\",\n" +
+            "\t\t\t\"typeId\":\"8\",\n" +
+            "\t\t\t\"data\":[\"\"]\n" +
             "\t\t}\n" +
             "\t]\n" +
             "}"
 
 
-    private var query_option_time: Long = 0
     private var query_option_start_time: Long = 0
     private var query_option_end_time: Long = 0
+    private var mRadioListPos: Int = 0
+
+    private val mRequestCode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +103,7 @@ class QueryOptionsActivity : AppCompatActivity() {
         // 提交的监听
         btn_query_option_submit.setOnClickListener(View.OnClickListener {
             for (i in queryOptionsData!!.indices) {
-                when (queryOptionsData!![i].type) {
+                when (queryOptionsData!![i].typeName) {
                     "text_input" -> {
                         if (et_query_option_text_input.text.toString() == null || et_query_option_text_input.text.toString().equals("")) {
                             ToastUtil.showToast(this, "请输入文本")
@@ -116,12 +134,12 @@ class QueryOptionsActivity : AppCompatActivity() {
                         mSubmitData.put("check_box", mCheckBoxBulider.toString())
                     }
                     "radio_box_spinner" -> {
-                        mSubmitData.put("radio_box_spinner", sp_query_option_radio_box.selectedItem.toString())
+//                        mSubmitData.put("radio_box_spinner", elv_query_option_radio_box.selectedItem.toString())
                     }
                     "check_box_spinner" -> {
                     }
                     "radio_list" -> {
-
+                        mSubmitData.put("radio_list", mRadioListPos.toString())
                     }
                     "time_select" -> {
                         if (tv_query_option_time_select.text == null || tv_query_option_time_select.text.equals("")) {
@@ -155,11 +173,11 @@ class QueryOptionsActivity : AppCompatActivity() {
             }
 
         })
-        val queryResult: StringBuilder = StringBuilder()
-        ibtn_search.setOnClickListener {
+        ibtn_query_option_history.setOnClickListener {
+            val queryResult: StringBuilder = StringBuilder()
             for ((key, value) in mSubmitData) {
                 Log.i(TAG, "key = $key, value = $value")
-                queryResult.append("key = $key, value = $value  ")
+                queryResult.append("key = $key, value = $value\n")
             }
 
             ToastUtil.showToast(this, String(queryResult))
@@ -200,6 +218,24 @@ class QueryOptionsActivity : AppCompatActivity() {
             getDatePickerDialog(tv_query_option_end_time)
         }
 
+        lv_query_option_radio_list.setOnItemClickListener { _, _, position, _ ->
+            mRadioListPos = position
+            ToastUtil.showToast(this, "mRadioListPos:::" + position)
+        }
+        lv_query_option_radio_list.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                sv_query_options.requestDisallowInterceptTouchEvent(false)
+            } else {
+                sv_query_options.requestDisallowInterceptTouchEvent(true)
+            }
+            false
+        }
+
+        ibtn_query_option_scan.setOnClickListener {
+            startActivityForResult(Intent(this, QueryOptionsScannerActivity::class.java), mRequestCode)
+        }
+        sv_query_options.smoothScrollTo(0, 20)
+
     }
 
     /**
@@ -219,16 +255,16 @@ class QueryOptionsActivity : AppCompatActivity() {
      */
     private fun initData(queryOptionsData: List<QueryOptions.DataBean>) {
         for (i in queryOptionsData.indices) {
-            when (queryOptionsData[i].type) {
+            when (queryOptionsData[i].typeName) {
                 "text_input" -> {
                     ll_query_option_text_input.visibility = View.VISIBLE
                     et_query_option_text_input.text.clear()
-                    et_query_option_text_input.text.insert(0, queryOptionsData[i].data[0])
+//                    et_query_option_text_input.text.insert(0, queryOptionsData[i].data[0])
                 }
                 "scan_input" -> {
                     ll_query_option_scan_input.visibility = View.VISIBLE
                     et_query_option_scan_input.text.clear()
-                    et_query_option_scan_input.text.insert(0, queryOptionsData[i].data[0])
+//                    et_query_option_scan_input.text.insert(0, queryOptionsData[i].data[0])
                 }
                 "radio_box" -> {
                     ll_query_option_radio_box_input.visibility = View.VISIBLE
@@ -240,18 +276,22 @@ class QueryOptionsActivity : AppCompatActivity() {
                     ll_query_option_check_box_input.visibility = View.VISIBLE
                     for (s in queryOptionsData[i].data) {
                         val mCheckBox = CheckBox(this)
+                        mCheckBox.buttonDrawable = resources.getDrawable(R.drawable.icon_selector_query_option_check_box)
                         mCheckBox.text = s
+                        mCheckBox.height = DisplayUtil.dip2px(this,36f)
                         ll_query_option_check_box_container.addView(mCheckBox)
                     }
                 }
                 "radio_box_spinner" -> {
                     ll_query_option_radio_box_spinner_input.visibility = View.VISIBLE
-                    var radioBoxSpinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, queryOptionsData[i].data)
-                    radioBoxSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    sp_query_option_radio_box.adapter = radioBoxSpinnerAdapter
+//                    var radioBoxSpinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, queryOptionsData[i].data)
+//                    radioBoxSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                    elv_query_option_radio_box.adapter = radioBoxSpinnerAdapter
+//var mElvRadioBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter
+                    elv_query_option_radio_box.expandableListAdapter
                 }
                 "check_box_spinner" -> {
-                    ll_query_option_check_box_spinner_input.visibility = View.VISIBLE
+                    ll_query_option_check_box_drop_down_input.visibility = View.VISIBLE
                 }
                 "radio_list" -> {
                     ll_query_option_radio_list_input.visibility = View.VISIBLE
@@ -274,53 +314,23 @@ class QueryOptionsActivity : AppCompatActivity() {
 
         private val TAG = "hjjzz"
     }
-}
 
-class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : BaseAdapter() {
-    val mContext = mContext
-    val mData = mData
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        var holder: QueryOptionRadioListHolder? = null
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_query_option_radio_list, parent, false)
-            holder = QueryOptionRadioListHolder(convertView)
-            convertView!!.tag = holder
-        } else {
-            holder = convertView.tag as QueryOptionRadioListHolder
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        var barCode: String? = null
+        when (resultCode) {
+            QueryOptionsScannerActivity.QUERY_OPTIONS_SCANNER_ACTIVITY_RESULTCODE_EAN_13 -> {
+                var bundle = data!!.getBundleExtra("data")
+                barCode = bundle.get("barcode_value") as String
+                ToastUtil.showToast(this, "条形码:::" + barCode)
+            }
+            QueryOptionsScannerActivity.QUERY_OPTIONS_SCANNER_ACTIVITY_RESULTCODE_QR_CODE -> {
+//                var bundle = data!!.getBundleExtra("data")
+//                barCode = bundle.get("barcode_value") as String
+                ToastUtil.showToast(this, "暂不支持二维码")
+            }
         }
-        holder.mTvRadioListItem.text = mData[position]
-        if (position == holder.mPos) {
-            holder.mTvRadioListItem.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-            holder.mTvRadioListItem.setBackgroundColor(ContextCompat.getColor(mContext, R.color.list_title_base))
-        } else {
-            holder.mTvRadioListItem.setTextColor(ContextCompat.getColor(mContext, R.color.query_options_grouping_title_color))
-            holder.mTvRadioListItem.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
+        et_query_option_scan_input.text.replace(0,et_query_option_scan_input.text.length, barCode)
 
-        }
-        holder.mTvRadioListItem.setOnClickListener {
-            holder!!.mPos = position
-            notifyDataSetChanged()
-        }
 
-        return convertView
-    }
-
-    override fun getItem(position: Int): Any {
-        return if (mData == null) null!! else mData[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getCount(): Int {
-        return if (mData == null) 0 else mData.size
-    }
-
-    class QueryOptionRadioListHolder(view: View, mPos: Int = 0) {
-        var mTvRadioListItem: TextView = view.findViewById(R.id.tv_radio_list_item) as TextView
-        var mPos: Int = mPos
     }
 }

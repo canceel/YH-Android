@@ -352,14 +352,14 @@ public class OldSettingActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,Intent intent) {
+    protected void onActivityResult(int mRequestCode, int resultCode,Intent intent) {
         // 用户没有选择图片，返回
         if (resultCode == RESULT_CANCELED) {
             Toast.makeText(getApplication(), "取消", Toast.LENGTH_LONG).show();
             return;
         }
 
-        switch (requestCode) {
+        switch (mRequestCode) {
             case CODE_GALLERY_REQUEST:
                 cropPhoto(intent.getData());
                 break;
@@ -380,7 +380,7 @@ public class OldSettingActivity extends BaseActivity {
                 }
                 break;
         }
-        super.onActivityResult(requestCode, resultCode, intent);
+        super.onActivityResult(mRequestCode, resultCode, intent);
     }
 
     /*

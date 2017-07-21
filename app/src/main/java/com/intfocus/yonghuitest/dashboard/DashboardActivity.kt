@@ -159,8 +159,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
-                    .setPositiveButton("确认") { dialog, which -> goToAppSetting() }
-                    .setNegativeButton("取消") { dialog, which ->
+                    .setPositiveButton("确认") { _, _ -> goToAppSetting() }
+                    .setNegativeButton("取消") { _, _ ->
                         // 返回DashboardActivity
                     }
             builder.show()
@@ -169,7 +169,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
-                    .setPositiveButton("确认") { dialog, which -> }
+                    .setPositiveButton("确认") { _, _ -> }
             builder.show()
             return
         } else {

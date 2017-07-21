@@ -115,6 +115,7 @@ public class ApiHelper {
             userJSON.put(K.kStylesheetsMd5, assetsJSON.getString(K.kStylesheetsMd5));
             userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
 
+
             FileUtil.writeFile(userConfigPath, userJSON.toString());
             mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
             mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
@@ -771,6 +772,7 @@ public class ApiHelper {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             //获取所有可用的位置提供器
             List<String> providers = locationManager.getProviders(true);
+
             if (providers.contains(LocationManager.GPS_PROVIDER)) {
                 //如果是GPS
                 locationProvider = LocationManager.GPS_PROVIDER;
@@ -786,12 +788,14 @@ public class ApiHelper {
 
             location = locationManager.getLastKnownLocation(locationProvider);
             if (location != null) {
+                Log.i("testlog", "this 2");
                 locationInfo = String.format("%.6f", location.getLongitude()) + "," + String.format("%.6f", location.getLatitude());
             }
-            Log.i("testlog", locationInfo);
+
             mUserSP.edit().putString("coordinate", locationInfo).commit();
             return locationInfo;
         } catch (SecurityException e) {
+            Log.i("testlog", e.toString());
             e.printStackTrace();
             return "";
         }

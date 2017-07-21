@@ -23,6 +23,7 @@ import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*
@@ -94,6 +95,11 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
 
     override fun itemClick(bannerName: String?, link: String?) {
         if (!link!!.isEmpty()) {
+
+            if (link.indexOf("template/6/") > 0) {
+
+            }
+
             if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
                 try {
                     val templateID = TextUtils.split(link, "/")[6]
@@ -102,8 +108,8 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                     var urlString: String
                     val intent: Intent
 
-                    when (templateID) {
-                        "-1", "2", "4" -> {
+                    when {
+                        link.indexOf("template/2") > 0 || link.indexOf("template/4") > 0 -> {
                             intent = Intent(activity, SubjectActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
@@ -115,7 +121,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                             startActivity(intent)
                         }
 
-                        "3" -> {
+                        link.indexOf("template/3") > 0 -> {
                             intent = Intent(ctx, HomeTricsActivity::class.java)
                             urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                     K.kBaseUrl, groupID, templateID, reportID)
@@ -128,7 +134,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                             intent.putExtra("urlString", urlString)
                             startActivity(intent)
                         }
-                        "5" -> {
+                        link.indexOf("template/5") > 0 -> {
                             intent = Intent(ctx, TableActivity::class.java)
                             urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                     K.kBaseUrl, groupID, templateID, reportID)
@@ -139,6 +145,11 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                             intent.putExtra("groupID", groupID)
                             intent.putExtra("reportID", reportID)
                             intent.putExtra("urlString", urlString)
+                            startActivity(intent)
+                        }
+                        link.indexOf("template/6") > 0 -> {
+                            val intent = Intent(activity, ModularTwo_Activity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             startActivity(intent)
                         }
                         else -> showTemplateErrorDialog()

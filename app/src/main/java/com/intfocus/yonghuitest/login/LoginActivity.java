@@ -144,11 +144,6 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-        if (BuildConfig.DEBUG) {
-            View v = new View(mAppContext);
-            actionSubmit(v);
-        }
-
         /*
          * 检测登录界面，版本是否升级
          */
@@ -280,11 +275,6 @@ public class LoginActivity extends BaseActivity {
             usernameString = usernameEditText.getText().toString();
             passwordString = passwordEditText.getText().toString();
 
-            if (BuildConfig.DEBUG) {
-                usernameString = "13162726850";
-                passwordString = "1";
-            }
-
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
@@ -342,7 +332,6 @@ public class LoginActivity extends BaseActivity {
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             LoginActivity.this.startActivity(intent);
-
 
                             /*
                              * 用户行为记录, 单独异常处理，不可影响用户体验

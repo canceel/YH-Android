@@ -159,7 +159,7 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
                 }
             }
             else {
-                val intent = Intent(activity, ModularTwo_Activity::class.java)
+                val intent = Intent(activity, WebApplicationActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.putExtra(URLs.kBannerName, bannerName)
                 intent.putExtra(URLs.kLink, link)

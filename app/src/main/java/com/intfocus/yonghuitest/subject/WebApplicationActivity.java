@@ -200,7 +200,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         mWebView.requestFocus();
         mWebView.setVisibility(View.VISIBLE);
-        mWebView.addJavascriptInterface(new WebApplicationActivity.JavaScriptInterface(), URLs.kJSInterfaceName);
+        mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
     }
 

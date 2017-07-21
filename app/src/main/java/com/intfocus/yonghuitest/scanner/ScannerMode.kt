@@ -1,15 +1,9 @@
 package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
-import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
-import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
-import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,10 +13,8 @@ import java.io.IOException
 import java.util.HashMap
 import org.xutils.http.RequestParams
 import org.xutils.common.Callback.CancelledException
-import org.xutils.common.Callback.ProgressCallback
 import org.xutils.x
 import org.xutils.common.task.PriorityExecutor
-import org.xutils.common.Callback.CommonCallback
 
 
 /**
@@ -56,7 +48,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
             params.saveFilePath = jsPath
             params.executor = PriorityExecutor(2, true)
             x.http().get(params, object : Callback.CommonCallback<File> {
-                override fun onCancelled(p0: CancelledException?) {}
+                override fun onCancelled(p0: CancelledException?) = Unit
 
                 override fun onError(p0: Throwable?, p1: Boolean) {
                     val result1 = ScannerRequest(false, 400)
@@ -64,8 +56,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
                     EventBus.getDefault().post(result1)
                 }
 
-                override fun onFinished() {
-                }
+                override fun onFinished() = Unit
 
                 override fun onSuccess(p0: File?) {
                     getHtml()

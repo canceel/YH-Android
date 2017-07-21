@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.WebViewFragment
-import com.intfocus.yonghuitest.constant.Urls
-import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.view.CustomWebView
 
 /**

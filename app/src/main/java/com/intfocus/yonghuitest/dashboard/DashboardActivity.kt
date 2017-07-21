@@ -454,8 +454,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
             }
 
-            override fun onNoUpdateAvailable() {
-            }
+            override fun onNoUpdateAvailable() = Unit
         })
     }
 }

@@ -1,7 +1,6 @@
 package com.intfocus.yonghuitest.login;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.BuildConfig;
 import com.intfocus.yonghuitest.ForgetPasswordActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
@@ -30,18 +29,19 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.NetWorkUtils;
 import com.intfocus.yonghuitest.util.URLs;
+import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.pgyersdk.update.PgyUpdateManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends BaseActivity {
-    public  String kFromActivity = "from_activity";         // APP 启动标识
-    public  String kSuccess      = "success";               // 用户登录验证结果
+    public String kFromActivity = "from_activity";         // APP 启动标识
+    public String kSuccess = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
     private final static int CODE_AUTHORITY_REQUEST = 0;
@@ -53,7 +53,6 @@ public class LoginActivity extends BaseActivity {
     private SharedPreferences mUserSP;
 
     @Override
-    @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -76,14 +75,15 @@ public class LoginActivity extends BaseActivity {
             LoginActivity.this.startActivity(intent);
 
             finish();
-        }
-        else {
+        } else {
             /*
              *  检测版本更新
              *    1. 与锁屏界面互斥；取消解屏时，返回登录界面，则不再检测版本更新；
-             *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,若此时有AlertDialog，会报错误:Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
+             *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,
+             *            若此时有AlertDialog，会报错误:
+             *            Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
              */
-            checkPgyerVersionUpgrade(LoginActivity.this,false);
+            checkPgyerVersionUpgrade(LoginActivity.this, false);
         }
 
         setContentView(R.layout.activity_login);
@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (LoginActivity.this, ForgetPasswordActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -114,12 +114,6 @@ public class LoginActivity extends BaseActivity {
                 builder.show();
             }
         });
-
-        /*
-         *  基本目录结构
-         */
-//        makeSureFolder(mAppContext, K.kSharedDirName);
-//        makeSureFolder(mAppContext, K.kCachedDirName);
 
         /*
          * 显示记住用户名称
@@ -153,7 +147,7 @@ public class LoginActivity extends BaseActivity {
 
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
-        if(mProgressDialog != null)  {
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
         super.onResume();
@@ -208,7 +202,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
 
-        if (!permissionsList.isEmpty() && permissionsList != null){
+        if (!permissionsList.isEmpty() && permissionsList != null) {
             ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]), CODE_AUTHORITY_REQUEST);
         }
     }
@@ -222,7 +216,7 @@ public class LoginActivity extends BaseActivity {
 
             case CODE_AUTHORITY_REQUEST:
                 boolean flag = false;
-                if (grantResults.length > 0){
+                if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++) {
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         } else {
@@ -242,36 +236,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     /*
-     * 键盘弹出监听,使用键盘时,整体布局上移
-     */
-    private void controlKeyboardLayout(final View view, final View scrollToView) {
-        view.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Rect rect = new Rect();
-                        int[] location = new int[2];
-                        view.getWindowVisibleDisplayFrame(rect);// 获取完整布局在窗体的可视区域
-                        int rootInvisibleHeight = view.getRootView().getHeight() - rect.bottom; //完整布局高度 减去 可视区域高度
-                        if (rootInvisibleHeight > 0) {
-                            // 获取 scrollToView 在窗体的坐标
-                            scrollToView.getLocationInWindow(location);
-                            // 计算完整布局滚动高度，使 scrollToView 在可见区域的底部
-                            int srollHeight = (location[1] + scrollToView.getHeight()) - rect.bottom;
-                            view.scrollTo(0, srollHeight + 20);
-                        } else {
-                            // 软键盘没有弹出1来的时候
-                            view.scrollTo(0, 0);
-                        }
-                    }
-                });
-    }
-
-    /*
      * 登录按钮点击事件
      */
     public void actionSubmit(View v) {
         try {
+            if (NetWorkUtils.getAPNType(mAppContext) == 0) {
+                WidgetUtil.showToastShort(this, "当前无网络连接");
+                return;
+            }
+
             usernameString = usernameEditText.getText().toString();
             passwordString = passwordEditText.getText().toString();
 

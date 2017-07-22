@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="540"
-          android:versionName="2.9.92">
+          android:versionCode="550"
+          android:versionName="2.9.96">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -47,6 +47,11 @@
             android:authorities="com.intfocus.yonghuitest.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
+
+            <!--高德地图API - Key -->
+            <meta-data
+                android:name="com.amap.api.v2.apikey"
+                android:value="a9de6a6686b42561f41ef209079fb708"/>
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
@@ -57,6 +62,9 @@
                 <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
+
+        <!--高德地图-->
+        <service android:name="com.amap.api.location.APSService"></service>
 
         <activity
             android:name=".login.LauncherActivity"

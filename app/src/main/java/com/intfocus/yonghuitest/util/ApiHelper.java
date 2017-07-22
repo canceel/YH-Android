@@ -12,6 +12,11 @@ import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,14 +72,13 @@ public class ApiHelper {
 
             JSONObject params = new JSONObject();
             params.put("device", device);
-            params.put("coordinate", getLocation(context));
+            params.put("coordinate", mUserSP.getString("location", "0,0"));
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
 
             mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
             mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
             mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
-
 
             Log.i("DeviceParams", params.toString());
 
@@ -633,7 +637,7 @@ public class ApiHelper {
      * @param context 上下文
      * @param param   用户行为
      */
-    public static void actionNewThreadLog(final Context context,final JSONObject param) {
+    public static void actionNewThreadLog(final Context context, final JSONObject param) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -771,7 +775,8 @@ public class ApiHelper {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             //获取所有可用的位置提供器
             List<String> providers = locationManager.getProviders(true);
-            if (providers.contains(LocationManager.GPS_PROVIDER)) {
+
+            if (providers.contains(LocationManager.GPS_PROVIDER) && locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
                 //如果是GPS
                 locationProvider = LocationManager.GPS_PROVIDER;
             } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
@@ -788,12 +793,73 @@ public class ApiHelper {
             if (location != null) {
                 locationInfo = String.format("%.6f", location.getLongitude()) + "," + String.format("%.6f", location.getLatitude());
             }
-            Log.i("testlog", locationInfo);
+
             mUserSP.edit().putString("coordinate", locationInfo).commit();
             return locationInfo;
         } catch (SecurityException e) {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static void getAMapLocation(final Context ctx) {
+        //初始化client
+        AMapLocationClient locationClient = new AMapLocationClient(ctx);
+        AMapLocationClientOption locationOption = getDefaultOption();
+        //设置定位参数
+        locationClient.setLocationOption(locationOption);
+        // 设置定位监听
+        locationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation location) {
+                if (null != location) {
+                    StringBuffer sb = new StringBuffer();
+                    //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
+                    if (location.getErrorCode() == 0) {
+                        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+                        mUserSP.edit().putString("location",
+                                String.format("%.6f", location.getLongitude()) + ","
+                                        + String.format("%.6f", location.getLatitude())).commit();
+
+                        sb.append("经    度    : " + location.getLongitude() + "\n");
+                        sb.append("纬    度    : " + location.getLatitude() + "\n");
+                    } else {
+                        //定位失败
+                        sb.append("错误码:" + location.getErrorCode() + "\n");
+                        sb.append("错误信息:" + location.getErrorInfo() + "\n");
+                        sb.append("错误描述:" + location.getLocationDetail() + "\n");
+                    }
+
+                    //解析定位结果
+                    String result = sb.toString();
+                    Log.i("testlog", result);
+                } else {
+                    Log.i("testlog", "定位失败，loc is null");
+                }
+            }
+        });
+        locationClient.startLocation();
+    }
+
+    /**
+     * 默认的定位参数
+     *
+     * @author hongming.wang
+     * @since 2.8.0
+     */
+    public static AMapLocationClientOption getDefaultOption() {
+        AMapLocationClientOption mOption = new AMapLocationClientOption();
+        mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
+        mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
+        mOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
+        mOption.setInterval(60000 * 10);//可选，设置定位间隔。默认为2秒
+        mOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是true
+        mOption.setOnceLocation(false);//可选，设置是否单次定位。默认是false
+        mOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
+        AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTP);//可选， 设置网络请求的协议。可选HTTP或者HTTPS。默认为HTTP
+        mOption.setSensorEnable(false);//可选，设置是否使用传感器。默认是false
+        mOption.setWifiScan(true); //可选，设置是否开启wifi扫描。默认为true，如果设置为false会同时停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
+        mOption.setLocationCacheEnable(true); //可选，设置是否使用缓存定位，默认为true
+        return mOption;
     }
 }

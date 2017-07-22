@@ -95,4 +95,5 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    compile 'com.amap.api:location:latest.integration' //高德定位
 }

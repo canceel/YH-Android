@@ -63,6 +63,8 @@ public class LoginActivity extends BaseActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+        ApiHelper.getAMapLocation(mAppContext);
+
         /*
          *  如果是从触屏界面过来，则直接进入主界面如
          *  不是的话，相当于直接启动应用，则检测是否有设置锁屏

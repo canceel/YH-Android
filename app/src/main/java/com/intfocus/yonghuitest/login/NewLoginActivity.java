@@ -15,8 +15,6 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
@@ -29,14 +27,12 @@ import com.pgyersdk.update.PgyUpdateManager;
 
 import org.json.JSONObject;
 
-public class LoginActivity extends BaseActivity {
-    public String kFromActivity = "from_activity";         // APP 启动标识
-    public String kSuccess = "success";               // 用户登录验证结果
+public class NewLoginActivity extends BaseActivity {
+    public  String kFromActivity = "from_activity";         // APP 启动标识
+    public  String kSuccess      = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
     private SharedPreferences mUserSP;
-    private TextView mTvLoginResultNotice;
-    private LinearLayout mLlLoginResultNotice;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -58,22 +54,23 @@ public class LoginActivity extends BaseActivity {
          */
         Intent intent = getIntent();
         if (intent.hasExtra(kFromActivity) && intent.getStringExtra(kFromActivity).equals("ConfirmPassCodeActivity")) {
-            intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            intent = new Intent(NewLoginActivity.this, DashboardActivity.class);
             intent.putExtra(kFromActivity, intent.getStringExtra(kFromActivity));
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            LoginActivity.this.startActivity(intent);
+            NewLoginActivity.this.startActivity(intent);
 
             finish();
-        } else {
+        }
+        else {
             /*
              *  检测版本更新
              *    1. 与锁屏界面互斥；取消解屏时，返回登录界面，则不再检测版本更新；
              *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,若此时有AlertDialog，会报错误:Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
              */
-            checkPgyerVersionUpgrade(LoginActivity.this, false);
+            checkPgyerVersionUpgrade(NewLoginActivity.this,false);
         }
 
-        setContentView(R.layout.activity_login_new);
+        setContentView(R.layout.activity_login);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
@@ -81,7 +78,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                Intent intent = new Intent (NewLoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -89,7 +86,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(NewLoginActivity.this);
                 builder.setTitle("温馨提示")
                         .setMessage("请到数据化运营平台申请开通账号")
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -113,9 +110,6 @@ public class LoginActivity extends BaseActivity {
          */
         usernameEditText.setText(mUserSP.getString("user_login_name", ""));
 
-        mTvLoginResultNotice = (TextView) findViewById(R.id.tv_login_result_notice);
-        mLlLoginResultNotice = (LinearLayout) findViewById(R.id.ll_login_result_notice);
-        mLlLoginResultNotice.setVisibility(View.GONE);
         /*
          * 显示当前应用版本号
          */
@@ -144,7 +138,7 @@ public class LoginActivity extends BaseActivity {
 
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
-        if (mProgressDialog != null) {
+        if(mProgressDialog != null)  {
             mProgressDialog.dismiss();
         }
         super.onResume();
@@ -225,28 +219,12 @@ public class LoginActivity extends BaseActivity {
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
-//                final TranslateAnimation ctrlAnimation = new TranslateAnimation(
-//                        TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0,
-//                        TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 1);
-//                ctrlAnimation.setDuration(500l);
-                mTvLoginResultNotice.setText("请输入用户名与密码");
-                mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(R.color.color_notice_login_failure));
-                mLlLoginResultNotice.setVisibility(View.VISIBLE);
-                mLlLoginResultNotice.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-//                        mLlLoginResultNotice.startAnimation(ctrlAnimation);
-                        mLlLoginResultNotice.setVisibility(View.GONE);
-                    }
-                }, 2000);
-//                popupWindow.setAnimationStyle(R.anim.login_notice_anim);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         toast("请输入用户名与密码");
                     }
                 });
-
                 return;
             }
 
@@ -254,7 +232,7 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void run() {
                     hideKeyboard();
-                    mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
+                    mProgressDialog = ProgressDialog.show(NewLoginActivity.this, "稍等", "验证用户信息...");
                 }
             });
 
@@ -282,6 +260,7 @@ public class LoginActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+
                                 toast(info);
                                 return;
                             }
@@ -291,9 +270,9 @@ public class LoginActivity extends BaseActivity {
                             checkVersionUpgrade(assetsPath);
 
                             // 跳转至主界面
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            Intent intent = new Intent(NewLoginActivity.this, DashboardActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            LoginActivity.this.startActivity(intent);
+                            NewLoginActivity.this.startActivity(intent);
 
 
                             /*

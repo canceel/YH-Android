@@ -78,6 +78,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    //高德定位
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.5.6'
     compile 'commons-io:commons-io:2.4'
@@ -95,5 +96,5 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
-    compile 'com.amap.api:location:latest.integration' //高德定位
+    compile 'com.amap.api:location:latest.integration'
 }

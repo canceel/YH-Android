@@ -915,8 +915,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         @JavascriptInterface
         public String getLocation() {
-            String location = ApiHelper.getLocation(mAppContext);
-            return location;
+            SharedPreferences mUserSP = mAppContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+            return mUserSP.getString("location", "0,0");
         }
 
         @JavascriptInterface

@@ -29,9 +29,13 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
 import com.intfocus.yonghuitest.util.NetWorkUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
+=======
+import com.intfocus.yonghuitest.util.URLs;
+>>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
 import com.pgyersdk.update.PgyUpdateManager;
 
 import org.json.JSONObject;
@@ -44,12 +48,6 @@ public class LoginActivity extends BaseActivity {
     public String kSuccess = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
-    private final static int CODE_AUTHORITY_REQUEST = 0;
-    private static final String[] permissionsArray = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION};
     private SharedPreferences mUserSP;
 
     @Override
@@ -62,6 +60,8 @@ public class LoginActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+
+        ApiHelper.getAMapLocation(mAppContext);
 
         /*
          *  如果是从触屏界面过来，则直接进入主界面如
@@ -142,7 +142,6 @@ public class LoginActivity extends BaseActivity {
          * 检测登录界面，版本是否升级
          */
         checkVersionUpgrade(assetsPath);
-        getAuthority();
     }
 
     protected void onResume() {
@@ -192,6 +191,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     /*
+<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
      * 获取权限 : 文件读写 (WRITE_EXTERNAL_STORAGE),读取设备信息 (READ_PHONE_STATE)
      */
     private void getAuthority() {
@@ -233,6 +233,31 @@ public class LoginActivity extends BaseActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+=======
+     * 键盘弹出监听,使用键盘时,整体布局上移
+     */
+    private void controlKeyboardLayout(final View view, final View scrollToView) {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect rect = new Rect();
+                        int[] location = new int[2];
+                        view.getWindowVisibleDisplayFrame(rect);// 获取完整布局在窗体的可视区域
+                        int rootInvisibleHeight = view.getRootView().getHeight() - rect.bottom; //完整布局高度 减去 可视区域高度
+                        if (rootInvisibleHeight > 0) {
+                            // 获取 scrollToView 在窗体的坐标
+                            scrollToView.getLocationInWindow(location);
+                            // 计算完整布局滚动高度，使 scrollToView 在可见区域的底部
+                            int srollHeight = (location[1] + scrollToView.getHeight()) - rect.bottom;
+                            view.scrollTo(0, srollHeight + 20);
+                        } else {
+                            // 软键盘没有弹出1来的时候
+                            view.scrollTo(0, 0);
+                        }
+                    }
+                });
+>>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
     }
 
     /*

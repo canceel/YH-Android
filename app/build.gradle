@@ -97,4 +97,5 @@ dependencies {
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
     compile 'pub.devrel:easypermissions:0.4.0'
     compile files('libs/pinyin4j-2.5.0.jar')
+    compile 'com.amap.api:location:latest.integration' //高德定位
 }

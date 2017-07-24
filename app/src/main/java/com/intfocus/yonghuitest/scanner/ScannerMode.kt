@@ -2,6 +2,12 @@ package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
 import com.google.gson.Gson
+<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/scanner/ScannerMode.kt
+=======
+import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
+import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
+import com.intfocus.yonghuitest.constant.Urls
+>>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/scanner/ScannerMode.kt
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus

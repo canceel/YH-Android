@@ -433,6 +433,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         UpdateManagerListener.startDownloadTask(activity, appBean.downloadURL)
                         return
                     }
+
                     AlertDialog.Builder(activity)
                             .setTitle("版本更新")
                             .setMessage(if (message.isEmpty()) "无升级简介" else message)

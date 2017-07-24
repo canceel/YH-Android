@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -184,6 +185,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         //设置可以点击
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+
         contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出
             logout()
@@ -196,10 +198,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             // 点击背景半透明区域
             popupWindow.dismiss()
         }
-
-        var logParams = JSONObject()
-        logParams.put(URLs.kAction, "我的/设置头像")
-        ApiHelper.actionNewThreadLog(activity, logParams)
     }
     
     /**

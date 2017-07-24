@@ -44,6 +44,8 @@
             <TextView
                 android:id="@+id/tv_mine_user_group_value"
                 style="@style/tv_mine_user_list_right"
+                android:maxWidth="220dp"
+                android:maxLines="2"
                 android:text="YONGUED"/>
         </RelativeLayout>
 

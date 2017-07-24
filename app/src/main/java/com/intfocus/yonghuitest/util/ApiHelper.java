@@ -180,9 +180,9 @@ public class ApiHelper {
                 return false;
         }
 
-        try {
-            //获取的内容为attachment; filename="group_%s_template_%s_report_%s.js.zip"
-            String contentDis = response.get("Content-Disposition");
+            try {
+                //获取的内容为attachment; filename="group_%s_template_%s_report_%s.js.zip"
+                String contentDis = response.get("Content-Disposition");
 
             //获取的内容为 group_%s_template_%s_report_%s.js.zip
             String subContentDis = contentDis.substring(contentDis.indexOf("\"") + 1, contentDis.lastIndexOf("\""));
@@ -777,11 +777,7 @@ public class ApiHelper {
             //获取所有可用的位置提供器
             List<String> providers = locationManager.getProviders(true);
 
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/util/ApiHelper.java
-            if (providers.contains(LocationManager.GPS_PROVIDER)) {
-=======
             if (providers.contains(LocationManager.GPS_PROVIDER) && locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/util/ApiHelper.java
                 //如果是GPS
                 locationProvider = LocationManager.GPS_PROVIDER;
             } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {

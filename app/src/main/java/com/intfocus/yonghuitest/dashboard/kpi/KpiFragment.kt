@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/dashboard/kpi/KpiFragment.kt
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiItemAdapter
@@ -30,21 +29,6 @@ import com.intfocus.yonghuitest.listen.CustPagerTransformer
 import com.intfocus.yonghuitest.util.DisplayUtil
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.WidgetUtil
-=======
-import com.intfocus.yonghuitest.dashboard.old_kpi.MarginDecoration
-import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.dashboard.DashboardActivity
-import com.intfocus.yonghuitest.dashboard.kpi.adapter.*
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroup
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
-import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
-import com.intfocus.yonghuitest.listen.CustPagerTransformer
-import com.intfocus.yonghuitest.subject.HomeTricsActivity
-import com.intfocus.yonghuitest.subject.SubjectActivity
-import com.intfocus.yonghuitest.subject.TableActivity
-import com.intfocus.yonghuitest.util.*
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/dashboard/kpi/KpiFragment.kt
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.greenrobot.eventbus.EventBus

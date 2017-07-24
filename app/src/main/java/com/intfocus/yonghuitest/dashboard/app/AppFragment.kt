@@ -23,10 +23,7 @@ import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/dashboard/app/AppFragment.kt
 import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Activity
-=======
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/dashboard/app/AppFragment.kt
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*

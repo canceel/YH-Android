@@ -29,13 +29,10 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
 import com.intfocus.yonghuitest.util.NetWorkUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.WidgetUtil;
-=======
 import com.intfocus.yonghuitest.util.URLs;
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
 import com.pgyersdk.update.PgyUpdateManager;
 
 import org.json.JSONObject;
@@ -188,76 +185,6 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
         builder.show();
-    }
-
-    /*
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
-     * 获取权限 : 文件读写 (WRITE_EXTERNAL_STORAGE),读取设备信息 (READ_PHONE_STATE)
-     */
-    private void getAuthority() {
-        List<String> permissionsList = new ArrayList<>();
-        for (String permission : permissionsArray) {
-            if (ContextCompat.checkSelfPermission(LoginActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionsList.add(permission);
-            }
-        }
-
-        if (!permissionsList.isEmpty() && permissionsList != null) {
-            ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]), CODE_AUTHORITY_REQUEST);
-        }
-    }
-
-    /*
-     * 权限获取反馈
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-
-            case CODE_AUTHORITY_REQUEST:
-                boolean flag = false;
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < permissions.length; i++) {
-                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        } else {
-                            flag = true;
-                        }
-                    }
-                }
-
-                if (flag) {
-                    setAlertDialog(LoginActivity.this, "某些权限获取失败，是否到本应用的设置界面设置权限");
-                }
-
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-=======
-     * 键盘弹出监听,使用键盘时,整体布局上移
-     */
-    private void controlKeyboardLayout(final View view, final View scrollToView) {
-        view.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Rect rect = new Rect();
-                        int[] location = new int[2];
-                        view.getWindowVisibleDisplayFrame(rect);// 获取完整布局在窗体的可视区域
-                        int rootInvisibleHeight = view.getRootView().getHeight() - rect.bottom; //完整布局高度 减去 可视区域高度
-                        if (rootInvisibleHeight > 0) {
-                            // 获取 scrollToView 在窗体的坐标
-                            scrollToView.getLocationInWindow(location);
-                            // 计算完整布局滚动高度，使 scrollToView 在可见区域的底部
-                            int srollHeight = (location[1] + scrollToView.getHeight()) - rect.bottom;
-                            view.scrollTo(0, srollHeight + 20);
-                        } else {
-                            // 软键盘没有弹出1来的时候
-                            view.scrollTo(0, 0);
-                        }
-                    }
-                });
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/login/LoginActivity.java
     }
 
     /*

@@ -3,18 +3,12 @@ package com.intfocus.yonghuitest.mode
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/mode/NoticeContentMode.kt
-=======
 import com.intfocus.yonghuitest.constant.Urls
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/mode/NoticeContentMode.kt
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentRequest
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/mode/NoticeContentMode.kt
-=======
 import com.intfocus.yonghuitest.util.URLs
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/mode/NoticeContentMode.kt
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus

@@ -18,10 +18,7 @@ import android.widget.ImageView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.login.adapter.GuidePageAdapter
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/login/GuidePageActivity.kt
-=======
 import java.util.ArrayList
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/login/GuidePageActivity.kt
 
 
 class GuidePageActivity : BaseActivity() {

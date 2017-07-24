@@ -22,10 +22,7 @@ import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
 import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
 import com.intfocus.yonghuitest.mode.ReportsListMode
 import com.intfocus.yonghuitest.subject.*
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/dashboard/report/ReportFragment.kt
 import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Activity
-=======
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/dashboard/report/ReportFragment.kt
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.util.URLs.kGroupId
 import com.zbl.lib.baseframe.core.Subject

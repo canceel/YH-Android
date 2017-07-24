@@ -9,11 +9,8 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.WebViewFragment
-<<<<<<< HEAD:app/src/main/java/com/intfocus/yonghuitest/dashboard/mine/InstituteFragment.kt
-=======
 import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.util.K
->>>>>>> 9b70b1d3434187d15c463abda4e4a615619cebfb:app/src/main/java/com/intfocus/yonghuitest/dashboard/mine/InstituteFragment.kt
 import com.intfocus.yonghuitest.view.CustomWebView
 
 /**

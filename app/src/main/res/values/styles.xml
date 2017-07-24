@@ -170,6 +170,19 @@
         <item name="android:background">@color/item_line</item>
     </style>
 
+    <style name="NarrowSmallDivider">
+        <item name="android:layout_width">330dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@color/item_line</item>
+    </style>
+
+    <style name="NullDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:background">@color/item_line_small</item>
+    </style>
+
     <style name="BannerTitle">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
@@ -399,4 +412,30 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="iv_mine_user_list">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">21dp</item>
+    </style>
+
+    <style name="tv_mine_user_list_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">11dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="tv_mine_user_list_right">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#32414b</item>
+    </style>
 </resources>

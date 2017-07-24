@@ -1,20 +1,22 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
 import android.app.Activity.RESULT_CANCELED
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
@@ -28,7 +30,10 @@ import com.intfocus.yonghuitest.util.ImageUtil.*
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
+import com.zbl.lib.baseframe.utils.ToastUtil
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.android.synthetic.main.item_mine_user_top.*
 import kotlinx.android.synthetic.main.items_single_value.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -103,20 +108,19 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         if (!mUserInfoString.equals("")) {
             mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
             tv_user_name.text = mUserInfo!!.user_name
-            tv_location.text = "暂无上次登录地点信息"
             tv_login_number.text = mUserInfo!!.login_duration
             tv_report_number.text = mUserInfo!!.browse_report_count
             tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
-            tv_user_role_value.text = mUserInfo!!.role_name
-            tv_user_group_value.text = mUserInfo!!.group_name
+            tv_user_role.text = mUserInfo!!.role_name
+            tv_mine_user_group_value.text = mUserInfo!!.group_name
             x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
         }
-        iv_user_icon.setOnClickListener { showPhotoSelectDialog(this.context) }
+        iv_user_icon.setOnClickListener { showIconSelectPopWindow(this.context) }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
         rl_issue.setOnClickListener { startIssueActivity() }
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
-        rl_logout.setOnClickListener { logout() }
+        rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -124,13 +128,11 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         if (result.isSuccess && result.userInfoBean != null) {
             var user = result.userInfoBean
             tv_user_name.text = user!!.user_name
-            if (!user!!.coordinate_location.isNullOrEmpty())
-                tv_location.text = "上次登录: " + user!!.coordinate_location
             tv_login_number.text = user.login_duration
             tv_report_number.text = user.browse_report_count
             tv_beyond_number.text = user.surpass_percentage.toString()
-            tv_user_role_value.text = user.role_name
-            tv_user_group_value.text = user.group_name
+            tv_user_role.text = user.role_name
+            tv_mine_user_group_value.text = user.group_name
             x.image().bind(iv_user_icon, user.gravatar, imageOptions)
         }
     }
@@ -146,9 +148,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startFavoriteActivity() {
-        var intent = Intent(activity, FavoriteActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        startActivity(intent)
+        ToastUtil.showToast(ctx, "文章收藏页待实现")
     }
 
     fun startIssueActivity() {
@@ -167,6 +167,44 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         startActivity(intent)
     }
 
+    /**
+     * 退出登录选择窗
+     */
+    internal fun showLogoutPopupWindow(ctx: Context) {
+        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_logout, null)
+        //设置弹出框的宽度和高度
+        var popupWindow = PopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        popupWindow.isFocusable = true// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(BitmapDrawable())
+        //点击外部消失
+        popupWindow.isOutsideTouchable = true
+        //设置可以点击
+        popupWindow.isTouchable = true
+        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+        contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
+            // 确认退出
+            logout()
+        }
+        contentView.findViewById(R.id.rl_cancel).setOnClickListener {
+            // 取消
+            popupWindow.dismiss()
+        }
+        contentView.findViewById(R.id.rl_popup_logout_background).setOnClickListener {
+            // 点击背景半透明区域
+            popupWindow.dismiss()
+        }
+
+        var logParams = JSONObject()
+        logParams.put(URLs.kAction, "我的/设置头像")
+        ApiHelper.actionNewThreadLog(activity, logParams)
+    }
+    
+    /**
+     * 退出登录
+     */
     fun logout() {
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
@@ -235,17 +273,40 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun showPhotoSelectDialog(context: Context) {
-        val alertDialog = AlertDialog.Builder(context)
-        val options = arrayOf("拍照", "从相册选择")
-        alertDialog.setItems(options) { _, which ->
-            if (which == 0) {
-                startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
-            } else {
-                startActivityForResult(getGallery(), CODE_GALLERY_REQUEST)
-            }
+    /**
+     * 显示头像选择菜单
+     */
+    internal fun showIconSelectPopWindow(ctx: Context) {
+        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_mine_icon_select, null)
+        //设置弹出框的宽度和高度
+        var popupWindow = PopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        popupWindow.isFocusable = true// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(BitmapDrawable())
+        //点击外部消失
+        popupWindow.isOutsideTouchable = true
+        //设置可以点击
+        popupWindow.isTouchable = true
+        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+
+        contentView.findViewById(R.id.rl_camera).setOnClickListener {
+            // 打开相机
+            startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
         }
-        alertDialog.show()
+        contentView.findViewById(R.id.rl_gallery).setOnClickListener {
+            // 打开相册
+            startActivityForResult(getGallery(), CODE_GALLERY_REQUEST)
+        }
+        contentView.findViewById(R.id.rl_cancel).setOnClickListener {
+            // 取消
+            popupWindow.dismiss()
+        }
+        contentView.findViewById(R.id.rl_popup_icon_background).setOnClickListener {
+            // 点击背景半透明区域
+            popupWindow.dismiss()
+        }
 
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "我的/设置头像")

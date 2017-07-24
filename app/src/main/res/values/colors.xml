@@ -137,7 +137,8 @@
     <!--个人信息页-->
     <color name="tab_layout_line">#6aa657</color>
     <color name="user_info_item_background">#fbfcf5</color>
-    <color name="item_line">#d2d2d2</color>
+    <color name="item_line">#e6e6e6</color>
+    <color name="item_line_small">#f3f3f3</color>
     <color name="logout_line">#848484</color>
     <color name="logout_text">#010101</color>
     <color name="location_text">#6e6e6e</color>

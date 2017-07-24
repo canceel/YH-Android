@@ -1,11 +1,15 @@
 package com.intfocus.yonghuitest.login
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +18,7 @@ import android.widget.ImageView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.login.adapter.GuidePageAdapter
+import java.util.ArrayList
 
 
 class GuidePageActivity : BaseActivity() {
@@ -22,6 +27,8 @@ class GuidePageActivity : BaseActivity() {
     var imageIDList: MutableList<String> = mutableListOf()
     var viewPager: ViewPager? = null
     var currentItem: Int = 0
+    private val CODE_AUTHORITY_REQUEST = 0
+    private val permissionsArray = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +40,8 @@ class GuidePageActivity : BaseActivity() {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         }
         setContentView(R.layout.activity_guide_page)
+
+        getAuthority()
 
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
 
@@ -93,5 +102,45 @@ class GuidePageActivity : BaseActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    /*
+     * 获取权限 : 文件读写 (WRITE_EXTERNAL_STORAGE),读取设备信息 (READ_PHONE_STATE)
+     */
+    private fun getAuthority() {
+        val permissionsList = ArrayList<String>()
+        for (permission in permissionsArray) {
+            if (ContextCompat.checkSelfPermission(this@GuidePageActivity, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission)
+            }
+        }
+        if (!permissionsList.isEmpty() && permissionsList != null) {
+            ActivityCompat.requestPermissions(this@GuidePageActivity, permissionsList.toTypedArray(), CODE_AUTHORITY_REQUEST)
+        }
+    }
+
+    /*
+     * 权限获取反馈
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+
+            CODE_AUTHORITY_REQUEST -> {
+                var flag = false
+                if (grantResults.size > 0) {
+                    for (i in permissions.indices) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        } else {
+                            flag = true
+                        }
+                    }
+                }
+
+                if (flag) {
+                    setAlertDialog(this@GuidePageActivity, "某些权限获取失败，是否到本应用的设置界面设置权限")
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 }

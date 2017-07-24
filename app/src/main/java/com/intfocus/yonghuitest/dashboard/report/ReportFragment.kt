@@ -104,6 +104,7 @@ class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapte
     }
 
     override fun reportItemClick(bannerName: String?, link: String?) {
+        Log.i("testlog", link)
         if (!link!!.isEmpty()) {
             if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
                 try {

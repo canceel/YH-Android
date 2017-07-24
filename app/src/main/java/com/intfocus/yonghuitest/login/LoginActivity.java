@@ -43,12 +43,6 @@ public class LoginActivity extends BaseActivity {
     public  String kSuccess      = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
-    private final static int CODE_AUTHORITY_REQUEST = 0;
-    private static final String[] permissionsArray = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION};
     private SharedPreferences mUserSP;
 
     @Override
@@ -151,7 +145,6 @@ public class LoginActivity extends BaseActivity {
          * 检测登录界面，版本是否升级
          */
         checkVersionUpgrade(assetsPath);
-        getAuthority();
     }
 
     protected void onResume() {
@@ -198,49 +191,6 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
         builder.show();
-    }
-
-    /*
-     * 获取权限 : 文件读写 (WRITE_EXTERNAL_STORAGE),读取设备信息 (READ_PHONE_STATE)
-     */
-    private void getAuthority() {
-        List<String> permissionsList = new ArrayList<>();
-        for (String permission : permissionsArray) {
-            if (ContextCompat.checkSelfPermission(LoginActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionsList.add(permission);
-            }
-        }
-        if (!permissionsList.isEmpty() && permissionsList != null){
-            ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]), CODE_AUTHORITY_REQUEST);
-        }
-    }
-
-    /*
-     * 权限获取反馈
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-
-            case CODE_AUTHORITY_REQUEST:
-                boolean flag = false;
-                if (grantResults.length > 0){
-                    for (int i = 0; i < permissions.length; i++) {
-                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        } else {
-                            flag = true;
-                        }
-                    }
-                }
-
-                if (flag) {
-                    setAlertDialog(LoginActivity.this, "某些权限获取失败，是否到本应用的设置界面设置权限");
-                }
-
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     /*

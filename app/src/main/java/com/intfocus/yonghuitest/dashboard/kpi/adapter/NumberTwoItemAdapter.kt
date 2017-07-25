@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.dashboard.kpi.adapter
 import android.app.Fragment
 import android.app.FragmentManager
 import android.content.Context
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.intfocus.yonghuitest.dashboard.kpi.NumberThreeFragment
 import com.intfocus.yonghuitest.dashboard.kpi.NumberTwoFragment
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.zbl.lib.baseframe.utils.PhoneUtil
+import kotlinx.android.synthetic.main.fragment_number_two.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -44,12 +46,15 @@ class NumberTwoItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGro
     override fun onBindViewHolder(holder: NumberTwoItemHolder, position: Int) {
         holder.tv_number_two_title.text = itemDatas!![position].title
         var number = itemDatas!![position].data!!.high_light!!.number
+        val mTypeface = Typeface.createFromAsset(ctx.assets, "ALTGOT2N.TTF")
         holder.tv_number_two_number.text = formatNumber(number)
         holder.tv_number_two_number.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
         holder.tv_number_two_unit.text = itemDatas!![position].unit
         holder.tv_number_two_compare.text = itemDatas!![position].data!!.high_light!!.compare
         holder.tv_number_two_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
         holder.tv_number_two_sub.text = itemDatas!![position].memo1
+        holder.tv_number_two_number.typeface = mTypeface
+        holder.tv_number_two_compare.typeface = mTypeface
         holder.ll_number_two_item.setOnClickListener {
             EventBus.getDefault().post(itemDatas!![position])
         }

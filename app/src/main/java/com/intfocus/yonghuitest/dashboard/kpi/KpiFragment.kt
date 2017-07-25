@@ -1,53 +1,43 @@
 package com.intfocus.yonghuitest.dashboard.kpi
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.old_kpi.MarginDecoration
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
-import com.intfocus.yonghuitest.dashboard.kpi.adapter.*
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiItemAdapter
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiStickAdapter
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.NumberThreeItemAdapter
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.NumberTwoItemAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroup
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
+import com.intfocus.yonghuitest.dashboard.old_kpi.MarginDecoration
 import com.intfocus.yonghuitest.listen.CustPagerTransformer
-import com.intfocus.yonghuitest.subject.HomeTricsActivity
-import com.intfocus.yonghuitest.subject.SubjectActivity
-import com.intfocus.yonghuitest.subject.TableActivity
-import com.intfocus.yonghuitest.util.*
+import com.intfocus.yonghuitest.util.DisplayUtil
 import com.zbl.lib.baseframe.core.Subject
-import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
 import sumimakito.android.advtextswitcher.Switcher
 import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener {
+class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
     lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView: View? = null
@@ -81,28 +71,7 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initAffiche()
-        initSwipeLayout()
         super.onActivityCreated(savedInstanceState)
-    }
-
-    fun initSwipeLayout() {
-        swipe_container.setOnRefreshListener(this)
-        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light)
-        swipe_container.setDistanceToTriggerSync(300)// 设置手指在屏幕下拉多少距离会触发下拉刷新
-        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
-    }
-
-    override fun onRefresh() {
-        if (HttpUtil.isConnected(context)) {
-            if (stickCycle != null) {
-                stickCycle.cancel()
-            }
-            model.requestData()
-        } else {
-            swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -146,10 +115,8 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
             //设置Adapter
             var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
             rc_kpi_groups.adapter = recycleAdapter
-//            rc_kpi_groups.isNestedScrollingEnabled = false
         }
 
-        swipe_container.isRefreshing = false
         rootView!!.invalidate()
     }
 

@@ -2,10 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.intfocus.yonghuitest.ui.ModularTwo_Activity">
+    android:layout_height="wrap_content">
 
-    <com.intfocus.yonghuitest.view.RootScrollView
+    <com.intfocus.yonghuitest.subject.template_v2.view.RootScrollView
         android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +18,7 @@
             <FrameLayout
                 android:id="@+id/fl_mdetal_title_container"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_default_large"
+                android:layout_height="@dimen/size_default_medium"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:animateLayoutChanges="true"
@@ -44,7 +43,7 @@
 
 
         </LinearLayout>
-    </com.intfocus.yonghuitest.view.RootScrollView>
+    </com.intfocus.yonghuitest.subject.template_v2.view.RootScrollView>
 
     <FrameLayout
         android:id="@+id/fl_mdetal_top_suspend_container"

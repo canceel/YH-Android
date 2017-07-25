@@ -42,6 +42,7 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modular_two_subtable);
         x.view().inject(this);
+        getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide().setDuration(500));
             getWindow().setExitTransition(new Slide().setDuration(500));

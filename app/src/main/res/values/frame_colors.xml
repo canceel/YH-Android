@@ -4,7 +4,8 @@
     <!-- =======================================默认颜色============================== -->
     <color name="argb_theme_press">#91c941</color>
     <color name="argb_theme_default">#51aa38</color>
-    <color name="argb_theme_StatusBarColor">#51aa38</color>
+    <color name="argb_theme_StatusBarColor">#ffffff</color>
+    <color name="argb_theme_StatusBarButtonColor">#00a4e9</color>
     <color name="argb_gray">#f3f3f3</color>
     <color name="argb_white">#ffffff</color>
     <color name="argb_black">#000000</color>

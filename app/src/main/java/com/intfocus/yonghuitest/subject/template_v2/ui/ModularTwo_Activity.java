@@ -21,6 +21,7 @@ import com.intfocus.yonghuitest.subject.template_v2.base.BaseFragment;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTableRect;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalActRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.MeterDetalActMode;
+import com.intfocus.yonghuitest.subject.template_v2.utils.DisplayUtil;
 import com.intfocus.yonghuitest.subject.template_v2.view.RootScrollView;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.ToastUtil;
@@ -85,6 +86,7 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
     @Override
     public void onCreateFinish(Bundle bundle) {
         initHeader();
+        getSupportActionBar().hide();
         fm = getSupportFragmentManager();
         x.view().inject(this);
         init();
@@ -155,11 +157,11 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
                     RadioButton rbtn = new RadioButton(this);
                     RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.WRAP_CONTENT,
-                            RadioGroup.LayoutParams.WRAP_CONTENT);
-                    if (i == 0)
+                            DisplayUtil.dip2px(ctx, 25f));
                         params_rb.setMargins(50, 0, 0, 0);
+
                     rbtn.setTag(i);
-                    rbtn.setPadding(50, 0, 50, 0);
+                    rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
                     Bitmap a=null;
                     rbtn.setButtonDrawable(new BitmapDrawable(a));
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);

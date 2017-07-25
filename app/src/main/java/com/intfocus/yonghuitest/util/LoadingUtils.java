@@ -39,8 +39,8 @@ public class LoadingUtils {
 
         loadingDialog.setCancelable(true);// 是否可用“返回键”取消
         loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));// 设置布局
         return loadingDialog;
 
     }

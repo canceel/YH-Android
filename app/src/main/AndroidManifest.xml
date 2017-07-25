@@ -4,7 +4,7 @@
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
           android:versionCode="560"
-          android:versionName="3.0.10">
+          android:versionName="3.0.12">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>

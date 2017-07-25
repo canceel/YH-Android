@@ -91,8 +91,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         imageOptions = ImageOptions.Builder()
                 .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .setCircular(true)
-                .setLoadingDrawableId(R.drawable.pic_sh)
-                .setFailureDrawableId(R.drawable.pic_sh)
+                .setLoadingDrawableId(R.drawable.face_default)
+                .setFailureDrawableId(R.drawable.face_default)
                 .build()
 
         localImageOptions = ImageOptions.Builder()

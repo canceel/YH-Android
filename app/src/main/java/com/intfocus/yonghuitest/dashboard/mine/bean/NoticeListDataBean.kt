@@ -19,4 +19,13 @@ class NoticeListDataBean {
     var abstracts: String? = null
     var see: Boolean = false
     var time: String? = null
+
+    constructor(id: Int, type: Int, title: String?, abstracts: String?, see: Boolean, time: String?) {
+        this.id = id
+        this.type = type
+        this.title = title
+        this.abstracts = abstracts
+        this.see = see
+        this.time = time
+    }
 }

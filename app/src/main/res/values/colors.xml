@@ -150,4 +150,11 @@
     <color name="number_unit_color">#808080</color>
     <color name="base_background">#f7fef5</color>
 
+    <!--    公告预警    -->
+    <color name="light_blue">#EBF8FD</color>
+    <color name="dark_blue">#4688B5</color>
+    <color name="text_gray">#666666</color>
+    <color name="gray_243_243_243">#F3F3F3</color>
+    <color name="gray_50_65_75">#32414b</color>
+
 </resources>

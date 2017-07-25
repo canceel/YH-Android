@@ -169,7 +169,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
     fun setData(result: NoticeListRquest) {
         trl_refresh_layout.finishRefreshing()
         trl_refresh_layout.finishLoadmore()
-//        hideLoading()
+        hideLoading()
         if (result.isSuccess) {
             totalPage = result.noticeListBean!!.total_page
             if (page == 1 && datas != null) {

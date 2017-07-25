@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import com.intfocus.yonghuitest.R;
 
-
 /**
  * ****************************************************
  * author: JamesWong
@@ -110,7 +109,7 @@ public class ClearEditText extends EditText implements
      * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
      * @param visible
      */
-    protected void setClearIconVisible(boolean visible) {
+    public void setClearIconVisible(boolean visible) {
         Drawable right = visible ? mClearDrawable : null;
         setCompoundDrawables(getCompoundDrawables()[0],
                 getCompoundDrawables()[1], right, getCompoundDrawables()[3]);

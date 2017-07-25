@@ -1,71 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:id="@+id/ll_notice_item"
-              android:layout_width="match_parent"
-              android:layout_height="95dp">
-    <View style="@style/SmallDivider"/>
+    android:id="@+id/ll_notice_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gray_243_243_243" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="13dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/tv_notice_type"
+            style="@style/tv_notice_List_title_item"
+            android:text="[系统公告]"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_notice_title"
+            style="@style/tv_notice_List_title_item"
+            android:layout_marginLeft="5dp"
+            android:text="系统公告"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/iv_notice_point"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/list_ic_sign"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_toRightOf="@+id/iv_notice_point">
-
-            <TextView
-                android:id="@+id/tv_notice_type"
-                style="@style/tv_notice_List_title_item"
-                android:text="系统公告"/>
-
-            <TextView
-                style="@style/tv_notice_List_title_item"
-                android:text="#"/>
-
-            <TextView
-                android:id="@+id/tv_notice_title"
-                style="@style/tv_notice_List_title_item"
-                android:text="第二集群客流仪表盘"/>
-
-            <TextView
-                style="@style/tv_notice_List_title_item"
-                android:text="#"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_notice_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
-            android:text="2017-06-12 05:47:55"
-            android:textSize="12sp"
-            android:textColor="@color/gray"/>
-    </RelativeLayout>
-
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/oriange_circle" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_notice_list_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="根据上面的解释，由于各种数据类型大小测量的标准不统一，具体测量的方法应该由使用者来实现，如上面给出的一个在实现LruCache时重写sizeOf的一种常用实现方式。"
-        android:textColor="@color/gray"
-        android:textSize="12sp"/>
+        android:textColor="@color/text_gray"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_notice_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="2017-06-12 05:47:55"
+        android:textColor="@color/co4"
+        android:textSize="12sp" />
+
+    <View
+        style="@style/SmallDivider"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

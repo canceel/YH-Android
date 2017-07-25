@@ -267,18 +267,22 @@
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:background">@color/colors0</item>
     </style>
+
     <style name="ColorViewStyle1" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:background">@color/colors1</item>
     </style>
+
     <style name="ColorViewStyle2" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:background">@color/colors2</item>
     </style>
+
     <style name="ColorViewStyle3" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@color/colors3</item>
     </style>
+
     <style name="ColorViewStyle4" parent="@style/ColorViewStyle">
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:background">@color/colors4</item>
@@ -336,11 +340,11 @@
     </style>
 
     <style name="tv_mererMinTitle_stytle">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">@dimen/font_medium</item>
-    <item name="android:textColor">@color/argb_font_cont_333</item>
-    <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/argb_font_cont_333</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="baseKPI" parent="Theme.AppCompat.Light.NoActionBar">
@@ -397,6 +401,24 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NoticeMenuItem">
+        <item name="android:background">@drawable/notice_menu_button_redius_selector</item>
+        <item name="android:textColor">@drawable/text_color_selected</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <!-- 自定义loading dialog -->
+    <style name="loading_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 </resources>

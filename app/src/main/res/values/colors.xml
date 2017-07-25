@@ -149,8 +149,8 @@
     <color name="list_title_base">#6aa657</color>
     <color name="number_unit_color">#808080</color>
     <color name="base_background">#f7fef5</color>
-    <color name="color_notice_login_success">#cc6aa657</color>
-    <color name="color_notice_login_failure">#ccF67D61</color>
+    <color name="color_notice_login_success">#f200a4e9</color>
+    <color name="color_notice_login_failure">#f2f57658</color>
 
 
     <!-- 生意人3.1 -->

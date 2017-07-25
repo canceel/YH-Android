@@ -166,6 +166,18 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
 
+        <!-- 原生模板二/主题页面 -->
+        <activity
+            android:name=".subject.template_v2.ui.ModularTwo_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <!-- 原生模板二/表格页面 -->
+        <activity
+            android:name=".subject.template_v2.ui.ModularTwo_SubTableActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
         <!-- 外部链接 -->
         <activity
             android:name=".subject.WebApplicationActivity"

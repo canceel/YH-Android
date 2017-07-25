@@ -39,6 +39,8 @@ import org.xutils.x;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.intfocus.yonghuitest.util.PrivateURLs.kWXAppId;
 import static com.intfocus.yonghuitest.util.PrivateURLs.kWXAppSecret;
@@ -48,9 +50,18 @@ import static com.intfocus.yonghuitest.util.K.kPushDeviceToken;
  * Created by lijunjie on 16/1/15.
  */
 public class YHApplication extends Application {
+    /**
+     * 缓存目录
+     */
+    public static String CACHEDIR;
+
+    public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
+
     private Context appContext;
     SharedPreferences mSharedPreferences;
     PackageInfo packageInfo;
+
+
     @Override
     public void onCreate() {
         super.onCreate();

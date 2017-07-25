@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:background="@color/argb_theme_default">
 
-    <com.intfocus.yonghuitest.view.MyScrollView
+    <HorizontalScrollView
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:scrollbars="none">
 
         <RadioGroup
@@ -16,5 +17,5 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal" />
-    </com.intfocus.yonghuitest.view.MyScrollView>
+    </HorizontalScrollView>
 </FrameLayout>

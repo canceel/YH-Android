@@ -23,6 +23,7 @@ import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*
@@ -150,7 +151,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                 }
             }
             else {
-                val intent = Intent(activity, WebApplicationActivity::class.java)
+                val intent = Intent(activity, ModularTwo_Activity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.putExtra(URLs.kBannerName, bannerName)
                 intent.putExtra(URLs.kLink, link)

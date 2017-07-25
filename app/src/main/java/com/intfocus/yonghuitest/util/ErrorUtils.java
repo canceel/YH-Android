@@ -28,7 +28,7 @@ public class ErrorUtils {
      */
     public static void viewProcessing(TwinklingRefreshLayout refreshLayout, LinearLayout llErrorView, LinearLayout llRetryView,
                                       String emptyStr, TextView tvErrorMsg, ImageView ivError, boolean isEmpty,
-                                      final boolean isNetworkConnected, final ErrorLisenter lisenter) {
+                                      final boolean isNetworkConnected, final int imageId, final ErrorLisenter lisenter) {
         if (!isNetworkConnected) {
             refreshLayout.finishRefreshing();
             refreshLayout.finishLoadmore();
@@ -43,7 +43,7 @@ public class ErrorUtils {
             llRetryView.setVisibility(isNetworkConnected ? View.GONE : View.GONE);//网络错误显示重试按钮
         }
         if (ivError != null) {
-            ivError.setImageResource(isNetworkConnected ? R.drawable.btn_inf : R.drawable.btn_inf);
+            ivError.setImageResource(isNetworkConnected ? imageId : R.drawable.icon_netbug);
         }
         if (tvErrorMsg != null) {
             tvErrorMsg.setText(isNetworkConnected ? emptyStr : "网络异常,点击屏幕重试");

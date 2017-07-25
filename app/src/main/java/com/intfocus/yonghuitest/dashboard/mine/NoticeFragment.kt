@@ -126,7 +126,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
                     trl_refresh_layout.finishRefreshing()
                     trl_refresh_layout.finishLoadmore()
                     isEmpty = datas == null || datas!!.size == 0
-                    ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, this)
+                    ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
                     WidgetUtil.showToastShort(context, "请检查网络")
                 }
             }
@@ -183,7 +183,9 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             }
             adapter.setData(datas)
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, true, null)
+            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_2, null)
+        } else {
+            WidgetUtil.showToastShort(context, result.errorMsg)
         }
     }
 
@@ -227,18 +229,18 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
         } else {
             hideLoading()
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, this)
+            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
             WidgetUtil.showToastShort(context, "请检查网络")
         }
     }
 
-    /**
-     * 重试
-     */
     override fun retry() {
         retryGetData()
     }
 
+    /**
+     * 重新获取数据
+     */
     fun retryGetData() {
         if (HttpUtil.isConnected(context)) {
             showDialog(activity)
@@ -248,7 +250,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             trl_refresh_layout.finishRefreshing()
             trl_refresh_layout.finishLoadmore()
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, this)
+            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
             WidgetUtil.showToastShort(context, "请检查网络")
         }
     }

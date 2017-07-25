@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by dengwenbin on 17/1/13.
  */
-public class ForgetPasswordActivity extends BaseActivity {
+public class oldForgetPasswordActivity extends BaseActivity {
 
     public String result = "";
     public boolean flag = false;

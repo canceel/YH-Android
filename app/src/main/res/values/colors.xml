@@ -137,7 +137,8 @@
     <!--个人信息页-->
     <color name="tab_layout_line">#6aa657</color>
     <color name="user_info_item_background">#fbfcf5</color>
-    <color name="item_line">#d2d2d2</color>
+    <color name="item_line">#e6e6e6</color>
+    <color name="item_line_small">#f3f3f3</color>
     <color name="logout_line">#848484</color>
     <color name="logout_text">#010101</color>
     <color name="location_text">#6e6e6e</color>
@@ -149,5 +150,51 @@
     <color name="list_title_base">#6aa657</color>
     <color name="number_unit_color">#808080</color>
     <color name="base_background">#f7fef5</color>
+    <color name="color_notice_login_success">#f200a4e9</color>
+    <color name="color_notice_login_failure">#f2f57658</color>
 
+    <!--    公告预警    -->
+    <color name="light_blue">#EBF8FD</color>
+    <color name="dark_blue">#4688B5</color>
+    <color name="text_gray">#666666</color>
+    <color name="gray_243_243_243">#F3F3F3</color>
+    <color name="gray_50_65_75">#32414b</color>
+
+    <!-- 生意人3.1 -->
+    <!-- 主题蓝色 -->
+    <color name="co1_syr">#00a4e9</color>
+    <!-- 辅助绿色 -->
+    <color name="co2_syr">#91c941</color>
+    <!-- 主文字 -->
+    <color name="co3_syr">#666666</color>
+    <!-- 提示禁用文字 -->
+    <color name="co4_syr">#bcbcbc</color>
+    <!-- +弹框点击色 -->
+    <color name="co5_syr">#2c3841</color>
+    <!-- 辅助暗蓝/特殊数字/标题 -->
+    <color name="co6_syr">#32414b</color>
+    <!-- 暗蓝背景上的醒目元素 -->
+    <color name="co7_syr">#00ffff</color>
+    <!-- 底色/白色背景点击态色 -->
+    <color name="co8_syr">#f3f3f3</color>
+    <!-- 分割线 -->
+    <color name="co9_syr">#e6e6e6</color>
+    <!-- 纯白 -->
+    <color name="co10_syr">#ffffff</color>
+    <!-- 橙色 -->
+    <color name="co11_syr">#f57658</color>
+    <!-- 黄 -->
+    <color name="co12_syr">#f4bc45</color>
+    <!-- 青 -->
+    <color name="co13_syr">#3cc7c9</color>
+    <!-- 淡蓝色 -->
+    <color name="co14_syr">#71a3ed</color>
+    <!-- 蓝 -->
+    <color name="co15_syr">#4688b5</color>
+    <!-- 紫 -->
+    <color name="co16_syr">#a984d3</color>
+    <!-- 红 -->
+    <color name="co17_syr">#f44f4f</color>
+    <!-- 深绿文字 -->
+    <color name="co18_syr">#72b54d</color>
 </resources>

@@ -138,16 +138,13 @@
         android:layout_marginTop="8dp"
         android:background="@color/co9_syr"/>
 
-
     <Button
         android:id="@+id/btn_login"
         android:layout_width="245dp"
-        android:layout_height="45dp"
+        android:layout_height="52dp"
         android:layout_below="@id/linearPasswordBelowLine"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginLeft="65dp"
-        android:layout_marginRight="65dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/btn_login"
         android:onClick="actionSubmit"

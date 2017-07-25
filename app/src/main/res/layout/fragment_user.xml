@@ -92,6 +92,14 @@
                 style="@style/tv_mine_user_list_left"
                 android:layout_toRightOf="@id/iv_mine_user_favorite"
                 android:text="文章收藏"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
         <View
@@ -114,6 +122,13 @@
                 android:layout_toRightOf="@+id/iv_mine_user_setting"
                 android:text="设置"/>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
         <View style="@style/NarrowSmallDivider"/>
@@ -133,6 +148,14 @@
                 style="@style/tv_mine_user_list_left"
                 android:layout_toRightOf="@id/iv_mine_user_password"
                 android:text="修改密码"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
         <View style="@style/NarrowSmallDivider"/>
@@ -152,6 +175,14 @@
                 style="@style/tv_mine_user_list_left"
                 android:layout_toRightOf="@id/iv_mine_user_issue"
                 android:text="问题反馈"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
         <View

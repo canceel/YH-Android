@@ -11,14 +11,14 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="21dp"
+        android:layout_marginLeft="20dp"
         android:src="@drawable/face_default"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -26,7 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="尼古拉斯·古德"
-            android:textSize="16sp"
+            android:textSize="17sp"
+            android:textColor="@color/co6_syr"
             android:textStyle="bold"/>
 
         <TextView
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="UI设计师"
+            android:textColor="@color/co3_syr"
             android:textSize="12sp"/>
     </LinearLayout>
 

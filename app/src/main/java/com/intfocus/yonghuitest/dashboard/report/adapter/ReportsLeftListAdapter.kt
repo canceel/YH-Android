@@ -1,12 +1,13 @@
 package com.intfocus.yonghuitest.dashboard.report.adapter
 
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.LayoutInflater.from
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.RelativeLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
@@ -16,7 +17,7 @@ import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
  */
 class ReportsLeftListAdapter(var ctx: android.content.Context,
                              var datas: List<CategoryBean>?,
-                             var listener: ReportsLeftListAdapter.ReportLeftListListener): BaseAdapter() {
+                             var listener: ReportsLeftListAdapter.ReportLeftListListener) : BaseAdapter() {
 
     var mInflater: LayoutInflater = from(ctx)
     var currentPosition = 0
@@ -40,12 +41,10 @@ class ReportsLeftListAdapter(var ctx: android.content.Context,
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_reports_left_lv, null)
 
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.rl_reports_category_item) as RelativeLayout,
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.rl_reports_category_item) as LinearLayout,
                     convertView.findViewById(R.id.tv_reports_category_name) as TextView,
-                    convertView.findViewById(R.id.iv_reports_left_sign) as ImageView,
-                    convertView.findViewById(R.id.iv_reports_line_top) as View,
-                    convertView.findViewById(R.id.iv_reports_line_end) as View
-                    )
+                    convertView.findViewById(R.id.iv_reports_left_sign) as ImageView
+            )
             convertView.tag = viewTag
         } else {
             viewTag = convertView.tag as ReportsLeftListAdapter.ItemViewTag
@@ -54,24 +53,23 @@ class ReportsLeftListAdapter(var ctx: android.content.Context,
         viewTag.tvCategoryName.text = datas!![position].category
         if (position == currentPosition) {
             viewTag.ivCategorySign.visibility = View.VISIBLE
-            viewTag.ivTopLine.visibility = View.VISIBLE
-            viewTag.ivEndLine.visibility = View.VISIBLE
-        }
-        else {
+            viewTag.rlCategory.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color10))
+            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.color1))
+            viewTag.tvCategoryName.paint.isFakeBoldText = true
+        } else {
             viewTag.ivCategorySign.visibility = View.INVISIBLE
-            viewTag.ivTopLine.visibility = View.INVISIBLE
-            viewTag.ivEndLine.visibility = View.INVISIBLE
+            viewTag.rlCategory.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color8))
+            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
+            viewTag.tvCategoryName.paint.isFakeBoldText = false
         }
         viewTag.rlCategory.setOnClickListener { listener.reportLeftItemClick(viewTag.ivCategorySign, position) }
 
         return convertView
     }
 
-    inner class ItemViewTag(var rlCategory: RelativeLayout,
+    inner class ItemViewTag(var rlCategory: LinearLayout,
                             var tvCategoryName: TextView,
-                            var ivCategorySign: ImageView,
-                            var ivTopLine: View,
-                            var ivEndLine: View)
+                            var ivCategorySign: ImageView)
 
     interface ReportLeftListListener {
         fun reportLeftItemClick(sign: ImageView, position: Int)

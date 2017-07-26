@@ -1,13 +1,17 @@
 package com.intfocus.yonghuitest.login;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
@@ -67,6 +71,10 @@ public class ForgetPasswordActivity extends BaseActivity {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                }
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
@@ -126,25 +134,38 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     public void isSuccess(String info, boolean flag) {
         if (flag) {
-            showAlertDialog(info);
             setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_success);
             return;
         }
-        setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_failure);
+        showPopUpWindows(info);
+//        setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_failure);
     }
 
-    public void showAlertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("温馨提示")
-                .setMessage(message)
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                }).setCancelable(false);
-        builder.show();
+    public void showPopUpWindows(String message) {
+        View view = LayoutInflater.from(this).inflate(R.layout.popup_forget_pwd_notice, null);
+        final PopupWindow popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true);
+        TextView tv_forget_pwd_notice_content = (TextView) view.findViewById(R.id.tv_forget_pwd_notice_content);
+        view.findViewById(R.id.tv_forget_pwd_notice_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        tv_forget_pwd_notice_content.setText(message);
+
+        View parent = LayoutInflater.from(this).inflate(R.layout.activity_new_forget_password, null);
+        popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("温馨提示")
+//                .setMessage(message)
+//                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        finish();
+//                    }
+//                }).setCancelable(false);
+//        builder.show();
 
     }
 

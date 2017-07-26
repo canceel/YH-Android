@@ -35,10 +35,10 @@ class NoticeMenuAdapter(val context: Context,
             holder.tvNoticeMenuName.setOnClickListener { listener.menuClick(noticeMenuDatas!![position]) }
             if (noticeMenuDatas!![position].isSelected) {
                 holder.tvNoticeMenuName.setBackgroundResource(R.drawable.background_light_blue_radius_border_dark_blue)
-                holder.tvNoticeMenuName.setTextColor(ContextCompat.getColor(context, R.color.dark_blue))
+                holder.tvNoticeMenuName.setTextColor(ContextCompat.getColor(context, R.color.color15))
             } else {
                 holder.tvNoticeMenuName.setBackgroundResource(R.drawable.background_white_border_gray)
-                holder.tvNoticeMenuName.setTextColor(ContextCompat.getColor(context, R.color.text_gray))
+                holder.tvNoticeMenuName.setTextColor(ContextCompat.getColor(context, R.color.color3))
             }
         }
     }

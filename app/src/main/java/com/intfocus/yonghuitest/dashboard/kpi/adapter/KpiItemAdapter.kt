@@ -33,9 +33,9 @@ class KpiItemAdapter(var ctx: Context, internal var itemDatas: MutableList<KpiGr
 
         var layoutManager: StaggeredGridLayoutManager
         if (itemDatas!![position].data!![0].dashboard_type.equals("number2")) {
-            layoutManager = object : StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
+            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL) {
                 override fun canScrollVertically(): Boolean {
-                    return false
+                    return true
                 }
             }
 

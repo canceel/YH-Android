@@ -107,54 +107,22 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
         }
 
         if (kpi_datas != null) {
-            val mLayoutManager = LinearLayoutManager(ctx)
-            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-
-            //设置布局管理器
-            rc_kpi_groups.layoutManager = mLayoutManager
-            //设置Adapter
-            var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
-            rc_kpi_groups.adapter = recycleAdapter
-        }
-
-        rootView!!.invalidate()
-    }
-
-    private fun initRecycleView(recyclerView: RecyclerView, itemDatas: KpiGroup) {
-        val offset = DisplayUtil.dip2px(ctx, -3.5f)
-        recyclerView.setPadding(offset, 0 - offset, offset, 0 - offset + 3)
-
-        var layoutManager: StaggeredGridLayoutManager
-        if (itemDatas.data!![0].dashboard_type.equals("number2")) {
-            layoutManager = object : StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
+            var layoutManager: StaggeredGridLayoutManager
+            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
                 override fun canScrollVertically(): Boolean {
                     return false
                 }
             }
 
             //设置布局管理器
-            recyclerView.layoutManager = layoutManager
+            rc_kpi_groups.layoutManager = layoutManager
             //设置Adapter
-            var recycleAdapter = NumberThreeItemAdapter(ctx, itemDatas.data)
-            recyclerView.adapter = recycleAdapter
-            //设置分隔线
-            recyclerView.addItemDecoration(MarginDecoration(ctx))
-            //设置增加或删除条目的动画
-            recyclerView.itemAnimator = DefaultItemAnimator()
-        } else {
-            val mLayoutManager = LinearLayoutManager(ctx)
-            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-
-            //设置布局管理器
-            recyclerView.layoutManager = mLayoutManager
-            //设置Adapter
-            var recycleAdapter = NumberTwoItemAdapter(ctx, itemDatas.data)
-            recyclerView.adapter = recycleAdapter
-            //设置分隔线
-            recyclerView.addItemDecoration(MarginDecoration(ctx))
-            //设置增加或删除条目的动画
-            recyclerView.itemAnimator = DefaultItemAnimator()
+            var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
+            rc_kpi_groups.adapter = recycleAdapter
+//            rc_kpi_groups.isNestedScrollingEnabled = false
         }
+
+        rootView!!.invalidate()
     }
 
     /**

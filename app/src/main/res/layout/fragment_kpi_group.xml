@@ -3,34 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="@drawable/a_bg"
+    android:layout_marginTop="10dp"
+    android:background="@color/co10_syr"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/list_title_sign"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/tv_kpi_group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="9dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp"
             android:text="经营预警"
-            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textColor="@color/co6_syr"
             android:textSize="16sp"/>
-
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

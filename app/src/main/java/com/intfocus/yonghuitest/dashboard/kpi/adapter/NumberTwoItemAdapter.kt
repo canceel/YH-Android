@@ -24,18 +24,8 @@ import org.greenrobot.eventbus.EventBus
  * Created by liuruilin on 2017/7/10.
  */
 class NumberTwoItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGroupItem>?) : RecyclerView.Adapter<NumberTwoItemAdapter.NumberTwoItemHolder>() {
-    internal var viewWidth: Int = 0
-    internal var viewHeight: Int = 0
-    internal var view2width: Int = 0
     var inflater = LayoutInflater.from(ctx)
     private val colors = Constant.colorsRGY
-
-    init {
-        val sw = PhoneUtil.getScreenWidth(ctx)
-        view2width = PhoneUtil.dip2px(ctx, 350.toFloat())
-        viewWidth = sw / 2
-        viewHeight = (viewWidth * 0.8).toInt()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberTwoItemHolder {
         val contentView = inflater.inflate(R.layout.fragment_number_two, parent, false)

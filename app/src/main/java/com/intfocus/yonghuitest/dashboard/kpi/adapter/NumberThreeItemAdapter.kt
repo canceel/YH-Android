@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
@@ -42,10 +43,10 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
             holder.tv_number_three_number.text = formatNumber(number)
             holder.tv_number_three_unit.text = itemDatas!![position].unit
             holder.tv_number_three_compare.text = itemDatas!![position].data!!.high_light!!.compare
-            holder.rl_number_three_compare.setBackgroundColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
+            holder.tv_number_three_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
             holder.tv_number_three_sub.text = itemDatas!![position].memo1
             holder.tv_number_three_compare_text.text = itemDatas!![position].memo2
-            holder.rl_number_three_item.setOnClickListener {
+            holder.ll_number_three_item.setOnClickListener {
                 EventBus.getDefault().post(itemDatas!![position])
             }
     }
@@ -67,8 +68,7 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
         var tv_number_three_compare = view.findViewById(R.id.tv_number_three_compare) as TextView
         var tv_number_three_sub = view.findViewById(R.id.tv_number_three_sub) as TextView
         var tv_number_three_compare_text = view.findViewById(R.id.tv_number_three_compare_name) as TextView
-        var rl_number_three_compare = view.findViewById(R.id.rl_number_three_compare) as RelativeLayout
-        var rl_number_three_item = view.findViewById(R.id.rl_kpi_number_three) as RelativeLayout
+        var ll_number_three_item = view.findViewById(R.id.ll_kpi_number_three) as LinearLayout
     }
 
     fun formatNumber(number: String): String {

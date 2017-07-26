@@ -45,36 +45,39 @@
 
     <TextView
         android:id="@+id/tv_number_two_title"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
+        android:maxLines="1"
         android:text="干货销售预警干货销售预警"
         android:textColor="@color/co3_syr"
         android:textStyle="bold"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:ellipsize="end"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
         android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/iv_number_two_sign"
+        <View
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_red_sign"/>
+            android:background="@drawable/item_blue_circle">
+        </View>
 
         <TextView
             android:id="@+id/tv_number_two_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="4dp"
             android:text="当前 0 项个单量预警"
-            android:textColor="@color/black"
+            android:textColor="@color/co6_syr"
             android:textSize="9dp"/>
     </LinearLayout>
 

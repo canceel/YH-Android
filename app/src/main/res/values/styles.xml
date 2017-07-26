@@ -450,7 +450,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_small</item>
-        <item name="android:textColor">@color/argb_font_cont_333</item>
+        <item name="android:textColor">@color/co10_syr</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">@dimen/space_default_small</item>
         <item name="android:paddingRight">@dimen/space_default_small</item>

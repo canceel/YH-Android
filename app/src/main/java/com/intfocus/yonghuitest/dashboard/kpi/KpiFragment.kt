@@ -5,9 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -18,15 +15,19 @@ import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiItemAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiStickAdapter
-import com.intfocus.yonghuitest.dashboard.kpi.adapter.NumberThreeItemAdapter
-import com.intfocus.yonghuitest.dashboard.kpi.adapter.NumberTwoItemAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroup
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
-import com.intfocus.yonghuitest.dashboard.old_kpi.MarginDecoration
 import com.intfocus.yonghuitest.listen.CustPagerTransformer
-import com.intfocus.yonghuitest.util.DisplayUtil
+import com.intfocus.yonghuitest.util.ErrorUtils
+import com.intfocus.yonghuitest.util.HttpUtil
+import com.intfocus.yonghuitest.util.WidgetUtil
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.header.GoogleDotView
+import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 import com.zbl.lib.baseframe.core.Subject
+import kotlinx.android.synthetic.main.common_error_view.*
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -114,14 +115,27 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
                 }
             }
 
-            //设置布局管理器
             rc_kpi_groups.layoutManager = layoutManager
-            //设置Adapter
             var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
             rc_kpi_groups.adapter = recycleAdapter
-//            rc_kpi_groups.isNestedScrollingEnabled = false
-        }
 
+            var headerView = GoogleDotView(ctx)
+            headerView.setBackgroundResource(R.drawable.icon_refresh)
+            trl_refresh_layout.setHeaderView(headerView)
+            trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
+                override fun retry() {
+                }
+
+                override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                    super.onRefresh(refreshLayout)
+                }
+
+                override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                    super.onLoadMore(refreshLayout)
+                }
+
+            })
+        }
         rootView!!.invalidate()
     }
 

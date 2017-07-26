@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.dashboard.kpi.adapter
 
 import android.content.Context
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
@@ -31,16 +32,11 @@ class KpiItemAdapter(var ctx: Context, internal var itemDatas: MutableList<KpiGr
         val offset = DisplayUtil.dip2px(ctx, -3.5f)
         recyclerView.setPadding(offset, 0 - offset, offset, 0 - offset + 3)
 
-        var layoutManager: StaggeredGridLayoutManager
         if (itemDatas!![position].data!![0].dashboard_type.equals("number2")) {
-            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL) {
-                override fun canScrollVertically(): Boolean {
-                    return true
-                }
-            }
+            var mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
 
             //设置布局管理器
-            recyclerView.layoutManager = layoutManager
+            recyclerView.layoutManager = mLayoutManager
             //设置Adapter
             var recycleAdapter = NumberTwoItemAdapter(ctx, itemDatas!![position].data)
             recyclerView.adapter = recycleAdapter
@@ -49,13 +45,9 @@ class KpiItemAdapter(var ctx: Context, internal var itemDatas: MutableList<KpiGr
             //设置增加或删除条目的动画
             recyclerView.itemAnimator = DefaultItemAnimator()
         } else {
-            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
+            var mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false)
             //设置布局管理器
-            recyclerView.layoutManager = layoutManager
+            recyclerView.layoutManager = mLayoutManager
             //设置Adapter
             var recycleAdapter = NumberThreeItemAdapter(ctx, itemDatas!![position].data)
             recyclerView.adapter = recycleAdapter

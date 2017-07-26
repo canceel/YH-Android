@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.kpi.adapter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -38,17 +39,19 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
     }
 
     override fun onBindViewHolder(holder: NumberThreeItemHolder, position: Int) {
-            holder.tv_number_three_title.text = itemDatas!![position].title
-            var number = itemDatas!![position].data!!.high_light!!.number
-            holder.tv_number_three_number.text = formatNumber(number)
-            holder.tv_number_three_unit.text = itemDatas!![position].unit
-            holder.tv_number_three_compare.text = itemDatas!![position].data!!.high_light!!.compare
-            holder.tv_number_three_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
-            holder.tv_number_three_sub.text = itemDatas!![position].memo1
-            holder.tv_number_three_compare_text.text = itemDatas!![position].memo2
-            holder.ll_number_three_item.setOnClickListener {
-                EventBus.getDefault().post(itemDatas!![position])
-            }
+        holder.tv_number_three_title.text = itemDatas!![position].title
+        val mTypeface = Typeface.createFromAsset(ctx.assets, "ALTGOT2N.TTF")
+        var number = itemDatas!![position].data!!.high_light!!.number
+        holder.tv_number_three_number.text = formatNumber(number)
+        holder.tv_number_three_unit.text = itemDatas!![position].unit
+        holder.tv_number_three_compare.text = itemDatas!![position].data!!.high_light!!.compare
+        holder.tv_number_three_compare.typeface = mTypeface
+        holder.tv_number_three_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
+        holder.tv_number_three_sub.text = itemDatas!![position].memo1
+        holder.tv_number_three_compare_text.text = itemDatas!![position].memo2
+        holder.ll_number_three_item.setOnClickListener {
+            EventBus.getDefault().post(itemDatas!![position])
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

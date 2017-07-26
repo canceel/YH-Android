@@ -8,8 +8,6 @@
     android:background="#f7fef5"
     android:orientation="vertical">
 
-    <!--android:background="#f7fef5"-->
-
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"

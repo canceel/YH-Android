@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_243_243_243"
+    android:background="@color/color8"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="公告详情"
-            android:textColor="@color/gray_50_65_75"
+            android:textColor="@color/color6"
             android:textSize="17sp" />
     </RelativeLayout>
 
@@ -51,7 +51,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/gray_50_65_75"
+                android:textColor="@color/color6"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_notice_content_time"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/gray_50_65_75"
+                android:textColor="@color/color6"
                 android:textSize="14sp" />
         </RelativeLayout>
 

@@ -9,10 +9,10 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/actionBar"
+        android:id="@+id/rl_action_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#00000000">
+        android:background="@color/co6_syr">
 
         <TextView
             android:id="@+id/tv_banner_title"
@@ -46,6 +46,7 @@
     </RelativeLayout>
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv_kpi"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

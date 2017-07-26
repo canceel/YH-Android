@@ -2,9 +2,11 @@ package com.intfocus.yonghuitest.dashboard.kpi
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroup
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
 import com.intfocus.yonghuitest.listen.CustPagerTransformer
+import com.intfocus.yonghuitest.util.DisplayUtil
 import com.intfocus.yonghuitest.util.ErrorUtils
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.WidgetUtil
@@ -39,7 +42,7 @@ import java.util.*
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
+class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener{
     lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView: View? = null
@@ -156,6 +159,22 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
                 }
             }
         }).start()
+    }
+
+    override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+        var alpha = 0
+        var scale: Float
+        var height = DisplayUtil.dip2px(ctx, 129f)
+        if (scrollY <= height) {
+            scale = scrollY/height as Float
+            alpha = 255 * scale as Int
+            rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
+        } else {
+            if (alpha < 255) {
+                alpha = 255
+                rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
+            }
+        }
     }
 
     //重写ViewPager页面切换的处理方法

@@ -180,6 +180,8 @@
     <!-- 生意人3.1 -->
     <!-- 主题蓝色 -->
     <color name="co1_syr">#00a4e9</color>
+    <!-- 主题蓝色 8%透明 -->
+    <color name="co1_syr_08">#0800a4e9</color>
     <!-- 辅助绿色 -->
     <color name="co2_syr">#91c941</color>
     <!-- 主文字 -->

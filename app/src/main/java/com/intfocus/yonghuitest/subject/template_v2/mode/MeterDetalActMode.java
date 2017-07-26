@@ -2,19 +2,26 @@ package com.intfocus.yonghuitest.subject.template_v2.mode;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.yonghuitest.subject.template_v2.entity.MererDetalEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalActRequestResult;
+import com.intfocus.yonghuitest.util.FileUtil;
+import com.intfocus.yonghuitest.util.HttpUtil;
+import com.intfocus.yonghuitest.util.K;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.intfocus.yonghuitest.YHApplication.threadPool;
 
@@ -43,7 +50,20 @@ public class MeterDetalActMode extends AbstractMode {
             @Override
             public void run() {
                 try {
-                    InputStream is = ctx.getAssets().open("kpi_detaldata.json");
+                    String urlString = "https://development.shengyiplus.com/api/v1/group/165/template/1/report/1/json";
+                    Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
+
+                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", 165), 1, "1");
+                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+                    if (response.get("code").equals("200") || response.get("code").equals("304")) {
+                        try {
+                            FileUtil.writeFile(jsonFilePath, "[{\"data\":" + response.get("body") + ", \"name\": \"标题\"}]");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    InputStream is = new FileInputStream(jsonFilePath);
                     InputStreamReader isr = new InputStreamReader(is);
                     JSONReader reader = new JSONReader(isr);
                     reader.startArray();

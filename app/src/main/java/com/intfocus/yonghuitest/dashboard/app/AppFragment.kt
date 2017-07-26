@@ -145,9 +145,15 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                         }
                         link.indexOf("template/1") > 0 -> {
                             val intent = Intent(activity, ModularTwo_Activity::class.java)
+                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                                    K.kBaseUrl, groupID, "1", reportID)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kLink, link)
+                            intent.putExtra(URLs.kObjectId, 1)
+                            intent.putExtra(URLs.kObjectType, 1)
+                            intent.putExtra("groupID", groupID)
+                            intent.putExtra("reportID", reportID)
+                            intent.putExtra("urlString", urlString)
                             startActivity(intent)
                         }
                         else -> showTemplateErrorDialog()
@@ -165,7 +171,6 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                 intent.putExtra(URLs.kObjectType, 1)
                 startActivity(intent)
             }
-
         }
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/专题/报表")

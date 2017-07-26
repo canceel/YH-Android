@@ -23,15 +23,10 @@ import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
 import com.intfocus.yonghuitest.listen.CustPagerTransformer
 import com.intfocus.yonghuitest.util.DisplayUtil
 import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.WidgetUtil
 import com.intfocus.yonghuitest.view.DefaultRefreshView
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-import com.lcodecore.tkrefreshlayout.header.GoogleDotView
-import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 import com.zbl.lib.baseframe.core.Subject
-import kotlinx.android.synthetic.main.common_error_view.*
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

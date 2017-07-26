@@ -113,6 +113,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_report_number.text = mUserInfo!!.browse_report_count
             tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
             tv_user_role.text = mUserInfo!!.role_name
+            tv_mine_user_num_value.text = mUserInfo!!.user_num
             tv_mine_user_group_value.text = mUserInfo!!.group_name
             x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
         }
@@ -131,6 +132,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_user_name.text = user!!.user_name
             tv_login_number.text = user.login_duration
             tv_report_number.text = user.browse_report_count
+            tv_mine_user_num_value.text = user.user_num
             tv_beyond_number.text = user.surpass_percentage.toString()
             tv_user_role.text = user.role_name
             tv_mine_user_group_value.text = user.group_name

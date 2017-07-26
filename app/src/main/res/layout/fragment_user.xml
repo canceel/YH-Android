@@ -69,7 +69,7 @@
             <TextView
                 android:id="@+id/tv_mine_user_num_value"
                 style="@style/tv_mine_user_list_right"
-                android:text="80666444"/>
+                android:text=""/>
         </RelativeLayout>
 
         <View

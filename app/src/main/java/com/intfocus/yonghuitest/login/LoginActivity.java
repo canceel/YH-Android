@@ -192,16 +192,6 @@ public class LoginActivity extends BaseActivity {
         mTvLoginResultNotice = (TextView) findViewById(R.id.tv_login_result_notice);
         mLlLoginResultNotice = (LinearLayout) findViewById(R.id.ll_login_result_notice);
         mLlLoginResultNotice.setVisibility(View.GONE);
-        /*
-         * 显示当前应用版本号
-         */
-//        try {
-//            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-//            String versionInfo = String.format("a%s(%d)", packageInfo.versionName, packageInfo.versionCode);
-//            versionTv.setText(versionInfo);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
 
         /*
          *  当用户系统不在我们支持范围内时,发出警告。
@@ -210,8 +200,6 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-//        View v = new View(mAppContext);
-//        actionSubmit(v);
         /*
          * 检测登录界面，版本是否升级
          */
@@ -284,13 +272,6 @@ public class LoginActivity extends BaseActivity {
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
                 setNoticeTextAndBackgroundColor("请输入用户名与密码",R.color.color_notice_login_failure);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        toast("请输入用户名与密码");
-//                    }
-//                });
-
                 return;
             }
 

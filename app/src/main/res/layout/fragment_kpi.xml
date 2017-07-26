@@ -116,7 +116,8 @@
                 <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                     android:id="@+id/trl_refresh_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:tr_enable_loadmore="false">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rc_kpi_groups"

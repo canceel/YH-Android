@@ -37,9 +37,9 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
 
     public DefaultRefreshView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.pullDownStr = "下拉刷新";
-        this.releaseRefreshStr = "释放刷新";
-        this.refreshingStr = "正在刷新";
+        this.pullDownStr = "";
+        this.releaseRefreshStr = "";
+        this.refreshingStr = "";
         this.init();
     }
 

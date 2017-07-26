@@ -22,6 +22,7 @@ import com.intfocus.yonghuitest.listen.CustPagerTransformer
 import com.intfocus.yonghuitest.util.ErrorUtils
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.WidgetUtil
+import com.intfocus.yonghuitest.view.DefaultRefreshView
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.lcodecore.tkrefreshlayout.header.GoogleDotView
@@ -119,8 +120,8 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener{
             var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
             rc_kpi_groups.adapter = recycleAdapter
 
-            var headerView = GoogleDotView(ctx)
-            headerView.setBackgroundResource(R.drawable.icon_refresh)
+            var headerView = DefaultRefreshView(ctx)
+            headerView.setArrowResource(R.drawable.loading_up)
             trl_refresh_layout.setHeaderView(headerView)
             trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
                 override fun retry() {

@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="558"
-          android:versionName="3.0.08">
+          android:versionCode="560"
+          android:versionName="3.0.12">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -48,7 +48,7 @@
             android:exported="false"
             android:grantUriPermissions="true">
 
-            <!--高德地图API - Key -->
+            <!-- 高德地图API - Key -->
             <meta-data
                 android:name="com.amap.api.v2.apikey"
                 android:value="a9de6a6686b42561f41ef209079fb708"/>
@@ -63,8 +63,8 @@
             </intent-filter>
         </service>
 
-        <!--高德地图-->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <!-- 高德地图 -->
+        <service android:name="com.amap.api.location.APSService"/>
 
         <activity
             android:name=".login.LauncherActivity"
@@ -119,7 +119,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
-            android:name=".ForgetPasswordActivity"
+            android:name=".login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->

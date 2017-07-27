@@ -1,15 +1,21 @@
 package com.intfocus.yonghuitest.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TabLayout;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.bean.table.SortData;
 import com.intfocus.yonghuitest.bean.table.TableBarChart;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +28,7 @@ import java.util.regex.Pattern;
  */
 
 public class Utils {
-     /**
+    /**
      * 从asset路径下读取对应文件转String输出
      *
      * @param mContext
@@ -149,8 +155,7 @@ public class Utils {
 
             if (Utils.isNumber(mainDataStr)) {
                 doubles.add(Double.parseDouble(mainDataStr));
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -160,20 +165,58 @@ public class Utils {
     public static boolean isNumber(String str) {
         Pattern p = Pattern.compile("-?[0-9]+.*[0-9]*");
         Matcher m = p.matcher(str);
-        if(m.matches() ){
+        if (m.matches()) {
             return true;
         }
-        p=Pattern.compile("[a-zA-Z]");
-        m=p.matcher(str);
-        if(m.matches()){
+        p = Pattern.compile("[a-zA-Z]");
+        m = p.matcher(str);
+        if (m.matches()) {
             return false;
         }
-        p=Pattern.compile("[\u4e00-\u9fa5]");
-        m=p.matcher(str);
-        if(m.matches()){
+        p = Pattern.compile("[\u4e00-\u9fa5]");
+        m = p.matcher(str);
+        if (m.matches()) {
             return false;
         }
 
         return false;
+    }
+
+    /**
+     * 设置TabLayout下划线长度
+     *
+     * @param tabs
+     * @param leftDip
+     * @param rightDip
+     */
+    public static void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+        Class<?> tabLayout = tabs.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        tabStrip.setAccessible(true);
+        LinearLayout llTab = null;
+        try {
+            llTab = (LinearLayout) tabStrip.get(tabs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
+            child.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            params.leftMargin = left;
+            params.rightMargin = right;
+            child.setLayoutParams(params);
+            child.invalidate();
+        }
     }
 }

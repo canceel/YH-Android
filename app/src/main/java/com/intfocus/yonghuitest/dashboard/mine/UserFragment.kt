@@ -186,7 +186,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isOutsideTouchable = true
         //设置可以点击
         popupWindow.isTouchable = true
-        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+        popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
 
         contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出
@@ -289,7 +289,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isOutsideTouchable = true
         //设置可以点击
         popupWindow.isTouchable = true
-        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+        popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
 
         contentView.findViewById(R.id.rl_camera).setOnClickListener {
             // 打开相机

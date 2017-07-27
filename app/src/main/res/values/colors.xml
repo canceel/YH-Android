@@ -200,6 +200,8 @@
     <color name="co9_syr">#e6e6e6</color>
     <!-- 纯白 -->
     <color name="co10_syr">#ffffff</color>
+    <!-- 纯白 -->
+    <color name="co10_syr_60">#60ffffff</color>
     <!-- 橙色 -->
     <color name="co11_syr">#f57658</color>
     <!-- 黄 -->

@@ -2,81 +2,82 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_number_two_item"
-    android:layout_width="170dp"
-    android:layout_height="wrap_content"
+    android:layout_width="160dp"
+    android:layout_height="90dp"
     android:orientation="vertical"
-    android:background="@drawable/background_kpi_number_two"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
-
-    <TextView
-        android:id="@+id/tv_number_two_title"
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="干货销售预警干货销售预警"
-        android:textColor="@color/black"
-        android:textSize="16dp"/>
+    android:background="@drawable/background_kpi_number_two">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_below="@+id/tv_number_two_title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginTop="8dp">
 
         <TextView
             android:id="@+id/tv_number_two_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
             android:layout_alignParentLeft="true"
             android:text="12890"
-            android:textSize="15dp"/>
+            android:textSize="30sp"
+            android:textColor="@color/co6_syr"/>
 
         <TextView
             android:id="@+id/tv_number_two_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="4dp"
             android:layout_alignBaseline="@+id/tv_number_two_main"
             android:layout_toRightOf="@+id/tv_number_two_main"
             android:text="万元"
-            android:textSize="7dp"/>
+            android:textSize="10sp"/>
 
         <TextView
             android:id="@+id/tv_number_two_compare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
             android:layout_alignBaseline="@+id/tv_number_two_main"
             android:layout_alignParentRight="true"
             android:text="+3.22"
-            android:textSize="20sp"/>
+            android:textSize="30sp"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_number_two_title"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_marginLeft="12dp"
+        android:maxLines="1"
+        android:text="干货销售预警干货销售预警"
+        android:textColor="@color/co3_syr"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:ellipsize="end"/>
 
-        <ImageView
-            android:id="@+id/iv_number_two_sign"
-            android:layout_width="7dp"
-            android:layout_height="7dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_red_sign"/>
+            android:background="@drawable/item_blue_circle">
+        </View>
 
         <TextView
             android:id="@+id/tv_number_two_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="4dp"
             android:text="当前 0 项个单量预警"
-            android:textColor="@color/black"
+            android:textColor="@color/co6_syr"
             android:textSize="9dp"/>
     </LinearLayout>
 

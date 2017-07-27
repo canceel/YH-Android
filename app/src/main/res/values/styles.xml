@@ -416,7 +416,6 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-
     <style name="iv_mine_user_list">
         <item name="android:layout_width">16dp</item>
         <item name="android:layout_height">16dp</item>
@@ -483,6 +482,11 @@
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="elevation">0dp</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
 </resources>

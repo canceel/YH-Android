@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color8"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -13,23 +13,24 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity"/>
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/iv_back"
-            android:onClick="dismissActivity"/>
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:onClick="dismissActivity"
+            android:src="@drawable/nav_back" />
 
         <TextView
             android:id="@+id/tv_title"
             style="@style/BannerTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="公告详情"
-            android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textColor="@color/color6"
+            android:textSize="17sp" />
     </RelativeLayout>
 
-    <View style="@style/SmallDivider"/>
+    <View
+        style="@style/SmallDivider"
+        android:layout_height="0.5dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,29 +39,30 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
             <TextView
                 android:id="@+id/tv_notice_content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color6"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_notice_content_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_notice_content_title"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_notice_content"
@@ -68,10 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_notice_content_time"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textSize="16sp"
-                android:textColor="#6e6e6e"/>
+                android:textColor="@color/color6"
+                android:textSize="14sp" />
         </RelativeLayout>
 
     </ScrollView>

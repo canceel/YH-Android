@@ -5,12 +5,18 @@
       "title": "销售",
       "table": {
         "head": [
+<<<<<<< HEAD
+=======
+          "自身ID",
+          "父ID",
+>>>>>>> feature-kpi
           "大区-门店",
           "昨日(万)",
           "同比",
           "环比"
         ],
         "data": [
+<<<<<<< HEAD
           {
             "main_data": [
               "三明区",
@@ -67,6 +73,56 @@
               }
             ]
           }
+=======
+          [
+            "三明区",
+            "",
+            "三明区",
+            43.8,
+            "<span style='color:red'>-25.5%</span>",
+            "<span style='color:black'>12.8%</span>"
+          ],
+          [
+            "上海区",
+            "",
+            "上海区",
+            83.8,
+            "<span style='color:red'>-25.5%</span>",
+            "<span style='color:black'>12.8%</span>"
+          ],
+          [
+            "三明万达广场店",
+            "三明区",
+            "三明万达广场店",
+            0.3,
+            "<span style='color:red'>-3.6%</span>",
+            "<span style='color:black'>16.3%</span>"
+          ],
+          [
+            "三明鸿图店",
+            "三明区",
+            "三明万达广场店",
+            0.4,
+            "<span style='color:black'>22.8%</span>",
+            "<span style='color:black'>29.0%</span>"
+          ],
+          [
+            "嘉定万达广场店",
+            "上海区",
+            "嘉定万达广场店",
+            0.3,
+            "<span style='color:black'>1.3%</span>",
+            "<span style='color:black'>16.3%</span>"
+          ],
+          [
+            "虹桥店",
+            "上海区",
+            "虹桥店",
+            0.4,
+            "<span style='color:red'>-11.0%</span>",
+            "<span style='color:black'>29.0%</span>"
+          ]
+>>>>>>> feature-kpi
         ]
       }
     }

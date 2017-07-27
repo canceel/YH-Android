@@ -608,6 +608,7 @@ public class ApiHelper {
             String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
             JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
+            param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum,""));
             param.put(K.kUserId, userJSON.getInt(K.kUserId));
             param.put(kUserName, userJSON.getString(K.kUserName));
             param.put(K.kUserDeviceId, userJSON.getInt(K.kUserDeviceId));
@@ -647,6 +648,7 @@ public class ApiHelper {
                     JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
                     param.put(K.kUserId, userJSON.getInt(K.kUserId));
+                    param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum,""));
                     param.put(kUserName, userJSON.getString(K.kUserName));
                     param.put(K.kUserDeviceId, userJSON.getInt(K.kUserDeviceId));
 
@@ -684,8 +686,6 @@ public class ApiHelper {
             public void run() {
                 try {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
-                    String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
-                    JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
                     PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                     param.put(kAppVersion, String.format("a%s", packageInfo.versionName));

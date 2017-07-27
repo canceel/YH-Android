@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.login;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -8,21 +7,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.ForgetPasswordActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
@@ -32,18 +27,20 @@ import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.update.PgyUpdateManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LoginActivity extends BaseActivity {
-    public  String kFromActivity = "from_activity";         // APP 启动标识
-    public  String kSuccess      = "success";               // 用户登录验证结果
+    public String kFromActivity = "from_activity";         // APP 启动标识
+    public String kSuccess = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
     private SharedPreferences mUserSP;
+    private TextView mTvLoginResultNotice;
+    private LinearLayout mLlLoginResultNotice;
+    private View mLinearUsernameBelowLine;
+    private View mLinearPasswordBelowLine;
+    private ImageView mIvEtUsernameClear;
+    private ImageView mIvEtPasswordClear;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -53,9 +50,9 @@ public class LoginActivity extends BaseActivity {
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
 
         // 使背景填满整个屏幕,包括状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
 
         ApiHelper.getAMapLocation(mAppContext);
 
@@ -71,25 +68,28 @@ public class LoginActivity extends BaseActivity {
             LoginActivity.this.startActivity(intent);
 
             finish();
-        }
-        else {
+        } else {
             /*
              *  检测版本更新
              *    1. 与锁屏界面互斥；取消解屏时，返回登录界面，则不再检测版本更新；
              *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,若此时有AlertDialog，会报错误:Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
              */
-            checkPgyerVersionUpgrade(LoginActivity.this,false);
+            checkPgyerVersionUpgrade(LoginActivity.this, false);
         }
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_new);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
-        TextView versionTv = (TextView) findViewById(R.id.versionTv);
+        mLinearUsernameBelowLine = findViewById(R.id.linearUsernameBelowLine);
+        mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
+        mIvEtUsernameClear = (ImageView) findViewById(R.id.iv_etUsername_clear);
+        mIvEtPasswordClear = (ImageView) findViewById(R.id.iv_etPassword_clear);
+//        TextView versionTv = (TextView) findViewById(R.id.versionTv);
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (LoginActivity.this, ForgetPasswordActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -97,16 +97,84 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                builder.setTitle("温馨提示")
-                        .setMessage("请到数据化运营平台申请开通账号")
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.show();
+                setNoticeTextAndBackgroundColor("请到数据化运营平台申请开通账号",R.color.color_notice_login_failure);
+
+            }
+        });
+
+        usernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                changeEditTextFocusUnderLineColor(hasFocus, mLinearUsernameBelowLine);
+                if (usernameEditText.getText().length() > 0 && hasFocus) {
+                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                } else {
+                    mIvEtUsernameClear.setVisibility(View.GONE);
+                }
+            }
+        });
+        usernameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                } else {
+                    mIvEtUsernameClear.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        mIvEtUsernameClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usernameEditText.setText("");
+            }
+        });
+
+        passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                changeEditTextFocusUnderLineColor(hasFocus, mLinearPasswordBelowLine);
+                if (passwordEditText.getText().length() > 0 && hasFocus) {
+                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                } else {
+                    mIvEtPasswordClear.setVisibility(View.GONE);
+                }
+            }
+        });
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                } else {
+                    mIvEtPasswordClear.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        mIvEtPasswordClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordEditText.setText("");
             }
         });
 
@@ -121,16 +189,9 @@ public class LoginActivity extends BaseActivity {
          */
         usernameEditText.setText(mUserSP.getString("user_login_name", ""));
 
-        /*
-         * 显示当前应用版本号
-         */
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionInfo = String.format("a%s(%d)", packageInfo.versionName, packageInfo.versionCode);
-            versionTv.setText(versionInfo);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        mTvLoginResultNotice = (TextView) findViewById(R.id.tv_login_result_notice);
+        mLlLoginResultNotice = (LinearLayout) findViewById(R.id.ll_login_result_notice);
+        mLlLoginResultNotice.setVisibility(View.GONE);
 
         /*
          *  当用户系统不在我们支持范围内时,发出警告。
@@ -139,17 +200,23 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-//        View v = new View(mAppContext);
-//        actionSubmit(v);
         /*
          * 检测登录界面，版本是否升级
          */
         checkVersionUpgrade(assetsPath);
     }
 
+    private void changeEditTextFocusUnderLineColor(boolean hasFocus, View underLineView) {
+        if (hasFocus) {
+            underLineView.setBackgroundColor(getResources().getColor(R.color.co1_syr));
+        } else {
+            underLineView.setBackgroundColor(getResources().getColor(R.color.co9_syr));
+        }
+    }
+
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
-        if(mProgressDialog != null)  {
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
         super.onResume();
@@ -194,32 +261,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     /*
-     * 键盘弹出监听,使用键盘时,整体布局上移
-     */
-    private void controlKeyboardLayout(final View view, final View scrollToView) {
-        view.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Rect rect = new Rect();
-                        int[] location = new int[2];
-                        view.getWindowVisibleDisplayFrame(rect);// 获取完整布局在窗体的可视区域
-                        int rootInvisibleHeight = view.getRootView().getHeight() - rect.bottom; //完整布局高度 减去 可视区域高度
-                        if (rootInvisibleHeight > 0) {
-                            // 获取 scrollToView 在窗体的坐标
-                            scrollToView.getLocationInWindow(location);
-                            // 计算完整布局滚动高度，使 scrollToView 在可见区域的底部
-                            int srollHeight = (location[1] + scrollToView.getHeight()) - rect.bottom;
-                            view.scrollTo(0, srollHeight + 20);
-                        } else {
-                            // 软键盘没有弹出1来的时候
-                            view.scrollTo(0, 0);
-                        }
-                    }
-                });
-    }
-
-    /*
      * 登录按钮点击事件
      */
     public void actionSubmit(View v) {
@@ -230,12 +271,7 @@ public class LoginActivity extends BaseActivity {
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        toast("请输入用户名与密码");
-                    }
-                });
+                setNoticeTextAndBackgroundColor("请输入用户名与密码",R.color.color_notice_login_failure);
                 return;
             }
 
@@ -271,8 +307,7 @@ public class LoginActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
-                                toast(info);
+                                setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_failure);
                                 return;
                             }
 
@@ -310,6 +345,23 @@ public class LoginActivity extends BaseActivity {
             if (mProgressDialog != null) mProgressDialog.dismiss();
             toast(e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * 设置顶部提示弹窗
+     * @param text
+     * @param colorId
+     */
+    private void setNoticeTextAndBackgroundColor(String text,int colorId) {
+        mTvLoginResultNotice.setText(text);
+        mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(colorId));
+        mLlLoginResultNotice.setVisibility(View.VISIBLE);
+        mLlLoginResultNotice.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mLlLoginResultNotice.setVisibility(View.GONE);
+            }
+        }, 2000);
     }
 
     /**

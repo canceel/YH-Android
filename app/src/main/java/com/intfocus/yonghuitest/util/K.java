@@ -55,12 +55,14 @@ public class K extends PrivateURLs implements Serializable {
    * MinePage#API
    */
   public final static String KUserInfoPath             = "%s/api/v1/user/%s/group/%s/role/%s/statistics";
-  public final static String kNoticeListPath           = "%s/api/v1/user/%s/type/%s/page/%s/limit/%s/notices";
+  public final static String kNoticeListPath           = "%s/api/v1/user/%s/notices?type=%s&page=%s&limit=%s";
   public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
   public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
   public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
   public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
   public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
+  public final static String KInstituteListPath        = "%s/api/v1/user/%s/page/%s/limit/%s/articles?keyword=%s";
+  public final static String KInstituteCollectionPath  = "%s/api/v1/user/%s/article/%s/favourite_status/%s";
 
   /**
    *  Config#Application

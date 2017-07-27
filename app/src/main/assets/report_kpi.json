@@ -1,175 +1,74 @@
 {
-  "data": [
+  "type": "tables",
+  "config": [
     {
-      "is_stick": false,
-      "title": "品类实时销售概况",
-      "group_name": "品类教练实时",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/4/report/30",
-      "unit": "万元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "1804",
-          "compare": "6237",
-          "arrow": 3
-        },
-        "chart_data": [
-          1065.9,
-          3078.44,
-          4945.31,
-          4955.99,
-          3592.71,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
+      "title": "销售",
+      "table": {
+        "head": [
+          "大区-门店",
+          "昨日(万)",
+          "同比",
+          "环比"
+        ],
+        "data": [
+          {
+            "main_data": [
+              "三明区",
+              43.8,
+              "-25.5%",
+              "12.8%"
+            ],
+            "sub_data": [
+              {
+                "main_data": [
+                  "三明万达广场店",
+                  0.3,
+                  "-3.6%",
+                  "16.3%"
+                ],
+                "sub_data": null
+              },
+              {
+                "main_data": [
+                  "三明鸿图店",
+                  0.4,
+                  "22.8%",
+                  "29.0%"
+                ],
+                "sub_data": null
+              }
+            ]
+          },
+          {
+            "main_data": [
+              "上海区",
+              83.8,
+              "-25.5%",
+              "12.8%"
+            ],
+            "sub_data": [
+              {
+                "main_data": [
+                  "嘉定万达广场店",
+                  0.3,
+                  "1.3%",
+                  "16.3%"
+                ],
+                "sub_data": null
+              },
+              {
+                "main_data": [
+                  "虹桥店",
+                  0.4,
+                  "-11.0%",
+                  "29.0%"
+                ],
+                "sub_data": null
+              }
+            ]
+          }
         ]
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "同大区门店实时销售",
-      "group_name": "品类教练实时",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/31",
-      "unit": "万元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "5",
-          "compare": "22",
-          "arrow": 3
-        },
-        "chart_data": [
-          1.6183599853515624,
-          8.3836796875,
-          12.8889,
-          12.339,
-          10.4633,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "品类同大区销售概况",
-      "group_name": "品类教练专题",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/63",
-      "unit": "万元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "76374",
-          "compare": null,
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "品类同赛马群销售概况",
-      "group_name": "品类教练专题",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/64",
-      "unit": "万元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "76374",
-          "compare": null,
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "品类同大区进销存概况",
-      "group_name": "品类教练专题",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/4/report/65",
-      "unit": "万",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "14",
-          "compare": null,
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "品类同赛马群进销存概况",
-      "group_name": "品类教练专题",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/66",
-      "unit": "万",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "14",
-          "compare": null,
-          "arrow": null
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "门店销售概况",
-      "group_name": "门店概况",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/49",
-      "unit": "万元",
-      "data": {
-        "high_light": {
-          "percentage": false,
-          "number": "741",
-          "compare": "959",
-          "arrow": 3
-        },
-        "chart_data": []
-      }
-    },
-    {
-      "is_stick": false,
-      "title": "门店负毛利概况",
-      "group_name": "门店概况",
-      "dashboard_type": "number",
-      "target_url": "mobile/v2/group/%@/template/2/report/61",
-      "unit": "元",
-      "data": {
-          "high_light": {
-            "percentage": false,
-            "number": "-1082.56",
-            "compare": null,
-            "arrow": null
-        },
-        "chart_data": []
       }
     }
-  ],
-  "code": 200
+  ]
 }

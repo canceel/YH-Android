@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.subject.template_v2.ui;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -52,6 +53,9 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
     private BaseFragment toFragment;
     private String currentFtName;
 
+    private String group_id;
+    private String report_id;
+
     @ViewInject(R.id.fl_mdetal_title_container)
     private FrameLayout fl_titleContainer;
 
@@ -94,10 +98,13 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
 
 
     private void init() {
+        Intent intent = getIntent();
+        group_id = String.valueOf(intent.getIntExtra("groupID", 0));
+        report_id = intent.getStringExtra("reportID");
         rootTableListener = new RootTableCheckedChangeListener();
         setACTitle("标题");
         showProgress();
-        getModel().requestData();
+        getModel().requestData(group_id, report_id);
     }
 
     /**

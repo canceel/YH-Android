@@ -33,6 +33,8 @@ import static com.intfocus.yonghuitest.YHApplication.threadPool;
 public class MeterDetalActMode extends AbstractMode {
 
     String TAG = MeterDetalActMode.class.getSimpleName();
+    String group_id;
+    String report_id;
 
     Context ctx;
 
@@ -40,6 +42,12 @@ public class MeterDetalActMode extends AbstractMode {
 
     public MeterDetalActMode(Context ctx) {
         this.ctx = ctx;
+    }
+
+    public void requestData(String group_id, String report_id) {
+        this.group_id = group_id;
+        this.report_id = report_id;
+        requestData();
     }
 
     @Override
@@ -50,10 +58,10 @@ public class MeterDetalActMode extends AbstractMode {
             @Override
             public void run() {
                 try {
-                    String urlString = "https://development.shengyiplus.com/api/v1/group/165/template/1/report/1/json";
+                    String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
                     Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
 
-                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", 165), 1, "1");
+                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
                     String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
                     if (response.get("code").equals("200") || response.get("code").equals("304")) {
                         try {

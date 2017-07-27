@@ -19,7 +19,7 @@ public class MDRPUnitSingleValue {
 
     public static class MainData implements Serializable {
         public String name;
-        public float data;
+        public String data;
         public String format;
         public String percentage;
     }

@@ -272,21 +272,21 @@ public class ModularTwo_UnitTablesContFragment extends BaseFragment<ModularTwo_U
         nslistView_LineName.setOnItemClickListener(this);
 
         ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.data;
-        ArrayMap<Integer, String[]> lables = new ArrayMap<>();
+        ArrayMap<Integer, String[]> labels = new ArrayMap<>();
         int dataSize = datas.size();
         for (int i = 0; i < dataSize; i++) {
-            lables.put(i, datas.get(i).main_data);
+            labels.put(i, datas.get(i).main_data);
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default_small);
-        int deviderCloor = getResources().getColor(R.color.co9);
-        int textCloor = getResources().getColor(R.color.co3);
+        int dividerColor = getResources().getColor(R.color.co9);
+        int textColor = getResources().getColor(R.color.co3);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLenghts(al_HeaderLenght);
-        tableValue.setTableValues(lables);
-        tableValue.setDeviderColor(deviderCloor);
-        tableValue.setTextColor(textCloor);
+        tableValue.setTableValues(labels);
+        tableValue.setDeviderColor(dividerColor);
+        tableValue.setTextColor(textColor);
         fl_tableValue_container.addView(tableValue);
     }
 

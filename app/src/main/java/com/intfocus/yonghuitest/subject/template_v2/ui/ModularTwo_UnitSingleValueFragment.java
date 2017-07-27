@@ -86,9 +86,9 @@ public class ModularTwo_UnitSingleValueFragment extends BaseFragment {
 
         tv_d1name.setText(valueData.main_data.name);
         tv_d2name.setText(valueData.sub_data.name);
-        float maindata = valueData.main_data.data;
+        float maindata = Float.parseFloat(valueData.main_data.data.replace("%", ""));
         tv_d1.setText(df.format(maindata));
-        float subdata = valueData.sub_data.data;
+        float subdata = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
         tv_d2.setText(df.format(subdata));
 
         tv_d1.setTextColor(color);

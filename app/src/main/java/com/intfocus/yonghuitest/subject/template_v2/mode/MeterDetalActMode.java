@@ -65,7 +65,7 @@ public class MeterDetalActMode extends AbstractMode {
                     String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
                     if (response.get("code").equals("200") || response.get("code").equals("304")) {
                         try {
-                            FileUtil.writeFile(jsonFilePath, "[{\"data\":" + response.get("body") + ", \"name\": \"标题\"}]");
+                            FileUtil.writeFile(jsonFilePath, response.get("body"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

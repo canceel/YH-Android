@@ -122,7 +122,6 @@ public class TableValueView extends View {
         }
     }
 
-
     public int itemHeight;
     public ArrayList<Integer> headerLenghts = new ArrayList<>();
     public ArrayMap<Integer, String[]> tableValues = new ArrayMap<>();

@@ -4,48 +4,12 @@
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBarV2">
-
-        <ImageView
-            android:id="@+id/iv_banner_back"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/iv_banner_back"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/tv_banner_title"
-            android:text="扫一扫"
-            style="@style/BannerTitle" />
-
-        <RelativeLayout
-            style="@style/BannerRightButton"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_banner_setting"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:onClick="showComplaintsPopWindow"
-                android:src="@drawable/banner_setting"/>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    <include layout="@layout/item_action_bar"></include>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar">
+        android:layout_below="@id/rl_action_bar">
 
         <WebView
             android:id="@+id/wv_scanner_view"

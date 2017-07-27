@@ -1,66 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="com.intfocus.yonghuitest.subject.SubjectActivity">
 
-    <RelativeLayout
-        android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBarV2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:id="@+id/bannerBack"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/tv_banner_back"
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/bannerTitle"
-            android:text="主题名称主题名称主题名称"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:textAlignment="center"
-            style="@style/BannerTitle" />
-
-        <RelativeLayout
-            style="@style/BannerRightButton"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content">
-
-            <ImageView
-                android:id="@+id/bannerSetting"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:onClick="launchDropMenuActivity"
-                android:src="@drawable/banner_setting"/>
-
-        </RelativeLayout>
-    </RelativeLayout>
+    <include layout="@layout/item_action_bar"></include>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar">
+        android:layout_below="@id/rl_action_bar">
 
         <WebView
             android:id="@+id/browser"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/actionBar"
             android:layerType="software"
-            android:layout_below="@id/actionBar" />
+            android:visibility="visible"/>
 
         <RelativeLayout
             android:id="@+id/anim_loading"
@@ -82,9 +41,9 @@
 
     <com.joanzapata.pdfview.PDFView
         android:id="@+id/pdfview"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar" />
+        android:layout_below="@id/actionBar"
+        android:visibility="gone"/>
 
 </RelativeLayout>

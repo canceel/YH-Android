@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_action_bar">
+        android:layout_below="@+id/rl_action_bar">
 
         <WebView
             android:id="@+id/wv_scanner_view"

@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_single_value"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_height="80dp"
+    android:layout_below="@+id/ll_mine_user_top"
     android:weightSum="3"
-    android:layout_below="@+id/tv_location"
     android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1">
 
         <RelativeLayout
@@ -24,27 +24,27 @@
                 android:id="@+id/tv_login_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="18"
-                android:textColor="@color/black"
+                android:text="70"
+                android:textColor="#00a4e9"
                 android:textSize="@dimen/single_value_text_size_large"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv_login_number_sub"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@id/tv_login_number"
                 android:layout_alignBaseline="@+id/tv_login_number"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/tv_login_number"
                 android:text="天"
-                android:textColor="@color/black"
+                android:textColor="#00a4e9"
                 android:textSize="@dimen/single_value_text_size_medium"/>
 
             <TextView
                 android:id="@+id/tv_login_number_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tv_login_number"
+                android:layout_centerHorizontal="true"
                 android:text="@string/text_user_number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/single_value_text_size_small"/>
@@ -55,6 +55,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1">
 
         <RelativeLayout
@@ -68,18 +69,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="18"
-                android:textColor="@color/black"
+                android:textColor="#91c941"
                 android:textSize="@dimen/single_value_text_size_large"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv_report_number_sub"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/tv_report_number"
                 android:layout_alignBaseline="@id/tv_report_number"
                 android:text="支"
-                android:textColor="@color/black"
+                android:textColor="#91c941"
                 android:textSize="@dimen/single_value_text_size_medium"/>
 
             <TextView
@@ -98,6 +99,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1">
         <RelativeLayout
             android:id="@+id/rl_beyond_number"
@@ -110,17 +112,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="18"
-                android:textColor="@color/black"
+                android:textColor="#f57658"
                 android:textSize="@dimen/single_value_text_size_large"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/tv_beyond_number"
                 android:layout_alignBaseline="@id/tv_beyond_number"
                 android:text="%"
-                android:textColor="@color/black"
+                android:textColor="#f57658"
                 android:textSize="@dimen/single_value_text_size_medium"/>
 
             <TextView

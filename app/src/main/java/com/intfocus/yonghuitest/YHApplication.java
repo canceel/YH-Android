@@ -76,7 +76,7 @@ public class YHApplication extends Application {
         /*
          *  蒲公英平台，收集闪退日志
          */
-        PgyCrashManager.register(this);
+//        PgyCrashManager.register(this);
 
         /*
          * 友盟分享初始化

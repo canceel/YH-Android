@@ -14,15 +14,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsLeftListAdapter
-import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightGVAdapter
-import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightRVAdapter
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
 import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
+import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsLeftListAdapter
+import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightGVAdapter
+import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightRVAdapter
 import com.intfocus.yonghuitest.mode.ReportsListMode
 import com.intfocus.yonghuitest.subject.*
 import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
+import com.intfocus.yonghuitest.subject.HomeTricsActivity
+import com.intfocus.yonghuitest.subject.SubjectActivity
+import com.intfocus.yonghuitest.subject.TableActivity
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.util.URLs.kGroupId
 import com.zbl.lib.baseframe.core.Subject
@@ -36,9 +40,9 @@ import org.json.JSONObject
 /**
  * Created by liuruilin on 2017/6/15.
  */
-class ReportFragment: BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapter.ReportLeftListListener, ReportsRightGVAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
+class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapter.ReportLeftListListener, ReportsRightGVAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
     lateinit var ctx: Context
-    var rootView : View? = null
+    var rootView: View? = null
     var datas: List<CategoryBean>? = null
     lateinit var reportsRightAdapter: ReportsRightRVAdapter
     lateinit var reportsLeftAdapter: ReportsLeftListAdapter

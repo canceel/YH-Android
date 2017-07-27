@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.kpi
 
 import android.app.Fragment
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -57,6 +58,7 @@ class NumberTwoFragment : Fragment() {
 
     fun init() {
         if (rootView != null) {
+            val mTypeface = Typeface.createFromAsset(activity.assets, "ALTGOT2N.TTF")
             tv_number_two_title.text = datas!!.title
             var number = datas!!.data!!.high_light!!.number
             tv_number_two_main.text = formatNumber(number)
@@ -65,6 +67,7 @@ class NumberTwoFragment : Fragment() {
             tv_number_two_compare.text = datas!!.data!!.high_light!!.compare
             tv_number_two_compare.setTextColor(colors[datas!!.data!!.high_light!!.arrow])
             tv_number_two_sub.text = datas!!.memo1
+
             ll_number_two_item.setOnClickListener {
                 EventBus.getDefault().post(datas)
             }

@@ -33,18 +33,14 @@ class NoticeListAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: NoticeListHolder, position: Int) {
+        holder.viewTop.visibility = if (position == 0) View.VISIBLE else View.GONE
         if (noticeListDatas != null) {
-            holder.tvNoticeType.text = getTypeStr(noticeListDatas!![position].type)
+            holder.tvNoticeType.text = "[" + getTypeStr(noticeListDatas!![position].type) + "]"
             holder.tvNoticeTitle.text = noticeListDatas!![position].title
             holder.tvNoticeTime.text = noticeListDatas!![position].time
             RichText.from(noticeListDatas!![position].abstracts).into(holder.tvNoticeListContent)
             holder.llNoticeListItem.setOnClickListener { listener.itemClick(noticeListDatas!![position].id) }
-            if (noticeListDatas!![position].see) {
-                holder.ivNoticePoint.visibility = View.INVISIBLE
-            }
-            else {
-                holder.ivNoticePoint.visibility = View.VISIBLE
-            }
+            holder.ivNoticePoint.visibility = if (noticeListDatas!![position].see) View.INVISIBLE else View.VISIBLE
         }
     }
 
@@ -53,6 +49,7 @@ class NoticeListAdapter(val context: Context,
     }
 
     class NoticeListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var viewTop = itemView.findViewById(R.id.view_top)
         var ivNoticePoint = itemView.findViewById(R.id.iv_notice_point) as ImageView
         var llNoticeListItem = itemView.findViewById(R.id.ll_notice_item) as LinearLayout
         var tvNoticeType = itemView.findViewById(R.id.tv_notice_type) as TextView
@@ -65,8 +62,8 @@ class NoticeListAdapter(val context: Context,
         fun itemClick(position: Int)
     }
 
-    fun getTypeStr(type : Int) : String {
-        when (type){
+    fun getTypeStr(type: Int): String {
+        when (type) {
             0 -> return "系统公告"
             1 -> return "业务公告"
             2 -> return "预警体系"

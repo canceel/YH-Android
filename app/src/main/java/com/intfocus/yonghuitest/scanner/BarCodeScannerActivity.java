@@ -6,24 +6,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
 import com.intfocus.yonghuitest.InputBarCodeActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.URLs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
  * Created by lijunjie on 16/6/10.
  */
-public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerView.ResultHandler {
-    private ZBarScannerView mScannerView;
+public class BarCodeScannerActivity extends BaseActivity implements ZXingScannerView.ResultHandler {
+    private ZXingScannerView mScannerView;
     private Context mContext;
 
     @Override
@@ -33,7 +30,7 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
         mContext = this;
 
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.bar_code_scanner_frame);
-        mScannerView = new ZBarScannerView(this);
+        mScannerView = new ZXingScannerView(this);
         contentFrame.addView(mScannerView);
 
         findViewById(R.id.inputBarCodeBtn).setOnClickListener(new View.OnClickListener() {
@@ -59,9 +56,16 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
         mScannerView.stopCamera();
     }
 
+    /*
+     * 返回
+     */
+    public void dismissActivity(View v) {
+        BarCodeScannerActivity.this.onBackPressed();
+    }
+
     @Override
-    public void handleResult(Result rawResult) {
-        if (rawResult.getContents() == null || rawResult.getContents().isEmpty()) {
+    public void handleResult(Result result) {
+        if (result.toString() == null || result.toString().isEmpty()) {
             /*
              * Note:
              * Wait 2 seconds to resume the preview.
@@ -77,9 +81,8 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
                     mScannerView.resumeCameraPreview(BarCodeScannerActivity.this);
                 }
             }, 2000);
-        }
-        else {
-            if (URLs.kIsQRCode && rawResult.getBarcodeFormat().getName().equals("QRCODE")) {
+        } else {
+            if (URLs.kIsQRCode && result.getBarcodeFormat() == BarcodeFormat.QR_CODE) {
                 mScannerView.resumeCameraPreview(BarCodeScannerActivity.this);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -90,16 +93,9 @@ public class BarCodeScannerActivity extends BaseActivity implements ZBarScannerV
                 return;
             }
             Intent intent = new Intent(mContext, ScannerResultActivity.class);
-            intent.putExtra(URLs.kCodeInfo, rawResult.getContents());
-            intent.putExtra(URLs.kCodeType, rawResult.getBarcodeFormat().getName());
+            intent.putExtra(URLs.kCodeInfo, result.toString());
+            intent.putExtra(URLs.kCodeType, result.getBarcodeFormat());
             mContext.startActivity(intent);
         }
-    }
-
-    /*
-     * 返回
-     */
-    public void dismissActivity(View v) {
-        BarCodeScannerActivity.this.onBackPressed();
     }
 }

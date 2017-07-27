@@ -72,7 +72,6 @@
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -237,6 +236,12 @@
 
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
+        </activity>
+        <activity
+            android:name=".scanner.BarCodeScannerActivityV2"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
     </application>
 

@@ -421,4 +421,9 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

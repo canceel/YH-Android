@@ -27,6 +27,7 @@ import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.*
 import com.intfocus.yonghuitest.util.*
+import com.intfocus.yonghuitest.view.NoScrollViewPager
 import com.intfocus.yonghuitest.view.TabView
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
@@ -47,7 +48,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var user: User? = null
     private var userID: Int = 0
     private var mApp: YHApplication? = null
-    private var mViewPager: ViewPager? = null
+    private var mViewPager: NoScrollViewPager? = null
     private var mTabKPI: TabView? = null
     private var mTabAnalysis: TabView? = null
     private var mTabAPP: TabView? = null
@@ -76,7 +77,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         mDashboardFragmentAdapter = DashboardFragmentAdapter(supportFragmentManager)
-        mViewPager = findViewById(R.id.content_view) as ViewPager
+        mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
         checkUserModifiedInitPassword() // 检测用户密码

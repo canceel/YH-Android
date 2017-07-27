@@ -47,12 +47,12 @@
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.intfocus.yonghuitest.view.NoScrollViewPager
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/view_shadow">
-    </android.support.v4.view.ViewPager>
+    </com.intfocus.yonghuitest.view.NoScrollViewPager>
 
     <View
         android:id="@+id/view_shadow"

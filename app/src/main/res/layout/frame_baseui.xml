@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:background="@color/argb_background"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/argb_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:id="@+id/fl_baseUI_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/argb_background" />
+            android:background="@color/co7" />
     </LinearLayout>
 
     <ProgressBar

@@ -9,6 +9,7 @@ import com.intfocus.yonghuitest.dashboard.app.AppFragment
 import com.intfocus.yonghuitest.dashboard.kpi.KpiFragment
 import com.intfocus.yonghuitest.dashboard.mine.MinePageFragment
 import com.intfocus.yonghuitest.dashboard.report.ReportFragment
+import com.intfocus.yonghuitest.dashboard.work_box.WorkBoxFragment
 
 /**
  * Created by liuruilin on 2017/3/23.
@@ -19,7 +20,7 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPager
 //    private var mKpiFragment = KpiFragment()
     private var mMeterFragment = KpiFragment()
     private var mAnalysisFragment = ReportFragment()
-    private var mAppFragment = AppFragment()
+    private var mAppFragment = WorkBoxFragment()
     private var mMessageFragment = MinePageFragment()
 
     override fun getCount(): Int {

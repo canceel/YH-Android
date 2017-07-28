@@ -7,15 +7,14 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-import android.widget.Toast
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.util.URLs
 import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_bar_code_scanner_v2.*
-import kotlinx.android.synthetic.main.activity_input_bar_code.*
 import kotlinx.android.synthetic.main.popup_input_barcode.view.*
 
 
@@ -38,6 +37,7 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
      * 初始化视图
      */
     private fun initView() {
+
     }
 
     override fun onRestart() {
@@ -79,7 +79,7 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
         }
         //手动输入条码弹出popupwindow
         ll_btn_input_bar_code.setOnClickListener {
-            var view= LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
+            var view = LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
             var popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true)
             popupWindow!!.showAsDropDown(barcode_top_reference, 0, 0)
 
@@ -98,9 +98,13 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
                 }
             }
             view!!.btn_input_barcode_confirm.setOnClickListener {
-                var trim = etBarCode.text.toString()
+                var trim = view!!.et_input_barcode.text.toString()
                 if (trim == "") {
-                    ToastUtil.showToast(this, "条形码不能为空")
+                    view!!.ll_input_barcode_notice.visibility = View.VISIBLE
+                    view!!.ll_input_barcode_notice.postDelayed(Runnable {
+                        view!!.ll_input_barcode_notice.visibility = View.GONE
+                    }, 2000)
+                    return@setOnClickListener
                 }
 
                 val intent = Intent(this, ScannerResultActivity::class.java)
@@ -109,8 +113,11 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
                 startActivity(intent)
                 finish()
             }
+            zbarview_barcode_scanner.stopSpot()
+
             view!!.iv_input_barcode_back.setOnClickListener {
                 popupWindow!!.dismiss()
+                zbarview_barcode_scanner.startSpot()
             }
         }
         iv_barcode_back.setOnClickListener {
@@ -119,6 +126,10 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+    }
 
     override fun onScanQRCodeOpenCameraError() {
         ToastUtil.showToast(this, "扫描失败，请重新扫描")
@@ -127,7 +138,7 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
 
     override fun onScanQRCodeSuccess(result: String?) {
         Log.i(TAG, "result:" + result)
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
         var toIntOrNull = result!!.toLongOrNull()
         if (toIntOrNull == null) {
             ToastUtil.showToast(this, "暂时只支持条形码")
@@ -137,12 +148,12 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
         intent.putExtra(URLs.kCodeInfo, result)
         intent.putExtra(URLs.kCodeType, "barcode")
         startActivity(intent)
+        finish()
     }
 
     override fun onStart() {
         super.onStart()
         zbarview_barcode_scanner.startCamera()
-        zbarview_barcode_scanner.showScanRect()
     }
 
     override fun onStop() {

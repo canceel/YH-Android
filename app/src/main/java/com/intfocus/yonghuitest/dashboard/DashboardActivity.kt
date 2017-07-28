@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -24,8 +23,11 @@ import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
-import com.intfocus.yonghuitest.subject.*
+import com.intfocus.yonghuitest.scanner.BarCodeScannerActivityV2
+import com.intfocus.yonghuitest.subject.HomeTricsActivity
+import com.intfocus.yonghuitest.subject.SubjectActivity
+import com.intfocus.yonghuitest.subject.TableActivity
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.TabView
 import com.pgyersdk.update.PgyUpdateManager
@@ -173,7 +175,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             builder.show()
             return
         } else {
-            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
+            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivityV2::class.java)
             mContext!!.startActivity(barCodeScannerIntent)
 
             var logParams = JSONObject()

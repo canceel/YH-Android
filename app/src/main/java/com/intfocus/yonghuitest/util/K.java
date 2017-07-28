@@ -61,6 +61,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
   public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
   public final static String KInstituteListPath        = "%s/api/v1/user/%s/page/%s/limit/%s/articles?keyword=%s";
+  public final static String KInstituteCollectionPath  = "%s/api/v1/user/%s/article/%s/favourite_status/%s";
 
   /**
    *  Config#Application

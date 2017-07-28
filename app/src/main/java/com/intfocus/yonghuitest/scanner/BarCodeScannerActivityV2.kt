@@ -23,6 +23,8 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
         val TAG = "hjjzz"
     }
 
+    var view: View? = null
+    var popupWindow: PopupWindow? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_scanner_v2)
@@ -37,7 +39,8 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
      * 初始化视图
      */
     private fun initView() {
-
+        view = LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
+        popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true)
     }
 
     override fun onRestart() {
@@ -79,61 +82,58 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
         }
         //手动输入条码弹出popupwindow
         ll_btn_input_bar_code.setOnClickListener {
-            var view = LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
-            var popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true)
             popupWindow!!.showAsDropDown(barcode_top_reference, 0, 0)
-
-            //popupWindows中打开手电筒点击事件
-            view!!.ll_btn_input_barcode_light_switch.setOnClickListener {
-                if (view!!.cb_input_barcode_light.isChecked) {
-                    view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co10_syr))
-                    view!!.cb_input_barcode_light.isChecked = false
-                    view!!.tv_input_barcode_light.text = "打开手电筒"
-                    zbarview_barcode_scanner.closeFlashlight()
-                } else {
-                    view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co7_syr))
-                    view!!.cb_input_barcode_light.isChecked = true
-                    view!!.tv_input_barcode_light.text = "关闭手电筒"
-                    zbarview_barcode_scanner.openFlashlight()
-                }
-            }
-            view!!.btn_input_barcode_confirm.setOnClickListener {
-                var trim = view!!.et_input_barcode.text.toString()
-                if (trim == "") {
-                    view!!.ll_input_barcode_notice.visibility = View.VISIBLE
-                    view!!.ll_input_barcode_notice.postDelayed(Runnable {
-                        view!!.ll_input_barcode_notice.visibility = View.GONE
-                    }, 2000)
-                    return@setOnClickListener
-                }
-
-                val intent = Intent(this, ScannerResultActivity::class.java)
-                intent.putExtra(URLs.kCodeInfo, trim)
-                intent.putExtra(URLs.kCodeType, "input")
-                startActivity(intent)
-                finish()
-            }
             zbarview_barcode_scanner.stopSpot()
-
-            view!!.iv_input_barcode_back.setOnClickListener {
-                popupWindow!!.dismiss()
-                zbarview_barcode_scanner.startSpot()
-            }
         }
         iv_barcode_back.setOnClickListener {
             finish()
+        }
+
+        //popupWindows中打开手电筒点击事件
+        view!!.ll_btn_input_barcode_light_switch.setOnClickListener {
+            if (view!!.cb_input_barcode_light.isChecked) {
+                view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co10_syr))
+                view!!.cb_input_barcode_light.isChecked = false
+                view!!.tv_input_barcode_light.text = "打开手电筒"
+                zbarview_barcode_scanner.closeFlashlight()
+            } else {
+                view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co7_syr))
+                view!!.cb_input_barcode_light.isChecked = true
+                view!!.tv_input_barcode_light.text = "关闭手电筒"
+                zbarview_barcode_scanner.openFlashlight()
+            }
+        }
+        view!!.btn_input_barcode_confirm.setOnClickListener {
+            var trim = view!!.et_input_barcode.text.toString()
+            if (trim == "") {
+                view!!.ll_input_barcode_notice.visibility = View.VISIBLE
+                view!!.ll_input_barcode_notice.postDelayed({
+                    view!!.ll_input_barcode_notice.visibility = View.GONE
+                }, 2000)
+                return@setOnClickListener
+            }
+
+            val intent = Intent(this, ScannerResultActivity::class.java)
+            intent.putExtra(URLs.kCodeInfo, trim)
+            intent.putExtra(URLs.kCodeType, "input")
+            startActivity(intent)
+            finish()
+        }
+
+        view!!.iv_input_barcode_back.setOnClickListener {
+            popupWindow!!.dismiss()
+            zbarview_barcode_scanner.startSpot()
         }
 
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
     }
 
     override fun onScanQRCodeOpenCameraError() {
         ToastUtil.showToast(this, "扫描失败，请重新扫描")
-        Handler().postDelayed(Runnable { zbarview_barcode_scanner.startSpot() }, 2000)
+        Handler().postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
     }
 
     override fun onScanQRCodeSuccess(result: String?) {

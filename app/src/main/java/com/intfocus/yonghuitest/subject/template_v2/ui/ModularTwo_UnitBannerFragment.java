@@ -29,7 +29,6 @@ public class ModularTwo_UnitBannerFragment extends BaseFragment {
 
     private View rootView;
 
-
     @ViewInject(R.id.tv_mdrp_unit_banner_title)
     private TextView tv_title;
 
@@ -116,13 +115,11 @@ public class ModularTwo_UnitBannerFragment extends BaseFragment {
 
             if (jsonObject.has("date")) {
                 String date = jsonObject.getString("date");
-                if (date.length() == 8) {
-                    String yy = date.substring(0, 4);
-                    String mm = date.substring(4, 6);
-                    String dd = date.substring(6, 8);
-                    tv_time.setText(yy + "/" + mm + "/" + dd);
+                if (date.length() > 0) {
+                    tv_time.setText(date);
                 }
             }
+
             if (jsonObject.has("info")) {
                 this.info = jsonObject.getString("info");
                 tv_count.setText(Html.fromHtml(info));

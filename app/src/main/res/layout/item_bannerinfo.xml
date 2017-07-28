@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#f3ffffff">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f3ffffff"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f3ffffff"
+            android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_name_bannerInfo"
@@ -18,7 +18,7 @@
             android:layout_height="@dimen/size_default"
             android:background="@color/argb_white"
             android:gravity="center"
-            android:maxLines="1"
+            android:text="图表说明"
             android:textColor="@color/co5"
             android:textSize="@dimen/font_large" />
 
@@ -33,11 +33,12 @@
 
             <TextView
                 android:id="@+id/tv_count_bannerInfo"
-                style="@style/tv_unit_chart_m"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="30dp"
                 android:gravity="top"
-                android:padding="@dimen/space_default" />
+                android:textSize="13sp"
+                android:textColor="@color/co3_syr"/>
 
         </ScrollView>
 
@@ -48,9 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/space_default"
+        android:layout_marginBottom="36dp"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         app:srcCompat="@mipmap/pop_close" />
 </RelativeLayout>

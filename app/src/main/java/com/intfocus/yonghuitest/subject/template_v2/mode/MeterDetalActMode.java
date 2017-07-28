@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,14 +64,13 @@ public class MeterDetalActMode extends AbstractMode {
 
                     String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
                     String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
-                    if (response.get("code").equals("200") || response.get("code").equals("304")) {
-                        try {
-                            FileUtil.writeFile(jsonFilePath, response.get("body"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
+                        MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+                        EventBus.getDefault().post(result1);
+                        return;
                     }
 
+                    StringReader stringReader = new StringReader(response.get("body"));
                     InputStream is = new FileInputStream(jsonFilePath);
                     InputStreamReader isr = new InputStreamReader(is);
                     JSONReader reader = new JSONReader(isr);

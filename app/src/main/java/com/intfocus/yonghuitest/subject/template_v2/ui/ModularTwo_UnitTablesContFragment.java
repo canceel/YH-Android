@@ -379,7 +379,7 @@ public class ModularTwo_UnitTablesContFragment extends BaseFragment<ModularTwo_U
      */
     public void startSubTable(int index) {
         String sub_data = dataEntity.data.get(index).sub_data;
-        if (StringUtil.isEmpty(sub_data)) {
+        if (sub_data.equals("[]")) {
             String tableName = (String) nameAdapter.getItem(index);
             ToastUtil.showToast(ctx, tableName);
             return;

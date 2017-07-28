@@ -95,7 +95,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private boolean reportDataState;
     private ImageView iv_BannerBack;
     private TextView tv_BannerBack;
-    private ImageView ivBannerSetting;
+    private ImageView iv_BannerSetting;
     private Intent mSourceIntent;
     private Boolean isFromActivityResult = false;
     /* 请求识别码 */
@@ -129,9 +129,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             userNum = "not-set";
         }
 
-        iv_BannerBack = (ImageView) findViewById(R.id.bannerBack);
+        iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
-        ivBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
+        iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
         mWebView = (WebView) findViewById(R.id.browser);
         initActiongBar();
         initSubWebView();
@@ -203,9 +203,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     private void initActiongBar() {
-        bannerView = (RelativeLayout) findViewById(R.id.actionBar);
-        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-        mTitle = (TextView) findViewById(R.id.bannerTitle);
+        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        mTitle = (TextView) findViewById(R.id.tv_banner_title);
 
 		/*
          * Intent Data || JSON Data
@@ -222,7 +221,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             mPDFView = (PDFView) findViewById(R.id.pdfview);
             mPDFView.setVisibility(View.INVISIBLE);
         }
-        mBannerSetting.setVisibility(View.VISIBLE);
+        iv_BannerSetting.setVisibility(View.VISIBLE);
     }
 
     /*
@@ -361,7 +360,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 if (selectedItem.equals("")) {
                     selectedItem = bannerName;
                 }
-                TextView mTitle = (TextView) findViewById(R.id.bannerTitle);
                 mTitle.setText(selectedItem);
             }
         });
@@ -934,7 +932,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ivBannerSetting.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
+                    iv_BannerSetting.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
                 }
             });
         }

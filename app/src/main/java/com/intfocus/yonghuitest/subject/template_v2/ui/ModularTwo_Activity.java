@@ -55,6 +55,7 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
 
     private String group_id;
     private String report_id;
+    private String banner_name;
 
     @ViewInject(R.id.fl_mdetal_title_container)
     private FrameLayout fl_titleContainer;
@@ -101,6 +102,7 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
         Intent intent = getIntent();
         group_id = String.valueOf(intent.getIntExtra("groupID", 0));
         report_id = intent.getStringExtra("reportID");
+        banner_name = intent.getStringExtra("bannerName");
         rootTableListener = new RootTableCheckedChangeListener();
         setACTitle("标题");
         showProgress();
@@ -151,7 +153,7 @@ public class ModularTwo_Activity extends BaseActivity<MeterDetalActMode> {
     public void onMessageEvent(MDetalActRequestResult entity) {
         dismissProgress();
         this.entity = entity;
-        setACTitle(entity.datas.name);
+        setACTitle(banner_name);
         if (entity != null) {
             int dataSize = entity.datas.data.size();
             if (dataSize > 1) {//TODO 多个根页签

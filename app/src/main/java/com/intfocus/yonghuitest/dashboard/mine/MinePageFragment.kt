@@ -2,13 +2,15 @@ package com.intfocus.yonghuitest.dashboard.mine
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.mine.adapter.MinePageVPAdapter
 import com.intfocus.yonghuitest.base.BaseFragment
+import com.intfocus.yonghuitest.dashboard.mine.adapter.MinePageVPAdapter
+import com.intfocus.yonghuitest.util.Utils
 import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -45,9 +47,30 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
         vp_message.adapter = mViewPagerAdapter
         vp_message.addOnPageChangeListener(this)
         vp_message.currentItem = 0
-//        vp_message.offscreenPageLimit = 3
+        tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
+        tab_layout.setTabTextColors(ContextCompat.getColor(activity, R.color.color4), ContextCompat.getColor(activity, R.color.color6))
+        tab_layout.setBackgroundColor(ContextCompat.getColor(activity, R.color.color10))
+        tab_layout.setupWithViewPager(vp_message)
+        tab_layout.post({ Utils.setIndicator(tab_layout, 25, 25) })
+        vp_message.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
-        vp_tablayout.setViewPager(vp_message)
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (position == 0) {
+                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
+                } else if (position == 1) {
+                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color2))
+                } else {
+                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color1))
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
     }
 
     //重写ViewPager页面切换的处理方法

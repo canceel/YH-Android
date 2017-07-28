@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.dashboard.app.AppFragment
+import com.intfocus.yonghuitest.dashboard.kpi.HomeFragment
 
 import com.intfocus.yonghuitest.dashboard.kpi.KpiFragment
 import com.intfocus.yonghuitest.dashboard.mine.MinePageFragment
@@ -17,7 +18,7 @@ import com.intfocus.yonghuitest.dashboard.report.ReportFragment
 class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     private val PAGER_COUNT = 4
 //    private var mKpiFragment = KpiFragment()
-    private var mMeterFragment = KpiFragment()
+    private var mMeterFragment = HomeFragment()
     private var mAnalysisFragment = ReportFragment()
     private var mAppFragment = AppFragment()
     private var mMessageFragment = MinePageFragment()

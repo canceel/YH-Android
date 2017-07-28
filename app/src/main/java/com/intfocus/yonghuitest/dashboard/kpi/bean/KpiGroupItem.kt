@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * Created by liuruilin on 2017/6/21.
  */
-class KpiGroupItem: Serializable {
+class KpiGroupItem : Serializable {
     var title: String? = null
     var dashboard_type: String? = null
     var target_url: String? = null
@@ -15,4 +15,9 @@ class KpiGroupItem: Serializable {
     var data: KpiGroupItemData? = null
     var group_name: String? = null
     var is_stick: Boolean = false
+    //新增msg信息
+    var id: Int? = 0
+    var content: String? = null
+    var created_at: String? = null
+
 }

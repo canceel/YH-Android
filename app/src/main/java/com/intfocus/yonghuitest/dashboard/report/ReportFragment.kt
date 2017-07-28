@@ -116,7 +116,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
                 var urlString: String
                 val intent: Intent
                 when {
-                    link.indexOf("template/2") or link.indexOf("template/4") > 0 -> {
+                    link.indexOf("template/2") > 0 || link.indexOf("template/4") > 0 -> {
                         intent = Intent(activity, SubjectActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, bannerName)
@@ -127,7 +127,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
                         intent.putExtra("reportID", reportID)
                         startActivity(intent)
                     }
-                    link.indexOf("template/3") > 0-> {
+                    link.indexOf("template/3") > 0 -> {
                         intent = Intent(ctx, HomeTricsActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "3", reportID)
@@ -175,7 +175,6 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
             intent.putExtra(URLs.kObjectType, 1)
             startActivity(intent)
         }
-
 
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/报表/报表")

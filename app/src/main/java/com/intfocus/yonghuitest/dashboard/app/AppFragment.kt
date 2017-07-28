@@ -105,7 +105,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                     val intent: Intent
 
                     when {
-                        link.indexOf("template/2") or link.indexOf("template/4") > 0 -> {
+                        link.indexOf("template/2") > 0 || link.indexOf("template/4") > 0 -> {
                             intent = Intent(activity, SubjectActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
@@ -116,7 +116,6 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                             intent.putExtra("reportID", reportID)
                             startActivity(intent)
                         }
-
                         link.indexOf("template/3") > 0-> {
                             intent = Intent(ctx, HomeTricsActivity::class.java)
                             urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
@@ -145,15 +144,9 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                         }
                         link.indexOf("template/1") > 0 -> {
                             val intent = Intent(activity, ModularTwo_Activity::class.java)
-                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
-                                    K.kBaseUrl, groupID, "1", reportID)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kObjectId, 1)
-                            intent.putExtra(URLs.kObjectType, 1)
-                            intent.putExtra("groupID", groupID)
-                            intent.putExtra("reportID", reportID)
-                            intent.putExtra("urlString", urlString)
+                            intent.putExtra(URLs.kLink, link)
                             startActivity(intent)
                         }
                         else -> showTemplateErrorDialog()

@@ -456,7 +456,7 @@
     <style name="tv_mererMinTitle_stytle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_cont</item>
         <item name="android:textColor">@color/co3</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -480,6 +480,12 @@
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="elevation">0dp</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!--设置底部弹出popupWindows的动画-->
+    <style name="anim_popup_bottombar">
+        <item name="android:windowEnterAnimation">@anim/popup_bottombar_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottombar_out</item>
     </style>
 
     <style name="TabLayoutTextStyle">

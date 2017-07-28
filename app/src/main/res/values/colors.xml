@@ -177,6 +177,22 @@
     <color name="color17">@color/co17</color>
     <color name="color18">@color/co18</color>
 
+    <array name="co_order">
+        <item>@color/co17</item>
+        <item>@color/co16</item>
+        <item>@color/co15</item>
+        <item>@color/co2</item>
+        <item>@color/co11</item>
+        <item>@color/co12</item>
+        <item>@color/co13</item>
+    </array>
+
+    <array name="co_cursor">
+        <item>#ffea4335</item>
+        <item>#fffbbc05</item>
+        <item>#ff34ab53</item>
+    </array>
+
     <!-- 生意人3.1 -->
     <!-- 主题蓝色 -->
     <color name="co1_syr">#00a4e9</color>

@@ -50,20 +50,19 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?, v
         } else {
             viewTag = convertView.tag as ItemViewTag
         }
-//        viewTag.llItem.setBackgroundResource(getItemBackground(position, datas!!.size))
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         var link = datas!![position].link_path
         var bannerName = datas!![position].name
 
-        viewTag.llItem.setOnClickListener { listener.reportItemClick(bannerName, link) }
+        viewTag.llItem.setOnClickListener { listener.reportItemClick(bannerName!!, link!!) }
         return convertView
     }
 
     internal inner class ItemViewTag(var llItem: LinearLayout, var mIcon: ImageView, var mName: TextView)
 
     interface ItemListener {
-        fun reportItemClick(bannerName: String?, link: String?)
+        fun reportItemClick(bannerName: String, link: String)
     }
 
     fun getItemBackground(position: Int, size: Int): Int {

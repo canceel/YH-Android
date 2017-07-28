@@ -88,7 +88,7 @@
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
 
-    <style name="ButtonBarButton" />
+    <style name="ButtonBarButton"/>
 
     <style name="ToolBarTab">
         <item name="android:layout_width">match_parent</item>
@@ -118,18 +118,17 @@
 
     <style name="SettingGroup">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_height">50dp</item>
     </style>
 
     <style name="SettingKey">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/co3_syr</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="SettingArrow">
@@ -166,8 +165,7 @@
 
     <style name="SmallDivider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/item_line</item>
+        <item name="android:layout_height">10dp</item>
     </style>
 
     <style name="NarrowSmallDivider">
@@ -445,7 +443,6 @@
     </style>
 
 
-
     <style name="tv_base_stytle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -483,6 +480,45 @@
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="elevation">0dp</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!--设置界面ListView的Style-->
+    <style name="lv_setting_act">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:divider">@drawable/list_divider_line</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!--修改密码界面EditText通用样式-->
+    <style name="et_pwd_alter_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColorHint">@color/co4_syr</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SettingGroupOptionSetting">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="OptionSettingDivider">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 
 </resources>

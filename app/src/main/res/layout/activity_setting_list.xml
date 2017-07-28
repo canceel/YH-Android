@@ -2,39 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
+              android:background="@color/co8_syr"
               android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBar">
+        android:layout_height="44dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/co10_syr">
 
-        <ImageView
-            android:id="@+id/bannerBack"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            android:onClick="dismissActivity" />
+        <ImageButton
+            android:id="@+id/iv_banner_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:onClick="dismissActivity"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:src="@drawable/nav_back_black"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="选项配置"
-            style="@style/BannerTitle" />
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/co6_syr"
+            android:textSize="16sp"/>
     </RelativeLayout>
 
     <ListView
         android:id="@+id/list_listSetting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/lv_setting_act">
     </ListView>
 
-    <View style="@style/Divider"/>
 </LinearLayout>

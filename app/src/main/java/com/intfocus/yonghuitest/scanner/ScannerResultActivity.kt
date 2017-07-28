@@ -20,7 +20,6 @@ import android.widget.PopupWindow
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.StoreSelectorActivity
 import com.intfocus.yonghuitest.util.FileUtil
-import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs
 import com.intfocus.yonghuitest.util.WidgetUtil
 import com.umeng.socialize.ShareAction
@@ -30,14 +29,12 @@ import com.umeng.socialize.media.UMImage
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_scanner_result.*
+import kotlinx.android.synthetic.main.item_action_bar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
-import org.json.JSONObject
 import org.xutils.x
 import java.io.File
-import java.io.IOException
 
 class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     lateinit var ctx: Context
@@ -62,6 +59,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     override fun onResume() {
         anim_loading.visibility = View.VISIBLE
         model.requestData(barcode)
+        tv_banner_title.text = "扫一扫"
         super.onResume()
     }
 

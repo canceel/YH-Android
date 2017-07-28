@@ -6,6 +6,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -100,6 +101,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .setCircular(true)
                 .build()
 
+        var mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
+        tv_login_number.typeface = mTypeFace
+        tv_report_number.typeface = mTypeFace
+        tv_beyond_number.typeface = mTypeFace
         initView()
         super.onActivityCreated(savedInstanceState)
     }

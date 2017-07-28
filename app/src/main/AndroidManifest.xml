@@ -249,6 +249,7 @@
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
         </activity>
+        <activity android:name=".dashboard.mine.FeedbackActivity"/>
         <activity
             android:name=".scanner.BarCodeScannerActivityV2"
             android:screenOrientation="portrait"

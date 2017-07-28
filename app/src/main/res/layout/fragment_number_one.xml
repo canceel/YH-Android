@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_kpi_number_one"
     android:layout_width="match_parent"
-    android:layout_height="129dp"
+    android:layout_height="173dp"
     android:background="@drawable/banner_bg"
     android:orientation="vertical">
 
@@ -11,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="16dp"
         android:layout_marginRight="28dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal">
 
         <TextView
@@ -22,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:text="昨日总销售额"
             android:textColor="@color/co10_syr_60"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_number_one_sub"
@@ -31,7 +30,7 @@
             android:layout_gravity="center_vertical"
             android:text="33.56"
             android:textColor="@color/co10_syr_60"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
     </LinearLayout>
 
     <RelativeLayout
@@ -48,7 +47,7 @@
             android:layout_marginTop="5dp"
             android:text="18.23"
             android:textColor="#00648e"
-            android:textSize="50sp"/>
+            android:textSize="50sp" />
 
         <TextView
             android:id="@+id/tv_number_one_unit"
@@ -58,14 +57,14 @@
             android:layout_toRightOf="@id/tv_number_one_number"
             android:text="(万元)"
             android:textColor="@color/co10_syr"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
-        android:layout_gravity="left">
+        android:layout_gravity="left"
+        android:layout_marginLeft="28dp">
 
         <TextView
             android:id="@+id/tv_number_one_title"
@@ -74,7 +73,7 @@
             android:layout_centerVertical="true"
             android:text="小店实时销售额"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </RelativeLayout>
 
 </LinearLayout>

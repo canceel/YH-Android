@@ -141,7 +141,6 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
                     WidgetUtil.showToastShort(ctx, "没有更多公告")
                 }
             }
-
         })
         model.requestData(1, typeStr!!)
 //        //数据为空即第一次加载时候才请求

@@ -92,7 +92,6 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
         Thread(Runnable {
             var format = SimpleDateFormat("yyyyMMddHHmmss")
             var date = Date(System.currentTimeMillis())
-            var iconUpdateUrlString = String.format(K.kUploadGravatarAPIPath, PrivateURLs.kBaseUrl, mUserSP.getInt(kUserDeviceId, 0).toString(), mUserSP.getInt(kUserId, 0).toString())
             File(imgPath).delete()
             var gravatarImgPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
             FileUtil.saveImage(gravatarImgPath, bitmap)

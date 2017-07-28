@@ -86,9 +86,9 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private static long DOUBLE_CLICK_TIME = 200;
     private static long mLastTime;
     private static long mCurTime;
-    @ViewInject(R.id.tv_banner_name)
+    @ViewInject(R.id.tv_banner_title)
     TextView tvBannerName;
-    @ViewInject(R.id.iv_menu)
+    @ViewInject(R.id.iv_banner_setting)
     ImageView ivMenu;
     @ViewInject(R.id.tv_title)
     TextView tvTitle;
@@ -463,7 +463,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
      *
      * @param clickView
      */
-    @Event(value = R.id.iv_menu)
+    @Event(value = R.id.iv_banner_setting)
     private void showComplaintsPopWindow(View clickView) {
         contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v5, null);
         //设置弹出框的宽度和高度

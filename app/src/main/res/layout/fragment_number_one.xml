@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/rl_kpi_number_one"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_kpi_number_one"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@drawable/stick_bg_b">
+    android:layout_height="129dp"
+    android:background="@drawable/banner_bg"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_gravity="right"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="28dp"
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/tv_number_one_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_vertical"
+            android:text="昨日总销售额"
+            android:textColor="@color/co10_syr_60"
+            android:textSize="13sp"/>
 
-            <TextView
-                android:id="@+id/tv_number_one_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="小店实时销售额"
-                android:textSize="18sp"
-                android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tv_number_one_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="33.56"
+            android:textColor="@color/co10_syr_60"
+            android:textSize="13sp"/>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_number_one_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_number_one_title"
-                android:layout_alignBaseline="@id/tv_number_one_title"
-                android:text="(万元)"
-                android:textSize="12sp"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="25dp">
 
         <TextView
             android:id="@+id/tv_number_one_number"
@@ -44,36 +47,34 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="18.23"
-            android:textSize="52sp"
-            android:textColor="@color/white"/>
+            android:textColor="#00648e"
+            android:textSize="50sp"/>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_number_one_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:layout_alignBaseline="@id/tv_number_one_number"
+            android:layout_toRightOf="@id/tv_number_one_number"
+            android:text="(万元)"
+            android:textColor="@color/co10_syr"
+            android:textSize="12sp"/>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_number_one_sub_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="昨日总销售额"
-                android:textSize="15sp"
-                android:textColor="@color/white"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_gravity="left">
 
-            <TextView
-                android:id="@+id/tv_number_one_sub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="33.56"
-                android:textSize="15sp"
-                android:textColor="@color/white"/>
-        </LinearLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_number_one_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="小店实时销售额"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </RelativeLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

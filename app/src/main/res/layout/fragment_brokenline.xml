@@ -40,6 +40,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+            android:textColor="@color/argb_font_yellow"
             android:textSize="@dimen/font_large_xs"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
@@ -76,7 +77,8 @@
                 style="@style/AppTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_default_small" />
+                android:layout_marginTop="@dimen/space_default_small"
+                android:textColor="@color/argb_font_yellow" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

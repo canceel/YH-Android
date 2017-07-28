@@ -225,7 +225,6 @@ public class ConfirmPassCodeActivity extends Activity {
                  * 出现验证界面，是由于两种原因
                  * 1. 打开app时，之前已登录用户设置了锁屏功能;验证成功，直接跳转至主界面
                  * 2. 已打开app, 手机待机后再激活时，进入app；验证成功，不作任何处理
-                 *
                  */
                 if (is_from_login) {
                     Intent intent = new Intent(mContext, LoginActivity.class);

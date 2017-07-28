@@ -87,15 +87,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         , MetricsAdapter.MetricsListener, OnChartValueSelectedListener {
     @ViewInject(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
-    @ViewInject(R.id.tv_title)
+    @ViewInject(R.id.tv_banner_title)
     TextView tvTitle;
     @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
     @ViewInject(R.id.metrics_recycler_view)
     RecyclerView metricsRecyclerView;
-    @ViewInject(R.id.iv_back)
+    @ViewInject(R.id.iv_banner_back)
     ImageView ivBack;
-    @ViewInject(R.id.rl_title)
+    @ViewInject(R.id.rl_action_bar)
     RelativeLayout rlTitle;
     @ViewInject(R.id.tv_data_title)
     TextView tvDataTitle;
@@ -129,7 +129,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     TextView tvRateOfChange;
     @ViewInject(R.id.iv_rate_of_change)
     ImageView ivRateOfChange;
-    @ViewInject(R.id.bannerSetting)
+    @ViewInject(R.id.iv_banner_setting)
     ImageView mBannerSetting;
 
     private Gson gson;

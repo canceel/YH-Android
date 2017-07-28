@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 style="@style/SettingGroup">
-        <TextView
-            android:id="@+id/item_setting"
-            style="@style/SettingKey"/>
 
-        <TextView
-            android:id="@+id/item_setting_info"
-            style="@style/SettingKey"/>
+    <TextView
+        android:id="@+id/item_setting"
+        style="@style/SettingKey"/>
 
-        <ImageView
-            style="@style/SettingArrow"/>
+    <ImageView
+        style="@style/SettingArrow"/>
 </RelativeLayout>

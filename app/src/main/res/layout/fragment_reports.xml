@@ -39,7 +39,7 @@
 
         <View
             style="@style/SmallDivider"
-            android:layout_height="0.5dp"
+            android:layout_height="0.1dp"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 

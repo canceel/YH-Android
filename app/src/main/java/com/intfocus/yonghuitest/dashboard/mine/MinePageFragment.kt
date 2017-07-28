@@ -47,6 +47,7 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
         vp_message.adapter = mViewPagerAdapter
         vp_message.addOnPageChangeListener(this)
         vp_message.currentItem = 0
+        tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
         tab_layout.setTabTextColors(ContextCompat.getColor(activity, R.color.color4), ContextCompat.getColor(activity, R.color.color6))
         tab_layout.setBackgroundColor(ContextCompat.getColor(activity, R.color.color10))
         tab_layout.setupWithViewPager(vp_message)

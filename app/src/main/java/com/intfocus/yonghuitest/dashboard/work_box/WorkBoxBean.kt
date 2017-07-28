@@ -1,0 +1,26 @@
+package com.intfocus.yonghuitest.dashboard.work_box
+
+/**
+ * Created by liuruilin on 2017/7/28.
+ */
+class WorkBoxBean {
+    var code: Int = 0
+    var message: String? = null
+    var data: List<WorkBoxItemBean>? = null
+    
+    inner open class WorkBoxItemBean {
+        var id: Int = 0
+        var name: String? = null
+        var category: String? = null
+        var group_name: String? = null
+        var link_path: String? = null
+        var publicly: Boolean = false
+        var icon: String? = null
+        var icon_link: String? = null
+        var group_id: Int = 0
+        var health_value: Int = 0
+        var group_order: Int = 0
+        var item_order: Int = 0
+        var created_at: String? = null
+    }
+}

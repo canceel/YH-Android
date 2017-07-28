@@ -52,7 +52,7 @@ class NumberFragment : BaseModeFragment<Subject>() {
         if (number == 0.123456789) {
             //            tv_title.setTextSize(20);
             tv_number_vpitem!!.visibility = View.GONE
-            ll_vp!!.visibility = View.GONE
+//            ll_vp!!.visibility = View.GONE
             tv_vpitem_unit!!.visibility = View.GONE
         } else {
             tv_number_vpitem!!.text = formatNumber(df.format(number).toString())
@@ -60,26 +60,26 @@ class NumberFragment : BaseModeFragment<Subject>() {
 
         tv_vpitem_unit!!.text = entity!!.unit
 
-        val high_light = entity!!.data!!.high_light
-        if (high_light!!.compare != 0.0) {//显示百分比
-            val compare = ((high_light.number!! - high_light.compare) / high_light.compare * 100).toFloat()
-            if (high_light.number!! - high_light.compare > 0) {//上箭头
-                tv_compare_vpitem!!.text = "+" + df.format(compare.toDouble()) + "%"
-            } else {
-                tv_compare_vpitem!!.text = "" + df.format(compare.toDouble()) + "%"
-            }
-        }
-
-        if (high_light.arrow >= 0) {
-            img_vpitem!!.visibility = View.VISIBLE
-            tv_compare_vpitem!!.setTextColor(colors[high_light.arrow!!])
-            tv_number_vpitem.setTextColor(colors[high_light.arrow!!])
-        } else {
-            img_vpitem!!.visibility = View.GONE
-            tv_number_vpitem.setTextColor(Color.BLACK)
-        }
-
-        img_vpitem.setCursorState(high_light.arrow!!)
+//        val high_light = entity!!.data!!.high_light
+//        if (high_light!!.compare != 0.0) {//显示百分比
+//            val compare = ((high_light.number!! - high_light.compare) / high_light.compare * 100).toFloat()
+//            if (high_light.number!! - high_light.compare > 0) {//上箭头
+//                tv_compare_vpitem!!.text = "+" + df.format(compare.toDouble()) + "%"
+//            } else {
+//                tv_compare_vpitem!!.text = "" + df.format(compare.toDouble()) + "%"
+//            }
+//        }
+//
+//        if (high_light.arrow >= 0) {
+//            img_vpitem!!.visibility = View.VISIBLE
+//            tv_compare_vpitem!!.setTextColor(colors[high_light.arrow!!])
+//            tv_number_vpitem.setTextColor(colors[high_light.arrow!!])
+//        } else {
+//            img_vpitem!!.visibility = View.GONE
+//            tv_number_vpitem.setTextColor(Color.BLACK)
+//        }
+//
+//        img_vpitem.setCursorState(high_light.arrow!!)
 
         rootView!!.setOnClickListener { EventBus.getDefault().post(MeterClickEventEntity(entity!!)) }
     }

@@ -72,7 +72,6 @@
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -166,6 +165,18 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
 
+        <!-- 原生模板二/主题页面 -->
+        <activity
+            android:name=".subject.template_v2.ui.ModularTwo_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <!-- 原生模板二/表格页面 -->
+        <activity
+            android:name=".subject.template_v2.ui.ModularTwo_SubTableActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
         <!-- 外部链接 -->
         <activity
             android:name=".subject.WebApplicationActivity"
@@ -237,6 +248,13 @@
 
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
+        </activity>
+        <activity android:name=".dashboard.mine.FeedbackActivity"/>
+        <activity
+            android:name=".scanner.BarCodeScannerActivityV2"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
     </application>
 

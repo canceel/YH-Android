@@ -549,7 +549,6 @@ public class BaseActivity extends Activity {
                 if (action == null) {
                     return;
                 }
-
                 ApiHelper.actionLog(mAppContext, logParams);
             } catch (JSONException e) {
                 e.printStackTrace();

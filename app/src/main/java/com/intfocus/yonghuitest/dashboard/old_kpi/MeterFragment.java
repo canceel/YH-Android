@@ -79,7 +79,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
     @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
 
-    @ViewInject(R.id.whl_vp_meter)
+//    @ViewInject(R.id.whl_vp_meter)
     WidthHeightLinearLayou mWHllayout;
     @ViewInject(R.id.vp_meter)
     ViewPager vp_meter;

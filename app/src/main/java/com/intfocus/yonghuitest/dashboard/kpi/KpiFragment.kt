@@ -37,7 +37,7 @@ import java.util.*
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener{
+class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener {
     lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView: View? = null
@@ -46,7 +46,7 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
     val FIRST_PAGE_INDEX: Int = 0
     var stickSzize: Int = 0
     var timer = Timer()
-    lateinit var stickCycle : StickCycleTask
+    lateinit var stickCycle: StickCycleTask
 
     override fun setSubject(): Subject {
         ctx = act.applicationContext
@@ -70,12 +70,14 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        initAffiche()
+//        initAffiche()
         super.onActivityCreated(savedInstanceState)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(result: KpiRequest) {
+        trl_refresh_layout.finishLoadmore()
+        trl_refresh_layout.finishRefreshing()
         stickCycle = StickCycleTask()
 
         var top_fragment: MutableList<Fragment> = mutableListOf()
@@ -123,9 +125,11 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
             trl_refresh_layout.setHeaderView(headerView)
             trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
                 override fun retry() {
+                    model.requestData()
                 }
 
                 override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                    model.requestData()
                     super.onRefresh(refreshLayout)
                 }
 
@@ -161,7 +165,7 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
         var scale: Float
         var height = DisplayUtil.dip2px(ctx, 129f)
         if (scrollY <= height) {
-            scale = scrollY/height as Float
+            scale = scrollY / height as Float
             alpha = 255 * scale as Int
             rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
         } else {
@@ -188,8 +192,7 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
                 if (vp_kpi_stick != null) {
                     if (vp_kpi_stick.currentItem + 1 < stickSzize) {
                         vp_kpi_stick.currentItem = vp_kpi_stick.currentItem + 1
-                    }
-                    else {
+                    } else {
                         vp_kpi_stick.currentItem = 0
                     }
                 }

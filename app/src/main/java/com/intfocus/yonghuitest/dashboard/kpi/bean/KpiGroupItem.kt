@@ -19,5 +19,4 @@ class KpiGroupItem : Serializable {
     var id: Int? = 0
     var content: String? = null
     var created_at: String? = null
-
 }

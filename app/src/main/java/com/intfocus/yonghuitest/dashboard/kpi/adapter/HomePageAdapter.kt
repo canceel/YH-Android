@@ -21,7 +21,6 @@ import com.yonghui.homemetrics.utils.Utils
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
-
 /**
  * Created by CANC on 2017/6/12.
  */
@@ -117,7 +116,7 @@ class HomePageAdapter(val context: Context,
                         tv_number_one_sub_title.text = themeItem.memo1
                         tv_number_one_sub.text = themeItem.data!!.high_light!!.compare
                         rl_kpi_number_one.setOnClickListener {
-                            EventBus.getDefault().post(datas)
+                            EventBus.getDefault().post(themeItem)
                         }
                         views!!.add(contentView)
                     }
@@ -200,12 +199,8 @@ class HomePageAdapter(val context: Context,
                         }
                     })
                     holder.tvNotice.startAnimation(translateAnimation)
-//                    holder.tvNotice.setOnClickListener(View.OnClickListener {
-//
-//                    })
+                    holder.tvNotice.setOnClickListener{ }
                 }
-            }
-            is OperationalWarningTitleHolder -> {
             }
             is OperationalWarningHolder -> {
                 var operationalWarningAdapter = OperationalWarningAdapter(context, homeData.data)
@@ -264,14 +259,12 @@ class HomePageAdapter(val context: Context,
         var recyclerView = itemView.findViewById(R.id.recycler_view) as RecyclerView
     }
 
-
     class HomeBottomHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class UNKnowHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface HomePageListener {
         fun itemClick(instituteDataBean: InstituteDataBean)
     }
-
 
     fun formatNumber(number: String): String {
         var number = number

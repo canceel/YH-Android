@@ -40,7 +40,6 @@ class BusinessOverViewAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
-
         holder.tvNumberTitle.text = itemData.title
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
         var number = itemData.data!!.high_light!!.number

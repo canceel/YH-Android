@@ -22,6 +22,7 @@ import com.intfocus.yonghuitest.ResetPasswordActivity
 import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
+import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivityV2

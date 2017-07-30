@@ -95,7 +95,8 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="您的鞭策是我们进步的源泉，感谢您的宝贵意见!"/>
+        android:text="您的鞭策是我们进步的源泉，感谢您的宝贵意见!"
+        android:textColor="@color/co3_syr"/>
 
     <TextView
         android:id="@+id/btn_feedback_submit"

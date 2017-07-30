@@ -15,6 +15,12 @@ import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.filter.Filter
 import kotlinx.android.synthetic.main.activity_feedback.*
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitInfo
+import com.intfocus.yonghuitest.mode.IssueMode
+import com.intfocus.yonghuitest.util.K
+import com.intfocus.yonghuitest.util.URLs
+import com.zbl.lib.baseframe.core.AbstractActivity
+import kotlinx.android.synthetic.main.activity_issue.*
 
 
 class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPageScreenshotAdapter.ScreenshotItemClickListener {
@@ -25,6 +31,11 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
     var mSelected: List<Uri>? = null
     val screenshotAdapter: FeedbackPageScreenshotAdapter = FeedbackPageScreenshotAdapter(this, this)
 
+    lateinit var issueListDialog: Dialog
+    lateinit var mIssueListSP: SharedPreferences
+    lateinit var mUserSP : SharedPreferences
+    lateinit var mProgressDialog: ProgressDialog
+    var issueInfo = IssueCommitInfo()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback)
@@ -37,6 +48,9 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
 
 
     private fun initData() {
+        mIssueListSP = getSharedPreferences("IssueList", AbstractActivity.MODE_PRIVATE)
+        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+
     }
 
     private fun initView() {
@@ -62,6 +76,22 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
             }
         }
     }
+            R.id.btn_feedback_submit ->{
+                commitIssue()
+            }
+        }
+    }
+
+    fun commitIssue() {
+        mProgressDialog = ProgressDialog.show(this, "稍等", "正在提交...")
+        issueInfo.issue_content = et_issue_content.text.toString()
+        issueInfo.app_version = mUserSP.getString(K.kAppVersion, "2.0+")
+        issueInfo.platform = mUserSP.getString("device_info", "android")
+        issueInfo.platform_version = mUserSP.getString("os_version", "0")
+        issueInfo.user_num = mUserSP.getString(URLs.kUserNum, "null")
+        IssueMode(this).commitIssue2(issueInfo)
+    }
+}
 
     override fun addScreenshot(maxNum: Int) {
         Matisse.from(this)

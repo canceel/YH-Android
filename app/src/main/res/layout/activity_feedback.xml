@@ -67,6 +67,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="110.5dp"
+        android:background="@color/co10_syr"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
@@ -83,6 +84,34 @@
             android:text="页面截图(最多3张):"
             android:textColor="@color/co3_syr"
             android:textSize="15sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/btn_addpic"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/iv_feedback_screenshot_del"
+                    android:layout_alignParentRight="true"
+                    android:padding="4dp"
+                    android:src="@drawable/btn_delete"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <TextView
@@ -90,7 +119,8 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="您的鞭策是我们进步的源泉，感谢您的宝贵意见!"/>
+        android:text="您的鞭策是我们进步的源泉，感谢您的宝贵意见!"
+        android:textColor="@color/co3_syr"/>
 
     <TextView
         android:id="@+id/btn_feedback_submit"
@@ -98,6 +128,7 @@
         android:layout_height="50dp"
         android:background="@drawable/color_btn_forget_pwd_submit_background"
         android:gravity="center"
+        android:onClick="onClick"
         android:text="提交"
         android:textColor="@color/co1_syr"
         android:textSize="16sp"/>

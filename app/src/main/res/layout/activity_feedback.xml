@@ -83,6 +83,11 @@
             android:text="页面截图(最多3张):"
             android:textColor="@color/co3_syr"
             android:textSize="15sp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_feedback_page_screenshot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <TextView
@@ -98,6 +103,8 @@
         android:layout_height="50dp"
         android:background="@drawable/color_btn_forget_pwd_submit_background"
         android:gravity="center"
+        android:onClick="onClick"
+        android:clickable="true"
         android:text="提交"
         android:textColor="@color/co1_syr"
         android:textSize="16sp"/>

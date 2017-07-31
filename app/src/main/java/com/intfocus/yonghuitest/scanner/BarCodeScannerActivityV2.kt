@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.scanner
 
 import android.content.Intent
 import android.graphics.Typeface
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -11,17 +12,23 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import android.widget.Toast
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.util.LogUtil
+import com.intfocus.yonghuitest.util.QRCodeDecoder
 import com.intfocus.yonghuitest.util.URLs
 import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_bar_code_scanner_v2.*
 import kotlinx.android.synthetic.main.popup_input_barcode.view.*
 
 
-class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
+class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate, View.OnClickListener {
+
     companion object {
         val TAG = "hjjzz"
+        val REQUEST_CODE_CHOOSE = 1
     }
 
     var view: View? = null
@@ -34,6 +41,21 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
 
         zbarview_barcode_scanner.setDelegate(this)
         zbarview_barcode_scanner.startSpot()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        zbarview_barcode_scanner.startCamera()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        zbarview_barcode_scanner.stopCamera()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        zbarview_barcode_scanner.onDestroy()
     }
 
     /**
@@ -130,6 +152,15 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
 
     }
 
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.tv_barcode_gallery -> {
+                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null, false), REQUEST_CODE_CHOOSE)
+            }
+
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
     }
@@ -154,19 +185,26 @@ class BarCodeScannerActivityV2 : AppCompatActivity(), QRCodeView.Delegate {
         finish()
     }
 
-    override fun onStart() {
-        super.onStart()
-        zbarview_barcode_scanner.startCamera()
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            zbarview_barcode_scanner.showScanRect()
+            val picturePath = BGAPhotoPickerActivity.getSelectedImages(data)[0]
+            LogUtil.d(TAG, "picturePath:::" + picturePath)
+            object : AsyncTask<Void, Void, String>() {
+                override fun doInBackground(vararg params: Void): String {
+                    return QRCodeDecoder.syncDecodeQRCode(picturePath)
+                }
+                override fun onPostExecute(result: String) {
+                    if ("".equals(result)) {
+                        Toast.makeText(this@BarCodeScannerActivityV2, "未发现二维码", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@BarCodeScannerActivityV2, result, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.execute()
 
-    override fun onStop() {
-        super.onStop()
-        zbarview_barcode_scanner.stopCamera()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        zbarview_barcode_scanner.onDestroy()
+        }
     }
 }
 

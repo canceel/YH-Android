@@ -132,10 +132,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
-        <activity
-            android:name=".scanner.BarCodeScannerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <!-- 个人信息 -->
         <activity
             android:name=".setting.SettingActivity"
@@ -167,13 +163,13 @@
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name=".subject.template_v2.ui.ModularTwo_Activity"
+            android:name=".subject.template_v2.ModularTwo_Mode_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name=".subject.template_v2.ui.ModularTwo_SubTableActivity"
+            android:name=".subject.template_v2.ModularTwo_SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
@@ -251,7 +247,7 @@
         </activity>
         <activity android:name=".dashboard.mine.FeedbackActivity"/>
         <activity
-            android:name=".scanner.BarCodeScannerActivityV2"
+            android:name=".scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden">

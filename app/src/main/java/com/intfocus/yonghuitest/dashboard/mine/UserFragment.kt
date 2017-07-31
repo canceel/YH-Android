@@ -51,7 +51,6 @@ import java.util.*
  * Created by liuruilin on 2017/6/7.
  */
 class UserFragment : BaseModeFragment<UserInfoMode>() {
-    lateinit var ctx: Context
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
     var mUserInfo: UserInfoBean? = null
@@ -67,7 +66,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_RESULT_REQUEST = 0xa2
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return UserInfoMode(ctx)

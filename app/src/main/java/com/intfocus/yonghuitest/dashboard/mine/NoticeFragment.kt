@@ -37,7 +37,6 @@ import org.xutils.x
 
 class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeItemListener, NoticeMenuAdapter.NoticeItemListener, ErrorUtils.ErrorLisenter {
 
-    lateinit var ctx: Context
     var rootView: View? = null
     var datas: MutableList<NoticeListDataBean>? = null
     var gson = Gson()
@@ -55,7 +54,6 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
     var isEmpty: Boolean = true//数据是否为空
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return NoticeMode(ctx)
     }
 

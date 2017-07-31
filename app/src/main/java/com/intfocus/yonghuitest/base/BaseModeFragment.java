@@ -14,11 +14,13 @@ import com.zbl.lib.baseframe.core.Subject;
 
 public abstract class BaseModeFragment<Target extends Subject> extends AbstractFragment<Target> {
     public Activity act;
+    public Context ctx;
 
     protected Dialog loadingDialog;
 
     @Override
     public void onAttach(Context context) {
+        ctx = context.getApplicationContext();
         act = (Activity) context;
         super.onAttach(context);
     }

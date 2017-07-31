@@ -108,7 +108,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.intfocus.yonghuitest.subject.template_v2.view.RateCursor
+        <com.intfocus.yonghuitest.view.RateCursor
             android:id="@+id/img_singlevalue_ratiocursor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

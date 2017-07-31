@@ -3,7 +3,7 @@ package com.intfocus.yonghuitest.dashboard.kpi.mode
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.intfocus.yonghuitest.bean.dashboard.kpi.Message
+import com.intfocus.yonghuitest.dashboard.kpi.bean.Message
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiResultData
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MsgRequest

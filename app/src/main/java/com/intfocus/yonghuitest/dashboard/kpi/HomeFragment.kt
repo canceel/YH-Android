@@ -34,7 +34,6 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
     override fun itemClick(instituteDataBean: InstituteDataBean) {
     }
 
-    lateinit var ctx: Context
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
     var rootView: View? = null
@@ -42,7 +41,6 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
     lateinit var mUserSP: SharedPreferences
     var yScroll: Int? = 0;
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return KpiMode(ctx)
     }

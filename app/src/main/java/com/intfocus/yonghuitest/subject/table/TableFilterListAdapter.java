@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.bean.table.Filter;
+import com.intfocus.yonghuitest.subject.table.bean.Filter;
 
 import java.util.List;
 

@@ -57,7 +57,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
     }
 
     override fun setLayoutRes(): Int {
-        TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
+        TODO("重写 BaseModeActivity 后, 需重写相关联 Activity 的 setLayoutRes")
     }
 
     override fun onCreateFinish(p0: Bundle?) {

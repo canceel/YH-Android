@@ -38,7 +38,6 @@ import java.util.*
  * Created by liuruilin on 2017/6/20.
  */
 class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener {
-    lateinit var ctx: Context
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView: View? = null
     var gson = Gson()
@@ -49,7 +48,6 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
     lateinit var stickCycle: StickCycleTask
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return KpiMode(ctx)
     }

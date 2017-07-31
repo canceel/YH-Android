@@ -36,7 +36,6 @@ import org.xutils.x
  */
 class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.NoticeItemListener, ErrorUtils.ErrorLisenter {
 
-    lateinit var ctx: Context
     var rootView: View? = null
     var datas: MutableList<InstituteDataBean>? = null
     var gson = Gson()
@@ -51,7 +50,6 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
 
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return InstituteMode(ctx)
     }
 

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.intfocus.yonghuitest.bean.table.SortData;
-import com.intfocus.yonghuitest.bean.table.TableBarChart;
+import com.intfocus.yonghuitest.subject.table.bean.SortData;
+import com.intfocus.yonghuitest.subject.table.bean.TableBarChart;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

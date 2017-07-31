@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.dashboard.old_kpi
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -8,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterClickEventEntity
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity
 import com.intfocus.yonghuitest.constant.Constant
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_number.*

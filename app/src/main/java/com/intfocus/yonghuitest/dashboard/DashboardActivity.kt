@@ -22,10 +22,9 @@ import com.intfocus.yonghuitest.ResetPasswordActivity
 import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
-import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
-import com.intfocus.yonghuitest.scanner.BarCodeScannerActivityV2
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
+import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
@@ -178,7 +177,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             builder.show()
             return
         } else {
-            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivityV2::class.java)
+            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
             mContext!!.startActivity(barCodeScannerIntent)
 
             var logParams = JSONObject()
@@ -373,7 +372,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         startActivity(intent)
                     }
                     link.indexOf("template/1") > 0 -> {
-                        val intent = Intent(this, ModularTwo_Activity::class.java)
+                        val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)

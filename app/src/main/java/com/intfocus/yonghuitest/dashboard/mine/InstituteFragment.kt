@@ -18,7 +18,7 @@ import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteRquest
 import com.intfocus.yonghuitest.mode.InstituteMode
 import com.intfocus.yonghuitest.util.ErrorUtils
 import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.WidgetUtil
+import com.intfocus.yonghuitest.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
@@ -36,7 +36,6 @@ import org.xutils.x
  */
 class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.NoticeItemListener, ErrorUtils.ErrorLisenter {
 
-    lateinit var ctx: Context
     var rootView: View? = null
     var datas: MutableList<InstituteDataBean>? = null
     var gson = Gson()
@@ -51,7 +50,6 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
 
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return InstituteMode(ctx)
     }
 
@@ -102,7 +100,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
                     trl_refresh_layout.finishLoadmore()
                     isEmpty = datas == null || datas!!.size == 0
                     ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
-                    WidgetUtil.showToastShort(context, "请检查网络")
+                    ToastUtils.show(context, "请检查网络")
                 }
             }
 
@@ -113,7 +111,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
                     getData(false)
                 } else {
                     trl_refresh_layout.finishLoadmore()
-                    WidgetUtil.showToastShort(ctx, "没有更多公告")
+                    ToastUtils.show(ctx, "没有更多公告")
                 }
             }
 
@@ -145,7 +143,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             trl_refresh_layout.finishLoadmore()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 
@@ -159,7 +157,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             model.operatingCollection(articleId, favouritStatus)
         } else {
             hideLoading()
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 
@@ -186,7 +184,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
         } else {
-            WidgetUtil.showToastShort(context, result.errorMsg)
+            ToastUtils.show(context, result.errorMsg)
         }
     }
 
@@ -196,10 +194,10 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: CollectionRquest) {
         if (result.isSuccess) {
-            WidgetUtil.showToastShort(context, result!!.collectionBean!!.message.toString())
+            ToastUtils.show(context, result!!.collectionBean!!.message.toString())
             getData(true)
         } else {
-            WidgetUtil.showToastShort(context, result!!.errorMsg)
+            ToastUtils.show(context, result!!.errorMsg)
             hideLoading()
         }
     }

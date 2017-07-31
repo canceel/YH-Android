@@ -22,7 +22,7 @@
             android:layout_weight="2"
             android:gravity="center_vertical">
 
-            <com.intfocus.yonghuitest.subject.template_v2.view.SortCheckBox
+            <com.intfocus.yonghuitest.view.SortCheckBox
                 android:id="@+id/cbox_name"
                 style="@style/tv_unit_chart_m"
                 android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_weight="3.2"
             android:gravity="center_vertical">
 
-            <com.intfocus.yonghuitest.subject.template_v2.view.SortCheckBox
+            <com.intfocus.yonghuitest.view.SortCheckBox
                 android:id="@+id/cbox_percentage"
                 style="@style/tv_unit_chart_m"
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         android:orientation="horizontal"
         android:paddingRight="@dimen/space_default">
 
-        <com.intfocus.yonghuitest.subject.template_v2.view.NotScrollListView
+        <com.intfocus.yonghuitest.view.NotScrollListView
             android:id="@+id/lv_MDRPUnit_PlusMinusChart"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.dashboard.ListGroupBean
+import com.intfocus.yonghuitest.dashboard.report.mode.ListGroupBean
 import com.intfocus.yonghuitest.view.MyGridView
 
 /**

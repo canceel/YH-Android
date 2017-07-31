@@ -16,7 +16,7 @@ import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
-import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_work_box.*
@@ -30,12 +30,10 @@ import org.json.JSONObject
  * Created by liuruilin on 2017/7/28.
  */
 class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), WorkBoxAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
-    lateinit var ctx: Context
     var rootView : View? = null
     var datas: List<WorkBoxBean.WorkBoxItemBean>? = null
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return WorkBoxMode(ctx)
     }
 
@@ -132,7 +130,7 @@ class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), WorkBoxAdapter.ItemListe
                             startActivity(intent)
                         }
                         link.indexOf("template/1") > 0 -> {
-                            val intent = Intent(activity, ModularTwo_Activity::class.java)
+                            val intent = Intent(activity, ModularTwo_Mode_Activity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
                             intent.putExtra(URLs.kLink, link)

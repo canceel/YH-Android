@@ -1,13 +1,12 @@
 package com.intfocus.yonghuitest.dashboard.report.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.dashboard.GroupDataBean
+import com.intfocus.yonghuitest.dashboard.report.mode.GroupDataBean
 import com.intfocus.yonghuitest.util.DisplayUtil
 import org.xutils.x
 

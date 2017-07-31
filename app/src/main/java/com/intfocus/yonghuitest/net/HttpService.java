@@ -7,6 +7,7 @@ import com.intfocus.yonghuitest.util.K;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -36,6 +37,18 @@ public interface HttpService {
      */
     @POST(K.KArticleCollectionPath)
     Observable<BaseResult> articleOperating(@Path("userId") String userId, @Path("articleId") String articleId, @Path("status") String status);
+
+    /**
+     * 获取数据学院文章列表
+     *
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @param keyWorld
+     * @return
+     */
+    @GET(K.KInstituteListPath)
+    Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize, @Query("keyword") String keyWorld);
 
 
 }

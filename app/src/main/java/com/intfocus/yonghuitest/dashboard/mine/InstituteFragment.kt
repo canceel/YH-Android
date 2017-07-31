@@ -76,15 +76,15 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     fun initView() {
         val mLayoutManager = LinearLayoutManager(ctx)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        rv_notice_list.layoutManager = mLayoutManager
+        recycler_view.layoutManager = mLayoutManager
         adapter = InstituteAdapter(ctx, null, this)
-        rv_notice_list.adapter = adapter
+        recycler_view.adapter = adapter
         var headerView = SinaRefreshView(ctx)
         headerView.setArrowResource(R.drawable.loading_up)
         var bottomView = LoadingView(ctx)
-        trl_refresh_layout.setHeaderView(headerView)
-        trl_refresh_layout.setBottomView(bottomView)
-        trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
+        refresh_layout.setHeaderView(headerView)
+        refresh_layout.setBottomView(bottomView)
+        refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
             override fun retry() {
                 getData(true)
             }
@@ -96,10 +96,10 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
                     page = 1
                     getData(false)
                 } else {
-                    trl_refresh_layout.finishRefreshing()
-                    trl_refresh_layout.finishLoadmore()
+                    refresh_layout.finishRefreshing()
+                    refresh_layout.finishLoadmore()
                     isEmpty = datas == null || datas!!.size == 0
-                    ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
+                    ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
                     ToastUtils.show(context, "请检查网络")
                 }
             }
@@ -110,7 +110,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
                     page += 1
                     getData(false)
                 } else {
-                    trl_refresh_layout.finishLoadmore()
+                    refresh_layout.finishLoadmore()
                     ToastUtils.show(ctx, "没有更多公告")
                 }
             }
@@ -139,10 +139,10 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             model.requestData(page, keyWord!!)
         } else {
             hideLoading()
-            trl_refresh_layout.finishRefreshing()
-            trl_refresh_layout.finishLoadmore()
+            refresh_layout.finishRefreshing()
+            refresh_layout.finishLoadmore()
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
+            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
             ToastUtils.show(context, "请检查网络")
         }
     }
@@ -166,8 +166,8 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: InstituteRquest) {
-        trl_refresh_layout.finishRefreshing()
-        trl_refresh_layout.finishLoadmore()
+        refresh_layout.finishRefreshing()
+        refresh_layout.finishLoadmore()
         hideLoading()
         if (result.isSuccess) {
             totalPage = result.instittuteListBean!!.page!!.totalPage
@@ -182,7 +182,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             }
             adapter.setData(datas)
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
+            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
         } else {
             ToastUtils.show(context, result.errorMsg)
         }

@@ -839,7 +839,7 @@ public class BaseActivity extends Activity {
         return false;
     }
 
-    public void back() {
+    public void back(View view) {
         onBackPressed();
     }
 }

@@ -2,6 +2,8 @@ package com.intfocus.yonghuitest.net;
 
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
+import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
+import com.intfocus.yonghuitest.data.response.home.KpiResult;
 import com.intfocus.yonghuitest.util.K;
 
 import retrofit2.http.GET;
@@ -49,6 +51,27 @@ public interface HttpService {
      */
     @GET(K.KInstituteListPath)
     Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize, @Query("keyword") String keyWorld);
+
+
+    /**
+     * 获取首页概况数据
+     *
+     * @param groupId
+     * @param roleId
+     * @return
+     */
+    @GET(K.kNewKPIApiDataPath)
+    Observable<KpiResult> getHomeIndex(@Path("groupId") String groupId, @Path("roleId") String roleId);
+
+    /**
+     * 获取首页消息数据
+     *
+     * @param groupId
+     * @param roleId
+     * @return
+     */
+    @GET(K.kNewMsgDataMobilePath)
+    Observable<HomeMsgResult> getHomeMsg(@Path("groupId") String groupId, @Path("roleId") String roleId, @Path("userId") String userId);
 
 
 }

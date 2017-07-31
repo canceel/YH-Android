@@ -6,140 +6,189 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
+import android.widget.LinearLayout
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.base.BaseModeFragment
+import com.intfocus.yonghuitest.base.RefreshFragment
 import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
-import com.intfocus.yonghuitest.dashboard.kpi.bean.MsgRequest
-import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
 import com.intfocus.yonghuitest.dashboard.mine.adapter.HomePageAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
-import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.ListUtils
+import com.intfocus.yonghuitest.data.response.home.HomeMsgResult
+import com.intfocus.yonghuitest.data.response.home.KpiResult
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
+import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.DefaultRefreshView
 import com.intfocus.yonghuitest.view.MyLinearLayoutManager
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-import com.zbl.lib.baseframe.core.Subject
-import kotlinx.android.synthetic.main.fragment_home.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import org.xutils.x
 
 /**
  * Created by CANC on 2017/7/27.
  */
-class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListener {
-    override fun itemClick(instituteDataBean: InstituteDataBean) {
-    }
+class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
 
-    lateinit var ctx: Context
+    lateinit var titleTop: LinearLayout
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
-    var rootView: View? = null
-    var gson = Gson()
     lateinit var mUserSP: SharedPreferences
-    var yScroll: Int? = 0;
-    override fun setSubject(): Subject {
-        ctx = act.applicationContext
-        mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-        return KpiMode(ctx)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        EventBus.getDefault().unregister(this)
-    }
+    lateinit var userId: String
+    lateinit var roleId: String
+    lateinit var groupId: String
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        EventBus.getDefault().register(this)
-        if (rootView == null) {
-            rootView = inflater!!.inflate(R.layout.fragment_home, container, false)
-            model.requestData()
-        }
-        return rootView
+        mView = inflater!!.inflate(R.layout.fragment_home, container, false)
+        x.view().inject(this, mView)
+        setRefreshLayout()
+        initView()
+        mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        userId = mUserSP.getString(URLs.kUserNum, "")
+        roleId = mUserSP.getInt(URLs.kRoleId, 0).toString()
+        groupId = mUserSP.getInt(URLs.kGroupId, 0).toString()
+        getData(true)
+        return mView
     }
 
     fun initView() {
-        recycler_view.layoutManager = MyLinearLayoutManager(context)
+        titleTop = mView!!.findViewById(R.id.title_top) as LinearLayout
+        recyclerView.layoutManager = MyLinearLayoutManager(context)
         adapter = HomePageAdapter(context, homeDatas, this)
-        recycler_view.adapter = adapter
+        recyclerView.adapter = adapter
 
-        var headerView = DefaultRefreshView(ctx)
+        var headerView = DefaultRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
-        refresh_layout.setHeaderView(headerView)
-        refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
-            override fun retry() {
-                model.requestData()
-            }
-
-            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
-                model.requestData()
-                super.onRefresh(refreshLayout)
-            }
-
-            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
-                super.onLoadMore(refreshLayout)
-            }
-        })
+        refreshLayout.setHeaderView(headerView)
+        refreshLayout.setEnableLoadmore(false)
         //监听
-        recycler_view.addOnScrollListener(HomePageScrollerListener(activity, recycler_view, title_top))
+        recyclerView.addOnScrollListener(HomePageScrollerListener(activity, recyclerView, titleTop))
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun setData(result: KpiRequest) {
-        initView()
-        if (homeDatas == null) {
-            homeDatas = ArrayList()
+    override fun getData(isShowDialog: Boolean) {
+        if (!HttpUtil.isConnected(mActivity)) {
+            ToastUtils.show(mActivity, "请检查网络链接")
+            finshRequest()
+            isEmpty = homeDatas == null || homeDatas!!.size == 0
+            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                    isEmpty!!, false, R.drawable.pic_3, {
+                getData(true)
+            })
+            return
         }
-        homeDatas!!.clear()
-        var datas = result.kpi_data
-        for (KpiResultData in datas!!.data!!) {
-            if ("top_data".equals(KpiResultData.group_name)) {
-                val homeBean = HomeBean()
-                homeBean.group_name = "轮播图"
-                homeBean.index = 0
-                homeBean.data = KpiResultData.data
-                homeDatas!!.add(homeBean)
-            }
-            if ("经营预警".equals(KpiResultData.group_name)) {
-                val homeBean = HomeBean()
-                homeBean.group_name = "经营预警"
-                homeBean.index = 2
-                homeBean.data = KpiResultData.data
-                homeDatas!!.add(homeBean)
-            }
-            if ("生意概况".equals(KpiResultData.group_name)) {
-                val homeBean = HomeBean()
-                homeBean.group_name = "生意概况"
-                homeBean.index = 3
-                homeBean.data = KpiResultData.data
-                homeDatas!!.add(homeBean)
+        if (isShowDialog) {
+            if (loadingDialog == null || !loadingDialog!!.isShowing) {
+                showLoading()
             }
         }
-        val homeBean = HomeBean()
-        homeBean.group_name = "底部信息"
-        homeBean.index = 4
-        homeDatas!!.add(homeBean)
-        ListUtils.sort(homeDatas, true, "index")
-        model.requestMessage()
+        RetrofitUtil.getHttpService().getHomeIndex(groupId, roleId)
+                .compose(RetrofitUtil.CommonOptions<KpiResult>())
+                .subscribe(object : CodeHandledSubscriber<KpiResult>() {
+                    override fun onCompleted() {
+                    }
+
+                    override fun onError(apiException: ApiException) {
+                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        getHomeMsg()
+                    }
+
+                    override fun onBusinessNext(data: KpiResult) {
+                        finshRequest()
+
+                        if (homeDatas == null) {
+                            homeDatas = ArrayList()
+                        }
+                        homeDatas!!.clear()
+                        var datas = data.data
+                        if (datas != null) {
+                            for (KpiResultData in datas) {
+                                if ("top_data".equals(KpiResultData.group_name)) {
+                                    val homeBean = HomeBean()
+                                    homeBean.group_name = "轮播图"
+                                    homeBean.index = 0
+                                    homeBean.data = KpiResultData.data
+                                    homeDatas!!.add(homeBean)
+                                }
+                                if ("经营预警".equals(KpiResultData.group_name)) {
+                                    val homeBean = HomeBean()
+                                    homeBean.group_name = "经营预警"
+                                    homeBean.index = 2
+                                    homeBean.data = KpiResultData.data
+                                    homeDatas!!.add(homeBean)
+                                }
+                                if ("生意概况".equals(KpiResultData.group_name)) {
+                                    val homeBean = HomeBean()
+                                    homeBean.group_name = "生意概况"
+                                    homeBean.index = 3
+                                    homeBean.data = KpiResultData.data
+                                    homeDatas!!.add(homeBean)
+                                }
+                            }
+                        }
+
+                        val homeBean = HomeBean()
+                        homeBean.group_name = "滚动文字"
+                        homeBean.index = 1
+                        homeDatas!!.add(homeBean)
+
+                        val homeBean1 = HomeBean()
+                        homeBean1.group_name = "底部信息"
+                        homeBean1.index = 4
+                        homeDatas!!.add(homeBean1)
+                        ListUtils.sort(homeDatas, true, "index")
+
+                        getHomeMsg()
+                    }
+                })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun setData(result: MsgRequest) {
-        refresh_layout.finishLoadmore()
-        refresh_layout.finishRefreshing()
-        if (homeDatas == null) homeDatas = ArrayList()
-        if (result.isSuccess) {
-            val homeBean = HomeBean()
-            homeBean.group_name = "通知"
-            homeBean.index = 1
-            homeBean.data = result.msgData!!.data
-            homeDatas!!.add(homeBean)
+    fun getHomeMsg() {
+        if (!HttpUtil.isConnected(mActivity)) {
+            ToastUtils.show(mActivity, "请检查网络链接")
+            finshRequest()
+            isEmpty = homeDatas == null || homeDatas!!.size == 0
+            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                    isEmpty!!, false, R.drawable.pic_3, {
+                getData(true)
+            })
+            return
         }
-        ListUtils.sort(homeDatas, true, "index")
-        adapter.setData(homeDatas)
+        RetrofitUtil.getHttpService().getHomeMsg(groupId, roleId, userId)
+                .compose(RetrofitUtil.CommonOptions<HomeMsgResult>())
+                .subscribe(object : CodeHandledSubscriber<HomeMsgResult>() {
+                    override fun onCompleted() {
+                        finshRequest()
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+                        finshRequest()
+                        ToastUtils.show(mActivity, apiException!!.displayMessage, R.color.co11_syr)
+                    }
+
+                    override fun onBusinessNext(data: HomeMsgResult?) {
+                        if (homeDatas == null) homeDatas = ArrayList()
+
+                        for (homeBean in homeDatas!!) {
+                            if (1 == homeBean.index) {
+                                homeBean.data = data!!.data
+                            }
+                        }
+                        ListUtils.sort(homeDatas, true, "index")
+                        adapter.setData(homeDatas)
+
+                        isEmpty = homeDatas == null || homeDatas!!.size == 0
+                        ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                                isEmpty!!, true, R.drawable.pic_3, {
+                            getData(true)
+                        })
+                    }
+                })
+    }
+
+    fun finshRequest() {
+        refreshLayout.finishRefreshing()
+        refreshLayout.finishLoadmore()
+        dismissLoading()
+    }
+
+    override fun itemClick(instituteDataBean: InstituteDataBean) {
     }
 }

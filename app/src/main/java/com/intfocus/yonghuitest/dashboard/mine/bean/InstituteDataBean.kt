@@ -17,4 +17,8 @@ class InstituteDataBean {
     var title: String? = null
     var favorite: String? = null
     var tagInfo: String? = null
+
+    //新增
+    var acticleId: String? = null
+    var status: String? = null
 }

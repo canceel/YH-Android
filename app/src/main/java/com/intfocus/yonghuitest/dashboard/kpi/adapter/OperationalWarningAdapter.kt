@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
@@ -40,6 +39,8 @@ class OperationalWarningAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
+        holder.viewLeft.visibility = if (0 == position) View.INVISIBLE else View.GONE
+        holder.viewRight.visibility = if (datas!!.size == position + 1) View.INVISIBLE else View.GONE
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
@@ -72,5 +73,7 @@ class OperationalWarningAdapter(val context: Context,
         var tvNnumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
         var tvNumberTitle = itemView.findViewById(R.id.tv_number_title) as TextView
         var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
+        var viewLeft = itemView.findViewById(R.id.view_left)
+        var viewRight = itemView.findViewById(R.id.view_right)
     }
 }

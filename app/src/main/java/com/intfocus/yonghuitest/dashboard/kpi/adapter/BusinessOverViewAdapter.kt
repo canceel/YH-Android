@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
@@ -42,7 +41,7 @@ class BusinessOverViewAdapter(val context: Context,
         var itemData = datas!![position]
         holder.tvNumberTitle.text = itemData.title
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
-        var number = itemData.data!!.high_light!!.number
+        var number = itemData.data!!.high_light!!.number + ""
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare

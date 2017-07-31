@@ -10,10 +10,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.util.ImageUtil
+import com.intfocus.yonghuitest.util.LogUtil
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
-import java.net.URI
 
 
 /**
@@ -21,7 +22,7 @@ import java.net.URI
  * author: JamesWong
  * created on: 17/07/30 下午6:06
  * e-mail: PassionateWsj@outlook.com
- * name:
+ * name: 问题反馈界面，页面截图RecyclerView的Adapter
  * desc:
  * ****************************************************
  */
@@ -49,28 +50,35 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
             itemCount == MAX_CHOSEN_PHOTO_NUM + 1 && position == 3 -> {
                 setAddScreenshotView(holder)
                 holder!!.rlFeedbackPageScreenshotContainer.visibility = View.GONE
+                for (file in mData) {
+                    LogUtil.d("hjjzz","1:::"+file.path)
+                }
+
             }
             position == itemCount - 1 -> {
-
                 setAddScreenshotView(holder)
+                for (file in mData) {
+                    LogUtil.d("hjjzz","2:::"+file.path)
+                }
             }
             else -> {
-                var uri = mData[position].toString()
                 Luban.with(mContext)
-                        .load(File(URI.create(uri)))                     //传人要压缩的图片
+                        .load(File(ImageUtil.handleImageOnKitKat(mData[position], mContext))) //传人要压缩的图片
                         .setCompressListener(object : OnCompressListener {
                             override fun onSuccess(p0: File?) {
                                 Glide.with(mContext).load(p0).into(holder!!.ivPageScreenshot)
                                 holder.ivScreenshotDel.visibility = View.VISIBLE
-                                holder.ivScreenshotDel.setOnClickListener { listener.delScreenshot(position) }
+                                holder.ivScreenshotDel.setOnClickListener {
+                                    listener.delScreenshot(position)
+                                }
                             }
 
                             override fun onError(p0: Throwable?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onStart() {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                         }).launch()    //启动压缩
@@ -95,6 +103,11 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
         mData.removeAt(mPos)
         notifyDataSetChanged()
     }
+
+    fun getData(): List<Uri> {
+        return mData
+    }
+
 
     class ScreenshotHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rlFeedbackPageScreenshotContainer = itemView.findViewById(R.id.ll_feedback_page_screenshot_container) as LinearLayout

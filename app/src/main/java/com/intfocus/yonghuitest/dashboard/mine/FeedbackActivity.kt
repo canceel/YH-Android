@@ -1,29 +1,44 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.adapter.FeedbackPageScreenshotAdapter
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitInfo
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitRequest
+import com.intfocus.yonghuitest.mode.IssueMode
+import com.intfocus.yonghuitest.util.ImageUtil
+import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.LogUtil
+import com.intfocus.yonghuitest.util.URLs
+import com.zbl.lib.baseframe.core.AbstractActivity
+import com.zbl.lib.baseframe.core.Subject
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.filter.Filter
 import kotlinx.android.synthetic.main.activity_feedback.*
-import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitInfo
-import com.intfocus.yonghuitest.mode.IssueMode
-import com.intfocus.yonghuitest.util.K
-import com.intfocus.yonghuitest.util.URLs
-import com.zbl.lib.baseframe.core.AbstractActivity
-import kotlinx.android.synthetic.main.activity_issue.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.io.File
 
 
-class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPageScreenshotAdapter.ScreenshotItemClickListener {
+class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, FeedbackPageScreenshotAdapter.ScreenshotItemClickListener {
+    override fun setLayoutRes(): Int {
+        TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
+    }
+
+    override fun onCreateFinish(p0: Bundle?) {
+    }
+
     companion object {
         val REQUEST_CODE_CHOOSE = 1
     }
@@ -31,11 +46,15 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
     var mSelected: List<Uri>? = null
     val screenshotAdapter: FeedbackPageScreenshotAdapter = FeedbackPageScreenshotAdapter(this, this)
 
-    lateinit var issueListDialog: Dialog
-    lateinit var mIssueListSP: SharedPreferences
-    lateinit var mUserSP : SharedPreferences
+    lateinit var mUserSP: SharedPreferences
     lateinit var mProgressDialog: ProgressDialog
-    var issueInfo = IssueCommitInfo()
+
+    val issueInfo = IssueCommitInfo()
+
+    override fun setSubject(): Subject {
+        return IssueMode(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback)
@@ -43,12 +62,11 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
         initData()
         initView()
         initAdapter()
-        initListener()
     }
 
 
     private fun initData() {
-        mIssueListSP = getSharedPreferences("IssueList", AbstractActivity.MODE_PRIVATE)
+        EventBus.getDefault().register(this)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 
     }
@@ -63,8 +81,6 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
         rv_feedback_page_screenshot.adapter = screenshotAdapter
     }
 
-    private fun initListener() {
-    }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -72,11 +88,9 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
                 finish()
             }
             R.id.btn_feedback_submit -> {
-
-            }
-        }
-    }
-            R.id.btn_feedback_submit ->{
+                for (uri in screenshotAdapter.getData()) {
+                    model.setUploadImg(File(ImageUtil.handleImageOnKitKat(uri, this)))
+                }
                 commitIssue()
             }
         }
@@ -84,14 +98,14 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
 
     fun commitIssue() {
         mProgressDialog = ProgressDialog.show(this, "稍等", "正在提交...")
-        issueInfo.issue_content = et_issue_content.text.toString()
+        issueInfo.issue_content = et_feedback_suggestion.text.toString()
         issueInfo.app_version = mUserSP.getString(K.kAppVersion, "2.0+")
         issueInfo.platform = mUserSP.getString("device_info", "android")
         issueInfo.platform_version = mUserSP.getString("os_version", "0")
         issueInfo.user_num = mUserSP.getString(URLs.kUserNum, "null")
-        IssueMode(this).commitIssue2(issueInfo)
+        model.commitIssue2(issueInfo)
     }
-}
+
 
     override fun addScreenshot(maxNum: Int) {
         Matisse.from(this)
@@ -119,6 +133,39 @@ class FeedbackActivity : AppCompatActivity(), View.OnClickListener, FeedbackPage
             screenshotAdapter.setData(mSelected)
             LogUtil.d("Matisse", "mSelected: " + mSelected)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun showIssueCommitRequestDialog(request: IssueCommitRequest) {
+        mProgressDialog.dismiss()
+        if (request.isSuccess) {
+            val builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("温馨提示")
+                    .setMessage("提交成功")
+                    .setPositiveButton("确认") { _, _ ->
+                        finish()
+                    }
+                    .setNegativeButton("取消") { _, _ ->
+                        // 不进行任何操作
+                    }
+            builder.show()
+        }
+        else {
+            val builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("温馨提示")
+                    .setMessage("提交失败, 是否重试?")
+                    .setPositiveButton("确认") { _, _ ->
+                        model.commitIssue2(issueInfo)
+                    }
+                    .setNegativeButton("取消") { _, _ ->
+                        // 不进行任何操作
+                    }
+            builder.show()
+        }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }
 

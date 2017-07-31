@@ -154,7 +154,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startFavoriteActivity() {
-        ToastUtil.showToast(ctx, "文章收藏页待实现")
+        var intent = Intent(activity, FavoriteActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     fun startIssueActivity() {

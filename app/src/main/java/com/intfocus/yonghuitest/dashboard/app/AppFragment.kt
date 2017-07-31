@@ -146,7 +146,10 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
                             val intent = Intent(activity, ModularTwo_Activity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kLink, link)
+                            intent.putExtra(URLs.kObjectId, 1)
+                            intent.putExtra(URLs.kObjectType, 1)
+                            intent.putExtra("groupID", groupID)
+                            intent.putExtra("reportID", reportID)
                             startActivity(intent)
                         }
                         else -> showTemplateErrorDialog()

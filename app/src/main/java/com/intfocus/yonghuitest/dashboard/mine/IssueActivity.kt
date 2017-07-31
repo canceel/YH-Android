@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.activity_issue.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 
 class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemListener {
     private val CODE_GALLERY_REQUEST = 0xa0

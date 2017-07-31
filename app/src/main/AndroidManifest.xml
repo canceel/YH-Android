@@ -249,11 +249,13 @@
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
         </activity>
-        <activity android:name=".dashboard.mine.FeedbackActivity"/>
+        <activity
+            android:name=".dashboard.mine.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".scanner.BarCodeScannerActivityV2"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
     </application>

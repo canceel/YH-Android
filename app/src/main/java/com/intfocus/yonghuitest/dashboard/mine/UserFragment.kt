@@ -13,18 +13,17 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.mode.UserInfoMode
 import com.intfocus.yonghuitest.setting.SettingActivity
 import com.intfocus.yonghuitest.util.*
@@ -160,7 +159,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startIssueActivity() {
-        var intent = Intent(activity, IssueActivity::class.java)
+        var intent = Intent(activity, FeedbackActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 

@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
+import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MsgRequest
 import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
@@ -36,10 +36,9 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
 
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
+    var msgDatas: List<KpiGroupItem>? = null
     var rootView: View? = null
-    var gson = Gson()
     lateinit var mUserSP: SharedPreferences
-    var yScroll: Int? = 0;
     override fun setSubject(): Subject {
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return KpiMode(ctx)
@@ -64,7 +63,6 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
         recycler_view.layoutManager = MyLinearLayoutManager(context)
         adapter = HomePageAdapter(context, homeDatas, this)
         recycler_view.adapter = adapter
-
         var headerView = DefaultRefreshView(ctx)
         headerView.setArrowResource(R.drawable.loading_up)
         refresh_layout.setHeaderView(headerView)
@@ -117,10 +115,24 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
                 homeDatas!!.add(homeBean)
             }
         }
+        /**
+         * 添加底部信息
+         */
         val homeBean = HomeBean()
         homeBean.group_name = "底部信息"
         homeBean.index = 4
         homeDatas!!.add(homeBean)
+        /**
+         * 预先添加一个文字跳动模块，解决刷新跳动问题
+         */
+        val homeBean1 = HomeBean()
+        homeBean1.group_name = "通知"
+        homeBean1.index = 1
+        homeBean1.data = msgDatas
+        homeDatas!!.add(homeBean1)
+        /**
+         * 排序，根据index 升序
+         */
         ListUtils.sort(homeDatas, true, "index")
         model.requestMessage()
     }
@@ -134,8 +146,14 @@ class HomeFragment : BaseModeFragment<KpiMode>(), HomePageAdapter.HomePageListen
             val homeBean = HomeBean()
             homeBean.group_name = "通知"
             homeBean.index = 1
-            homeBean.data = result.msgData!!.data
-            homeDatas!!.add(homeBean)
+            msgDatas = result.msgData!!.data
+            if (homeDatas != null && homeDatas!!.size > 0) {
+                for (homeData in homeDatas!!) {
+                    if (1 == homeData.index) {
+                        homeData.data = msgDatas
+                    }
+                }
+            }
         }
         ListUtils.sort(homeDatas, true, "index")
         adapter.setData(homeDatas)

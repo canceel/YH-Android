@@ -23,12 +23,12 @@ import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.NoScrollViewPager
 import com.intfocus.yonghuitest.view.TabView
@@ -89,6 +89,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         var intent = intent
         if (intent.getBooleanExtra("fromMessage", false)) {
             handlePushMessage(intent.getStringExtra("message"))
+            // TODO RxJava异步存储推送过来的数据
         } else {
             HttpUtil.checkAssetsUpdated(mContext)
         }

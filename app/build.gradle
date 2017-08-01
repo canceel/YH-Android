@@ -85,6 +85,13 @@ dependencies {
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     //高德定位
     //    compile 'me.dm7.barcodescanner:zbar:1.9'
+    //高德定位
+    compile files('libs/pinyin4j-2.5.0.jar')
+    // Bugly-SDK
+    // Bugly-NDK
+
+    compile 'com.amap.api:location:latest.integration'
+    compile 'com.amap.api:location:latest.integration'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.5.6'
     compile 'commons-io:commons-io:2.4'
@@ -101,10 +108,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
-    compile 'com.amap.api:location:latest.integration' //高德定位
     compile 'pub.devrel:easypermissions:0.4.0'
-    compile files('libs/pinyin4j-2.5.0.jar')
-    compile 'com.amap.api:location:latest.integration'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zbar:1.1.7@aar'
     compile 'com.zhihu.android:matisse:0.4.3'
@@ -114,7 +118,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
-    compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
-
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
 }

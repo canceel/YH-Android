@@ -31,7 +31,6 @@ import com.intfocus.yonghuitest.util.ImageUtil.*
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
-import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
@@ -124,6 +123,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_issue.setOnClickListener { startIssueActivity() }
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
+        rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
     }
 
@@ -153,6 +153,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startFavoriteActivity() {
+        var intent = Intent(activity, FavoriteActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+    }
+
+    fun startMessageActivity() {
         var intent = Intent(activity, FavoriteActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
@@ -205,7 +211,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
     }
-    
+
     /**
      * 退出登录
      */

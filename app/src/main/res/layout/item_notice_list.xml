@@ -25,12 +25,12 @@
             style="@style/tv_notice_List_title_item"
             android:text="[系统公告]"
             android:textColor="#2f3941"
+            android:layout_marginRight="5dp"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_notice_title"
             style="@style/tv_notice_List_title_item"
-            android:layout_marginLeft="5dp"
             android:text="系统公告"
             android:textColor="#2f3941"
             android:textSize="15sp" />

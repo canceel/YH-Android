@@ -18,7 +18,6 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -162,6 +161,8 @@ public class YHApplication extends Application {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("fromMessage", true);
             intent.putExtra("message", uMessage.custom);
+            intent.putExtra("message_body_title", uMessage.title);
+            intent.putExtra("message_body_text", uMessage.text);
             startActivity(intent);
         }
     };

@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.intfocus.yonghuitest"
-    android:hardwareAccelerated="false"
-    android:versionCode="566"
-    android:versionName="3.0.16">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.intfocus.yonghuitest"
+          android:hardwareAccelerated="false"
+          android:versionCode="566"
+          android:versionName="3.0.16">
 
     <!-- 扫描条形码或二维码 -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <!-- 获取用户位置信息 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!-- 必选 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络通信 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取MAC地址 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取网络状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 获取设备信息 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 6.0 及以上系统需要在代码中动态注册 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 读写sdcard，storage等等 -->
+    <uses-permission android:name="android.permission.INTERNET"/> <!-- 网络通信 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 获取MAC地址 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 获取网络状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 允许程序录制音频 -->
-    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 得到当前运行的activity名字 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
+    <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
     <!-- 5.0 及以上系统不可使用 -->
     <!-- 可选 -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_LOGS"/>
 
     <!-- 获取logcat日志 -->
     <application
@@ -51,28 +51,29 @@
             <!-- 高德地图API - Key -->
             <meta-data
                 android:name="com.amap.api.v2.apikey"
-                android:value="a9de6a6686b42561f41ef209079fb708" />
+                android:value="a9de6a6686b42561f41ef209079fb708"/>
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                android:resource="@xml/provider_paths"/>
         </provider>
 
         <service android:name="org.OpenUDID.OpenUDID_service">
             <intent-filter>
-                <action android:name="org.openudid.GETUDID" />
+                <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
 
         <!-- 高德地图 -->
-        <service android:name="com.amap.api.location.APSService" />
+        <service android:name="com.amap.api.location.APSService"/>
 
         <activity
             android:name=".login.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -80,177 +81,178 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 引导页 -->
         <activity
             android:name=".login.GuidePageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/LauncherTheme" />
+            android:theme="@style/LauncherTheme"/>
 
         <!-- 模板三 -->
         <activity
             android:name=".subject.HomeTricsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 筛选 -->
         <activity
             android:name=".subject.SelectorTreeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
             android:name=".dashboard.mine.IssueActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 公告详情 -->
         <activity
             android:name=".dashboard.mine.NoticeContentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <activity
             android:name=".subject.TableActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
             android:name=".login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
             android:name=".dashboard.mine.PassWordAlterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
             android:name=".dashboard.mine.FavoriteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
         <activity
             android:name=".InputBarCodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
             android:name=".scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <!-- 个人信息 -->
         <activity
             android:name=".setting.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
             android:name=".setting.SettingListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
             android:name=".setting.SettingPreferenceActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
             android:name=".dashboard.DashboardActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppDashboardTheme" />
+            android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
         <activity
             android:name=".subject.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/主题页面 -->
         <activity
             android:name=".subject.template_v2.ModularTwo_Mode_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
             android:name=".subject.template_v2.ModularTwo_SubTableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <!-- 外部链接 -->
         <activity
             android:name=".subject.WebApplicationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 报表选择页 -->
+
 
         <!-- 评论页 -->
         <activity
             android:name=".CommentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
             android:name=".ResetPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
             android:name=".scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
             android:name=".StoreSelectorActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
             android:name=".screen_lock.InitPassCodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
             android:name=".screen_lock.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
         <activity
             android:name=".setting.ThursdaySayActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
         <activity
             android:name=".setting.DeveloperActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <!-- 蒲公英 必选 -->
         <meta-data
             android:name="PGYER_APPID"
-            android:value="a0fb26faac52207f08129f092274f8c6" />
+            android:value="a0fb26faac52207f08129f092274f8c6"/>
 
         <!-- 友盟 必选 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="57b5224467e58e3e9b001fc2" />
+            android:value="57b5224467e58e3e9b001fc2"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="58d8d622c94e9c63cb4eaf88d80ac657" />
+            android:value="58d8d622c94e9c63cb4eaf88d80ac657"/>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Umeng" />
+            android:value="Umeng"/>
 
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity">
@@ -259,5 +261,8 @@
             android:name=".dashboard.mine.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".dashboard.mine.ShowPushMessageActivity">
+        </activity>
     </application>
+
 </manifest>

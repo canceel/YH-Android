@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.dashboard.mine.adapter
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.viewLeft.visibility = if (0 == position) View.INVISIBLE else View.GONE
         holder.viewRight.visibility = if (datas!!.size == position + 1) View.INVISIBLE else View.GONE
         holder.tvNumberTitle.text = itemData.title
-        var number = itemData.data!!.high_light!!.number
+        var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
@@ -58,12 +59,16 @@ class OperationalWarningAdapter(val context: Context,
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var numberStr = number
+        if (TextUtils.isEmpty(numberStr)) {
+            return ""
+        } else {
+            if (numberStr.contains("")) {
+                numberStr = numberStr.replace("0+?$".toRegex(), "")//去掉多余的0
+                numberStr = numberStr.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+            }
+            return numberStr
         }
-        return number
     }
 
     class OperationalWarningHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

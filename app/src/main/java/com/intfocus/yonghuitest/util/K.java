@@ -50,6 +50,8 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kResetPwdMobilePath       = "%s/mobile/%s/update_user_password";
   public final static String kThursdaySayMobilePath    = "%s/mobile/%s/thursday_say";
   public final static String kForgetPwdMobilePath      = "%s/mobile/%s/forget_user_password";
+  public final static String kNewKPIApiDataPath        = "/api/v1/group/{groupId}/role/{roleId}/kpi";
+  public final static String kNewMsgDataMobilePath     = "/api/v1/role/{roleId}/group/{groupId}/user/{userId}/message";
 
   /**
    * MinePage#API

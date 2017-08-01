@@ -196,8 +196,8 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
         startActivity(intent)
 
         var logParams = JSONObject()
-        logParams.put(URLs.kAction, "点击/公告列表")
-        ApiHelper.actionNewThreadLog(activity, logParams)
+        logParams.put(URLs.kAction, "点击/公告预警")
+        ActionLogUtil.actionLog(activity, logParams)
     }
 
     /**

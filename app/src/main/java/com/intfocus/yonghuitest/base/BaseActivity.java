@@ -44,6 +44,7 @@ import android.widget.Toast;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.login.LoginActivity;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -535,21 +536,6 @@ public class BaseActivity extends Activity {
             }
         }
     }
-
-    public final Runnable mRunnableForLogger = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                String action = logParams.getString(URLs.kAction);
-                if (action == null) {
-                    return;
-                }
-                ApiHelper.actionLog(mAppContext, logParams);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
     public void modifiedUserConfig(boolean isLogin) {
         try {

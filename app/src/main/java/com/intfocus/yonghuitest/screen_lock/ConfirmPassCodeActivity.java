@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -238,8 +239,8 @@ public class ConfirmPassCodeActivity extends Activity {
                     public synchronized void run() {
                         try {
                             JSONObject params = new JSONObject();
-                            params.put(URLs.kAction, "解屏");
-                            ApiHelper.actionLog(mContext, params);
+                            params.put(URLs.kAction, "解屏/数字");
+                            ActionLogUtil.actionLog(mContext, params);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

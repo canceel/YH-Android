@@ -25,8 +25,6 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mIssueSP: SharedPreferences = ctx.getSharedPreferences("IssueList", Context.MODE_PRIVATE)
-    var mIssueListBean: UserInfoBean? = null
-    var mIssueListBeanString: String? = null
     var gson = Gson()
     var fileList: MutableList<File> = mutableListOf()
 
@@ -156,8 +154,8 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                 EventBus.getDefault().post(request)
 
                 var logParams = JSONObject()
-                logParams.put(URLs.kAction, "点击/问题反馈失败")
-                ApiHelper.actionNewThreadLog(ctx, logParams)
+                logParams.put(URLs.kAction, "点击/问题反馈/失败")
+                ActionLogUtil.actionLog(ctx, logParams)
             }
 
             override fun onResponse(call: Call?, response: Response?) {
@@ -166,7 +164,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
                 var logParams = JSONObject()
                 logParams.put(URLs.kAction, "点击/问题反馈/成功")
-                ApiHelper.actionNewThreadLog(ctx, logParams)
+                ActionLogUtil.actionLog(ctx, logParams)
             }
         })
 

@@ -195,10 +195,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <!-- 忘记密码 -->
-        <activity
-            android:name=".ResetPasswordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
         <!-- 扫码结果页 -->
         <activity
             android:name=".scanner.ScannerResultActivity"

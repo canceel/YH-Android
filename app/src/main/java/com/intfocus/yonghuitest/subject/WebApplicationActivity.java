@@ -45,6 +45,7 @@ import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
@@ -664,8 +665,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
          */
         try {
             logParams = new JSONObject();
-            logParams.put("action", "微信分享");
-            new Thread(mRunnableForLogger).start();
+            logParams.put("action", "分享");
+            ActionLogUtil.actionLog(mContext, logParams);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -840,7 +841,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 logParams.put("obj_id", objectID);
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mContext, logParams);
             } catch (Exception e) {
                 e.printStackTrace();
             }

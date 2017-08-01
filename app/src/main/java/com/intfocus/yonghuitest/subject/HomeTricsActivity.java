@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
@@ -42,16 +41,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.metrics.MetricsAdapter;
 import com.intfocus.yonghuitest.subject.metrics.ProductListAdapter;
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.ValueFormatter;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -87,15 +86,15 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         , MetricsAdapter.MetricsListener, OnChartValueSelectedListener {
     @ViewInject(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
-    @ViewInject(R.id.tv_title)
+    @ViewInject(R.id.tv_banner_title)
     TextView tvTitle;
     @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
     @ViewInject(R.id.metrics_recycler_view)
     RecyclerView metricsRecyclerView;
-    @ViewInject(R.id.iv_back)
+    @ViewInject(R.id.iv_banner_back)
     ImageView ivBack;
-    @ViewInject(R.id.rl_title)
+    @ViewInject(R.id.rl_action_bar)
     RelativeLayout rlTitle;
     @ViewInject(R.id.tv_data_title)
     TextView tvDataTitle;
@@ -129,7 +128,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     TextView tvRateOfChange;
     @ViewInject(R.id.iv_rate_of_change)
     ImageView ivRateOfChange;
-    @ViewInject(R.id.bannerSetting)
+    @ViewInject(R.id.iv_banner_setting)
     ImageView mBannerSetting;
 
     private Gson gson;
@@ -313,7 +312,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
                 }
                 break;
             case R.id.tv_name_sort:
-                Toast.makeText(mContext, "暂不支持名字排序", Toast.LENGTH_SHORT).show();
+                ToastUtils.INSTANCE.show(mContext, "暂不支持名字排序");
                 break;
             case R.id.tv_sale_sort:
                 isAsc = !isAsc;
@@ -826,7 +825,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             if (t != null) {
                 Log.d("throw", "throw:" + t.getMessage());
             }
-            WidgetUtil.showToastShort(mContext, "分享失败");
+            toast("分享失败");
         }
 
         @Override

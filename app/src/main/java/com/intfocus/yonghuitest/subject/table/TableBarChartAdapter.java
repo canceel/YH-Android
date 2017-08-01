@@ -8,7 +8,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.bean.table.TableBarChart;
+import com.intfocus.yonghuitest.subject.table.bean.TableBarChart;
 import com.intfocus.yonghuitest.util.Utils;
 
 import java.math.BigDecimal;

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity
 import com.intfocus.yonghuitest.dashboard.old_kpi.BarFragment_Bottom
 import com.intfocus.yonghuitest.dashboard.old_kpi.CurveLineFragment
 import com.intfocus.yonghuitest.dashboard.old_kpi.NumberFragment

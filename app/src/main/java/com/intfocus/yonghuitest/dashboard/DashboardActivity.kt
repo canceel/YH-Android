@@ -23,16 +23,17 @@ import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.scanner.BarCodeScannerActivityV2
+import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
+import com.intfocus.yonghuitest.view.NoScrollViewPager
 import com.intfocus.yonghuitest.view.TabView
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
-import com.zbl.lib.baseframe.utils.ToastUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,7 +50,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var user: User? = null
     private var userID: Int = 0
     private var mApp: YHApplication? = null
-    private var mViewPager: ViewPager? = null
+    private var mViewPager: NoScrollViewPager? = null
     private var mTabKPI: TabView? = null
     private var mTabAnalysis: TabView? = null
     private var mTabAPP: TabView? = null
@@ -78,7 +79,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         mDashboardFragmentAdapter = DashboardFragmentAdapter(supportFragmentManager)
-        mViewPager = findViewById(R.id.content_view) as ViewPager
+        mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
         checkUserModifiedInitPassword() // 检测用户密码
@@ -175,7 +176,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             builder.show()
             return
         } else {
-            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivityV2::class.java)
+            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
             mContext!!.startActivity(barCodeScannerIntent)
 
             var logParams = JSONObject()
@@ -305,7 +306,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val bannerName = datas!!.title + ""
             pageLink(bannerName, link)
         } else {
-            ToastUtil.showToast(this, "没有指定链接")
+            ToastUtils.show(this, "没有指定链接")
         }
     }
 
@@ -315,14 +316,13 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     fun pageLink(mBannerName: String, link: String) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
-                val templateID = TextUtils.split(link, "/")[6]
-                val groupID = mUserSP.getInt(URLs.kGroupId, 0)
+                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId,0)
                 val reportID = TextUtils.split(link, "/")[8]
                 var urlString: String
                 val intent: Intent
 
-                when (templateID) {
-                    "-1", "2", "4" -> {
+                when {
+                    link.indexOf("template/2") > 0 -> {
                         intent = Intent(this, SubjectActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
@@ -333,11 +333,21 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.putExtra("reportID", reportID)
                         startActivity(intent)
                     }
-
-                    "3" -> {
+                    link.indexOf("template/4") > 0 -> {
+                        intent = Intent(this, SubjectActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        intent.putExtra(URLs.kBannerName, mBannerName)
+                        intent.putExtra(URLs.kLink, link)
+                        intent.putExtra(URLs.kObjectId, 1)
+                        intent.putExtra(URLs.kObjectType, 1)
+                        intent.putExtra("groupID", groupID)
+                        intent.putExtra("reportID", reportID)
+                        startActivity(intent)
+                    }
+                    link.indexOf("template/3") > 0-> {
                         intent = Intent(this, HomeTricsActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
-                                K.kBaseUrl, groupID, templateID, reportID)
+                                K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kObjectId, 1)
@@ -347,11 +357,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.putExtra("urlString", urlString)
                         startActivity(intent)
                     }
-
-                    "5" -> {
+                    link.indexOf("template/5") > 0  -> {
                         intent = Intent(this, TableActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
-                                K.kBaseUrl, groupID, templateID, reportID)
+                                K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kObjectId, 1)
@@ -359,6 +368,13 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
                         intent.putExtra("urlString", urlString)
+                        startActivity(intent)
+                    }
+                    link.indexOf("template/1") > 0 -> {
+                        val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        intent.putExtra(URLs.kBannerName, mBannerName)
+                        intent.putExtra(URLs.kLink, link)
                         startActivity(intent)
                     }
                     else -> showTemplateErrorDialog()

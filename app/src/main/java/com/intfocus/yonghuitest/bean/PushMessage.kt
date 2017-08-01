@@ -18,5 +18,4 @@ class PushMessage {
     var obj_id: Int = 0
     var obj_type: Int = 0
     var debug_timestamp: String? = null
-
 }

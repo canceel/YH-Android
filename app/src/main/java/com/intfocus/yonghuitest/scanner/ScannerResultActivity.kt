@@ -20,9 +20,8 @@ import android.widget.PopupWindow
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.StoreSelectorActivity
 import com.intfocus.yonghuitest.util.FileUtil
-import com.intfocus.yonghuitest.util.K
+import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
-import com.intfocus.yonghuitest.util.WidgetUtil
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -30,14 +29,12 @@ import com.umeng.socialize.media.UMImage
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_scanner_result.*
+import kotlinx.android.synthetic.main.item_action_bar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
-import org.json.JSONObject
 import org.xutils.x
 import java.io.File
-import java.io.IOException
 
 class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     lateinit var ctx: Context
@@ -62,6 +59,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     override fun onResume() {
         anim_loading.visibility = View.VISIBLE
         model.requestData(barcode)
+        tv_banner_title.text = "扫一扫"
         super.onResume()
     }
 
@@ -71,7 +69,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     override fun setLayoutRes(): Int {
-        TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
+        TODO("重写 BaseModeActivity 后, 需重写相关联 Activity 的 setLayoutRes")
     }
 
     override fun onCreateFinish(p0: Bundle?) {
@@ -127,7 +125,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
             wv_scanner_view.loadUrl("file:///" + result.htmlPath)
         }
         else {
-            WidgetUtil.showToastShort(ctx, result.errorInfo)
+            ToastUtils.show(ctx,  result.errorInfo)
             wv_scanner_view.loadUrl(String.format("file:///%s/loading/%s.html", FileUtil.sharedPath(ctx), "400"))
         }
     }
@@ -201,7 +199,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
             }
 
             if (imgBmp == null && imgBmp!!.width <= 0 && imgBmp!!.height <= 0) {
-                WidgetUtil.showToastShort(ctx, "截图失败,请尝试系统截图")
+                ToastUtils.show(ctx, "截图失败,请尝试系统截图")
                 return
             }
 
@@ -226,7 +224,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
                     .setCallback(umShareListener)
                     .open()
         } else {
-            WidgetUtil.showToastShort(ctx, "截图失败,请尝试系统截图")
+            ToastUtils.show(ctx, "截图失败,请尝试系统截图")
         }
 
     }

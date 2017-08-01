@@ -1,13 +1,13 @@
 package com.intfocus.yonghuitest.dashboard.kpi.mode
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.intfocus.yonghuitest.bean.UserBean
-import com.intfocus.yonghuitest.bean.dashboard.kpi.Message
+import com.intfocus.yonghuitest.dashboard.kpi.bean.Message
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiResultData
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MsgRequest
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MsgResultData
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs
@@ -16,12 +16,12 @@ import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/21.
  */
-class KpiMode(var ctx: Context): AbstractMode() {
+class KpiMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     var messageUrlString = ""
@@ -49,17 +49,20 @@ class KpiMode(var ctx: Context): AbstractMode() {
                 val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
-                    val result1 = KpiRequest(true, 400)
+                    val result1 = KpiRequest(false, 400, "返回数据为空")
                     EventBus.getDefault().post(result1)
                     return@Runnable
                 }
                 analysisData(result)
             } else {
-                val result1 = KpiRequest(true, 400)
+                val result1 = KpiRequest(false, 400, "请求链接为空")
                 EventBus.getDefault().post(result1)
                 return@Runnable
             }
         }).start()
+//        requestMessage()
+        //请求信息
+//        getMessage()
     }
 
     /**
@@ -67,34 +70,40 @@ class KpiMode(var ctx: Context): AbstractMode() {
      * @param result
      */
     private fun analysisData(result: String?): KpiRequest {
+        var errormsg = "请求失败"
         try {
             val jsonObject = JSONObject(result)
             if (jsonObject.has("code")) {
                 val code = jsonObject.getInt("code")
                 if (code != 200) {
-                    val result1 = KpiRequest(true, code)
+                    if (jsonObject.has("message")) {
+                        errormsg = jsonObject.getString("message")
+                    }
+                    val result1 = KpiRequest(false, code, errormsg)
                     EventBus.getDefault().post(result1)
                     return result1
                 }
             } else {
-                val result1 = KpiRequest(true, 404)
+                val result1 = KpiRequest(false, 404, "未找到服务器")
                 EventBus.getDefault().post(result1)
                 return result1
             }
 
             mNoticeListSP.edit().putString("KpiData", jsonObject.toString()).commit()
             var mKpiData = gson.fromJson(jsonObject.toString().replace("null", "\"\""), KpiResultData::class.java)
-            val result1 = KpiRequest(true, 200)
+            if (jsonObject.has("message")) {
+                errormsg = jsonObject.getString("message")
+            }
+            val result1 = KpiRequest(true, 200, errormsg)
             result1.kpi_data = mKpiData
             EventBus.getDefault().post(result1)
             return result1
         } catch (e: JSONException) {
             e.printStackTrace()
-            val result1 = KpiRequest(true, -1)
+            val result1 = KpiRequest(false, -1, "解析错误")
             EventBus.getDefault().post(result1)
         }
-
-        val result1 = KpiRequest(true, 0)
+        val result1 = KpiRequest(false, 0, "失败")
         EventBus.getDefault().post(result1)
         return result1
     }
@@ -121,13 +130,73 @@ class KpiMode(var ctx: Context): AbstractMode() {
             val firstMessage = mMessage.data[0].title
             val secondMessage = mMessage.data[mMessage.data.size - 1].title
 
-           message = arrayOf(firstMessage, secondMessage)
-        }
-        else {
-            message =  arrayOf("暂无数据", "暂无数据")
+            message = arrayOf(firstMessage, secondMessage)
+        } else {
+            message = arrayOf("暂无数据", "暂无数据")
         }
 
         return message
+    }
+
+    fun requestMessage() {
+        Thread(Runnable {
+            messageUrlString = getMessageUrl()
+            if (!messageUrlString.isEmpty()) {
+                val response = HttpUtil.httpGet(messageUrlString, HashMap<String, String>())
+                result = response["body"]
+                if (StringUtil.isEmpty(result)) {
+                    val result1 = KpiRequest(false, 400, "空数据")
+                    EventBus.getDefault().post(result1)
+                    return@Runnable
+                }
+                analysisMsgData(result)
+            } else {
+                val result1 = KpiRequest(false, 400, "请求链接为空")
+                EventBus.getDefault().post(result1)
+                return@Runnable
+            }
+        }).start()
+    }
+
+    /**
+     * 解析数据
+     * @param result
+     */
+    private fun analysisMsgData(result: String?): MsgRequest {
+        var errormsg = "请求失败"
+        try {
+            val jsonObject = JSONObject(result)
+            if (jsonObject.has("code")) {
+                val code = jsonObject.getInt("code")
+                if (code != 200) {
+                    if (jsonObject.has("message")) {
+                        errormsg = jsonObject.getString("message")
+                    }
+                    val result1 = MsgRequest(false, code, errormsg)
+                    EventBus.getDefault().post(result1)
+                    return result1
+                }
+            } else {
+                val result1 = MsgRequest(false, 404, "未找到服务器")
+                EventBus.getDefault().post(result1)
+                return result1
+            }
+            var mMsgResultData = gson.fromJson(jsonObject.toString().replace("null", "\"\""), MsgResultData::class.java)
+            if (jsonObject.has("message")) {
+                errormsg = jsonObject.getString("message")
+            }
+            val result1 = MsgRequest(true, 200, errormsg)
+            result1.msgData = mMsgResultData
+            EventBus.getDefault().post(result1)
+            return result1
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            val result1 = KpiRequest(false, -1, "解析错误")
+            EventBus.getDefault().post(result1)
+        }
+        val result1 = MsgRequest(false, 0, "失败")
+        EventBus.getDefault().post(result1)
+        return result1
     }
 
 }

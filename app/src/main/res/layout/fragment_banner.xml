@@ -3,54 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/space_default_small"
-    android:background="@drawable/shadow_rect"
-    tools:context=".dashboard.old_kpi.MDRPUnitBannerFragment">
+    android:layout_marginTop="@dimen/space_default"
+    android:background="@drawable/shadow_banner_border"
+    tools:context="com.intfocus.yonghuitest.subject.template_v2.ModularTwo_UnitBannerModeFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_default_medium"
-        android:paddingBottom="@dimen/space_default_small">
+        android:layout_height="@dimen/size_default_xsmall"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_float">
 
         <TextView
             android:id="@+id/tv_mdrp_unit_banner_title"
             style="@style/tv_mererMinTitle_stytle"
-            android:layout_margin="8dp"
             android:text="title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_mdrp_unit_banner_time"
             style="@style/tv_mererMinTitle_stytle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="time"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="@dimen/space_default"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/tv_mdrp_unit_banner_title"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.454" />
 
         <ImageButton
             android:id="@+id/imgb_mdrp_unit_banner_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/size_default"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="@dimen/space_float"
+            android:layout_marginTop="0dp"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499"
-            app:srcCompat="@drawable/btn_inf" />
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_inf" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </FrameLayout>

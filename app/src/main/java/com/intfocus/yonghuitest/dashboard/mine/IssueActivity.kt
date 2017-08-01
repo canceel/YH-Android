@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.activity_issue.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 
 class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemListener {
     private val CODE_GALLERY_REQUEST = 0xa0
@@ -57,7 +56,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
     }
 
     override fun setLayoutRes(): Int {
-        TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
+        TODO("重写 BaseModeActivity 后, 需重写相关联 Activity 的 setLayoutRes")
     }
 
     override fun onCreateFinish(p0: Bundle?) {
@@ -65,7 +64,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
         rl_issue_commit.setOnClickListener { commitIssue() }
         iv_add_img.setOnClickListener {
             if (imgSum == 3) {
-                WidgetUtil.showToastLong(ctx, "只能上传 3 张图片喔")
+                ToastUtils.show(ctx, "只能上传 3 张图片喔")
                 return@setOnClickListener
             }
             startActivityForResult(ImageUtil.getGallery(), CODE_GALLERY_REQUEST)
@@ -154,7 +153,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
     }
 
     override fun itemClick(position: Int) {
-        WidgetUtil.showToastLong(ctx, "进入问题反馈详情")
+        ToastUtils.show(ctx, "进入问题反馈详情", R.color.co1_syr)
     }
 
     @Subscribe (threadMode = ThreadMode.MAIN)

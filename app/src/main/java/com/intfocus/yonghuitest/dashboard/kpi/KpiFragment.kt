@@ -1,54 +1,43 @@
 package com.intfocus.yonghuitest.dashboard.kpi
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.old_kpi.MarginDecoration
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.DashboardActivity
-import com.intfocus.yonghuitest.dashboard.kpi.adapter.*
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiItemAdapter
+import com.intfocus.yonghuitest.dashboard.kpi.adapter.KpiStickAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroup
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiRequest
 import com.intfocus.yonghuitest.dashboard.kpi.mode.KpiMode
 import com.intfocus.yonghuitest.listen.CustPagerTransformer
-import com.intfocus.yonghuitest.subject.HomeTricsActivity
-import com.intfocus.yonghuitest.subject.SubjectActivity
-import com.intfocus.yonghuitest.subject.TableActivity
-import com.intfocus.yonghuitest.util.*
+import com.intfocus.yonghuitest.util.DisplayUtil
+import com.intfocus.yonghuitest.util.ErrorUtils
+import com.intfocus.yonghuitest.view.DefaultRefreshView
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.zbl.lib.baseframe.core.Subject
-import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
 import sumimakito.android.advtextswitcher.Switcher
 import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/20.
  */
-class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener {
-    lateinit var ctx: Context
+class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener {
     lateinit var mViewPagerAdapter: KpiStickAdapter
     var rootView: View? = null
     var gson = Gson()
@@ -56,10 +45,9 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
     val FIRST_PAGE_INDEX: Int = 0
     var stickSzize: Int = 0
     var timer = Timer()
-    lateinit var stickCycle : StickCycleTask
+    lateinit var stickCycle: StickCycleTask
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return KpiMode(ctx)
     }
@@ -80,33 +68,14 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        initAffiche()
-        initSwipeLayout()
+//        initAffiche()
         super.onActivityCreated(savedInstanceState)
-    }
-
-    fun initSwipeLayout() {
-        swipe_container.setOnRefreshListener(this)
-        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light)
-        swipe_container.setDistanceToTriggerSync(300)// 设置手指在屏幕下拉多少距离会触发下拉刷新
-        swipe_container.setSize(SwipeRefreshLayout.DEFAULT)
-    }
-
-    override fun onRefresh() {
-        if (HttpUtil.isConnected(context)) {
-            if (stickCycle != null) {
-                stickCycle.cancel()
-            }
-            model.requestData()
-        } else {
-            swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(result: KpiRequest) {
+        trl_refresh_layout.finishLoadmore()
+        trl_refresh_layout.finishRefreshing()
         stickCycle = StickCycleTask()
 
         var top_fragment: MutableList<Fragment> = mutableListOf()
@@ -138,56 +107,37 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
         }
 
         if (kpi_datas != null) {
-            val mLayoutManager = LinearLayoutManager(ctx)
-            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-
-            //设置布局管理器
-            rc_kpi_groups.layoutManager = mLayoutManager
-            //设置Adapter
-            var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
-            rc_kpi_groups.adapter = recycleAdapter
-//            rc_kpi_groups.isNestedScrollingEnabled = false
-        }
-
-        swipe_container.isRefreshing = false
-        rootView!!.invalidate()
-    }
-
-    private fun initRecycleView(recyclerView: RecyclerView, itemDatas: KpiGroup) {
-        val offset = DisplayUtil.dip2px(ctx, -3.5f)
-        recyclerView.setPadding(offset, 0 - offset, offset, 0 - offset + 3)
-
-        var layoutManager: StaggeredGridLayoutManager
-        if (itemDatas.data!![0].dashboard_type.equals("number2")) {
-            layoutManager = object : StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
+            var layoutManager: StaggeredGridLayoutManager
+            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
                 override fun canScrollVertically(): Boolean {
                     return false
                 }
             }
 
-            //设置布局管理器
-            recyclerView.layoutManager = layoutManager
-            //设置Adapter
-            var recycleAdapter = NumberThreeItemAdapter(ctx, itemDatas.data)
-            recyclerView.adapter = recycleAdapter
-            //设置分隔线
-            recyclerView.addItemDecoration(MarginDecoration(ctx))
-            //设置增加或删除条目的动画
-            recyclerView.itemAnimator = DefaultItemAnimator()
-        } else {
-            val mLayoutManager = LinearLayoutManager(ctx)
-            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
+            rc_kpi_groups.layoutManager = layoutManager
+            var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
+            rc_kpi_groups.adapter = recycleAdapter
 
-            //设置布局管理器
-            recyclerView.layoutManager = mLayoutManager
-            //设置Adapter
-            var recycleAdapter = NumberTwoItemAdapter(ctx, itemDatas.data)
-            recyclerView.adapter = recycleAdapter
-            //设置分隔线
-            recyclerView.addItemDecoration(MarginDecoration(ctx))
-            //设置增加或删除条目的动画
-            recyclerView.itemAnimator = DefaultItemAnimator()
+            var headerView = DefaultRefreshView(ctx)
+            headerView.setArrowResource(R.drawable.loading_up)
+            trl_refresh_layout.setHeaderView(headerView)
+            trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
+                override fun retry() {
+                    model.requestData()
+                }
+
+                override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                    model.requestData()
+                    super.onRefresh(refreshLayout)
+                }
+
+                override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                    super.onLoadMore(refreshLayout)
+                }
+
+            })
         }
+        rootView!!.invalidate()
     }
 
     /**
@@ -208,6 +158,22 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
         }).start()
     }
 
+    override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+        var alpha = 0
+        var scale: Float
+        var height = DisplayUtil.dip2px(ctx, 129f)
+        if (scrollY <= height) {
+            scale = scrollY / height as Float
+            alpha = 255 * scale as Int
+            rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
+        } else {
+            if (alpha < 255) {
+                alpha = 255
+                rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
+            }
+        }
+    }
+
     //重写ViewPager页面切换的处理方法
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -224,8 +190,7 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
                 if (vp_kpi_stick != null) {
                     if (vp_kpi_stick.currentItem + 1 < stickSzize) {
                         vp_kpi_stick.currentItem = vp_kpi_stick.currentItem + 1
-                    }
-                    else {
+                    } else {
                         vp_kpi_stick.currentItem = 0
                     }
                 }

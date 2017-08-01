@@ -12,12 +12,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.ResetPasswordActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.SimpleListAdapter;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.URLs;
 import com.umeng.message.PushAgent;
 
@@ -155,7 +156,7 @@ public class SettingListActivity extends BaseActivity {
                         break;
                     } else {
                         mLastExitTime = System.currentTimeMillis();
-                        toast("再点击一下将打开 开发者选项");
+                        toast("再点击一下将打开 开发者选项", ToastColor.SUCCESS);
                     }
                     break;
 

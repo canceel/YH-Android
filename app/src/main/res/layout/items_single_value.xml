@@ -79,7 +79,7 @@
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/tv_report_number"
                 android:layout_alignBaseline="@id/tv_report_number"
-                android:text="支"
+                android:text="次"
                 android:textColor="#91c941"
                 android:textSize="@dimen/single_value_text_size_medium"/>
 

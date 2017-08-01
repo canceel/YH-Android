@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -27,7 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -50,8 +48,8 @@ import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
@@ -95,7 +93,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     private boolean reportDataState;
     private ImageView iv_BannerBack;
     private TextView tv_BannerBack;
-    private ImageView ivBannerSetting;
+    private ImageView iv_BannerSetting;
     private Intent mSourceIntent;
     private Boolean isFromActivityResult = false;
     /* 请求识别码 */
@@ -130,9 +128,9 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             userNum = "not-set";
         }
 
-        iv_BannerBack = (ImageView) findViewById(R.id.bannerBack);
+        iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
-        ivBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
+        iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
         mWebView = (WebView) findViewById(R.id.browser);
         initActiongBar();
         initSubWebView();
@@ -231,9 +229,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     private void initActiongBar() {
-        bannerView = (RelativeLayout) findViewById(R.id.actionBar);
-        ImageView mBannerSetting = (ImageView) findViewById(R.id.bannerSetting);
-        mTitle = (TextView) findViewById(R.id.bannerTitle);
+        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        mTitle = (TextView) findViewById(R.id.tv_banner_title);
 
 		/*
          * Intent Data || JSON Data
@@ -250,7 +247,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             mPDFView = (PDFView) findViewById(R.id.pdfview);
             mPDFView.setVisibility(View.INVISIBLE);
         }
-        mBannerSetting.setVisibility(View.VISIBLE);
+        iv_BannerSetting.setVisibility(View.VISIBLE);
     }
 
     /*
@@ -572,7 +569,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             intent.putExtra("selectedItemPath", selectedItemPath);
             mContext.startActivity(intent);
         } else {
-            WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+            toast("该报表暂不支持筛选");
         }
     }
 
@@ -582,7 +579,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         clipboardManager.setText(link);
-        WidgetUtil.showToastShort(mContext, "链接已拷贝");
+        toast("链接已拷贝", ToastColor.SUCCESS);
     }
 
     /*
@@ -625,8 +622,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             if (mWebView.getMeasuredHeight() > imgMaxHight) {
                 imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
                         displayMetrics.heightPixels * 3, Bitmap.Config.ARGB_8888);
-            }
-            else {
+            } else {
                 imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
                         mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
             }
@@ -935,7 +931,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ivBannerSetting.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
+                    iv_BannerSetting.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
                 }
             });
         }
@@ -1044,12 +1040,12 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
          */
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(),"upload.jpg"));
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }else {
-                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"upload.jpg"));
+            } else {
+                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
             }
             intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         }

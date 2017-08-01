@@ -1,15 +1,9 @@
 package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
-import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
-import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
-import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,10 +13,8 @@ import java.io.IOException
 import java.util.HashMap
 import org.xutils.http.RequestParams
 import org.xutils.common.Callback.CancelledException
-import org.xutils.common.Callback.ProgressCallback
 import org.xutils.x
 import org.xutils.common.task.PriorityExecutor
-import org.xutils.common.Callback.CommonCallback
 
 
 /**

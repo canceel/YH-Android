@@ -6,19 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
-import com.intfocus.yonghuitest.util.HttpUtil;
-
-import java.io.File;
+import com.intfocus.yonghuitest.util.ToastUtils;
 
 /**
  * Created by liuruilin on 2017/3/28.
@@ -120,7 +116,7 @@ public class SettingPreferenceActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mContext, "缓存已清理", Toast.LENGTH_SHORT).show();
+                ToastUtils.INSTANCE.show(mContext, "缓存已清理", R.color.co1_syr);
             }
         }, 3000);
     }

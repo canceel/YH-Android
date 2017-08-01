@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -37,7 +36,6 @@ import org.xutils.x
 
 class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeItemListener, NoticeMenuAdapter.NoticeItemListener, ErrorUtils.ErrorLisenter {
 
-    lateinit var ctx: Context
     var rootView: View? = null
     var datas: MutableList<NoticeListDataBean>? = null
     var gson = Gson()
@@ -55,7 +53,6 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
     var isEmpty: Boolean = true//数据是否为空
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return NoticeMode(ctx)
     }
 
@@ -127,7 +124,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
                     trl_refresh_layout.finishLoadmore()
                     isEmpty = datas == null || datas!!.size == 0
                     ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
-                    WidgetUtil.showToastShort(context, "请检查网络")
+                    ToastUtils.show(ctx, "请检查网络")
                 }
             }
 
@@ -138,10 +135,9 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
                     model.requestData(page, typeStr!!)
                 } else {
                     trl_refresh_layout.finishLoadmore()
-                    WidgetUtil.showToastShort(ctx, "没有更多公告")
+                    ToastUtils.show(ctx, "没有更多公告")
                 }
             }
-
         })
         model.requestData(1, typeStr!!)
 //        //数据为空即第一次加载时候才请求
@@ -185,7 +181,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_2, null)
         } else {
-            WidgetUtil.showToastShort(context, result.errorMsg)
+            ToastUtils.show(context, result.errorMsg)
         }
     }
 
@@ -230,7 +226,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             hideLoading()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 
@@ -251,7 +247,7 @@ class NoticeFragment : BaseModeFragment<NoticeMode>(), NoticeListAdapter.NoticeI
             trl_refresh_layout.finishLoadmore()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(trl_refresh_layout, ll_empty, ll_retry, "公告预警数据为空", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_2, this)
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 }

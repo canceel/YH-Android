@@ -6,7 +6,7 @@ import android.view.View;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.mode.MeterMode;
 import com.intfocus.yonghuitest.util.HttpUtil;
-import com.intfocus.yonghuitest.util.WidgetUtil;
+import com.intfocus.yonghuitest.util.ToastUtils;
 
 /**
  * Created by liuruilin on 2017/5/11.
@@ -30,7 +30,7 @@ public abstract class BaseSwipeHomeFragment extends BaseModeFragment<MeterMode> 
             getModel().requestData();
         } else {
             mSwipeLayout.setRefreshing(false);
-            WidgetUtil.showToastShort(getContext(), "请检查网络");
+            ToastUtils.INSTANCE.show(getContext(), "请检查网络");
         }
     }
 }

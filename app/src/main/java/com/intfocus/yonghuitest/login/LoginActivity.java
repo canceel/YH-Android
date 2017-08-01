@@ -24,6 +24,7 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.update.PgyUpdateManager;
 
@@ -97,8 +98,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNoticeTextAndBackgroundColor("请到数据化运营平台申请开通账号",R.color.color_notice_login_failure);
-
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号");
             }
         });
 
@@ -271,7 +271,7 @@ public class LoginActivity extends BaseActivity {
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
-                setNoticeTextAndBackgroundColor("请输入用户名与密码",R.color.color_notice_login_failure);
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码");
                 return;
             }
 
@@ -307,7 +307,7 @@ public class LoginActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_failure);
+                                ToastUtils.INSTANCE.show(LoginActivity.this, info);
                                 return;
                             }
 
@@ -349,10 +349,11 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 设置顶部提示弹窗
+     *
      * @param text
      * @param colorId
      */
-    private void setNoticeTextAndBackgroundColor(String text,int colorId) {
+    private void setNoticeTextAndBackgroundColor(String text, int colorId) {
         mTvLoginResultNotice.setText(text);
         mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(colorId));
         mLlLoginResultNotice.setVisibility(View.VISIBLE);

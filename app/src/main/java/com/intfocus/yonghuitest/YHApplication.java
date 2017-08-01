@@ -10,20 +10,15 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.intfocus.yonghuitest.bean.PushMessage;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
-import com.intfocus.yonghuitest.util.CacheCleanManager;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.URLs;
-import com.pgyersdk.crash.PgyCrashManager;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
@@ -42,9 +37,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.intfocus.yonghuitest.util.K.kPushDeviceToken;
 import static com.intfocus.yonghuitest.util.PrivateURLs.kWXAppId;
 import static com.intfocus.yonghuitest.util.PrivateURLs.kWXAppSecret;
-import static com.intfocus.yonghuitest.util.K.kPushDeviceToken;
 
 /**
  * Created by lijunjie on 16/1/15.
@@ -58,6 +53,7 @@ public class YHApplication extends Application {
     public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
     private Context appContext;
+    public static Context globalContext;
     SharedPreferences mSharedPreferences;
     PackageInfo packageInfo;
 
@@ -66,6 +62,7 @@ public class YHApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
+        globalContext = getApplicationContext();
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -77,6 +74,12 @@ public class YHApplication extends Application {
          *  蒲公英平台，收集闪退日志
          */
 //        PgyCrashManager.register(this);
+
+        Log.i("testlog", BuildConfig.DEBUG + "");
+        /*
+         * Bugly 异常上报
+         */
+        CrashReport.initCrashReport(getApplicationContext(), "1690ecea95", BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -173,7 +176,7 @@ public class YHApplication extends Application {
      */
     @Override
     public void onTerminate() {
-        PgyCrashManager.unregister(); // 解除注册蒲公英异常信息上传
+//        PgyCrashManager.unregister(); // 解除注册蒲公英异常信息上传
         super.onTerminate();
     }
 

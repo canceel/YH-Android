@@ -34,7 +34,7 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
     fun initViewPager() {
         fragmentList.add(NoticeFragment())
-        fragmentList.add(InstituteFragment())
+        fragmentList.add(DataCollegeFragment())
         fragmentList.add(UserFragment())
 
         titleList.add("公告预警")

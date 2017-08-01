@@ -8,27 +8,24 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
-import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsLeftListAdapter
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightGVAdapter
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightRVAdapter
+import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
+import com.intfocus.yonghuitest.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yonghuitest.mode.ReportsListMode
-import com.intfocus.yonghuitest.subject.*
-import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
-import com.intfocus.yonghuitest.util.URLs.kGroupId
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_reports.*
 import org.greenrobot.eventbus.EventBus
@@ -41,14 +38,12 @@ import org.json.JSONObject
  * Created by liuruilin on 2017/6/15.
  */
 class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapter.ReportLeftListListener, ReportsRightGVAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
-    lateinit var ctx: Context
     var rootView: View? = null
     var datas: List<CategoryBean>? = null
     lateinit var reportsRightAdapter: ReportsRightRVAdapter
     lateinit var reportsLeftAdapter: ReportsLeftListAdapter
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return ReportsListMode(ctx, "reports")
     }
 
@@ -84,7 +79,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 
@@ -154,7 +149,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
                         startActivity(intent)
                     }
                     link.indexOf("template/1") > 0 -> {
-                        val intent = Intent(activity, ModularTwo_Activity::class.java)
+                        val intent = Intent(activity, ModularTwo_Mode_Activity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, bannerName)
                         intent.putExtra(URLs.kObjectId, 1)

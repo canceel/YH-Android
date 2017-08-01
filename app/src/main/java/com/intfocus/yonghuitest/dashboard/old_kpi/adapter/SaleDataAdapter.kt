@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity
 import com.intfocus.yonghuitest.dashboard.old_kpi.BarFragment_Top
 import com.intfocus.yonghuitest.dashboard.old_kpi.BrokenLineFragment
 import com.intfocus.yonghuitest.dashboard.old_kpi.NumberFragment

@@ -10,18 +10,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
+
+import static com.taobao.accs.ACCSManager.mContext;
 
 /**
  * Created by lijunjie on 16/1/18.
@@ -61,7 +63,7 @@ public class ResetPasswordActivity extends BaseActivity {
         ResetPasswordActivity.this.onBackPressed();
     }
 
-    private class JavaScriptInterface extends JavaScriptBase  {
+    private class JavaScriptInterface extends JavaScriptBase {
         /*
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
@@ -122,12 +124,12 @@ public class ResetPasswordActivity extends BaseActivity {
                     }
 
                 } else {
-                    Toast.makeText(ResetPasswordActivity.this, "原始密码输入有误", Toast.LENGTH_SHORT).show();
+                    ToastUtils.INSTANCE.show(mContext, "原始密码输入有误");
                     new Thread(mRunnableForDetecting).start();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(ResetPasswordActivity.this, "请退出，重新登录，再尝试", Toast.LENGTH_SHORT).show();
+                ToastUtils.INSTANCE.show(mContext, "请退出，重新登录，再尝试");
             }
 
         }

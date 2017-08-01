@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.dashboard.GroupDataBean
+import com.intfocus.yonghuitest.dashboard.report.mode.GroupDataBean
 import org.xutils.x
 
 /**

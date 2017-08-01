@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alibaba.fastjson.JSON;
 import com.intfocus.yonghuitest.subject.template_v2.entity.MererEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MeterRequestResult;
-import com.intfocus.yonghuitest.subject.template_v2.utils.FileUtil;
+import com.intfocus.yonghuitest.util.FileUtil;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.StringUtil;
 

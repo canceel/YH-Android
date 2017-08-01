@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/space_default"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    tools:context="com.intfocus.yonghuitest.ui.ModularTwo_UnitCurveChartFragment">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     android:layout_weight="0"
                     android:paddingRight="@dimen/space_default_small_s" />
 
-                <com.intfocus.yonghuitest.subject.template_v2.view.RateCursor
+                <com.intfocus.yonghuitest.view.RateCursor
                     android:id="@+id/img_RateCursor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

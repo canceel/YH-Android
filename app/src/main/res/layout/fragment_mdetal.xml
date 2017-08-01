@@ -14,13 +14,13 @@
 
 </ScrollView>
 
-    <!--<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/ll_mdrp_container"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context="com.intfocus.yonghuitest.ui.ModularTwo_RootPageFragment"/>-->
+    <!--<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/ll_mdrp_container"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context="com.intfocus.yonghuitest.ui.ModularTwo_RootPageModeFragment"/>-->
 
     <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.intfocus.yonghuitest.ui.ModularTwo_RootPageFragment">
+        tools:context="com.intfocus.yonghuitest.ui.ModularTwo_RootPageModeFragment">
 
         <ScrollView
             android:layout_width="match_parent"

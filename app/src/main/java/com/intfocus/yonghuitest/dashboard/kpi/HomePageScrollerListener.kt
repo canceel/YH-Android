@@ -10,9 +10,9 @@ import com.yonghui.homemetrics.utils.Utils
  * Created by CANC on 2017/7/28.
  */
 
-class HomePageScrollerListener(private val context: Context,
-                               private val recyclerView: RecyclerView,
-                               private val titleTop: View) : RecyclerView.OnScrollListener() {
+class HomePageScrollerListener(val context: Context,
+                               val recyclerView: RecyclerView,
+                               val titleTop: View) : RecyclerView.OnScrollListener() {
     private val statusBarHeight: Int = Utils.getStatusBarHeight(context)
     private val linearLayoutManager: MyLinearLayoutManager = recyclerView.layoutManager as MyLinearLayoutManager
 

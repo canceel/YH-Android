@@ -20,6 +20,7 @@
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
     <FrameLayout
+        android:id="@+id/fl_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:clickable="true">
@@ -54,7 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/nav_scan" />
+                android:src="@drawable/nav_scan"
+                android:onClick="startBarCodeActivity"/>
         </RelativeLayout>
     </FrameLayout>
 </FrameLayout>

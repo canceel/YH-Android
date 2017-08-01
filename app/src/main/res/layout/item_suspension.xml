@@ -31,7 +31,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.intfocus.yonghuitest.subject.template_v2.view.TableHorizontalScrollView
+            <com.intfocus.yonghuitest.view.TableHorizontalScrollView
                 android:id="@+id/thscroll_unit_table_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" />
-            </com.intfocus.yonghuitest.subject.template_v2.view.TableHorizontalScrollView>
+            </com.intfocus.yonghuitest.view.TableHorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

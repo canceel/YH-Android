@@ -31,7 +31,6 @@ import com.intfocus.yonghuitest.util.ImageUtil.*
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
-import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
@@ -50,7 +49,6 @@ import java.util.*
  * Created by liuruilin on 2017/6/7.
  */
 class UserFragment : BaseModeFragment<UserInfoMode>() {
-    lateinit var ctx: Context
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
     var mUserInfo: UserInfoBean? = null
@@ -66,7 +64,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_RESULT_REQUEST = 0xa2
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return UserInfoMode(ctx)
@@ -155,7 +152,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startFavoriteActivity() {
-        ToastUtil.showToast(ctx, "文章收藏页待实现")
+        var intent = Intent(activity, FavoriteActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     fun startIssueActivity() {
@@ -212,7 +211,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     fun logout() {
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
-            WidgetUtil.showToastShort(ctx, "未连接网络, 无法退出")
+            ToastUtils.show(ctx, "未连接网络, 无法退出")
             return
         }
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
@@ -232,7 +231,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
-                        WidgetUtil.showToastShort(ctx, response.toString())
+                        ToastUtils.show(ctx, response.toString())
                     }
                 })
             } catch (e: JSONException) {
@@ -248,7 +247,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // 用户没有选择图片，返回
         if (resultCode == RESULT_CANCELED) {
-            WidgetUtil.showToastShort(ctx, "取消")
+            ToastUtils.show(ctx, "取消")
             return
         }
 

@@ -1,8 +1,10 @@
 package com.intfocus.yonghuitest.base;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 
+import com.intfocus.yonghuitest.util.LoadingUtils;
 import com.zbl.lib.baseframe.core.AbstractFragment;
 import com.zbl.lib.baseframe.core.Subject;
 
@@ -12,9 +14,13 @@ import com.zbl.lib.baseframe.core.Subject;
 
 public abstract class BaseModeFragment<Target extends Subject> extends AbstractFragment<Target> {
     public Activity act;
+    public Context ctx;
+
+    protected Dialog loadingDialog;
 
     @Override
     public void onAttach(Context context) {
+        ctx = context.getApplicationContext();
         act = (Activity) context;
         super.onAttach(context);
     }
@@ -35,5 +41,17 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+
+    protected void showDialog(Context context) {
+        loadingDialog = LoadingUtils.createLoadingDialog(context);
+        loadingDialog.show();
+    }
+
+    protected void hideLoading() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
     }
 }

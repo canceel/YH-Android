@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.activity_issue.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 
 class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemListener {
     private val CODE_GALLERY_REQUEST = 0xa0
@@ -57,7 +56,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
     }
 
     override fun setLayoutRes(): Int {
-        TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
+        TODO("重写 BaseModeActivity 后, 需重写相关联 Activity 的 setLayoutRes")
     }
 
     override fun onCreateFinish(p0: Bundle?) {

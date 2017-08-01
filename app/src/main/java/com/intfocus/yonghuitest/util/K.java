@@ -21,6 +21,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kUserForgetAPIPath       = "%s/api/v1/:platform/reset_password";
   public final static String kReportDataAPIPath       = "%s/api/v1/group/%s/template/%s/report/%s/zip";
   public final static String kReportJsonDataAPIPath   = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
+  public final static String kReportJsonAPIPath       = "%s/api/v1/group/%s/template/%s/report/%s/json";
   public final static String kCommentAPIPath          = "%s/api/v1/user/%d/id/%d/type/%d";
   public final static String kScreenLockAPIPath       = "%s/api/v1/user_device/%s/screen_lock";
   public final static String kDeviceStateAPIPath      = "%s/api/v1/user_device/%d/state";
@@ -49,17 +50,25 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kResetPwdMobilePath       = "%s/mobile/%s/update_user_password";
   public final static String kThursdaySayMobilePath    = "%s/mobile/%s/thursday_say";
   public final static String kForgetPwdMobilePath      = "%s/mobile/%s/forget_user_password";
+  public final static String kNewKPIApiDataPath        = "/api/v1/group/{groupId}/role/{roleId}/kpi";
+  public final static String kNewMsgDataMobilePath     = "/api/v1/role/{roleId}/group/{groupId}/user/{userId}/message";
 
   /**
    * MinePage#API
    */
   public final static String KUserInfoPath             = "%s/api/v1/user/%s/group/%s/role/%s/statistics";
-  public final static String kNoticeListPath           = "%s/api/v1/user/%s/type/%s/page/%s/limit/%s/notices";
+  public final static String kNoticeListPath           = "%s/api/v1/user/%s/notices?type=%s&page=%s&limit=%s";
   public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
   public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
   public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
   public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
+  public final static String KWorkBoxListPath          = "%s/api/v1/group/%s/role/%s/app_covers";
   public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
+  public final static String KInstituteListPath        = "/api/v1/user/{userId}/page/{page}/limit/{pageSize}/articles";
+//  public final static String KInstituteListPath        = "%s/api/v1/user/%s/page/%s/limit/%s/articles?keyword=%s";
+  public final static String KInstituteCollectionPath  = "%s/api/v1/user/%s/article/%s/favourite_status/%s";
+  public final static String KFavouriteArticlesPath    = "/api/v1/user/{userId}/page/{page}/limit/{pageSize}/favourite_articles";
+  public final static String KArticleCollectionPath    = "/api/v1/user/{userId}/article/{articleId}/favourite_status/{status}";
 
   /**
    *  Config#Application

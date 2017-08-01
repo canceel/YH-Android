@@ -515,6 +515,8 @@ public class HttpUtil {
             mProgressDialog.setTitle("提示信息");
             mProgressDialog.setMessage("正在更新静态资源，请稍候...");
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
         }
 
         @Override

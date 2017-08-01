@@ -1,14 +1,17 @@
 package com.intfocus.yonghuitest.util;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -36,16 +39,15 @@ public class ImageUtil {
          */
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                    imageUri = FileProvider.getUriForFile(context, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(),"icon.jpg"));
-                    intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }else {
-                    imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"icon.jpg"));
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                imageUri = FileProvider.getUriForFile(context, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(), "icon.jpg"));
+                intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            } else {
+                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "icon.jpg"));
             }
             return intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -55,12 +57,12 @@ public class ImageUtil {
      */
     public static Intent launchSystemImageCrop(Context context, Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        File tempFile = new File(Environment.getExternalStorageDirectory(),"icon.jpg");
+        File tempFile = new File(Environment.getExternalStorageDirectory(), "icon.jpg");
         Uri outPutUri = Uri.fromFile(tempFile);
         if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.KITKAT) {
-            String url=FileUtil.getBitmapUrlPath(context, uri);
+            String url = FileUtil.getBitmapUrlPath(context, uri);
             intent.setDataAndType(Uri.fromFile(new File(url)), "image/*");
-        }else{
+        } else {
             intent.setDataAndType(uri, "image/*");
         }
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -71,7 +73,7 @@ public class ImageUtil {
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 150);
         intent.putExtra("outputY", 150);
-        intent.putExtra("return-data",true);
+        intent.putExtra("return-data", true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
         return intent;
     }
@@ -80,8 +82,8 @@ public class ImageUtil {
      * 打开系统相册, 获取相册图片
      */
     public static Intent getGallery() {
-        Intent intentFromGallery = new Intent(Intent.ACTION_PICK,null);
-        intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+        Intent intentFromGallery = new Intent(Intent.ACTION_PICK, null);
+        intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         return intentFromGallery;
     }
 
@@ -108,7 +110,7 @@ public class ImageUtil {
 
         //去掉状态栏
         Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, statusBarHeight, width,
-                height-statusBarHeight);
+                height - statusBarHeight);
 
         //销毁缓存信息
         view.destroyDrawingCache();
@@ -118,8 +120,7 @@ public class ImageUtil {
     }
 
 
-
-    private static final String TAG ="ImageUtil";
+    private static final String TAG = "ImageUtil";
 
 
     /**
@@ -181,7 +182,7 @@ public class ImageUtil {
                 }
             }
 
-            FileUtil.saveImage(picPath,losslessScale(picPath,30));
+            FileUtil.saveImage(picPath, losslessScale(picPath, 30));
 
             return picPath;
         } finally {
@@ -193,7 +194,7 @@ public class ImageUtil {
         return Uri.fromFile(new File(path));
     }
 
-    public static Bitmap losslessScale(String path, int quality){
+    public static Bitmap losslessScale(String path, int quality) {
         Bitmap bitmap = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
@@ -212,5 +213,42 @@ public class ImageUtil {
             return false;
         }
         return true;
+    }
+
+    public static String handleImageOnKitKat(Uri uri, Context context) {
+        String imagePath = null;
+
+        if (DocumentsContract.isDocumentUri(context, uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                //Log.d(TAG, uri.toString());
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection, context);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                //Log.d(TAG, uri.toString());
+                Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null, context);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            //Log.d(TAG, "content: " + uri.toString());
+            imagePath = getImagePath(uri, null, context);
+        }
+        return imagePath;
+    }
+
+    private static String getImagePath(Uri uri, String selection, Context context) {
+        String path = null;
+        Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+
+            cursor.close();
+        }
+        return path;
     }
 }

@@ -119,6 +119,8 @@
     <color name="co16">#a984d3</color>
     <!-- 红 -->
     <color name="co17">#f44f4f</color>
+    <color name="co18">#72b544</color>
+
 
     <color name="colorAccent">#FF4081</color>
     <color name="default_ring_color">#DFE4E6</color>
@@ -137,7 +139,8 @@
     <!--个人信息页-->
     <color name="tab_layout_line">#6aa657</color>
     <color name="user_info_item_background">#fbfcf5</color>
-    <color name="item_line">#d2d2d2</color>
+    <color name="item_line">#e6e6e6</color>
+    <color name="item_line_small">#f3f3f3</color>
     <color name="logout_line">#848484</color>
     <color name="logout_text">#010101</color>
     <color name="location_text">#6e6e6e</color>
@@ -149,5 +152,86 @@
     <color name="list_title_base">#6aa657</color>
     <color name="number_unit_color">#808080</color>
     <color name="base_background">#f7fef5</color>
+    <color name="color_notice_login_success">#f200a4e9</color>
+    <color name="color_notice_login_failure">#f2f57658</color>
 
+    <!--    公告预警    -->
+    <color name="light_blue">#EBF8FD</color>
+    <!--新配色表-->
+    <color name="color1">#00a4e9</color>
+    <color name="color2">@color/co2</color>
+    <color name="color3">#666666</color>
+    <color name="color4">@color/co4</color>
+    <color name="color5">#2c3841</color>
+    <color name="color6">#32414b</color>
+    <color name="color7">#00ffff</color>
+    <color name="color8">#f3f3f3</color>
+    <color name="color9">@color/co9</color>
+    <color name="color10">@color/co10</color>
+    <color name="color11">@color/co11</color>
+    <color name="color12">@color/co12</color>
+    <color name="color13">@color/co13</color>
+    <color name="color14">@color/co14</color>
+    <color name="color15">#4688B5</color>
+    <color name="color16">@color/co16</color>
+    <color name="color17">@color/co17</color>
+    <color name="color18">@color/co18</color>
+
+    <array name="co_order">
+        <item>@color/co17</item>
+        <item>@color/co16</item>
+        <item>@color/co15</item>
+        <item>@color/co2</item>
+        <item>@color/co11</item>
+        <item>@color/co12</item>
+        <item>@color/co13</item>
+    </array>
+
+    <array name="co_cursor">
+        <item>#ffea4335</item>
+        <item>#fffbbc05</item>
+        <item>#ff34ab53</item>
+    </array>
+
+    <!-- 生意人3.1 -->
+    <!-- 主题蓝色 -->
+    <color name="co1_syr">#00a4e9</color>
+    <!-- 主题蓝色 8%透明 -->
+    <color name="co1_syr_08">#0800a4e9</color>
+    <!-- 辅助绿色 -->
+    <color name="co2_syr">#91c941</color>
+    <!-- 主文字 -->
+    <color name="co3_syr">#666666</color>
+    <!-- 提示禁用文字 -->
+    <color name="co4_syr">#bcbcbc</color>
+    <!-- +弹框点击色 -->
+    <color name="co5_syr">#2c3841</color>
+    <!-- 辅助暗蓝/特殊数字/标题 -->
+    <color name="co6_syr">#32414b</color>
+    <!-- 暗蓝背景上的醒目元素 -->
+    <color name="co7_syr">#00ffff</color>
+    <!-- 底色/白色背景点击态色 -->
+    <color name="co8_syr">#f3f3f3</color>
+    <!-- 分割线 -->
+    <color name="co9_syr">#e6e6e6</color>
+    <!-- 纯白 -->
+    <color name="co10_syr">#ffffff</color>
+    <!-- 纯白 -->
+    <color name="co10_syr_60">#60ffffff</color>
+    <!-- 橙色 -->
+    <color name="co11_syr">#f57658</color>
+    <!-- 黄 -->
+    <color name="co12_syr">#f4bc45</color>
+    <!-- 青 -->
+    <color name="co13_syr">#3cc7c9</color>
+    <!-- 淡蓝色 -->
+    <color name="co14_syr">#71a3ed</color>
+    <!-- 蓝 -->
+    <color name="co15_syr">#4688b5</color>
+    <!-- 紫 -->
+    <color name="co16_syr">#a984d3</color>
+    <!-- 红 -->
+    <color name="co17_syr">#f44f4f</color>
+    <!-- 深绿文字 -->
+    <color name="co18_syr">#72b54d</color>
 </resources>

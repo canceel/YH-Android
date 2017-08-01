@@ -2,10 +2,9 @@ package com.intfocus.yonghuitest.mode
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
-import com.intfocus.yonghuitest.bean.dashboard.ReportListPageRequest
+import com.intfocus.yonghuitest.dashboard.report.mode.ListPageBean
+import com.intfocus.yonghuitest.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs.kGroupId

@@ -7,10 +7,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
-import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
 
 import java.util.ArrayList;
@@ -84,18 +82,6 @@ public class QRCodeDecoder {
             result = new MultiFormatReader().decode(image, HINTS);
             return result.getText();
         } catch (Exception e) {
-            e.printStackTrace();
-            if (e instanceof NotFoundException) {
-                return "";
-            }
-            if (source != null) {
-                try {
-                    result = new MultiFormatReader().decode(new BinaryBitmap(new GlobalHistogramBinarizer(source)), HINTS);
-                    return result.getText();
-                } catch (Throwable e2) {
-                    e2.printStackTrace();
-                }
-            }
             return "";
         }
     }

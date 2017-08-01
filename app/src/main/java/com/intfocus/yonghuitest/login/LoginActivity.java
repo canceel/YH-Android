@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
@@ -24,8 +25,10 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.update.PgyUpdateManager;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
 
@@ -97,8 +100,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNoticeTextAndBackgroundColor("请到数据化运营平台申请开通账号",R.color.color_notice_login_failure);
-
+            ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号", R.color.co11_syr);
             }
         });
 
@@ -271,7 +273,7 @@ public class LoginActivity extends BaseActivity {
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
-                setNoticeTextAndBackgroundColor("请输入用户名与密码",R.color.color_notice_login_failure);
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码", R.color.co11_syr);
                 return;
             }
 
@@ -307,7 +309,7 @@ public class LoginActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                setNoticeTextAndBackgroundColor(info, R.color.color_notice_login_failure);
+                                ToastUtils.INSTANCE.show(LoginActivity.this, info, R.color.co11_syr);
                                 return;
                             }
 

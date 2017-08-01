@@ -5,49 +5,12 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/white_255_255_255">
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBar">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/iv_back"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:text="主题名称"
-            style="@style/BannerTitle" />
-
-        <RelativeLayout
-            style="@style/BannerRightButton"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content">
-
-            <ImageView
-                android:id="@+id/bannerSetting"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:onClick="launchDropMenuActivity"
-                android:src="@drawable/banner_setting"/>
-        </RelativeLayout>
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+    <include layout="@layout/item_action_bar"></include>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_title">
+        android:layout_below="@+id/rl_action_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"

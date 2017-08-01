@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.dashboard.kpi
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -14,6 +15,9 @@ import kotlinx.android.synthetic.main.fragment_number_one.*
 import kotlinx.android.synthetic.main.fragment_number_two.*
 import org.greenrobot.eventbus.EventBus
 import java.text.DecimalFormat
+import android.graphics.Typeface.createFromAsset
+
+
 
 /**
  * Created by liuruilin on 2017/6/23.
@@ -53,9 +57,11 @@ class NumberOneFragment : BaseModeFragment<Subject>() {
     }
 
     fun init() {
+        val mTypeface = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_number_one_title.text = datas!!.memo2
         var number = datas!!.data!!.high_light!!.number
         tv_number_one_number.text = formatNumber(number)
+        tv_number_one_number.typeface = mTypeface
         tv_number_one_unit.text = "(" + datas!!.unit + ")"
         tv_number_one_sub_title.text = datas!!.memo1
         tv_number_one_sub.text = datas!!.data!!.high_light!!.compare

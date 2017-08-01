@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBar">
+        android:layout_height="44dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/co10_syr"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/bannerBack"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            android:onClick="dismissActivity" />
+        <ImageButton
+            android:id="@+id/iv_banner_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:onClick="dismissActivity"
+            android:src="@drawable/nav_back_black"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="选项配置"
-            style="@style/BannerTitle" />
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="选项设置"
+            android:textColor="@color/co6_syr"
+            android:textSize="16sp"/>
     </RelativeLayout>
 
-    <RelativeLayout style="@style/SettingGroup"
-        android:paddingLeft="10dp">
+    <RelativeLayout
+        style="@style/SettingGroupOptionSetting">
 
         <TextView
             style="@style/SettingKey"
@@ -41,13 +43,14 @@
             android:id="@+id/switch_screenLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <View style="@style/Divider"/>
+    <View style="@style/OptionSettingDivider"/>
 
-    <RelativeLayout style="@style/SettingGroup"
-                    android:paddingLeft="10dp">
+    <RelativeLayout
+        style="@style/SettingGroupOptionSetting">
 
         <TextView
             style="@style/SettingKey"
@@ -57,13 +60,14 @@
             android:id="@+id/switch_report_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <View style="@style/Divider"/>
+    <View style="@style/OptionSettingDivider"/>
 
-    <RelativeLayout style="@style/SettingGroup"
-                    android:paddingLeft="10dp">
+    <RelativeLayout
+        style="@style/SettingGroupOptionSetting">
 
         <TextView
             style="@style/SettingKey"
@@ -73,12 +77,14 @@
             android:id="@+id/switch_screenshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <RelativeLayout style="@style/SettingGroup"
-                    android:paddingLeft="10dp"
-                    android:visibility="gone">
+    <RelativeLayout
+        style="@style/SettingGroupOptionSetting"
+
+        android:visibility="gone">
 
         <TextView
             style="@style/SettingKey"
@@ -91,12 +97,11 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <View style="@style/Divider"/>
+    <View style="@style/OptionSettingDivider"/>
 
     <RelativeLayout
         android:id="@+id/item_clear_cache"
-        style="@style/SettingGroup"
-        android:paddingLeft="10dp"
+        style="@style/SettingGroupOptionSetting"
         android:onClick="clearUserCache">
 
         <TextView
@@ -107,5 +112,4 @@
             style="@style/SettingArrow"/>
     </RelativeLayout>
 
-    <View style="@style/Divider"/>
 </LinearLayout>

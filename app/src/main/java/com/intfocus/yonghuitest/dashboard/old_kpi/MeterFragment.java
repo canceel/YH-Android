@@ -27,9 +27,9 @@ import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.base.BaseSwipeHomeFragment;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity;
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterClickEventEntity;
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterRequestResult;
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity;
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity;
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterRequestResult;
 import com.intfocus.yonghuitest.listen.CustPagerTransformer;
 import com.intfocus.yonghuitest.mode.MeterMode;
 import com.intfocus.yonghuitest.util.DisplayUtil;
@@ -79,7 +79,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
     @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
 
-    @ViewInject(R.id.whl_vp_meter)
+//    @ViewInject(R.id.whl_vp_meter)
     WidthHeightLinearLayou mWHllayout;
     @ViewInject(R.id.vp_meter)
     ViewPager vp_meter;

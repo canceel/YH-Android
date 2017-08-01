@@ -6,24 +6,24 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.mode.UserInfoMode
 import com.intfocus.yonghuitest.setting.SettingActivity
 import com.intfocus.yonghuitest.util.*
@@ -50,7 +50,6 @@ import java.util.*
  * Created by liuruilin on 2017/6/7.
  */
 class UserFragment : BaseModeFragment<UserInfoMode>() {
-    lateinit var ctx: Context
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
     var mUserInfo: UserInfoBean? = null
@@ -66,7 +65,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_RESULT_REQUEST = 0xa2
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         return UserInfoMode(ctx)
@@ -100,6 +98,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .setCircular(true)
                 .build()
 
+        var mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
+        tv_login_number.typeface = mTypeFace
+        tv_report_number.typeface = mTypeFace
+        tv_beyond_number.typeface = mTypeFace
         initView()
         super.onActivityCreated(savedInstanceState)
     }
@@ -113,6 +115,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_report_number.text = mUserInfo!!.browse_report_count
             tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
             tv_user_role.text = mUserInfo!!.role_name
+            tv_mine_user_num_value.text = mUserInfo!!.user_num
             tv_mine_user_group_value.text = mUserInfo!!.group_name
             x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
         }
@@ -131,6 +134,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_user_name.text = user!!.user_name
             tv_login_number.text = user.login_duration
             tv_report_number.text = user.browse_report_count
+            tv_mine_user_num_value.text = user.user_num
             tv_beyond_number.text = user.surpass_percentage.toString()
             tv_user_role.text = user.role_name
             tv_mine_user_group_value.text = user.group_name
@@ -149,11 +153,13 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startFavoriteActivity() {
-        ToastUtil.showToast(ctx, "文章收藏页待实现")
+        var intent = Intent(activity, FavoriteActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     fun startIssueActivity() {
-        var intent = Intent(activity, IssueActivity::class.java)
+        var intent = Intent(activity, FeedbackActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
@@ -184,7 +190,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isOutsideTouchable = true
         //设置可以点击
         popupWindow.isTouchable = true
-        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+        popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
 
         contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出
@@ -287,7 +293,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isOutsideTouchable = true
         //设置可以点击
         popupWindow.isTouchable = true
-        popupWindow.showAtLocation(activity.view, Gravity.BOTTOM, 0, 0)
+        popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
 
         contentView.findViewById(R.id.rl_camera).setOnClickListener {
             // 打开相机

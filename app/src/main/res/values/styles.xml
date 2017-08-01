@@ -92,7 +92,7 @@
 
     <style name="ToolBarTab">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">49dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
@@ -118,18 +118,17 @@
 
     <style name="SettingGroup">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_height">50dp</item>
     </style>
 
     <style name="SettingKey">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/co3_syr</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="SettingArrow">
@@ -166,8 +165,8 @@
 
     <style name="SmallDivider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/item_line</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:background">@color/co9_syr</item>
     </style>
 
     <style name="NarrowSmallDivider">
@@ -184,25 +183,25 @@
     </style>
 
     <style name="BannerTitle">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/co6_syr</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">200dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
 
     <style name="BannerBackButton">
-        <item name="android:layout_width">10dp</item>
-        <item name="android:layout_height">15dp</item>
-        <item name="android:gravity">fill_vertical</item>
-        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:src">@drawable/banner_back</item>
+        <item name="android:src">@drawable/nav_back_black</item>
     </style>
 
     <style name="BannerBackText">
-        <item name="android:text">返回</item>
+        <item name="android:text"></item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">14sp</item>
@@ -237,10 +236,8 @@
     </style>
 
     <style name="BannerButton">
-        <item name="android:layout_width">35dp</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="BannerLeftButton" parent="BannerButton">
@@ -248,10 +245,10 @@
         <item name="android:paddingTop">10dp</item>
     </style>
 
-    <style name="BannerRightButton" parent="BannerButton">
+    <style name="BannerRightButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <!--<item name="android:padding">8dp</item>-->
     </style>
 
     <style name="PasswordTextView">
@@ -317,11 +314,9 @@
     </style>
 
     <style name="BackStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:src">@drawable/ic_back</item>
-        <item name="android:background">@null</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/nav_back_black</item>
     </style>
 
     <style name="CommonDialog" parent="@android:style/Animation.Dialog">
@@ -416,7 +411,6 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-
     <style name="iv_mine_user_list">
         <item name="android:layout_width">16dp</item>
         <item name="android:layout_height">16dp</item>
@@ -445,12 +439,11 @@
     </style>
 
 
-
     <style name="tv_base_stytle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_small</item>
-        <item name="android:textColor">@color/argb_font_cont_333</item>
+        <item name="android:textColor">@color/co10_syr</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">@dimen/space_default_small</item>
         <item name="android:paddingRight">@dimen/space_default_small</item>
@@ -459,7 +452,7 @@
     <style name="tv_mererMinTitle_stytle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_cont</item>
         <item name="android:textColor">@color/co3</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -483,6 +476,64 @@
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="elevation">0dp</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!--设置界面ListView的Style-->
+    <style name="lv_setting_act">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:divider">@drawable/list_divider_line</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!--修改密码界面EditText通用样式-->
+    <style name="et_pwd_alter_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColorHint">@color/co4_syr</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SettingGroupOptionSetting">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/co10_syr</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="OptionSettingDivider">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+    <!--设置底部弹出popupWindows的动画-->
+    <style name="anim_popup_bottombar">
+        <item name="android:windowEnterAnimation">@anim/popup_bottombar_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottombar_out</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TitleText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/co6_syr</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerInParent">true</item>
     </style>
 
 </resources>

@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.bean.table.FilterItem;
+import com.intfocus.yonghuitest.subject.table.bean.FilterItem;
 
 import java.util.List;
 

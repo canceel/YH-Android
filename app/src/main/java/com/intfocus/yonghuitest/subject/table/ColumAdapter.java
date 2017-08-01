@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.listen.OnItemClickListener;
-import com.intfocus.yonghuitest.bean.table.Head;
-import com.intfocus.yonghuitest.bean.table.TableChart;
+import com.intfocus.yonghuitest.subject.table.bean.Head;
+import com.intfocus.yonghuitest.subject.table.bean.TableChart;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 

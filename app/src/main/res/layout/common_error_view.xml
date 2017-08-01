@@ -7,7 +7,7 @@
     android:background="@color/color8"
     android:gravity="bottom|center_horizontal"
     android:orientation="vertical"
-    android:visibility="visible">
+    android:visibility="gone">
 
 
     <TextView

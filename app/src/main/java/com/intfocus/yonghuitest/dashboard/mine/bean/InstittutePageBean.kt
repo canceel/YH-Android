@@ -1,9 +1,11 @@
 package com.intfocus.yonghuitest.dashboard.mine.bean
 
+import com.intfocus.yonghuitest.data.Pagination
+
 /**
  * Created by CANC on 2017/7/25.
  */
-class InstittutePageBean {
+class InstittutePageBean : Pagination() {
 
     /**
     "currPage":1,
@@ -12,12 +14,5 @@ class InstittutePageBean {
     "totalPage":2
      * code : 200
      */
-
-
-    var currPage: Int = 0
-    var pageSize: Int = 0
-    var totalCount: Int = 0
-    var totalPage: Int = 0
-    var code: Int = 0
     var list: List<InstituteDataBean> = listOf()
 }

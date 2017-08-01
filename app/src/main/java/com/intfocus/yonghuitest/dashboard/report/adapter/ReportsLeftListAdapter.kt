@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
+import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
 
 /**
  * Created by Liurl on 2017/6/17.

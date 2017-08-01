@@ -1,54 +1,94 @@
 {
   "data": [
     {
-      "titles": "201612",
-      "infos": [
-            {
-              "titles": "世界村店",
-              "infos": [
-                "休闲食品",
-                "健康有机生活馆",
-                "加工"
-          ]
-        },
-        {
-          "titles": "东城万达店",
-          "infos": [
-            "后勤小店",
-            "家用文体家电",
-            "干性杂货日配"
-          ]
-        }
-      ]
+      "id": 1,
+      "name": "模板一报表1",
+      "category": "1",
+      "group_name": "测试",
+      "link_path": "/mobile/v2/group/%@/template/1/report/2",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 2,
+      "health_value": 0,
+      "group_order": null,
+      "item_order": null,
+      "created_at": "2017-07-23T17:16:29.000+08:00"
     },
     {
-      "titles": "201701",
-      "infos": [
-        {
-          "titles": "东方伟业广场店",
-          "infos": [
-            "后勤小店",
-            "干性杂货日配"
-          ]
-        },
-        {
-          "titles": "东方名城店",
-          "infos": [
-            "健康有机生活馆",
-            "家用文体家电",
-            "干性杂货日配"
-          ]
-        },
-        {
-          "titles": "中南城店",
-          "infos": [
-            "电商小店",
-            "肉禽水产",
-            "干性杂货日配",
-            "清洁用品"
-          ]
-        }
-      ]
+      "id": 2,
+      "name": "模板一报表2",
+      "category": "1",
+      "group_name": "测试",
+      "link_path": "/mobile/v2/group/%@/template/1/report/1",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 3,
+      "health_value": 0,
+      "group_order": null,
+      "item_order": null,
+      "created_at": "2017-07-23T18:43:28.000+08:00"
+    },
+    {
+      "id": 3,
+      "name": "原生模板二",
+      "category": "1",
+      "group_name": "测试",
+      "link_path": "http://yonghui-test.idata.mobi/mobile/v2/mock/group/165/template/6/report/6/json",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 57,
+      "health_value": 0,
+      "group_order": null,
+      "item_order": null,
+      "created_at": "2017-07-20T16:15:29.000+08:00"
+    },
+    {
+      "id": 4,
+      "name": "天天赛马JAY",
+      "category": "1",
+      "group_name": "赛马专题",
+      "link_path": "/mobile/v2/group/%@/template/2/report/102",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 7,
+      "health_value": 0,
+      "group_order": 11,
+      "item_order": 1,
+      "created_at": "2017-06-19T10:27:46.000+08:00"
+    },
+    {
+      "id": 5,
+      "name": "新店实时销售",
+      "category": "1",
+      "group_name": "新店开业",
+      "link_path": "http://123.59.75.85:8080/yhportal/appClientReport/newShopSale.pdf",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 10,
+      "health_value": 0,
+      "group_order": 12,
+      "item_order": 2,
+      "created_at": "2017-06-19T10:30:33.000+08:00"
+    },
+    {
+      "id": 6,
+      "name": "门店日复盘",
+      "category": "",
+      "group_name": "测试",
+      "link_path": "http://120.25.201.17:8080/store/testUserNum",
+      "publicly": false,
+      "icon": "icon-default.png",
+      "icon_link": "http://yonghui-test.idata.mobi/images/icon-default.png",
+      "group_id": 88,
+      "health_value": 0,
+      "group_order": null,
+      "item_order": null,
+      "created_at": "2017-07-27T14:53:10.000+08:00"
     }
   ]
 }

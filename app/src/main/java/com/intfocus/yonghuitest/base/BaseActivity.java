@@ -7,19 +7,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -38,16 +35,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -67,7 +63,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -224,7 +219,7 @@ public class BaseActivity extends Activity {
         webSettings.setDefaultTextEncodingName("utf-8");
 
         mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.getSettings().setAppCacheMaxSize(1024*1024*8);
+        mWebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
         mWebView.getSettings().setAppCachePath(appCachePath);
         mWebView.getSettings().setAllowFileAccess(true);
@@ -549,7 +544,6 @@ public class BaseActivity extends Activity {
                 if (action == null) {
                     return;
                 }
-
                 ApiHelper.actionLog(mAppContext, logParams);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -843,5 +837,9 @@ public class BaseActivity extends Activity {
                 return networkInfo.isAvailable();
         }
         return false;
+    }
+
+    public void back(View view) {
+        onBackPressed();
     }
 }

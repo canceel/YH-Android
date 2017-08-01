@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.table.Head
-import com.intfocus.yonghuitest.bean.table.MainData
+import com.intfocus.yonghuitest.subject.table.bean.Head
+import com.intfocus.yonghuitest.subject.table.bean.MainData
 import com.intfocus.yonghuitest.util.Utils
 
 import android.text.TextUtils.TruncateAt.MIDDLE

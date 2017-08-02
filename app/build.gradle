@@ -117,5 +117,4 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
     compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
-
 }

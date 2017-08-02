@@ -1,130 +1,1783 @@
 {
-  "type": "tables",
-  "config": [
-    {
-      "title": "销售",
-      "table": {
-        "head": [
-<<<<<<< HEAD
-=======
-          "自身ID",
-          "父ID",
->>>>>>> feature-kpi
-          "大区-门店",
-          "昨日(万)",
-          "同比",
-          "环比"
-        ],
-        "data": [
-<<<<<<< HEAD
-          {
-            "main_data": [
-              "三明区",
-              43.8,
-              "-25.5%",
-              "12.8%"
-            ],
-            "sub_data": [
-              {
-                "main_data": [
-                  "三明万达广场店",
-                  0.3,
-                  "-3.6%",
-                  "16.3%"
-                ],
-                "sub_data": null
-              },
-              {
-                "main_data": [
-                  "三明鸿图店",
-                  0.4,
-                  "22.8%",
-                  "29.0%"
-                ],
-                "sub_data": null
-              }
-            ]
-          },
-          {
-            "main_data": [
-              "上海区",
-              83.8,
-              "-25.5%",
-              "12.8%"
-            ],
-            "sub_data": [
-              {
-                "main_data": [
-                  "嘉定万达广场店",
-                  0.3,
-                  "1.3%",
-                  "16.3%"
-                ],
-                "sub_data": null
-              },
-              {
-                "main_data": [
-                  "虹桥店",
-                  0.4,
-                  "-11.0%",
-                  "29.0%"
-                ],
-                "sub_data": null
-              }
-            ]
-          }
-=======
-          [
-            "三明区",
-            "",
-            "三明区",
-            43.8,
-            "<span style='color:red'>-25.5%</span>",
-            "<span style='color:black'>12.8%</span>"
-          ],
-          [
-            "上海区",
-            "",
-            "上海区",
-            83.8,
-            "<span style='color:red'>-25.5%</span>",
-            "<span style='color:black'>12.8%</span>"
-          ],
-          [
-            "三明万达广场店",
-            "三明区",
-            "三明万达广场店",
-            0.3,
-            "<span style='color:red'>-3.6%</span>",
-            "<span style='color:black'>16.3%</span>"
-          ],
-          [
-            "三明鸿图店",
-            "三明区",
-            "三明万达广场店",
-            0.4,
-            "<span style='color:black'>22.8%</span>",
-            "<span style='color:black'>29.0%</span>"
-          ],
-          [
-            "嘉定万达广场店",
-            "上海区",
-            "嘉定万达广场店",
-            0.3,
-            "<span style='color:black'>1.3%</span>",
-            "<span style='color:black'>16.3%</span>"
-          ],
-          [
-            "虹桥店",
-            "上海区",
-            "虹桥店",
-            0.4,
-            "<span style='color:red'>-11.0%</span>",
-            "<span style='color:black'>29.0%</span>"
-          ]
->>>>>>> feature-kpi
-        ]
-      }
-    }
-  ]
+  "data" : [ {
+    "cities" : [ {
+      "citycode" : "110100",
+      "cityname" : "北京市",
+      "districts" : [ {
+        "districtcode" : "110111",
+        "districtname" : "房山区"
+      }, {
+        "districtcode" : "110115",
+        "districtname" : "大兴区"
+      }, {
+        "districtcode" : "110104",
+        "districtname" : "宣武区"
+      }, {
+        "districtcode" : "110113",
+        "districtname" : "顺义区"
+      }, {
+        "districtcode" : "110109",
+        "districtname" : "门头沟区"
+      }, {
+        "districtcode" : "110114",
+        "districtname" : "昌平区"
+      }, {
+        "districtcode" : "110107",
+        "districtname" : "石景山区"
+      }, {
+        "districtcode" : "110105",
+        "districtname" : "朝阳区"
+      }, {
+        "districtcode" : "110106",
+        "districtname" : "丰台区"
+      }, {
+        "districtcode" : "110102",
+        "districtname" : "西城区"
+      }, {
+        "districtcode" : "110112",
+        "districtname" : "通州区"
+      }, {
+        "districtcode" : "110103",
+        "districtname" : "崇文区"
+      }, {
+        "districtcode" : "110108",
+        "districtname" : "海淀区"
+      }, {
+        "districtcode" : "110101",
+        "districtname" : "东城区"
+      }, {
+        "districtcode" : "110117",
+        "districtname" : "平谷区"
+      }, {
+        "districtcode" : "110116",
+        "districtname" : "怀柔区"
+      } ],
+      "firstspell" : "B"
+    } ],
+    "provincecode" : "110000",
+    "provincename" : "北京市"
+  }, {
+    "cities" : [ {
+      "citycode" : "510100",
+      "cityname" : "成都市",
+      "districts" : [ {
+        "districtcode" : "510101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "510181",
+        "districtname" : "都江堰市"
+      }, {
+        "districtcode" : "510132",
+        "districtname" : "新津县"
+      }, {
+        "districtcode" : "510131",
+        "districtname" : "蒲江县"
+      }, {
+        "districtcode" : "510129",
+        "districtname" : "大邑县"
+      }, {
+        "districtcode" : "510124",
+        "districtname" : "郫　县"
+      }, {
+        "districtcode" : "510122",
+        "districtname" : "双流县"
+      }, {
+        "districtcode" : "510121",
+        "districtname" : "金堂县"
+      }, {
+        "districtcode" : "510115",
+        "districtname" : "温江区"
+      }, {
+        "districtcode" : "510114",
+        "districtname" : "新都区"
+      }, {
+        "districtcode" : "510104",
+        "districtname" : "锦江区"
+      }, {
+        "districtcode" : "510105",
+        "districtname" : "青羊区"
+      }, {
+        "districtcode" : "510106",
+        "districtname" : "金牛区"
+      }, {
+        "districtcode" : "510107",
+        "districtname" : "武侯区"
+      }, {
+        "districtcode" : "510108",
+        "districtname" : "成华区"
+      }, {
+        "districtcode" : "510112",
+        "districtname" : "龙泉驿区"
+      }, {
+        "districtcode" : "510113",
+        "districtname" : "青白江区"
+      }, {
+        "districtcode" : "510182",
+        "districtname" : "彭州市"
+      }, {
+        "districtcode" : "510183",
+        "districtname" : "邛崃市"
+      }, {
+        "districtcode" : "510184",
+        "districtname" : "崇州市"
+      } ],
+      "firstspell" : "C"
+    } ],
+    "provincecode" : "510000",
+    "provincename" : "四川省"
+  }, {
+    "cities" : [ {
+      "citycode" : "330100",
+      "cityname" : "杭州市",
+      "districts" : [ {
+        "districtcode" : "330101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330102",
+        "districtname" : "上城区"
+      }, {
+        "districtcode" : "330103",
+        "districtname" : "下城区"
+      }, {
+        "districtcode" : "330104",
+        "districtname" : "江干区"
+      }, {
+        "districtcode" : "330105",
+        "districtname" : "拱墅区"
+      }, {
+        "districtcode" : "330183",
+        "districtname" : "富阳市"
+      }, {
+        "districtcode" : "330182",
+        "districtname" : "建德市"
+      }, {
+        "districtcode" : "330127",
+        "districtname" : "淳安县"
+      }, {
+        "districtcode" : "330122",
+        "districtname" : "桐庐县"
+      }, {
+        "districtcode" : "330110",
+        "districtname" : "余杭区"
+      }, {
+        "districtcode" : "330109",
+        "districtname" : "萧山区"
+      }, {
+        "districtcode" : "330108",
+        "districtname" : "滨江区"
+      }, {
+        "districtcode" : "330106",
+        "districtname" : "西湖区"
+      }, {
+        "districtcode" : "330185",
+        "districtname" : "临安市"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "330700",
+      "cityname" : "金华市",
+      "districts" : [ {
+        "districtcode" : "330701",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330782",
+        "districtname" : "义乌市"
+      }, {
+        "districtcode" : "330781",
+        "districtname" : "兰溪市"
+      }, {
+        "districtcode" : "330727",
+        "districtname" : "磐安县"
+      }, {
+        "districtcode" : "330726",
+        "districtname" : "浦江县"
+      }, {
+        "districtcode" : "330723",
+        "districtname" : "武义县"
+      }, {
+        "districtcode" : "330703",
+        "districtname" : "金东区"
+      }, {
+        "districtcode" : "330702",
+        "districtname" : "婺城区"
+      }, {
+        "districtcode" : "330783",
+        "districtname" : "东阳市"
+      }, {
+        "districtcode" : "330784",
+        "districtname" : "永康市"
+      } ],
+      "firstspell" : "J"
+    }, {
+      "citycode" : "330600",
+      "cityname" : "绍兴市",
+      "districts" : [ {
+        "districtcode" : "330601",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330602",
+        "districtname" : "越城区"
+      }, {
+        "districtcode" : "330621",
+        "districtname" : "绍兴县"
+      }, {
+        "districtcode" : "330624",
+        "districtname" : "新昌县"
+      }, {
+        "districtcode" : "330681",
+        "districtname" : "诸暨市"
+      }, {
+        "districtcode" : "330682",
+        "districtname" : "上虞市"
+      }, {
+        "districtcode" : "330683",
+        "districtname" : "嵊州市"
+      } ],
+      "firstspell" : "S"
+    }, {
+      "citycode" : "330500",
+      "cityname" : "湖州市",
+      "districts" : [ {
+        "districtcode" : "330501",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330502",
+        "districtname" : "吴兴区"
+      }, {
+        "districtcode" : "330503",
+        "districtname" : "南浔区"
+      }, {
+        "districtcode" : "330521",
+        "districtname" : "德清县"
+      }, {
+        "districtcode" : "330522",
+        "districtname" : "长兴县"
+      }, {
+        "districtcode" : "330523",
+        "districtname" : "安吉县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "330400",
+      "cityname" : "嘉兴市",
+      "districts" : [ {
+        "districtcode" : "330401",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330402",
+        "districtname" : "秀城区"
+      }, {
+        "districtcode" : "330411",
+        "districtname" : "秀洲区"
+      }, {
+        "districtcode" : "330421",
+        "districtname" : "嘉善县"
+      }, {
+        "districtcode" : "330424",
+        "districtname" : "海盐县"
+      }, {
+        "districtcode" : "330481",
+        "districtname" : "海宁市"
+      }, {
+        "districtcode" : "330482",
+        "districtname" : "平湖市"
+      }, {
+        "districtcode" : "330483",
+        "districtname" : "桐乡市"
+      } ],
+      "firstspell" : "J"
+    }, {
+      "citycode" : "330300",
+      "cityname" : "温州市",
+      "districts" : [ {
+        "districtcode" : "330301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330328",
+        "districtname" : "文成县"
+      }, {
+        "districtcode" : "330327",
+        "districtname" : "苍南县"
+      }, {
+        "districtcode" : "330326",
+        "districtname" : "平阳县"
+      }, {
+        "districtcode" : "330324",
+        "districtname" : "永嘉县"
+      }, {
+        "districtcode" : "330322",
+        "districtname" : "洞头县"
+      }, {
+        "districtcode" : "330304",
+        "districtname" : "瓯海区"
+      }, {
+        "districtcode" : "330303",
+        "districtname" : "龙湾区"
+      }, {
+        "districtcode" : "330302",
+        "districtname" : "鹿城区"
+      }, {
+        "districtcode" : "330329",
+        "districtname" : "泰顺县"
+      }, {
+        "districtcode" : "330381",
+        "districtname" : "瑞安市"
+      }, {
+        "districtcode" : "330382",
+        "districtname" : "乐清市"
+      } ],
+      "firstspell" : "W"
+    }, {
+      "citycode" : "330200",
+      "cityname" : "宁波市",
+      "districts" : [ {
+        "districtcode" : "330201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330282",
+        "districtname" : "慈溪市"
+      }, {
+        "districtcode" : "330281",
+        "districtname" : "余姚市"
+      }, {
+        "districtcode" : "330226",
+        "districtname" : "宁海县"
+      }, {
+        "districtcode" : "330225",
+        "districtname" : "象山县"
+      }, {
+        "districtcode" : "330212",
+        "districtname" : "鄞州区"
+      }, {
+        "districtcode" : "330211",
+        "districtname" : "镇海区"
+      }, {
+        "districtcode" : "330206",
+        "districtname" : "北仑区"
+      }, {
+        "districtcode" : "330205",
+        "districtname" : "江北区"
+      }, {
+        "districtcode" : "330204",
+        "districtname" : "江东区"
+      }, {
+        "districtcode" : "330203",
+        "districtname" : "海曙区"
+      }, {
+        "districtcode" : "330283",
+        "districtname" : "奉化市"
+      } ],
+      "firstspell" : "N"
+    }, {
+      "citycode" : "330800",
+      "cityname" : "衢州市",
+      "districts" : [ {
+        "districtcode" : "330801",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330802",
+        "districtname" : "柯城区"
+      }, {
+        "districtcode" : "330803",
+        "districtname" : "衢江区"
+      }, {
+        "districtcode" : "330822",
+        "districtname" : "常山县"
+      }, {
+        "districtcode" : "330824",
+        "districtname" : "开化县"
+      }, {
+        "districtcode" : "330825",
+        "districtname" : "龙游县"
+      }, {
+        "districtcode" : "330881",
+        "districtname" : "江山市"
+      } ],
+      "firstspell" : "Z"
+    }, {
+      "citycode" : "330900",
+      "cityname" : "舟山市",
+      "districts" : [ {
+        "districtcode" : "330901",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "330902",
+        "districtname" : "定海区"
+      }, {
+        "districtcode" : "330903",
+        "districtname" : "普陀区"
+      }, {
+        "districtcode" : "330921",
+        "districtname" : "岱山县"
+      }, {
+        "districtcode" : "330922",
+        "districtname" : "嵊泗县"
+      } ],
+      "firstspell" : "Z"
+    }, {
+      "citycode" : "331000",
+      "cityname" : "台州市",
+      "districts" : [ {
+        "districtcode" : "331001",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "331081",
+        "districtname" : "温岭市"
+      }, {
+        "districtcode" : "331024",
+        "districtname" : "仙居县"
+      }, {
+        "districtcode" : "331023",
+        "districtname" : "天台县"
+      }, {
+        "districtcode" : "331022",
+        "districtname" : "三门县"
+      }, {
+        "districtcode" : "331021",
+        "districtname" : "玉环县"
+      }, {
+        "districtcode" : "331004",
+        "districtname" : "路桥区"
+      }, {
+        "districtcode" : "331003",
+        "districtname" : "黄岩区"
+      }, {
+        "districtcode" : "331002",
+        "districtname" : "椒江区"
+      }, {
+        "districtcode" : "331082",
+        "districtname" : "临海市"
+      } ],
+      "firstspell" : "T"
+    }, {
+      "citycode" : "331100",
+      "cityname" : "丽水市",
+      "districts" : [ {
+        "districtcode" : "331101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "331126",
+        "districtname" : "庆元县"
+      }, {
+        "districtcode" : "331125",
+        "districtname" : "云和县"
+      }, {
+        "districtcode" : "331124",
+        "districtname" : "松阳县"
+      }, {
+        "districtcode" : "331123",
+        "districtname" : "遂昌县"
+      }, {
+        "districtcode" : "331122",
+        "districtname" : "缙云县"
+      }, {
+        "districtcode" : "331121",
+        "districtname" : "青田县"
+      }, {
+        "districtcode" : "331102",
+        "districtname" : "莲都区"
+      }, {
+        "districtcode" : "331127",
+        "districtname" : "景宁畲族自治县"
+      }, {
+        "districtcode" : "331181",
+        "districtname" : "龙泉市"
+      } ],
+      "firstspell" : "L"
+    } ],
+    "provincecode" : "330000",
+    "provincename" : "浙江省"
+  }, {
+    "cities" : [ {
+      "citycode" : "310100",
+      "cityname" : "市辖区",
+      "districts" : [ {
+        "districtcode" : "310101",
+        "districtname" : "黄浦区"
+      }, {
+        "districtcode" : "310116",
+        "districtname" : "金山区"
+      }, {
+        "districtcode" : "310115",
+        "districtname" : "浦东新区"
+      }, {
+        "districtcode" : "310114",
+        "districtname" : "嘉定区"
+      }, {
+        "districtcode" : "310113",
+        "districtname" : "宝山区"
+      }, {
+        "districtcode" : "310112",
+        "districtname" : "闵行区"
+      }, {
+        "districtcode" : "310110",
+        "districtname" : "杨浦区"
+      }, {
+        "districtcode" : "310109",
+        "districtname" : "虹口区"
+      }, {
+        "districtcode" : "310108",
+        "districtname" : "闸北区"
+      }, {
+        "districtcode" : "310107",
+        "districtname" : "普陀区"
+      }, {
+        "districtcode" : "310106",
+        "districtname" : "静安区"
+      }, {
+        "districtcode" : "310105",
+        "districtname" : "长宁区"
+      }, {
+        "districtcode" : "310104",
+        "districtname" : "徐汇区"
+      }, {
+        "districtcode" : "310103",
+        "districtname" : "卢湾区"
+      }, {
+        "districtcode" : "310200",
+        "districtname" : "县"
+      }, {
+        "districtcode" : "310120",
+        "districtname" : "奉贤区"
+      }, {
+        "districtcode" : "310119",
+        "districtname" : "南汇区"
+      }, {
+        "districtcode" : "310118",
+        "districtname" : "青浦区"
+      }, {
+        "districtcode" : "310117",
+        "districtname" : "松江区"
+      }, {
+        "districtcode" : "310230",
+        "districtname" : "崇明县"
+      } ],
+      "firstspell" : "S"
+    } ],
+    "provincecode" : "310000",
+    "provincename" : "上海市"
+  }, {
+    "cities" : [ {
+      "citycode" : "440100",
+      "cityname" : "广州市",
+      "districts" : [ {
+        "districtcode" : "440101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "440102",
+        "districtname" : "东山区"
+      }, {
+        "districtcode" : "440103",
+        "districtname" : "荔湾区"
+      }, {
+        "districtcode" : "440107",
+        "districtname" : "芳村区"
+      }, {
+        "districtcode" : "440111",
+        "districtname" : "白云区"
+      }, {
+        "districtcode" : "440183",
+        "districtname" : "增城市"
+      }, {
+        "districtcode" : "440114",
+        "districtname" : "花都区"
+      }, {
+        "districtcode" : "440113",
+        "districtname" : "番禺区"
+      }, {
+        "districtcode" : "440112",
+        "districtname" : "黄埔区"
+      }, {
+        "districtcode" : "440184",
+        "districtname" : "从化市"
+      }, {
+        "districtcode" : "440106",
+        "districtname" : "天河区"
+      }, {
+        "districtcode" : "440105",
+        "districtname" : "海珠区"
+      }, {
+        "districtcode" : "440104",
+        "districtname" : "越秀区"
+      } ],
+      "firstspell" : "G"
+    }, {
+      "citycode" : "440300",
+      "cityname" : "深圳市",
+      "districts" : [ {
+        "districtcode" : "440301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "440303",
+        "districtname" : "罗湖区"
+      }, {
+        "districtcode" : "440304",
+        "districtname" : "福田区"
+      }, {
+        "districtcode" : "440305",
+        "districtname" : "南山区"
+      }, {
+        "districtcode" : "440306",
+        "districtname" : "宝安区"
+      }, {
+        "districtcode" : "440307",
+        "districtname" : "龙岗区"
+      }, {
+        "districtcode" : "440308",
+        "districtname" : "盐田区"
+      } ],
+      "firstspell" : "S"
+    } ],
+    "provincecode" : "440000",
+    "provincename" : "广东省"
+  }, {
+    "cities" : [ {
+      "citycode" : "320100",
+      "cityname" : "南京市",
+      "districts" : [ {
+        "districtcode" : "320101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320124",
+        "districtname" : "溧水县"
+      }, {
+        "districtcode" : "320116",
+        "districtname" : "六合区"
+      }, {
+        "districtcode" : "320115",
+        "districtname" : "江宁区"
+      }, {
+        "districtcode" : "320114",
+        "districtname" : "雨花台区"
+      }, {
+        "districtcode" : "320113",
+        "districtname" : "栖霞区"
+      }, {
+        "districtcode" : "320111",
+        "districtname" : "浦口区"
+      }, {
+        "districtcode" : "320107",
+        "districtname" : "下关区"
+      }, {
+        "districtcode" : "320106",
+        "districtname" : "鼓楼区"
+      }, {
+        "districtcode" : "320105",
+        "districtname" : "建邺区"
+      }, {
+        "districtcode" : "320104",
+        "districtname" : "秦淮区"
+      }, {
+        "districtcode" : "320103",
+        "districtname" : "白下区"
+      }, {
+        "districtcode" : "320102",
+        "districtname" : "玄武区"
+      }, {
+        "districtcode" : "320125",
+        "districtname" : "高淳县"
+      } ],
+      "firstspell" : "N"
+    }, {
+      "citycode" : "321200",
+      "cityname" : "泰州市",
+      "districts" : [ {
+        "districtcode" : "321201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "321202",
+        "districtname" : "海陵区"
+      }, {
+        "districtcode" : "321203",
+        "districtname" : "高港区"
+      }, {
+        "districtcode" : "321281",
+        "districtname" : "兴化市"
+      }, {
+        "districtcode" : "321282",
+        "districtname" : "靖江市"
+      }, {
+        "districtcode" : "321283",
+        "districtname" : "泰兴市"
+      }, {
+        "districtcode" : "321284",
+        "districtname" : "姜堰市"
+      } ],
+      "firstspell" : "T"
+    }, {
+      "citycode" : "321100",
+      "cityname" : "镇江市",
+      "districts" : [ {
+        "districtcode" : "321101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "321102",
+        "districtname" : "京口区"
+      }, {
+        "districtcode" : "321111",
+        "districtname" : "润州区"
+      }, {
+        "districtcode" : "321112",
+        "districtname" : "丹徒区"
+      }, {
+        "districtcode" : "321181",
+        "districtname" : "丹阳市"
+      }, {
+        "districtcode" : "321182",
+        "districtname" : "扬中市"
+      }, {
+        "districtcode" : "321183",
+        "districtname" : "句容市"
+      } ],
+      "firstspell" : "Z"
+    }, {
+      "citycode" : "321000",
+      "cityname" : "扬州市",
+      "districts" : [ {
+        "districtcode" : "321001",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "321002",
+        "districtname" : "广陵区"
+      }, {
+        "districtcode" : "321003",
+        "districtname" : "邗江区"
+      }, {
+        "districtcode" : "321011",
+        "districtname" : "郊　区"
+      }, {
+        "districtcode" : "321023",
+        "districtname" : "宝应县"
+      }, {
+        "districtcode" : "321081",
+        "districtname" : "仪征市"
+      }, {
+        "districtcode" : "321084",
+        "districtname" : "高邮市"
+      }, {
+        "districtcode" : "321088",
+        "districtname" : "江都市"
+      } ],
+      "firstspell" : "Y"
+    }, {
+      "citycode" : "320900",
+      "cityname" : "盐城市",
+      "districts" : [ {
+        "districtcode" : "320901",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320981",
+        "districtname" : "东台市"
+      }, {
+        "districtcode" : "320925",
+        "districtname" : "建湖县"
+      }, {
+        "districtcode" : "320924",
+        "districtname" : "射阳县"
+      }, {
+        "districtcode" : "320923",
+        "districtname" : "阜宁县"
+      }, {
+        "districtcode" : "320922",
+        "districtname" : "滨海县"
+      }, {
+        "districtcode" : "320921",
+        "districtname" : "响水县"
+      }, {
+        "districtcode" : "320903",
+        "districtname" : "盐都区"
+      }, {
+        "districtcode" : "320902",
+        "districtname" : "亭湖区"
+      }, {
+        "districtcode" : "320982",
+        "districtname" : "大丰市"
+      } ],
+      "firstspell" : "Y"
+    }, {
+      "citycode" : "320800",
+      "cityname" : "淮安市",
+      "districts" : [ {
+        "districtcode" : "320801",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320802",
+        "districtname" : "清河区"
+      }, {
+        "districtcode" : "320803",
+        "districtname" : "楚州区"
+      }, {
+        "districtcode" : "320804",
+        "districtname" : "淮阴区"
+      }, {
+        "districtcode" : "320811",
+        "districtname" : "清浦区"
+      }, {
+        "districtcode" : "320826",
+        "districtname" : "涟水县"
+      }, {
+        "districtcode" : "320829",
+        "districtname" : "洪泽县"
+      }, {
+        "districtcode" : "320830",
+        "districtname" : "盱眙县"
+      }, {
+        "districtcode" : "320831",
+        "districtname" : "金湖县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "320700",
+      "cityname" : "连云港市",
+      "districts" : [ {
+        "districtcode" : "320701",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320703",
+        "districtname" : "连云区"
+      }, {
+        "districtcode" : "320705",
+        "districtname" : "新浦区"
+      }, {
+        "districtcode" : "320706",
+        "districtname" : "海州区"
+      }, {
+        "districtcode" : "320721",
+        "districtname" : "赣榆县"
+      }, {
+        "districtcode" : "320722",
+        "districtname" : "东海县"
+      }, {
+        "districtcode" : "320723",
+        "districtname" : "灌云县"
+      }, {
+        "districtcode" : "320724",
+        "districtname" : "灌南县"
+      } ],
+      "firstspell" : "L"
+    }, {
+      "citycode" : "320600",
+      "cityname" : "南通市",
+      "districts" : [ {
+        "districtcode" : "320601",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320602",
+        "districtname" : "崇川区"
+      }, {
+        "districtcode" : "320611",
+        "districtname" : "港闸区"
+      }, {
+        "districtcode" : "320621",
+        "districtname" : "海安县"
+      }, {
+        "districtcode" : "320623",
+        "districtname" : "如东县"
+      }, {
+        "districtcode" : "320681",
+        "districtname" : "启东市"
+      }, {
+        "districtcode" : "320682",
+        "districtname" : "如皋市"
+      }, {
+        "districtcode" : "320683",
+        "districtname" : "通州市"
+      }, {
+        "districtcode" : "320684",
+        "districtname" : "海门市"
+      } ],
+      "firstspell" : "N"
+    }, {
+      "citycode" : "320500",
+      "cityname" : "苏州市",
+      "districts" : [ {
+        "districtcode" : "320501",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320584",
+        "districtname" : "吴江市"
+      }, {
+        "districtcode" : "320583",
+        "districtname" : "昆山市"
+      }, {
+        "districtcode" : "320582",
+        "districtname" : "张家港市"
+      }, {
+        "districtcode" : "320581",
+        "districtname" : "常熟市"
+      }, {
+        "districtcode" : "320507",
+        "districtname" : "相城区"
+      }, {
+        "districtcode" : "320506",
+        "districtname" : "吴中区"
+      }, {
+        "districtcode" : "320505",
+        "districtname" : "虎丘区"
+      }, {
+        "districtcode" : "320504",
+        "districtname" : "金阊区"
+      }, {
+        "districtcode" : "320503",
+        "districtname" : "平江区"
+      }, {
+        "districtcode" : "320502",
+        "districtname" : "沧浪区"
+      }, {
+        "districtcode" : "320585",
+        "districtname" : "太仓市"
+      } ],
+      "firstspell" : "S"
+    }, {
+      "citycode" : "320400",
+      "cityname" : "常州市",
+      "districts" : [ {
+        "districtcode" : "320401",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320402",
+        "districtname" : "天宁区"
+      }, {
+        "districtcode" : "320404",
+        "districtname" : "钟楼区"
+      }, {
+        "districtcode" : "320405",
+        "districtname" : "戚墅堰区"
+      }, {
+        "districtcode" : "320411",
+        "districtname" : "新北区"
+      }, {
+        "districtcode" : "320412",
+        "districtname" : "武进区"
+      }, {
+        "districtcode" : "320481",
+        "districtname" : "溧阳市"
+      }, {
+        "districtcode" : "320482",
+        "districtname" : "金坛市"
+      } ],
+      "firstspell" : "C"
+    }, {
+      "citycode" : "320300",
+      "cityname" : "徐州市",
+      "districts" : [ {
+        "districtcode" : "320301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320302",
+        "districtname" : "鼓楼区"
+      }, {
+        "districtcode" : "320303",
+        "districtname" : "云龙区"
+      }, {
+        "districtcode" : "320304",
+        "districtname" : "九里区"
+      }, {
+        "districtcode" : "320305",
+        "districtname" : "贾汪区"
+      }, {
+        "districtcode" : "320381",
+        "districtname" : "新沂市"
+      }, {
+        "districtcode" : "320324",
+        "districtname" : "睢宁县"
+      }, {
+        "districtcode" : "320323",
+        "districtname" : "铜山县"
+      }, {
+        "districtcode" : "320322",
+        "districtname" : "沛　县"
+      }, {
+        "districtcode" : "320321",
+        "districtname" : "丰　县"
+      }, {
+        "districtcode" : "320311",
+        "districtname" : "泉山区"
+      }, {
+        "districtcode" : "320382",
+        "districtname" : "邳州市"
+      } ],
+      "firstspell" : "X"
+    }, {
+      "citycode" : "320200",
+      "cityname" : "无锡市",
+      "districts" : [ {
+        "districtcode" : "320201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "320202",
+        "districtname" : "崇安区"
+      }, {
+        "districtcode" : "320203",
+        "districtname" : "南长区"
+      }, {
+        "districtcode" : "320204",
+        "districtname" : "北塘区"
+      }, {
+        "districtcode" : "320205",
+        "districtname" : "锡山区"
+      }, {
+        "districtcode" : "320206",
+        "districtname" : "惠山区"
+      }, {
+        "districtcode" : "320211",
+        "districtname" : "滨湖区"
+      }, {
+        "districtcode" : "320281",
+        "districtname" : "江阴市"
+      }, {
+        "districtcode" : "320282",
+        "districtname" : "宜兴市"
+      } ],
+      "firstspell" : "W"
+    }, {
+      "citycode" : "321300",
+      "cityname" : "宿迁市",
+      "districts" : [ {
+        "districtcode" : "321301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "321302",
+        "districtname" : "宿城区"
+      }, {
+        "districtcode" : "321311",
+        "districtname" : "宿豫区"
+      }, {
+        "districtcode" : "321322",
+        "districtname" : "沭阳县"
+      }, {
+        "districtcode" : "321323",
+        "districtname" : "泗阳县"
+      }, {
+        "districtcode" : "321324",
+        "districtname" : "泗洪县"
+      } ],
+      "firstspell" : "S"
+    } ],
+    "provincecode" : "320000",
+    "provincename" : "江苏省"
+  }, {
+    "cities" : [ {
+      "citycode" : "500100",
+      "cityname" : "重庆市",
+      "districts" : [ {
+        "districtcode" : "500101",
+        "districtname" : "万州区"
+      }, {
+        "districtcode" : "500114",
+        "districtname" : "黔江区"
+      }, {
+        "districtcode" : "500113",
+        "districtname" : "巴南区"
+      }, {
+        "districtcode" : "500112",
+        "districtname" : "渝北区"
+      }, {
+        "districtcode" : "500108",
+        "districtname" : "南岸区"
+      }, {
+        "districtcode" : "500111",
+        "districtname" : "双桥区"
+      }, {
+        "districtcode" : "500105",
+        "districtname" : "江北区"
+      }, {
+        "districtcode" : "500107",
+        "districtname" : "九龙坡区"
+      }, {
+        "districtcode" : "500102",
+        "districtname" : "涪陵区"
+      }, {
+        "districtcode" : "500106",
+        "districtname" : "沙坪坝区"
+      }, {
+        "districtcode" : "500103",
+        "districtname" : "渝中区"
+      }, {
+        "districtcode" : "500110",
+        "districtname" : "万盛区"
+      }, {
+        "districtcode" : "500104",
+        "districtname" : "大渡口区"
+      }, {
+        "districtcode" : "500109",
+        "districtname" : "北碚区"
+      }, {
+        "districtcode" : "500115",
+        "districtname" : "长寿区"
+      } ],
+      "firstspell" : "C"
+    } ],
+    "provincecode" : "500000",
+    "provincename" : "重庆市"
+  }, {
+    "cities" : [ {
+      "citycode" : "350100",
+      "cityname" : "福州市",
+      "districts" : [ {
+        "districtcode" : "350102",
+        "districtname" : "鼓楼区"
+      }, {
+        "districtcode" : "350104",
+        "districtname" : "仓山区"
+      }, {
+        "districtcode" : "350103",
+        "districtname" : "台江区"
+      }, {
+        "districtcode" : "350101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350105",
+        "districtname" : "马尾区"
+      }, {
+        "districtcode" : "350111",
+        "districtname" : "晋安区"
+      }, {
+        "districtcode" : "350121",
+        "districtname" : "闽侯县"
+      }, {
+        "districtcode" : "350122",
+        "districtname" : "连江县"
+      }, {
+        "districtcode" : "350123",
+        "districtname" : "罗源县"
+      }, {
+        "districtcode" : "350124",
+        "districtname" : "闽清县"
+      }, {
+        "districtcode" : "350125",
+        "districtname" : "永泰县"
+      }, {
+        "districtcode" : "350128",
+        "districtname" : "平潭县"
+      }, {
+        "districtcode" : "350182",
+        "districtname" : "长乐市"
+      }, {
+        "districtcode" : "350181",
+        "districtname" : "福清市"
+      } ],
+      "firstspell" : "F"
+    }, {
+      "citycode" : "350200",
+      "cityname" : "厦门市",
+      "districts" : [ {
+        "districtcode" : "350201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350203",
+        "districtname" : "思明区"
+      }, {
+        "districtcode" : "350205",
+        "districtname" : "海沧区"
+      }, {
+        "districtcode" : "350206",
+        "districtname" : "湖里区"
+      }, {
+        "districtcode" : "350211",
+        "districtname" : "集美区"
+      }, {
+        "districtcode" : "350212",
+        "districtname" : "同安区"
+      }, {
+        "districtcode" : "350213",
+        "districtname" : "翔安区"
+      } ],
+      "firstspell" : "X"
+    }, {
+      "citycode" : "350300",
+      "cityname" : "莆田市",
+      "districts" : [ {
+        "districtcode" : "350301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350302",
+        "districtname" : "城厢区"
+      }, {
+        "districtcode" : "350303",
+        "districtname" : "涵江区"
+      }, {
+        "districtcode" : "350304",
+        "districtname" : "荔城区"
+      }, {
+        "districtcode" : "350305",
+        "districtname" : "秀屿区"
+      }, {
+        "districtcode" : "350322",
+        "districtname" : "仙游县"
+      } ],
+      "firstspell" : "P"
+    }, {
+      "citycode" : "350400",
+      "cityname" : "三明市",
+      "districts" : [ {
+        "districtcode" : "350401",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350430",
+        "districtname" : "建宁县"
+      }, {
+        "districtcode" : "350429",
+        "districtname" : "泰宁县"
+      }, {
+        "districtcode" : "350428",
+        "districtname" : "将乐县"
+      }, {
+        "districtcode" : "350427",
+        "districtname" : "沙　县"
+      }, {
+        "districtcode" : "350426",
+        "districtname" : "尤溪县"
+      }, {
+        "districtcode" : "350425",
+        "districtname" : "大田县"
+      }, {
+        "districtcode" : "350424",
+        "districtname" : "宁化县"
+      }, {
+        "districtcode" : "350423",
+        "districtname" : "清流县"
+      }, {
+        "districtcode" : "350421",
+        "districtname" : "明溪县"
+      }, {
+        "districtcode" : "350403",
+        "districtname" : "三元区"
+      }, {
+        "districtcode" : "350402",
+        "districtname" : "梅列区"
+      }, {
+        "districtcode" : "350481",
+        "districtname" : "永安市"
+      } ],
+      "firstspell" : "S"
+    }, {
+      "citycode" : "350800",
+      "cityname" : "龙岩市",
+      "districts" : [ {
+        "districtcode" : "350801",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350802",
+        "districtname" : "新罗区"
+      }, {
+        "districtcode" : "350821",
+        "districtname" : "长汀县"
+      }, {
+        "districtcode" : "350822",
+        "districtname" : "永定县"
+      }, {
+        "districtcode" : "350823",
+        "districtname" : "上杭县"
+      }, {
+        "districtcode" : "350824",
+        "districtname" : "武平县"
+      }, {
+        "districtcode" : "350825",
+        "districtname" : "连城县"
+      }, {
+        "districtcode" : "350881",
+        "districtname" : "漳平市"
+      } ],
+      "firstspell" : "L"
+    }, {
+      "citycode" : "350700",
+      "cityname" : "南平市",
+      "districts" : [ {
+        "districtcode" : "350701",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "350725",
+        "districtname" : "政和县"
+      }, {
+        "districtcode" : "350724",
+        "districtname" : "松溪县"
+      }, {
+        "districtcode" : "350723",
+        "districtname" : "光泽县"
+      }, {
+        "districtcode" : "350722",
+        "districtname" : "浦城县"
+      }, {
+        "districtcode" : "350721",
+        "districtname" : "顺昌县"
+      }, {
+        "districtcode" : "350702",
+        "districtname" : "延平区"
+      }, {
+        "districtcode" : "350781",
+        "districtname" : "邵武市"
+      }, {
+        "districtcode" : "350782",
+        "districtname" : "武夷山市"
+      }, {
+        "districtcode" : "350783",
+        "districtname" : "建瓯市"
+      }, {
+        "districtcode" : "350784",
+        "districtname" : "建阳市"
+      } ],
+      "firstspell" : "N"
+    } ],
+    "provincecode" : "350000",
+    "provincename" : "福建省"
+  }, {
+    "cities" : [ {
+      "citycode" : "340100",
+      "cityname" : "合肥市",
+      "districts" : [ {
+        "districtcode" : "340101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340102",
+        "districtname" : "瑶海区"
+      }, {
+        "districtcode" : "340103",
+        "districtname" : "庐阳区"
+      }, {
+        "districtcode" : "340104",
+        "districtname" : "蜀山区"
+      }, {
+        "districtcode" : "340111",
+        "districtname" : "包河区"
+      }, {
+        "districtcode" : "340121",
+        "districtname" : "长丰县"
+      }, {
+        "districtcode" : "340122",
+        "districtname" : "肥东县"
+      }, {
+        "districtcode" : "340123",
+        "districtname" : "肥西县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "341700",
+      "cityname" : "池州市",
+      "districts" : [ {
+        "districtcode" : "341701",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341702",
+        "districtname" : "贵池区"
+      }, {
+        "districtcode" : "341721",
+        "districtname" : "东至县"
+      }, {
+        "districtcode" : "341722",
+        "districtname" : "石台县"
+      }, {
+        "districtcode" : "341723",
+        "districtname" : "青阳县"
+      } ],
+      "firstspell" : "C"
+    }, {
+      "citycode" : "341600",
+      "cityname" : "亳州市",
+      "districts" : [ {
+        "districtcode" : "341601",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341602",
+        "districtname" : "谯城区"
+      }, {
+        "districtcode" : "341621",
+        "districtname" : "涡阳县"
+      }, {
+        "districtcode" : "341622",
+        "districtname" : "蒙城县"
+      }, {
+        "districtcode" : "341623",
+        "districtname" : "利辛县"
+      } ],
+      "firstspell" : "Z"
+    }, {
+      "citycode" : "341500",
+      "cityname" : "六安市",
+      "districts" : [ {
+        "districtcode" : "341501",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341502",
+        "districtname" : "金安区"
+      }, {
+        "districtcode" : "341503",
+        "districtname" : "裕安区"
+      }, {
+        "districtcode" : "341521",
+        "districtname" : "寿　县"
+      }, {
+        "districtcode" : "341522",
+        "districtname" : "霍邱县"
+      }, {
+        "districtcode" : "341523",
+        "districtname" : "舒城县"
+      }, {
+        "districtcode" : "341524",
+        "districtname" : "金寨县"
+      }, {
+        "districtcode" : "341525",
+        "districtname" : "霍山县"
+      } ],
+      "firstspell" : "L"
+    }, {
+      "citycode" : "341400",
+      "cityname" : "巢湖市",
+      "districts" : [ {
+        "districtcode" : "341401",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341402",
+        "districtname" : "居巢区"
+      }, {
+        "districtcode" : "341421",
+        "districtname" : "庐江县"
+      }, {
+        "districtcode" : "341422",
+        "districtname" : "无为县"
+      }, {
+        "districtcode" : "341423",
+        "districtname" : "含山县"
+      }, {
+        "districtcode" : "341424",
+        "districtname" : "和　县"
+      } ],
+      "firstspell" : "C"
+    }, {
+      "citycode" : "341300",
+      "cityname" : "宿州市",
+      "districts" : [ {
+        "districtcode" : "341301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341302",
+        "districtname" : "墉桥区"
+      }, {
+        "districtcode" : "341321",
+        "districtname" : "砀山县"
+      }, {
+        "districtcode" : "341322",
+        "districtname" : "萧　县"
+      }, {
+        "districtcode" : "341323",
+        "districtname" : "灵璧县"
+      }, {
+        "districtcode" : "341324",
+        "districtname" : "泗　县"
+      } ],
+      "firstspell" : "S"
+    }, {
+      "citycode" : "341200",
+      "cityname" : "阜阳市",
+      "districts" : [ {
+        "districtcode" : "341201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341202",
+        "districtname" : "颍州区"
+      }, {
+        "districtcode" : "341203",
+        "districtname" : "颍东区"
+      }, {
+        "districtcode" : "341204",
+        "districtname" : "颍泉区"
+      }, {
+        "districtcode" : "341221",
+        "districtname" : "临泉县"
+      }, {
+        "districtcode" : "341222",
+        "districtname" : "太和县"
+      }, {
+        "districtcode" : "341225",
+        "districtname" : "阜南县"
+      }, {
+        "districtcode" : "341226",
+        "districtname" : "颍上县"
+      }, {
+        "districtcode" : "341282",
+        "districtname" : "界首市"
+      } ],
+      "firstspell" : "F"
+    }, {
+      "citycode" : "341100",
+      "cityname" : "滁州市",
+      "districts" : [ {
+        "districtcode" : "341101",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341102",
+        "districtname" : "琅琊区"
+      }, {
+        "districtcode" : "341103",
+        "districtname" : "南谯区"
+      }, {
+        "districtcode" : "341122",
+        "districtname" : "来安县"
+      }, {
+        "districtcode" : "341124",
+        "districtname" : "全椒县"
+      }, {
+        "districtcode" : "341125",
+        "districtname" : "定远县"
+      }, {
+        "districtcode" : "341126",
+        "districtname" : "凤阳县"
+      }, {
+        "districtcode" : "341181",
+        "districtname" : "天长市"
+      }, {
+        "districtcode" : "341182",
+        "districtname" : "明光市"
+      } ],
+      "firstspell" : "C"
+    }, {
+      "citycode" : "341000",
+      "cityname" : "黄山市",
+      "districts" : [ {
+        "districtcode" : "341001",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341002",
+        "districtname" : "屯溪区"
+      }, {
+        "districtcode" : "341003",
+        "districtname" : "黄山区"
+      }, {
+        "districtcode" : "341004",
+        "districtname" : "徽州区"
+      }, {
+        "districtcode" : "341021",
+        "districtname" : "歙　县"
+      }, {
+        "districtcode" : "341022",
+        "districtname" : "休宁县"
+      }, {
+        "districtcode" : "341023",
+        "districtname" : "黟　县"
+      }, {
+        "districtcode" : "341024",
+        "districtname" : "祁门县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "340800",
+      "cityname" : "安庆市",
+      "districts" : [ {
+        "districtcode" : "340801",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340828",
+        "districtname" : "岳西县"
+      }, {
+        "districtcode" : "340827",
+        "districtname" : "望江县"
+      }, {
+        "districtcode" : "340826",
+        "districtname" : "宿松县"
+      }, {
+        "districtcode" : "340825",
+        "districtname" : "太湖县"
+      }, {
+        "districtcode" : "340824",
+        "districtname" : "潜山县"
+      }, {
+        "districtcode" : "340823",
+        "districtname" : "枞阳县"
+      }, {
+        "districtcode" : "340822",
+        "districtname" : "怀宁县"
+      }, {
+        "districtcode" : "340811",
+        "districtname" : "郊　区"
+      }, {
+        "districtcode" : "340803",
+        "districtname" : "大观区"
+      }, {
+        "districtcode" : "340802",
+        "districtname" : "迎江区"
+      }, {
+        "districtcode" : "340881",
+        "districtname" : "桐城市"
+      } ],
+      "firstspell" : "A"
+    }, {
+      "citycode" : "340700",
+      "cityname" : "铜陵市",
+      "districts" : [ {
+        "districtcode" : "340701",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340702",
+        "districtname" : "铜官山区"
+      }, {
+        "districtcode" : "340703",
+        "districtname" : "狮子山区"
+      }, {
+        "districtcode" : "340711",
+        "districtname" : "郊　区"
+      }, {
+        "districtcode" : "340721",
+        "districtname" : "铜陵县"
+      } ],
+      "firstspell" : "T"
+    }, {
+      "citycode" : "340600",
+      "cityname" : "淮北市",
+      "districts" : [ {
+        "districtcode" : "340601",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340602",
+        "districtname" : "杜集区"
+      }, {
+        "districtcode" : "340603",
+        "districtname" : "相山区"
+      }, {
+        "districtcode" : "340604",
+        "districtname" : "烈山区"
+      }, {
+        "districtcode" : "340621",
+        "districtname" : "濉溪县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "340500",
+      "cityname" : "马鞍山市",
+      "districts" : [ {
+        "districtcode" : "340501",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340502",
+        "districtname" : "金家庄区"
+      }, {
+        "districtcode" : "340503",
+        "districtname" : "花山区"
+      }, {
+        "districtcode" : "340504",
+        "districtname" : "雨山区"
+      }, {
+        "districtcode" : "340521",
+        "districtname" : "当涂县"
+      } ],
+      "firstspell" : "M"
+    }, {
+      "citycode" : "340400",
+      "cityname" : "淮南市",
+      "districts" : [ {
+        "districtcode" : "340401",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340402",
+        "districtname" : "大通区"
+      }, {
+        "districtcode" : "340403",
+        "districtname" : "田家庵区"
+      }, {
+        "districtcode" : "340404",
+        "districtname" : "谢家集区"
+      }, {
+        "districtcode" : "340405",
+        "districtname" : "八公山区"
+      }, {
+        "districtcode" : "340406",
+        "districtname" : "潘集区"
+      }, {
+        "districtcode" : "340421",
+        "districtname" : "凤台县"
+      } ],
+      "firstspell" : "H"
+    }, {
+      "citycode" : "340300",
+      "cityname" : "蚌埠市",
+      "districts" : [ {
+        "districtcode" : "340301",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340302",
+        "districtname" : "龙子湖区"
+      }, {
+        "districtcode" : "340303",
+        "districtname" : "蚌山区"
+      }, {
+        "districtcode" : "340304",
+        "districtname" : "禹会区"
+      }, {
+        "districtcode" : "340311",
+        "districtname" : "淮上区"
+      }, {
+        "districtcode" : "340321",
+        "districtname" : "怀远县"
+      }, {
+        "districtcode" : "340322",
+        "districtname" : "五河县"
+      }, {
+        "districtcode" : "340323",
+        "districtname" : "固镇县"
+      } ],
+      "firstspell" : "B"
+    }, {
+      "citycode" : "340200",
+      "cityname" : "芜湖市",
+      "districts" : [ {
+        "districtcode" : "340201",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "340202",
+        "districtname" : "镜湖区"
+      }, {
+        "districtcode" : "340203",
+        "districtname" : "马塘区"
+      }, {
+        "districtcode" : "340204",
+        "districtname" : "新芜区"
+      }, {
+        "districtcode" : "340207",
+        "districtname" : "鸠江区"
+      }, {
+        "districtcode" : "340221",
+        "districtname" : "芜湖县"
+      }, {
+        "districtcode" : "340222",
+        "districtname" : "繁昌县"
+      }, {
+        "districtcode" : "340223",
+        "districtname" : "南陵县"
+      } ],
+      "firstspell" : "W"
+    }, {
+      "citycode" : "341800",
+      "cityname" : "宣城市",
+      "districts" : [ {
+        "districtcode" : "341801",
+        "districtname" : "市辖区"
+      }, {
+        "districtcode" : "341802",
+        "districtname" : "宣州区"
+      }, {
+        "districtcode" : "341821",
+        "districtname" : "郎溪县"
+      }, {
+        "districtcode" : "341822",
+        "districtname" : "广德县"
+      }, {
+        "districtcode" : "341823",
+        "districtname" : "泾　县"
+      }, {
+        "districtcode" : "341824",
+        "districtname" : "绩溪县"
+      }, {
+        "districtcode" : "341825",
+        "districtname" : "旌德县"
+      }, {
+        "districtcode" : "341881",
+        "districtname" : "宁国市"
+      } ],
+      "firstspell" : "X"
+    } ],
+    "provincecode" : "340000",
+    "provincename" : "安徽省"
+  } ],
+  "message" : "操作成功",
+  "status" : "20000",
+  "updateTime" : "2017-06-15T09:24:43+0800"
 }

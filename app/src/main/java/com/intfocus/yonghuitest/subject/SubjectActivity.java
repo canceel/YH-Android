@@ -843,7 +843,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 e.printStackTrace();
             }
         }
-        
+
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             try {

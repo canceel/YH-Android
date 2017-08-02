@@ -13,6 +13,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.MyViewPagerAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
@@ -116,7 +117,7 @@ class HomePageAdapter(val context: Context,
                         tv_number_one_sub_title.text = themeItem.memo1
                         tv_number_one_sub.text = themeItem.data!!.high_light!!.compare
                         rl_kpi_number_one.setOnClickListener {
-                            EventBus.getDefault().post(themeItem)
+                            EventBus.getDefault().post(DashboardItemBean(themeItem.target_url!!, themeItem.title!!, 1, 1))
                         }
                         views!!.add(contentView)
                     }

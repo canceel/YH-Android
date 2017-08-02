@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.dashboard.report.mode.GroupDataBean
 import com.intfocus.yonghuitest.util.DisplayUtil
+import org.greenrobot.eventbus.EventBus
 import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/6/17.
  */
-class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var listener: ItemListener) : BaseAdapter() {
+class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     var laryoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 100f))
 
@@ -51,10 +53,10 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?, v
         }
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
-        var link = datas!![position].link_path
-        var bannerName = datas!![position].name
 
-        viewTag.llItem.setOnClickListener { listener.reportItemClick(bannerName!!, link!!) }
+        viewTag.llItem.setOnClickListener {
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 2, 2))
+        }
         return convertView
     }
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -86,7 +87,7 @@ public class LoginActivity extends BaseActivity {
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
         mIvEtUsernameClear = (ImageView) findViewById(R.id.iv_etUsername_clear);
         mIvEtPasswordClear = (ImageView) findViewById(R.id.iv_etPassword_clear);
-//        TextView versionTv = (TextView) findViewById(R.id.versionTv);
+
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +99,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号");
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号", R.color.co11_syr);
             }
         });
 
@@ -303,7 +304,7 @@ public class LoginActivity extends BaseActivity {
                                     logParams.put(URLs.kAction, "unlogin");
                                     logParams.put(URLs.kUserName, usernameString + "|;|" + passwordString);
                                     logParams.put(URLs.kObjTitle, info);
-                                    ApiHelper.actionLoginLog(mAppContext, logParams);
+                                    ActionLogUtil.actionLoginLog(mAppContext, logParams);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -327,7 +328,7 @@ public class LoginActivity extends BaseActivity {
                             try {
                                 logParams = new JSONObject();
                                 logParams.put("action", "登录");
-                                new Thread(mRunnableForLogger).start();
+                                ActionLogUtil.actionLog(mAppContext, logParams);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -345,24 +346,6 @@ public class LoginActivity extends BaseActivity {
             if (mProgressDialog != null) mProgressDialog.dismiss();
             toast(e.getLocalizedMessage());
         }
-    }
-
-    /**
-     * 设置顶部提示弹窗
-     *
-     * @param text
-     * @param colorId
-     */
-    private void setNoticeTextAndBackgroundColor(String text, int colorId) {
-        mTvLoginResultNotice.setText(text);
-        mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(colorId));
-        mLlLoginResultNotice.setVisibility(View.VISIBLE);
-        mLlLoginResultNotice.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mLlLoginResultNotice.setVisibility(View.GONE);
-            }
-        }, 2000);
     }
 
     /**

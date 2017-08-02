@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.ResetPasswordActivity;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.SimpleListAdapter;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -212,10 +211,6 @@ public class SettingListActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     break;
-
-                case "修改密码" :
-                    Intent intent = new Intent(SettingListActivity.this, ResetPasswordActivity.class);
-                    startActivity(intent);
             }
         }
     };

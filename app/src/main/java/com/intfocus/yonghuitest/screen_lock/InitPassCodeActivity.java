@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -257,11 +258,11 @@ public class InitPassCodeActivity extends Activity {
                             @Override
                             public void run() {
                                 try {
-                                    ApiHelper.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
+                                    ActionLogUtil.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
 
                                     JSONObject params = new JSONObject();
                                     params.put(URLs.kAction, "设置锁屏");
-                                    ApiHelper.actionLog(mContext, params);
+                                    ActionLogUtil.actionLog(mContext, params);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

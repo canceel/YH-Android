@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
+import com.zbl.lib.baseframe.utils.ToastUtil
 
 /**
  * ****************************************************
@@ -22,32 +23,37 @@ import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
  * ****************************************************
  */
 class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageListener) : RecyclerView.Adapter<ShowPushMessageAdapter.MessageHolder>() {
-
+    var mUserId = 0
     var mData = mutableListOf<PushMessageBean>()
 
     override fun onBindViewHolder(holder: MessageHolder?, position: Int) {
-        holder!!.tvNoticeType.visibility = View.GONE
+        if (mUserId != 0 && mUserId == mData[position].user_id) {
+            holder!!.tvNoticeType.visibility = View.GONE
 
-        holder.tvNoticeTitle.text = mData[position].title
-        holder.tvNoticeListContent.text = mData[position].body_text
-        holder.tvNoticeTime.text = mData[position].debug_timestamp
+            holder.tvNoticeTitle.text = mData[position].title
+            holder.tvNoticeListContent.text = mData[position].body_text
+            holder.tvNoticeTime.text = mData[position].debug_timestamp
 
-        if (mData[position].new_msg) {
-            holder.tvNoticePoint.visibility = View.VISIBLE
+            if (mData[position].new_msg) {
+                holder.tvNoticePoint.visibility = View.VISIBLE
 
-            holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext,R.color.co3_syr))
-            holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext,R.color.co3_syr))
-            holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext,R.color.co3_syr))
+                holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
+                holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
+                holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
+            } else {
+                holder.tvNoticePoint.visibility = View.GONE
+
+                holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
+                holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
+                holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
+            }
+
+            holder.llNoticeItem.setOnClickListener {
+                listener.onItemClick(position)
+            }
         } else {
-            holder.tvNoticePoint.visibility = View.GONE
-
-            holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext,R.color.co4_syr))
-            holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext,R.color.co4_syr))
-            holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext,R.color.co4_syr))
-        }
-
-        holder.llNoticeItem.setOnClickListener {
-            listener.onItemClick(position)
+            holder!!.llNoticeItem.visibility = View.GONE
+            ToastUtil.showToast(mContext,"暂无消息")
         }
     }
 
@@ -62,6 +68,11 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     fun setData(data: List<PushMessageBean>) {
         mData = data as MutableList<PushMessageBean>
         notifyDataSetChanged()
+    }
+
+    fun setUserId(userId: Int) {
+        mUserId = userId
+
     }
 
     class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {

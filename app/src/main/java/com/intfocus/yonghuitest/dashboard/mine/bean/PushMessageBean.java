@@ -59,6 +59,9 @@ public class PushMessageBean implements Serializable {
     @DatabaseField(columnName = "new_msg", dataType = DataType.BOOLEAN,defaultValue = "true")
     private boolean new_msg;
 
+    @DatabaseField(columnName = "user_id",dataType = DataType.INTEGER)
+    private int user_id;
+
     //TODO 注意,必须要有无参数的构造方法。。。
     public PushMessageBean() {
     }
@@ -149,5 +152,13 @@ public class PushMessageBean implements Serializable {
 
     public void setDebug_timestamp(String debug_timestamp) {
         this.debug_timestamp = debug_timestamp;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

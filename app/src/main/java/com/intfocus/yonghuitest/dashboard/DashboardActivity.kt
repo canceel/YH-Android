@@ -118,6 +118,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         pushMessage.body_title = intent.getStringExtra("message_body_title")
         pushMessage.body_text = intent.getStringExtra("message_body_text")
         pushMessage.new_msg = true
+        pushMessage.user_id = userID
         var personDao = OrmDBHelper.getInstance(this).pushMessageDao
         //  RxJava异步存储推送过来的数据
         Observable.create(Observable.OnSubscribe <PushMessageBean> {

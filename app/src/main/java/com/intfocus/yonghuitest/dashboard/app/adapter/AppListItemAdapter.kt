@@ -9,13 +9,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.dashboard.report.mode.GroupDataBean
+import org.greenrobot.eventbus.EventBus
 import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/6/16.
  */
-class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var listener: AppListItemAdapter.ItemListener) : BaseAdapter() {
+class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
 
     override fun getCount(): Int {
@@ -48,7 +50,9 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?, var 
 
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
-        viewTag.llItem.setOnClickListener { listener.itemClick(datas!![position].name, datas!![position].link_path) }
+        viewTag.llItem.setOnClickListener {
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].link_path!!, 3, 3))
+        }
 
         return convertView
     }

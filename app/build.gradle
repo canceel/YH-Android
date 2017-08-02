@@ -119,7 +119,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
     compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
 }

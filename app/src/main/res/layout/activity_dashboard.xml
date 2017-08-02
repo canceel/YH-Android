@@ -21,7 +21,7 @@
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_overview_s"
             app:src="@drawable/tab_overview"
-            app:text="概况"/>
+            app:text="生意概况"/>
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_analysis"

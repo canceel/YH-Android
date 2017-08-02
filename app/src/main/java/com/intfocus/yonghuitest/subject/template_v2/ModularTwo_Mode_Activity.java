@@ -97,7 +97,6 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         init();
     }
 
-
     private void init() {
         Intent intent = getIntent();
         group_id = String.valueOf(intent.getIntExtra("groupID", 0));

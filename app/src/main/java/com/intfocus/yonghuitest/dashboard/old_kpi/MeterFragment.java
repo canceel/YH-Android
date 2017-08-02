@@ -19,27 +19,27 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.dashboard.old_kpi.adapter.MeterVPAdapter;
-import com.intfocus.yonghuitest.dashboard.old_kpi.adapter.SaleDataAdapter;
-import com.intfocus.yonghuitest.subject.HomeTricsActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.subject.SubjectActivity;
-import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.base.BaseSwipeHomeFragment;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity;
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity;
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterRequestResult;
+import com.intfocus.yonghuitest.dashboard.old_kpi.adapter.MeterVPAdapter;
+import com.intfocus.yonghuitest.dashboard.old_kpi.adapter.SaleDataAdapter;
 import com.intfocus.yonghuitest.listen.CustPagerTransformer;
 import com.intfocus.yonghuitest.mode.MeterMode;
+import com.intfocus.yonghuitest.subject.HomeTricsActivity;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
+import com.intfocus.yonghuitest.subject.TableActivity;
 import com.intfocus.yonghuitest.util.DisplayUtil;
-import com.intfocus.yonghuitest.view.WidthHeightLinearLayou;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
+import com.intfocus.yonghuitest.view.WidthHeightLinearLayou;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.StringUtil;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -184,7 +184,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MeterRequestResult result) {
         if (!result.isSuccess() || result == null) {
-            ToastUtil.showToast(ctx, "数据请求失败，errorCode:" + result.getStateCode());
+            ToastUtils.INSTANCE.show(ctx, "数据请求失败，errorCode:" + result.getStateCode());
             return;
         }
         topDatas.clear();
@@ -334,7 +334,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
                 startActivity(intent);
             }
         } else {
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
         }
     }
 

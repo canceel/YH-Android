@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.constant.Permissions;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import java.util.List;
 
@@ -299,7 +299,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
                     @Override
                     public void hasPermission() {
                         if (isShowHint)
-                            ToastUtil.showToast(ctx, "定位中……");
+                            ToastUtils.INSTANCE.show(ctx, "定位中……");
 //                        startLocation();
                     }
 

@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteRquest
 import com.intfocus.yonghuitest.mode.InstituteMode
 import com.intfocus.yonghuitest.util.ErrorUtils
 import com.intfocus.yonghuitest.util.HttpUtil
+import com.intfocus.yonghuitest.util.ToastColor
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
@@ -194,7 +194,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: CollectionRquest) {
         if (result.isSuccess) {
-            ToastUtils.show(context, result!!.collectionBean!!.message.toString())
+            ToastUtils.show(context, result!!.collectionBean!!.message.toString(),ToastColor.SUCCESS)
             getData(true)
         } else {
             ToastUtils.show(context, result!!.errorMsg)

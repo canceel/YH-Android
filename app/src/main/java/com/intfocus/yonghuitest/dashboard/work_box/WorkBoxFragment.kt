@@ -69,7 +69,7 @@ class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), WorkBoxAdapter.ItemListe
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 

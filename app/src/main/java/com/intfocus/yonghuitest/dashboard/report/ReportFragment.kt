@@ -14,17 +14,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
-import com.intfocus.yonghuitest.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsLeftListAdapter
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightGVAdapter
 import com.intfocus.yonghuitest.dashboard.report.adapter.ReportsRightRVAdapter
+import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
+import com.intfocus.yonghuitest.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yonghuitest.mode.ReportsListMode
-import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_reports.*
@@ -79,7 +79,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 

@@ -9,13 +9,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.Toast
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.login.LoginActivity
+import com.intfocus.yonghuitest.util.ActionLogUtil
 import com.intfocus.yonghuitest.util.ApiHelper
+import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
-import com.intfocus.yonghuitest.util.WidgetUtil
 import kotlinx.android.synthetic.main.activity_password_alter.*
 import org.json.JSONObject
 
@@ -32,17 +32,17 @@ class PassWordAlterActivity : BaseActivity() {
     private fun initListener() {
         btn_pwd_alter_submit.setOnClickListener { submitPassword() }
         rl_pwd_alter_look_new_pwd.setOnClickListener {
-            setEditTextInputTypeByCheckBox(et_pwd_alter_new_pwd,cb_pwd_alter_look_new_pwd)
+            setEditTextInputTypeByCheckBox(et_pwd_alter_new_pwd, cb_pwd_alter_look_new_pwd)
         }
         rl_pwd_alter_look_confirm_new_pwd.setOnClickListener {
-            setEditTextInputTypeByCheckBox(et_pwd_alter_confirm_new_pwd,cb_pwd_alter_look_confirm_new_pwd)
+            setEditTextInputTypeByCheckBox(et_pwd_alter_confirm_new_pwd, cb_pwd_alter_look_confirm_new_pwd)
         }
     }
 
     /**
      * 根据CheckBox选中情况更改EditText输入类型
      */
-    private fun setEditTextInputTypeByCheckBox(mEditText: EditText,mCheckBox: CheckBox) {
+    private fun setEditTextInputTypeByCheckBox(mEditText: EditText, mCheckBox: CheckBox) {
         if (mCheckBox.isChecked) {
             mEditText.transformationMethod = PasswordTransformationMethod.getInstance()
             mCheckBox.isChecked = false
@@ -70,12 +70,12 @@ class PassWordAlterActivity : BaseActivity() {
         var confirmNewPassword = et_pwd_alter_confirm_new_pwd.text.toString()
 
         if (oldPassword.isEmpty()) {
-            WidgetUtil.showToastLong(this, "请输入旧密码")
+            ToastUtils.show(this, "请输入旧密码")
             return
         }
 
         if (!newPassword.equals(confirmNewPassword) || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
-            WidgetUtil.showToastLong(this, "两次输入密码不一致")
+            ToastUtils.show(this, "两次输入密码不一致")
             return
         }
         if (URLs.MD5(oldPassword) == user.get(URLs.kPassword)) {
@@ -99,16 +99,16 @@ class PassWordAlterActivity : BaseActivity() {
                         }
                         alertDialog.show()
                     } else {
-                        WidgetUtil.showToastShort(this, "密码修改失败")
+                        ToastUtils.show(this, "密码修改失败")
                     }
 
                     var logParams = JSONObject()
                     logParams.put(URLs.kAction, "点击/密码修改")
-                    ApiHelper.actionNewThreadLog(this, logParams)
+                    ActionLogUtil.actionLog(this, logParams)
                 }
             }).start()
         } else {
-            Toast.makeText(this@PassWordAlterActivity, "旧密码输入有误", Toast.LENGTH_SHORT).show()
+            ToastUtils.show(this, "旧密码输入有误")
             Thread(mRunnableForDetecting).start()
         }
     }

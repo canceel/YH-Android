@@ -8,16 +8,14 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.View
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.adapter.FeedbackPageScreenshotAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitInfo
 import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitRequest
 import com.intfocus.yonghuitest.mode.IssueMode
-import com.intfocus.yonghuitest.util.ImageUtil
-import com.intfocus.yonghuitest.util.K
-import com.intfocus.yonghuitest.util.LogUtil
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
 import com.zhihu.matisse.Matisse
@@ -88,10 +86,14 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
                 finish()
             }
             R.id.btn_feedback_submit -> {
-                for (uri in screenshotAdapter.getData()) {
-                    model.setUploadImg(File(ImageUtil.handleImageOnKitKat(uri, this)))
+                if (TextUtils.isEmpty(et_feedback_suggestion.text.toString()) && screenshotAdapter.getData().size == 0) {
+                    ToastUtils.show(this, "请完善信息再提交")
+                } else {
+                    for (uri in screenshotAdapter.getData()) {
+                        model.setUploadImg(File(ImageUtil.handleImageOnKitKat(uri, this)))
+                    }
+                    commitIssue()
                 }
-                commitIssue()
             }
         }
     }
@@ -149,8 +151,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
                         // 不进行任何操作
                     }
             builder.show()
-        }
-        else {
+        } else {
             val builder = android.app.AlertDialog.Builder(this)
             builder.setTitle("温馨提示")
                     .setMessage("提交失败, 是否重试?")
@@ -163,6 +164,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
             builder.show()
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)

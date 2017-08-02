@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeListDataBean
+import com.intfocus.yonghuitest.data.response.notice.Notice
 import com.zzhoujay.richtext.RichText
 
 
@@ -17,12 +17,12 @@ import com.zzhoujay.richtext.RichText
  * Created by liuruilin on 2017/6/12.
  */
 class NoticeListAdapter(val context: Context,
-                        private var noticeListDatas: List<NoticeListDataBean>?,
+                        private var noticeListDatas: List<Notice>?,
                         var listener: NoticeItemListener) : RecyclerView.Adapter<NoticeListAdapter.NoticeListHolder>() {
 
     var inflater = LayoutInflater.from(context)
 
-    fun setData(data: List<NoticeListDataBean>?) {
+    fun setData(data: List<Notice>?) {
         this.noticeListDatas = data
         notifyDataSetChanged()
     }

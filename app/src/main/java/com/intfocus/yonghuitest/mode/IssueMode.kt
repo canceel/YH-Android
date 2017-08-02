@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.*
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
@@ -25,8 +26,6 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mIssueSP: SharedPreferences = ctx.getSharedPreferences("IssueList", Context.MODE_PRIVATE)
-    var mIssueListBean: UserInfoBean? = null
-    var mIssueListBeanString: String? = null
     var gson = Gson()
     var fileList: MutableList<File> = mutableListOf()
 
@@ -97,7 +96,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
             }
             fileList.add(FileUtil.saveImage(str, bmp))
         } else {
-            WidgetUtil.showToastShort(ctx, "仅可上传3张图片")
+            ToastUtils.show(ctx, "仅可上传3张图片")
         }
     }
 
@@ -156,8 +155,8 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                 EventBus.getDefault().post(request)
 
                 var logParams = JSONObject()
-                logParams.put(URLs.kAction, "点击/问题反馈失败")
-                ApiHelper.actionNewThreadLog(ctx, logParams)
+                logParams.put(URLs.kAction, "点击/问题反馈/失败")
+                ActionLogUtil.actionLog(ctx, logParams)
             }
 
             override fun onResponse(call: Call?, response: Response?) {
@@ -166,7 +165,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
                 var logParams = JSONObject()
                 logParams.put(URLs.kAction, "点击/问题反馈/成功")
-                ApiHelper.actionNewThreadLog(ctx, logParams)
+                ActionLogUtil.actionLog(ctx, logParams)
             }
         })
 

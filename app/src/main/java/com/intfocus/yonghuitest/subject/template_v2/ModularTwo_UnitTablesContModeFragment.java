@@ -24,13 +24,13 @@ import com.intfocus.yonghuitest.subject.template_v2.adapter.ModularTwo_TableValu
 import com.intfocus.yonghuitest.subject.template_v2.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTableRect;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTableContMode;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.NotScrollListView;
 import com.intfocus.yonghuitest.view.RootScrollView;
 import com.intfocus.yonghuitest.view.SortCheckBox;
 import com.intfocus.yonghuitest.view.TableHorizontalScrollView;
 import com.intfocus.yonghuitest.view.TableValueView;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -380,7 +380,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         String sub_data = dataEntity.data.get(index).sub_data;
         if (sub_data.equals("[]")) {
             String tableName = (String) nameAdapter.getItem(index);
-            ToastUtil.showToast(ctx, tableName);
+            ToastUtils.INSTANCE.show(ctx, tableName);
             return;
         }
 

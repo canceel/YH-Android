@@ -20,8 +20,8 @@ import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTablesParentMode;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -152,7 +152,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
                 }
             }
         } else
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
     }
 
 

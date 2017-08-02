@@ -13,7 +13,7 @@ import com.intfocus.yonghuitest.view.MyGridView
 /**
  * Created by liuruilin on 2017/6/15.
  */
-class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?, var listener: AppListItemAdapter.ItemListener)
+class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?)
                                     : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
 
     var inflater = LayoutInflater.from(ctx)
@@ -25,13 +25,12 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?, v
 
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
         holder.tvAppListTitle.text = appListDatas!![position].group_name
-        holder.gvAppListItem.adapter = AppListItemAdapter(ctx, appListDatas!![position].data, listener)
+        holder.gvAppListItem.adapter = AppListItemAdapter(ctx, appListDatas!![position].data)
     }
 
     override fun getItemCount(): Int {
         return if (appListDatas == null) 0 else appListDatas!!.size
     }
-
 
     class AppListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var tvAppListTitle = itemView.findViewById(R.id.tv_app_list_title) as TextView

@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity {
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
         mLlEtUsernameClear = (LinearLayout) findViewById(R.id.ll_etUsername_clear);
         mLlEtPasswordClear = (LinearLayout) findViewById(R.id.ll_etPassword_clear);
-//        TextView versionTv = (TextView) findViewById(R.id.versionTv);
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,8 +199,8 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-        View v = new View(this);
-        actionSubmit(v);
+//        View v = new View(this);
+//        actionSubmit(v);
 
         /*
          * 检测登录界面，版本是否升级
@@ -271,8 +270,8 @@ public class LoginActivity extends BaseActivity {
             usernameString = usernameEditText.getText().toString();
             passwordString = passwordEditText.getText().toString();
 
-            usernameString = "13162726850";
-            passwordString = "1";
+//            usernameString = "13162726850";
+//            passwordString = "1";
 
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 

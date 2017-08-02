@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号", R.color.co11_syr);
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号");
             }
         });
 
@@ -270,7 +270,7 @@ public class LoginActivity extends BaseActivity {
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
-                ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码", R.color.co11_syr);
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码");
                 return;
             }
 
@@ -306,7 +306,7 @@ public class LoginActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                ToastUtils.INSTANCE.show(LoginActivity.this, info, R.color.co11_syr);
+                                ToastUtils.INSTANCE.show(LoginActivity.this, info);
                                 return;
                             }
 
@@ -348,10 +348,11 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 设置顶部提示弹窗
+     *
      * @param text
      * @param colorId
      */
-    private void setNoticeTextAndBackgroundColor(String text,int colorId) {
+    private void setNoticeTextAndBackgroundColor(String text, int colorId) {
         mTvLoginResultNotice.setText(text);
         mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(colorId));
         mLlLoginResultNotice.setVisibility(View.VISIBLE);

@@ -23,9 +23,9 @@ import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTable
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalActRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.MeterDetalActMode;
 import com.intfocus.yonghuitest.util.DisplayUtil;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.RootScrollView;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -193,7 +193,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                 switchFragment(0);
             }
         } else
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
     }
 
     class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {

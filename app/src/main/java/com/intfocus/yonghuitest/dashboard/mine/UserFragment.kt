@@ -218,7 +218,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     fun logout() {
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
-            WidgetUtil.showToastShort(ctx, "未连接网络, 无法退出")
+            ToastUtils.show(ctx, "未连接网络, 无法退出")
             return
         }
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
@@ -238,7 +238,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
-                        WidgetUtil.showToastShort(ctx, response.toString())
+                        ToastUtils.show(ctx, response.toString())
                     }
                 })
             } catch (e: JSONException) {
@@ -254,7 +254,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // 用户没有选择图片，返回
         if (resultCode == RESULT_CANCELED) {
-            WidgetUtil.showToastShort(ctx, "取消")
+            ToastUtils.show(ctx, "取消")
             return
         }
 

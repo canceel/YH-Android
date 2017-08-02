@@ -35,7 +35,6 @@ import com.intfocus.yonghuitest.view.NoScrollViewPager
 import com.intfocus.yonghuitest.view.TabView
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
-import com.zbl.lib.baseframe.utils.ToastUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -332,7 +331,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val bannerName = datas!!.title + ""
             pageLink(bannerName, link)
         } else {
-            ToastUtil.showToast(this, "没有指定链接")
+            ToastUtils.show(this, "没有指定链接")
         }
     }
 

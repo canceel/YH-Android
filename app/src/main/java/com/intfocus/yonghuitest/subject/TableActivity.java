@@ -34,6 +34,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.table.ColumAdapter;
 import com.intfocus.yonghuitest.subject.table.TableBarChartAdapter;
 import com.intfocus.yonghuitest.subject.table.TableContentItemAdapter;
@@ -41,7 +42,6 @@ import com.intfocus.yonghuitest.subject.table.TableContentListAdapter;
 import com.intfocus.yonghuitest.subject.table.TableFilterItemAdapter;
 import com.intfocus.yonghuitest.subject.table.TableFilterListAdapter;
 import com.intfocus.yonghuitest.subject.table.TableLeftListAdapter;
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.table.bean.Filter;
 import com.intfocus.yonghuitest.subject.table.bean.FilterItem;
 import com.intfocus.yonghuitest.subject.table.bean.Head;
@@ -54,9 +54,9 @@ import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.MyHorizontalScrollView;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.URLs;
 import com.intfocus.yonghuitest.util.Utils;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -329,7 +329,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                         @Override
                         public void onClick(View view) {
                             sort(finalValuePosition, finalTextViewPosition);
-                            WidgetUtil.showToastShort(mContext, head.getValue() + ":排序");
+                            toast( head.getValue() + ":排序",ToastColor.SUCCESS);
                         }
                     });
                     textViews.add(textView);
@@ -913,7 +913,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             if (Utils.isNumber(mainDataStr)) {
                 datas.add(Double.parseDouble(mainDataStr));
             } else {
-                WidgetUtil.showToastShort(mContext, "暂不支持该内容的排序");
+                toast("暂不支持该内容的排序");
                 return;
             }
         }
@@ -1028,7 +1028,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
         Double maxValue = Utils.getMaxValue(tableBarCharts);
         if (null == maxValue) {
-            WidgetUtil.showToastLong(mContext, "该数值无法显示条形图");
+            toast("该数值无法显示条形图");
             barChartListView.setVisibility(View.GONE);
             llBarHead.setVisibility(View.GONE);
             contentHorizontalScrollView.setVisibility(View.VISIBLE);
@@ -1131,7 +1131,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             if (t != null) {
                 Log.d("throw", "throw:" + t.getMessage());
             }
-            WidgetUtil.showToastShort(mContext, "分享失败");
+            toast("分享失败");
         }
 
         @Override

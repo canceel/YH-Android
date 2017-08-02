@@ -49,6 +49,7 @@ public class ErrorUtils {
             tvErrorMsg.setText(isNetworkConnected ? emptyStr : "网络异常,点击屏幕重试");
         }
         if (lisenter != null) {
+            llErrorView.setEnabled(true);
             if (!isNetworkConnected) {
                 llErrorView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -57,6 +58,8 @@ public class ErrorUtils {
                     }
                 });
             }
+        } else {
+            llErrorView.setEnabled(false);
         }
     }
 

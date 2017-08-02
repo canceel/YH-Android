@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/space_default"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    tools:context="com.intfocus.yonghuitest.ui.ModularTwo_UnitCurveChartFragment">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"

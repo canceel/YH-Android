@@ -15,6 +15,18 @@ import com.intfocus.yonghuitest.R
 object ToastUtils {
     private var mToast: Toast? = null
 
+    fun show(context: Context, message: String) {
+        show(context, message, R.color.co11_syr)
+    }
+
+    fun show(context: Context, message: String, toastColor: ToastColor = ToastColor.SUCCESS) {
+        if (ToastColor.SUCCESS.equals(toastColor)) {
+            show(context, message, R.color.co1_syr)
+        } else {
+            show(context, message, R.color.co11_syr)
+        }
+    }
+
     fun show(context: Context, message: String, colorId: Int = 0) {
         if (mToast == null) {
             val view = LinearLayout(context)

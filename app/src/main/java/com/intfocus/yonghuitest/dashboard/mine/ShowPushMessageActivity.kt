@@ -21,6 +21,7 @@ import com.intfocus.yonghuitest.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import rx.Observable
 import rx.Observer
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.File
@@ -28,16 +29,10 @@ import java.sql.SQLException
 
 class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMessageAdapter.OnPushMessageListener {
     var mUserID = 0
-    val message = "{\n" +
-            "         \"type\":\"report\",\n" +
-            "         \"title\":\"第二集群销售额\",\n" +
-            "         \"url\":\"/mobile/v2/group/%@/template/4/report/8\",\n" +
-            "         \"obj_id\":8,\n" +
-            "         \"obj_type\":1,\n" +
-            "         \"debug_timestamp\":\"2017-08-01 15:50:51 +0800\"\n" +
-            "     }"
+    
     val adapter = ShowPushMessageAdapter(this, this)
     val pushMessageDao = OrmDBHelper.getInstance(this).pushMessageDao!!
+    lateinit var subscribe: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +53,8 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                 mUserID = user!!.user_id
             }
         }
-        RxBusUtil.getInstance().toObservable(PushMessageBean::class.java)
+        // RxBus接收到推送信息，处理数据列表更新
+        subscribe = RxBusUtil.getInstance().toObservable(PushMessageBean::class.java)
                 .subscribe { msg ->
                     if ("UpDatePushMessage".equals(msg)) presenter.loadData()
                 }
@@ -81,7 +77,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
     }
 
     override fun onItemClick(position: Int) {
-        // TODO 跳转msg内容界面
+        // 跳转msg内容界面
         adapter.mData[position].new_msg = false
         pushMessageDao.update(adapter.mData[position])
 
@@ -115,5 +111,11 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
 
     fun back(v: View?) {
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (subscribe.isUnsubscribed)
+            subscribe.unsubscribe()
     }
 }

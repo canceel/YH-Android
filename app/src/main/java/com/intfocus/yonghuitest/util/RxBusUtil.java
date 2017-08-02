@@ -34,21 +34,31 @@ public class RxBusUtil {
         return mInstance;
     }
 
+    /**
+     * 发送事件
+     * @param object
+     */
     public void post(Object object) {
         mSubject.onNext(object);
     }
 
+    /**
+     * 接收事件
+     * @param eventType
+     * @param <T>
+     * @return
+     */
     public <T> Observable<T> toObservable(Class<T> eventType) {
         return mSubject.ofType(eventType);
     }
 
-    public final <R> Observable<R> ofType(final Class<R> klass){
+    public final <R> Observable<R> ofType(final Class<R> clz) {
         return mSubject.filter(new Func1<Object, Boolean>() {
             @Override
             public Boolean call(Object t) {
-                return klass.isInstance(t);
+                return clz.isInstance(t);
             }
-        }).cast(klass);
+        }).cast(clz);
     }
 
 }

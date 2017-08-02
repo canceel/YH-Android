@@ -35,7 +35,7 @@ class HomePageAdapter(val context: Context,
     var TEXT_SWITCHER: Int = VIEW_PAGER + 1//跳动文字
     var OPERATIONAL_WARNING: Int = TEXT_SWITCHER + 1//经营预警
     var BUSINESS_OVERVIEW: Int = OPERATIONAL_WARNING + 1//生意概况
-    var HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// BOttom
+    var HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// Bottom
 
     var inflater = LayoutInflater.from(context)
     fun setData(data: List<HomeBean>?) {
@@ -117,7 +117,7 @@ class HomePageAdapter(val context: Context,
                         tv_number_one_sub_title.text = themeItem.memo1
                         tv_number_one_sub.text = themeItem.data!!.high_light!!.compare
                         rl_kpi_number_one.setOnClickListener {
-                            EventBus.getDefault().post(DashboardItemBean(themeItem.target_url!!, themeItem.title!!, 1, 1))
+                            EventBus.getDefault().post(DashboardItemBean("/" + themeItem.target_url!!, themeItem.title!!, 1, 1))
                         }
                         views!!.add(contentView)
                     }

@@ -22,7 +22,6 @@ import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity

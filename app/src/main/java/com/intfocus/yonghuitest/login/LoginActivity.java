@@ -201,6 +201,9 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
+        View v = new View(this);
+        actionSubmit(v);
+
         /*
          * 检测登录界面，版本是否升级
          */
@@ -268,6 +271,9 @@ public class LoginActivity extends BaseActivity {
         try {
             usernameString = usernameEditText.getText().toString();
             passwordString = passwordEditText.getText().toString();
+
+            usernameString = "13162726850";
+            passwordString = "1";
 
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 

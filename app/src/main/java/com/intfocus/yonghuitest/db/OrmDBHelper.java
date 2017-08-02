@@ -53,7 +53,7 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             // 创建一张 PushMessageBean 的表
-            TableUtils.clearTable(connectionSource, PushMessageBean.class);
+            TableUtils.createTable(connectionSource, PushMessageBean.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
      * @return
      * @throws SQLException
      */
-    public Dao<PushMessageBean, Long> getPersonDao() throws SQLException {
+    public Dao<PushMessageBean, Long> getPushMessageDao() throws SQLException {
         return getDao(PushMessageBean.class);
     }
 

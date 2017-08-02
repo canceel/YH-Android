@@ -159,7 +159,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun startMessageActivity() {
-        var intent = Intent(activity, FavoriteActivity::class.java)
+        var intent = Intent(activity, ShowPushMessageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }

@@ -39,3 +39,4 @@ class PushMessage {
     var is_new_msg:Boolean = true
 
 }
+

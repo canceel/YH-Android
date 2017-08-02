@@ -255,14 +255,19 @@
             android:value="Umeng"/>
 
         <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.mine.InstituteContentActivity">
-        </activity>
+        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
         <activity
             android:name=".dashboard.mine.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".dashboard.mine.ShowPushMessageActivity">
-        </activity>
+        <activity
+            android:name=".dashboard.mine.ShowPushMessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".dashboard.mine.activity.PushMessageContentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

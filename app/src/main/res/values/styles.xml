@@ -88,7 +88,7 @@
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
 
-    <style name="ButtonBarButton" />
+    <style name="ButtonBarButton"/>
 
     <style name="ToolBarTab">
         <item name="android:layout_width">match_parent</item>
@@ -535,5 +535,14 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

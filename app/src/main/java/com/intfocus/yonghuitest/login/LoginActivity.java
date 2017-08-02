@@ -14,7 +14,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,8 +40,8 @@ public class LoginActivity extends BaseActivity {
     private LinearLayout mLlLoginResultNotice;
     private View mLinearUsernameBelowLine;
     private View mLinearPasswordBelowLine;
-    private ImageView mIvEtUsernameClear;
-    private ImageView mIvEtPasswordClear;
+    private LinearLayout mLlEtUsernameClear;
+    private LinearLayout mLlEtPasswordClear;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -85,9 +84,9 @@ public class LoginActivity extends BaseActivity {
         passwordEditText = (EditText) findViewById(R.id.etPassword);
         mLinearUsernameBelowLine = findViewById(R.id.linearUsernameBelowLine);
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
-        mIvEtUsernameClear = (ImageView) findViewById(R.id.iv_etUsername_clear);
-        mIvEtPasswordClear = (ImageView) findViewById(R.id.iv_etPassword_clear);
-
+        mLlEtUsernameClear = (LinearLayout) findViewById(R.id.ll_etUsername_clear);
+        mLlEtPasswordClear = (LinearLayout) findViewById(R.id.ll_etPassword_clear);
+//        TextView versionTv = (TextView) findViewById(R.id.versionTv);
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,9 +107,9 @@ public class LoginActivity extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 changeEditTextFocusUnderLineColor(hasFocus, mLinearUsernameBelowLine);
                 if (usernameEditText.getText().length() > 0 && hasFocus) {
-                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                    mLlEtUsernameClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtUsernameClear.setVisibility(View.GONE);
+                    mLlEtUsernameClear.setVisibility(View.GONE);
                 }
             }
         });
@@ -127,14 +126,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
-                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                    mLlEtUsernameClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtUsernameClear.setVisibility(View.GONE);
+                    mLlEtUsernameClear.setVisibility(View.GONE);
                 }
 
             }
         });
-        mIvEtUsernameClear.setOnClickListener(new View.OnClickListener() {
+        mLlEtUsernameClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 usernameEditText.setText("");
@@ -146,9 +145,9 @@ public class LoginActivity extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 changeEditTextFocusUnderLineColor(hasFocus, mLinearPasswordBelowLine);
                 if (passwordEditText.getText().length() > 0 && hasFocus) {
-                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                    mLlEtPasswordClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtPasswordClear.setVisibility(View.GONE);
+                    mLlEtPasswordClear.setVisibility(View.GONE);
                 }
             }
         });
@@ -165,14 +164,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
-                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                    mLlEtPasswordClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtPasswordClear.setVisibility(View.GONE);
+                    mLlEtPasswordClear.setVisibility(View.GONE);
                 }
 
             }
         });
-        mIvEtPasswordClear.setOnClickListener(new View.OnClickListener() {
+        mLlEtPasswordClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 passwordEditText.setText("");

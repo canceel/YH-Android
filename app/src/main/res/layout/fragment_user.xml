@@ -101,7 +101,30 @@
                 android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_message"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
 
+            <ImageView
+                android:id="@+id/iv_mine_user_message"
+                style="@style/iv_mine_user_list"
+                android:src="@drawable/icon_message"/>
+
+            <TextView
+                android:id="@+id/tv_mine_user_message"
+                style="@style/tv_mine_user_list_left"
+                android:layout_toRightOf="@id/iv_mine_user_message"
+                android:text="消息"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_more"/>
+        </RelativeLayout>
         <View
             style="@style/NullDivider"
             android:layout_height="10dp"/>

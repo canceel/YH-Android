@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.util.LoadingUtils
+import com.intfocus.yonghuitest.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 
@@ -61,7 +62,7 @@ open abstract class RefreshActivity : BaseActivity() {
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
                 super.onLoadMore(refreshLayout)
                 if (isLasePage!!) {
-                    toast("已经是最后一页")
+                    ToastUtils.show(mActivity, "已经是最后一页", R.color.co11_syr)
                     refreshLayout!!.finishRefreshing()
                     refreshLayout.finishLoadmore()
                     return
@@ -71,13 +72,10 @@ open abstract class RefreshActivity : BaseActivity() {
                 getData(false)
             }
         })
-
     }
-
 
     /**
      * 获取数据
-
      * @param isShowDialog
      */
     protected abstract fun getData(isShowDialog: Boolean)

@@ -4,12 +4,16 @@ import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
+import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.util.K;
+
+import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -72,6 +76,16 @@ public interface HttpService {
      */
     @GET(K.kNewMsgDataMobilePath)
     Observable<HomeMsgResult> getHomeMsg(@Path("groupId") String groupId, @Path("roleId") String roleId, @Path("userId") String userId);
+
+    /**
+     * 公告预警
+     *
+     * @param userId
+     * @param queryMap
+     * @return
+     */
+    @GET(K.kNewNoticeListPath)
+    Observable<NoticesResult> getNoticeList(@Path("userId") String userId, @QueryMap Map<String, String> queryMap);
 
 
 }

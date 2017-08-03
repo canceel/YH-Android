@@ -27,16 +27,16 @@ import rx.schedulers.Schedulers;
 
 public class PushMessageModelImpl implements PushMessageModel {
     @Override
-    public void loadData(Context context, final OnPushMessageDataResultListener listener) {
+    public void loadData(Context context, final OnPushMessageDataResultListener listener, final int userId) {
         // TODO: RxJava 异步读取数据库
         try {
-            final Dao<PushMessageBean, Long> pushMessageBeen = OrmDBHelper.getInstance(context).getPushMessageDao();
+            final Dao<PushMessageBean, Long> pushMessageDao = OrmDBHelper.getInstance(context).getPushMessageDao();
             Observable.create(new Observable.OnSubscribe<List<PushMessageBean>>() {
                 @Override
                 public void call(Subscriber<? super List<PushMessageBean>> subscriber) {
                     List<PushMessageBean> data = null;
                     try {
-                        data = pushMessageBeen.queryForAll();
+                        data = pushMessageDao.queryBuilder().where().like("user_id",userId).query();
                     } catch (SQLException e) {
                         e.printStackTrace();
                         listener.onPushMessageDataResultFailure();
@@ -68,6 +68,6 @@ public class PushMessageModelImpl implements PushMessageModel {
         } catch (SQLException e) {
             listener.onPushMessageDataResultFailure();
         }
-
     }
+
 }

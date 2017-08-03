@@ -23,11 +23,13 @@ public class PushMessagePresenter {
     private PushMessageView mView;
     private PushMessageModelImpl mModel;
     private Context mContext;
+    private int mUserId;
 
-    public PushMessagePresenter(Context context, PushMessageView pushMessageView) {
+    public PushMessagePresenter(Context context, PushMessageView pushMessageView,int userId) {
         mContext = context;
         mView = pushMessageView;
         mModel = new PushMessageModelImpl();
+        mUserId = userId;
     }
 
     public void loadData() {
@@ -42,6 +44,6 @@ public class PushMessagePresenter {
                 mView.onResultFailure();
             }
 
-        });
+        },mUserId);
     }
 }

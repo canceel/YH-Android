@@ -23,11 +23,10 @@ import com.zbl.lib.baseframe.utils.ToastUtil
  * ****************************************************
  */
 class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageListener) : RecyclerView.Adapter<ShowPushMessageAdapter.MessageHolder>() {
-    var mUserId = 0
     var mData = mutableListOf<PushMessageBean>()
 
     override fun onBindViewHolder(holder: MessageHolder?, position: Int) {
-        if (mUserId != 0 && mUserId == mData[position].user_id) {
+        if (mData.size > 0) {
             holder!!.tvNoticeType.visibility = View.GONE
 
             holder.tvNoticeTitle.text = mData[position].title
@@ -52,8 +51,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
                 listener.onItemClick(position)
             }
         } else {
-            holder!!.llNoticeItem.visibility = View.GONE
-            ToastUtil.showToast(mContext,"暂无消息")
+            ToastUtil.showToast(mContext, "暂无消息")
         }
     }
 
@@ -68,11 +66,6 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     fun setData(data: List<PushMessageBean>) {
         mData = data as MutableList<PushMessageBean>
         notifyDataSetChanged()
-    }
-
-    fun setUserId(userId: Int) {
-        mUserId = userId
-
     }
 
     class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {

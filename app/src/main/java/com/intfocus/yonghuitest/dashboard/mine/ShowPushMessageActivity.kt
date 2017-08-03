@@ -27,20 +27,40 @@ import com.intfocus.yonghuitest.util.*
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import org.json.JSONException
 import org.json.JSONObject
-import rx.Observable
-import rx.Observer
 import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 import java.io.File
-import java.sql.SQLException
+
+/**
+ * ****************************************************
+ * author: JamesWong
+ * created on: 17/08/01 下午4:56
+ * e-mail: PassionateWsj@outlook.com
+ * name: 推送消息显示 Activity
+ * desc: 根据 用户Id 显示推送消息的 activity
+ * ****************************************************
+ */
 
 class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMessageAdapter.OnPushMessageListener {
+    /**
+     * 当前用户id
+     */
     var mUserID = 0
-
+    /**
+     * 显示消息的 adapter
+     */
     val adapter = ShowPushMessageAdapter(this, this)
+    /**
+     * 数据库处理帮助类，封装了 CURD 的 dao 类
+     */
     val pushMessageDao = OrmDBHelper.getInstance(this).pushMessageDao!!
+    /**
+     * RxBus 接收推送消息的类，需要手动取消注册释放资源
+     */
     lateinit var subscribe: Subscription
+    /**
+     * presenter 类
+     */
+    lateinit var presenter: PushMessagePresenter
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
@@ -48,11 +68,14 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_push_message)
 
+        // 初始化数据
         initData()
+        // 初始化适配器
         initAdapter()
     }
 
     private fun initData() {
+        // 获取 User 信息
         val userConfigPath = String.format("%s/%s", FileUtil.basePath(this), K.kUserConfigFileName)
         if (File(userConfigPath).exists()) {
             val user = Gson()!!.fromJson(FileUtil.readConfigFile(userConfigPath).toString(), User::class.java)
@@ -60,7 +83,8 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                 mUserID = user!!.user_id
             }
         }
-        val presenter: PushMessagePresenter = PushMessagePresenter(applicationContext, this, mUserID)
+        // 请求数据
+        presenter = PushMessagePresenter(applicationContext, this, mUserID)
         presenter.loadData()
 
         // RxBus接收到推送信息，处理数据列表更新
@@ -77,46 +101,40 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         rv_show_push_message.adapter = adapter
     }
 
+    /**
+     * 请求数据失败的回调方法
+     */
     override fun onResultFailure() {
         ToastUtils.show(this, "没有找到数据")
     }
 
+    /**
+     * 请求数据成功的回调方法
+     */
     override fun onResultSuccess(data: MutableList<PushMessageBean>?) {
         adapter.setData(data!!)
     }
 
+    /**
+     * 消息 item 的点击回调处理方法
+     */
     override fun onItemClick(position: Int) {
-        // 跳转msg内容界面
+        // 更新点击状态
         var pushMessageBean = adapter.mData[position]
         pushMessageBean.new_msg = false
         pushMessageDao.update(pushMessageBean)
 
-        Observable.create(Observable.OnSubscribe<MutableList<PushMessageBean>> { t ->
-            try {
-                t!!.onNext(pushMessageDao.queryForAll())
-            } catch(e: SQLException) {
-                e.printStackTrace()
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<PushMessageBean>> {
-                    override fun onCompleted() {
+        // 重新获取数据
+        presenter.loadData()
 
-                    }
-
-                    override fun onError(e: Throwable) {
-                    }
-
-                    override fun onNext(pushMessageBeen: List<PushMessageBean>) {
-                        adapter.setData(pushMessageBeen)
-                    }
-                })
-
+        // 通知 adapter 刷新数据
         adapter.notifyDataSetChanged()
+
+        // 点击 item 判断类型 进行页面跳转
         var intent = Intent(this, PushMessageContentActivity::class.java)
         intent.putExtra("push_message_bean", pushMessageBean)
         if ("report".equals(pushMessageBean.type)) {
+            // 跳转到报表页面
             pageLink(pushMessageBean.title + "", pushMessageBean.url + "", 1, 1)
         } else {
             startActivity(intent)
@@ -238,6 +256,9 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         finish()
     }
 
+    /**
+     * 释放资源
+     */
     override fun onDestroy() {
         super.onDestroy()
         if (subscribe.isUnsubscribed)

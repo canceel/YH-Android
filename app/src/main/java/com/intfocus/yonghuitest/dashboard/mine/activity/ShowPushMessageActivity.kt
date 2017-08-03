@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest.dashboard.mine
+package com.intfocus.yonghuitest.dashboard.mine.activity
 
 import android.app.AlertDialog
 import android.content.Context
@@ -12,7 +12,6 @@ import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.User
-import com.intfocus.yonghuitest.dashboard.mine.activity.PushMessageContentActivity
 import com.intfocus.yonghuitest.dashboard.mine.adapter.ShowPushMessageAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
 import com.intfocus.yonghuitest.dashboard.mine.presenter.PushMessagePresenter

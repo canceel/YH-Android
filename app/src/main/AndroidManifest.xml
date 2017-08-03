@@ -256,7 +256,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".dashboard.mine.ShowPushMessageActivity"
+            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity

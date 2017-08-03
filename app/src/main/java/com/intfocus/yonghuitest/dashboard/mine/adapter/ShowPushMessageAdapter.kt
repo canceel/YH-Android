@@ -69,7 +69,8 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     }
 
     fun setData(data: List<PushMessageBean>) {
-        mData = data as MutableList<PushMessageBean>
+        mData.clear()
+        mData.addAll(data)
         notifyDataSetChanged()
     }
 

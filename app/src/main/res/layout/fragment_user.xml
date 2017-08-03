@@ -16,7 +16,8 @@
 
         <include layout="@layout/item_mine_user_top"></include>
 
-        <View style="@style/SmallDivider"
+        <View
+            style="@style/SmallDivider"
             android:layout_height="0.1dp"/>
 
         <!--单值-->
@@ -44,8 +45,8 @@
             <TextView
                 android:id="@+id/tv_mine_user_group_value"
                 style="@style/tv_mine_user_list_right"
-                android:maxWidth="220dp"
                 android:maxLines="2"
+                android:maxWidth="220dp"
                 android:text="YONGUED"/>
         </RelativeLayout>
 
@@ -96,11 +97,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
+
+        <View style="@style/NarrowSmallDivider"/>
+
         <RelativeLayout
             android:id="@+id/rl_message"
             android:layout_width="match_parent"
@@ -120,11 +124,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
+
         <View
             style="@style/NullDivider"
             android:layout_height="10dp"/>
@@ -148,9 +153,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
@@ -175,9 +180,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
@@ -202,9 +207,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/btn_more"/>
         </RelativeLayout>
 
@@ -222,9 +227,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="16sp"
+                android:text="退出登录"
                 android:textColor="#f56758"
-                android:text="退出登录"/>
+                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View

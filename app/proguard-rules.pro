@@ -40,6 +40,7 @@
 -keep class com.alibaba.sdk.android.**{*;}
 -keep class com.ut.**{*;}
 -keep class com.ta.**{*;}
+-keep class com.umeng.socialize**{*;}
 
 -keep public class **.R$*{
    public static final int *;

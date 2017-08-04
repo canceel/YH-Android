@@ -64,7 +64,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
         rl_issue_commit.setOnClickListener { commitIssue() }
         iv_add_img.setOnClickListener {
             if (imgSum == 3) {
-                WidgetUtil.showToastLong(ctx, "只能上传 3 张图片喔")
+                ToastUtils.show(ctx, "只能上传 3 张图片喔")
                 return@setOnClickListener
             }
             startActivityForResult(ImageUtil.getGallery(), CODE_GALLERY_REQUEST)
@@ -153,7 +153,7 @@ class IssueActivity : AbstractActivity<IssueMode>(), IssueListAdapter.IssueItemL
     }
 
     override fun itemClick(position: Int) {
-        WidgetUtil.showToastLong(ctx, "进入问题反馈详情")
+        ToastUtils.show(ctx, "进入问题反馈详情", R.color.co1_syr)
     }
 
     @Subscribe (threadMode = ThreadMode.MAIN)

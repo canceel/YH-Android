@@ -12,12 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.app.adapter.AppListAdapter
 import com.intfocus.yonghuitest.dashboard.app.adapter.AppListItemAdapter
-import com.intfocus.yonghuitest.base.BaseModeFragment
+import com.intfocus.yonghuitest.dashboard.app.mode.AppListMode
 import com.intfocus.yonghuitest.dashboard.app.mode.AppListPageRequest
 import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
-import com.intfocus.yonghuitest.dashboard.app.mode.AppListMode
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
@@ -76,7 +76,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 

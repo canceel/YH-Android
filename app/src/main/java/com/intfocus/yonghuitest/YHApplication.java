@@ -18,7 +18,6 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;

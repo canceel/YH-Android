@@ -17,6 +17,7 @@ import com.intfocus.yonghuitest.util.ErrorUtils
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.view.CommonPopupWindow
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 
@@ -59,7 +60,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                     isEmpty!!, false, R.drawable.pic_3, {
                 getData(true)
             })
-            ToastUtils.show(mActivity, "请检查网络链接", R.color.co11_syr)
+            ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
@@ -74,7 +75,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onError(apiException: ApiException) {
                         finshRequest()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
@@ -108,7 +109,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
      */
     fun ArticleOperating(articleId: String, status: String) {
         if (!HttpUtil.isConnected(mActivity)) {
-            ToastUtils.show(mActivity, "请检查网络链接", R.color.co11_syr)
+            ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         showLoading()
@@ -120,7 +121,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onError(apiException: ApiException) {
                         dismissLoading()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: BaseResult) {
@@ -147,10 +148,18 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     }
 
     /**
-     * 取消收藏---这里不会出现
+     * 取消收藏
      */
     override fun cancelCollection(instituteDataBean: InstituteDataBean) {
-        ArticleOperating(instituteDataBean.acticleId.toString(), "2")
+        CommonPopupWindow().showPopupWindow(mActivity, "取消收藏", R.color.co11_syr, "继续收藏", R.color.co3_syr,
+                object : CommonPopupWindow.ButtonLisenter {
+                    override fun btn1Click() {
+                        ArticleOperating(instituteDataBean.acticleId.toString(), "2")
+                    }
+
+                    override fun btn2Click() {
+                    }
+                })
     }
 
 }

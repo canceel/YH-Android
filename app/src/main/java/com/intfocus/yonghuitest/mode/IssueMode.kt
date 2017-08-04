@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.*
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
@@ -97,7 +98,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
             }
             fileList.add(FileUtil.saveImage(str, bmp))
         } else {
-            WidgetUtil.showToastShort(ctx, "仅可上传3张图片")
+            ToastUtils.show(ctx, "仅可上传3张图片")
         }
     }
 

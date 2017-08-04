@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="昨日总销售额"
-            android:textColor="@color/co10_syr_60"
+            android:alpha="0.6"
+            android:textColor="@color/co10_syr"
             android:textSize="13sp" />
 
         <TextView
@@ -29,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="33.56"
-            android:textColor="@color/co10_syr_60"
+            android:alpha="0.6"
+            android:textColor="@color/co10_syr"
             android:textSize="13sp" />
     </LinearLayout>
 
@@ -72,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="小店实时销售额"
-            android:textColor="@color/white"
+            android:textColor="@color/co10_syr"
             android:textSize="16sp" />
     </RelativeLayout>
 

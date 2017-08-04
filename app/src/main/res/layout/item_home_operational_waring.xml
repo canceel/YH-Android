@@ -19,7 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:text="224"
             android:textColor="@color/co6_syr"
             android:textSize="30sp" />
 
@@ -29,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:orientation="vertical"
-            android:text="万元"
             android:textColor="@color/co6_syr"
             android:textSize="10sp" />
 
@@ -42,7 +40,6 @@
             android:gravity="right"
             android:maxLines="1"
             android:orientation="vertical"
-            android:text="224"
             android:textColor="@color/co11_syr"
             android:textSize="30sp" />
 
@@ -60,7 +57,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="生鲜毛利实时预警（门店）"
             android:textColor="@color/co3_syr"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -74,8 +70,7 @@
             android:drawablePadding="4dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="生鲜毛利实时预警（门店）"
-            android:textColor="@color/co3_syr"
+            android:textColor="@color/co4_syr"
             android:textSize="10sp"
             android:textStyle="bold" />
     </LinearLayout>

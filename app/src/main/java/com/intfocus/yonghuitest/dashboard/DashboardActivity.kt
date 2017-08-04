@@ -21,7 +21,6 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.bean.User
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
 import com.intfocus.yonghuitest.db.OrmDBHelper
@@ -196,7 +195,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
             builder.show()
             return
-        } else if (user!!.store_ids.size == 0) {
+        } else if (user!!.store_ids == null || user!!.store_ids.size == 0) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
@@ -421,8 +420,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
             logParams.put(URLs.kObjTitle, mBannerName)
             ActionLogUtil.actionLog(mAppContext, logParams)
-        }
-        else {
+        } else {
             val intent = Intent(this, WebApplicationActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(URLs.kBannerName, mBannerName)

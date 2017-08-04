@@ -223,7 +223,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    actionSubmit(v);
+//                    actionSubmit(v);
                     hideKeyboard();
                 }
                 return false;

@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.scanner
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
@@ -14,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.FeedbackActivity
@@ -32,8 +34,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         val REQUEST_CODE_CHOOSE = 1
     }
 
+    var isLightOn = false
+
     var view: View? = null
     var popupWindow: PopupWindow? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_scanner_v2)
@@ -74,6 +79,14 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         zbarview_barcode_scanner.startSpot()
     }
 
+    private fun openFlashLight(tv: TextView) {
+
+    }
+
+    private fun closeFlashLight(tv: TextView) {
+
+    }
+
     /**
      * 初始化监听器
      */
@@ -91,6 +104,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 tv_barcode_light.setTextColor(resources.getColor(R.color.co7_syr))
                 zbarview_barcode_scanner.openFlashlight()
             }
+            isLightOn = !isLightOn
         }
         //手动输入条码点击样式
         ll_btn_input_bar_code.setOnTouchListener { _, event ->
@@ -132,10 +146,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         view!!.btn_input_barcode_confirm.setOnClickListener {
             var trim = view!!.et_input_barcode.text.toString()
             if (trim == "") {
-                view!!.ll_input_barcode_notice.visibility = View.VISIBLE
-                view!!.ll_input_barcode_notice.postDelayed({
-                    view!!.ll_input_barcode_notice.visibility = View.GONE
-                }, 2000)
+                ToastUtils.show(this, "请输入条码")
                 return@setOnClickListener
             }
 
@@ -198,8 +209,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        zbarview_barcode_scanner.showScanRect()
+
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            var mProgressDialog = ProgressDialog.show(this, "稍等", "正在扫描")
+            zbarview_barcode_scanner.showScanRect()
+            zbarview_barcode_scanner.stopSpot()
+            tv_barcode_scanning.visibility = View.VISIBLE
             val picturePath = ImageUtil.handleImageOnKitKat(Matisse.obtainResult(data)[0], this)
             LogUtil.d(TAG, "picturePath:::" + picturePath)
             object : AsyncTask<Void, Void, String>() {
@@ -213,10 +228,14 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                     } else {
                         onScanQRCodeSuccess(result)
                     }
+                    mProgressDialog.dismiss()
+                    tv_barcode_scanning.visibility = View.GONE
+                    zbarview_barcode_scanner.startSpot()
                 }
             }.execute()
 
         }
     }
+
 }
 

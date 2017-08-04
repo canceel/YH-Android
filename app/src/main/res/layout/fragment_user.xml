@@ -14,7 +14,7 @@
             android:layout_height="10dp"
             android:layout_alignParentTop="true"/>
 
-        <include layout="@layout/item_mine_user_top"></include>
+        <include layout="@layout/item_mine_user_top"/>
 
         <View
             style="@style/SmallDivider"

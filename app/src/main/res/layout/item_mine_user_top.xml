@@ -4,6 +4,7 @@
     android:id="@+id/ll_mine_user_top"
     android:layout_width="match_parent"
     android:layout_height="95dp"
+    android:background="@color/co10_syr"
     android:orientation="horizontal">
 
     <ImageView

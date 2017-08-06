@@ -233,4 +233,6 @@
     <color name="co17_syr">#f44f4f</color>
     <!-- 深绿文字 -->
     <color name="co18_syr">#72b54d</color>
+
+    <color name="col_report_left_text">#2f3941</color>
 </resources>

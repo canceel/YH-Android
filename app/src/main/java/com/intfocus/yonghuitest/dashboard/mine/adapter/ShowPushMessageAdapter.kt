@@ -18,22 +18,26 @@ import com.zbl.lib.baseframe.utils.ToastUtil
  * author: JamesWong
  * created on: 17/08/01 下午3:38
  * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
+ * name: 推送消息适配器
+ * desc: 显示当前用户推送消息的适配器
  * ****************************************************
  */
 class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageListener) : RecyclerView.Adapter<ShowPushMessageAdapter.MessageHolder>() {
-    var mUserId = 0
+    /**
+     * 推送消息 bean 集合
+     */
     var mData = mutableListOf<PushMessageBean>()
 
     override fun onBindViewHolder(holder: MessageHolder?, position: Int) {
-        if (mUserId != 0 && mUserId == mData[position].user_id) {
+        // 加载数据
+        if (mData.size > 0) {
             holder!!.tvNoticeType.visibility = View.GONE
 
             holder.tvNoticeTitle.text = mData[position].title
             holder.tvNoticeListContent.text = mData[position].body_text
             holder.tvNoticeTime.text = mData[position].debug_timestamp
 
+            // 根据 new_msg 判断是否是新消息 处理 item 样式
             if (mData[position].new_msg) {
                 holder.tvNoticePoint.visibility = View.VISIBLE
 
@@ -52,8 +56,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
                 listener.onItemClick(position)
             }
         } else {
-            holder!!.llNoticeItem.visibility = View.GONE
-            ToastUtil.showToast(mContext,"暂无消息")
+            ToastUtil.showToast(mContext, "暂无消息")
         }
     }
 
@@ -66,13 +69,9 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     }
 
     fun setData(data: List<PushMessageBean>) {
-        mData = data as MutableList<PushMessageBean>
+        mData.clear()
+        mData.addAll(data)
         notifyDataSetChanged()
-    }
-
-    fun setUserId(userId: Int) {
-        mUserId = userId
-
     }
 
     class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {

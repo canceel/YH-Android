@@ -21,6 +21,7 @@ import android.widget.PopupWindow
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
+import com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.login.LoginActivity

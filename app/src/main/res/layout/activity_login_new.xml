@@ -9,24 +9,6 @@
     android:gravity="center_horizontal"
     tools:context=".login.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_login_result_notice"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_login_result_notice"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_notice_login_success"
-            android:gravity="center"
-            android:text="登陆成功"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-
     <View
         android:id="@+id/linearUsernameBelowLine"
         android:layout_width="245dp"

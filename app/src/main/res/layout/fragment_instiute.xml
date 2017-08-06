@@ -36,15 +36,16 @@
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/iv_search"
-            android:background="@drawable/background_white_radius_border_white"
-            android:gravity="left|center_vertical"
+            android:background="@null"
+            android:gravity="center_vertical"
             android:hint="搜索关键字"
             android:imeOptions="actionSearch"
             android:maxLines="1"
+            android:textCursorDrawable="@drawable/cursor_input_search"
             android:inputType="text"
-            android:textColorHint="@color/co4"
+            android:textColorHint="@color/co4_syr"
             android:textSize="14dp" />
     </RelativeLayout>
 

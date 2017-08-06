@@ -2,114 +2,121 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/co8_syr"
               android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/co10_syr"
-        android:orientation="horizontal">
+        style="@style/TitleStyle"
+        android:layout_width="match_parent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/iv_banner_back"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_alignParentLeft="true"
-            android:background="@null"
-            android:onClick="dismissActivity"
-            android:src="@drawable/nav_back_black"/>
+            style="@style/BackStyle"
+            android:onClick="dismissActivity"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="选项设置"
-            android:textColor="@color/co6_syr"
-            android:textSize="16sp"/>
+            style="@style/TitleText"
+            android:text="选项设置"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        style="@style/SettingGroupOptionSetting">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/co10_syr"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/SettingKey"
-            android:text="启用锁屏"/>
+        <RelativeLayout
+            style="@style/SettingGroupOptionSetting">
 
-        <Switch
-            android:id="@+id/switch_screenLock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <TextView
+                style="@style/SettingKey"
+                android:text="启用锁屏"/>
 
-    <View style="@style/OptionSettingDivider"/>
+            <Switch
+                android:id="@+id/switch_screenLock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
-    <RelativeLayout
-        style="@style/SettingGroupOptionSetting">
+            <View style="@style/OptionSettingDivider"/>
 
-        <TextView
-            style="@style/SettingKey"
-            android:text="报表操作"/>
+        </RelativeLayout>
 
-        <Switch
-            android:id="@+id/switch_report_copy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
 
-    <View style="@style/OptionSettingDivider"/>
+        <RelativeLayout
+            style="@style/SettingGroupOptionSetting">
 
-    <RelativeLayout
-        style="@style/SettingGroupOptionSetting">
+            <TextView
+                style="@style/SettingKey"
+                android:text="报表操作"/>
 
-        <TextView
-            style="@style/SettingKey"
-            android:text="微信分享长图"/>
+            <Switch
+                android:id="@+id/switch_report_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
-        <Switch
-            android:id="@+id/switch_screenshot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <View style="@style/OptionSettingDivider"/>
 
-    <RelativeLayout
-        style="@style/SettingGroupOptionSetting"
+        </RelativeLayout>
 
-        android:visibility="gone">
 
-        <TextView
-            style="@style/SettingKey"
-            android:text="横屏显示标题栏"/>
+        <RelativeLayout
+            style="@style/SettingGroupOptionSetting">
 
-        <Switch
-            android:id="@+id/switch_landscape_banner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+            <TextView
+                style="@style/SettingKey"
+                android:text="微信分享长图"/>
 
-    <View style="@style/OptionSettingDivider"/>
+            <Switch
+                android:id="@+id/switch_screenshot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
-    <RelativeLayout
-        android:id="@+id/item_clear_cache"
-        style="@style/SettingGroupOptionSetting"
-        android:onClick="clearUserCache">
+            <View style="@style/OptionSettingDivider"/>
 
-        <TextView
-            style="@style/SettingKey"
-            android:text="清理缓存"/>
+        </RelativeLayout>
 
-        <ImageView
-            style="@style/SettingArrow"/>
-    </RelativeLayout>
+        <RelativeLayout
+            style="@style/SettingGroupOptionSetting"
+
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SettingKey"
+                android:text="横屏显示标题栏"/>
+
+            <Switch
+                android:id="@+id/switch_landscape_banner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+            <View style="@style/OptionSettingDivider"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/item_clear_cache"
+            style="@style/SettingGroupOptionSetting"
+            android:onClick="clearUserCache">
+
+            <TextView
+                style="@style/SettingKey"
+                android:text="清理缓存"/>
+
+            <ImageView
+                style="@style/SettingArrow"/>
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

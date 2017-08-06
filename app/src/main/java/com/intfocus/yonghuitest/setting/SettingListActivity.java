@@ -54,7 +54,7 @@ public class SettingListActivity extends BaseActivity {
         switch (type) {
             case "基本信息" :
                 try {
-                    mItemNameList = new String[]{"用户名", "用户角色", "所属商行", "手机号码", "邮箱", "修改密码"};
+                    mItemNameList = new String[]{"用户名", "用户角色", "所属商行", "手机号码", "邮箱"};
                     mItemContentList = new String[]{user.getString(URLs.kUserName),
                                                     user.getString(URLs.kRoleName),
                                                     user.getString(URLs.kGroupName),

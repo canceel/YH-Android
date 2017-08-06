@@ -39,6 +39,7 @@
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/iv_search"
             android:background="@drawable/background_white_radius_border_white"
+            android:textCursorDrawable="@drawable/login_edit_cursor"
             android:gravity="left|center_vertical"
             android:hint="搜索关键字"
             android:imeOptions="actionSearch"

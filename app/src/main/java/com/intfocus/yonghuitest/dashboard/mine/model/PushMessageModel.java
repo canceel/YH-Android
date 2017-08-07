@@ -13,5 +13,5 @@ import android.content.Context;
  */
 
 public interface PushMessageModel {
-    void loadData(Context context, OnPushMessageDataResultListener listener);
+    void loadData(Context context, OnPushMessageDataResultListener listener,int userId);
 }

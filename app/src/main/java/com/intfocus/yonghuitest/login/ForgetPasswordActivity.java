@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,7 +30,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     private ImageButton mBackBtn;
     private EditText mEtEmployeeId;
-    private Button mBtnSubmit;
+    private TextView mBtnSubmit;
     private EditText mEtEmployeePhoneNum;
     private String mResult;
     private boolean mFlag;
@@ -54,7 +53,7 @@ public class ForgetPasswordActivity extends BaseActivity {
         mBackBtn = (ImageButton) findViewById(R.id.ibtn_find_pwd_back);
         mEtEmployeeId = (EditText) findViewById(R.id.et_find_pwd_employee_id);
         mEtEmployeePhoneNum = (EditText) findViewById(R.id.et_find_pwd_employee_phone_num);
-        mBtnSubmit = (Button) findViewById(R.id.btn_find_pwd_submit);
+        mBtnSubmit = (TextView) findViewById(R.id.tv_btn_find_pwd_submit);
         mLlFindPwdResultNotice = (LinearLayout) findViewById(R.id.ll_find_pwd_result_notice);
         mTvFindPwdResultNotice = (TextView) findViewById(R.id.tv_find_pwd_result_notice);
     }

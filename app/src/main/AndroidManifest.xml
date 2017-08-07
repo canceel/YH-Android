@@ -63,6 +63,8 @@
             </intent-filter>
         </service>
 
+        <!--定位服务-->
+        <service android:name=".service.LocationService" />
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService" />
 

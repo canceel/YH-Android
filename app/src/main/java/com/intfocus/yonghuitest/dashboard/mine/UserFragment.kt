@@ -13,18 +13,17 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.mode.UserInfoMode
 import com.intfocus.yonghuitest.setting.SettingActivity
 import com.intfocus.yonghuitest.util.*
@@ -32,7 +31,6 @@ import com.intfocus.yonghuitest.util.ImageUtil.*
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
-import com.zbl.lib.baseframe.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
@@ -208,7 +206,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
     }
-    
+
     /**
      * 退出登录
      */

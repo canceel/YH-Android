@@ -33,7 +33,6 @@
     <!-- 5.0 及以上系统不可使用 -->
     <!-- 可选 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
-
     <!-- 获取logcat日志 -->
     <application
         android:name=".YHApplication"
@@ -105,9 +104,9 @@
 
         <!-- 问题反馈 -->
         <activity
-            android:name=".dashboard.mine.IssueActivity"
+            android:name=".dashboard.mine.FeedbackActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 公告详情 -->
         <activity
             android:name=".dashboard.mine.NoticeContentActivity"
@@ -132,12 +131,12 @@
         <activity
             android:name=".dashboard.mine.FavoriteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 筛选界面 -->
         <activity
             android:name=".filter.FilterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
         <activity
             android:name=".InputBarCodeActivity"
@@ -259,10 +258,6 @@
         <activity android:name=".setting.ShowListMsgActivity"/>
         <activity android:name=".dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name=".dashboard.mine.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity
             android:name=".dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
@@ -270,5 +265,10 @@
             android:name=".dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".login.GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
+
 </manifest>

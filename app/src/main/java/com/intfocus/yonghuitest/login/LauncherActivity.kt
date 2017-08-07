@@ -1,40 +1,49 @@
 package com.intfocus.yonghuitest.login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
-import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
-import android.location.LocationManager
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.view.Window
 import android.view.WindowManager
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.login.mode.LaunchMode
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity
-import com.zbl.lib.baseframe.core.AbstractActivity
-import com.zbl.lib.baseframe.core.Subject
-import kotlinx.android.synthetic.main.activity_launcher.*
-import org.xutils.x
-import android.location.LocationManager.NETWORK_PROVIDER
-import android.location.LocationManager.GPS_PROVIDER
-import android.location.LocationProvider
-import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_splash.*
 
 
-class LauncherActivity : AppCompatActivity(){
+class LauncherActivity : Activity(), Animation.AnimationListener {
+
     val ctx = this
     private var mSharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.activity_splash)
+        val animation = AlphaAnimation(1f, 1.0f)
+        animation.duration = 2000
+        animation.setAnimationListener(this)
+        logo.startAnimation(animation)
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
-        val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
 
+    }
+
+    override fun onAnimationRepeat(p0: Animation?) {
+    }
+
+    override fun onAnimationEnd(p0: Animation?) {
+        enter()
+    }
+
+    override fun onAnimationStart(p0: Animation?) {
+    }
+
+    fun enter() {
+        val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
         if (mSharedPreferences!!.getBoolean("ScreenLock", false)) {
             intent = Intent(this, ConfirmPassCodeActivity::class.java)
             intent.putExtra("is_from_login", true)
@@ -42,15 +51,13 @@ class LauncherActivity : AppCompatActivity(){
             this.startActivity(intent)
 
             finish()
-        }
-        else if (mSharedPreferences!!.getInt("Version", 0) != packageInfo.versionCode) {
+        } else if (mSharedPreferences!!.getInt("Version", 0) != packageInfo.versionCode) {
             intent = Intent(this, GuidePageActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)
 
             finish()
-        }
-        else {
+        } else {
             intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)

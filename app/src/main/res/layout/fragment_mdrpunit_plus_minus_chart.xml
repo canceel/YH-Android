@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/space_default"
     android:background="@color/co10"
     android:orientation="vertical"
-    tools:context="com.intfocus.yonghuitest.ui.ModularTwo_UnitPlusMinusChartFragment">
+    tools:context="com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_UnitPlusMinusChartFragment">
 
 
     <LinearLayout
@@ -28,9 +28,9 @@
                 android:layout_width="wrap_content"
                 android:drawablePadding="4dp"
                 android:paddingRight="0dp"
-                app:sort_downicon="@mipmap/icon_sort_desc"
-                app:sort_noneicon="@mipmap/icon_sort"
-                app:sort_upicon="@mipmap/icon_sort_asc" />
+                app:sort_downicon="@drawable/icon_sort_desc"
+                app:sort_noneicon="@drawable/icon_sort"
+                app:sort_upicon="@drawable/icon_sort_asc" />
         </TableRow>
 
         <TableRow
@@ -45,9 +45,9 @@
                 android:layout_width="wrap_content"
                 android:drawablePadding="4dp"
                 android:paddingRight="0dp"
-                app:sort_downicon="@mipmap/icon_sort_desc"
-                app:sort_noneicon="@mipmap/icon_sort"
-                app:sort_upicon="@mipmap/icon_sort_asc" />
+                app:sort_downicon="@drawable/icon_sort_desc"
+                app:sort_noneicon="@drawable/icon_sort"
+                app:sort_upicon="@drawable/icon_sort_asc" />
         </TableRow>
 
     </LinearLayout>

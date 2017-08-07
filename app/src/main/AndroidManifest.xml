@@ -131,6 +131,11 @@
             android:name=".dashboard.mine.FavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <!-- 筛选界面 -->
+        <activity
+            android:name=".filter.FilterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <!-- 二维码录入 -->
         <activity
             android:name=".InputBarCodeActivity"
@@ -255,5 +260,4 @@
         <activity android:name=".dashboard.mine.FeedbackActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
-
 </manifest>

@@ -23,7 +23,6 @@
         <TextView
             android:id="@+id/tv_notice_type"
             style="@style/tv_notice_List_title_item"
-            android:text="[系统公告]"
             android:textColor="#2f3941"
             android:textSize="15sp" />
 
@@ -31,7 +30,6 @@
             android:id="@+id/tv_notice_title"
             style="@style/tv_notice_List_title_item"
             android:layout_marginLeft="5dp"
-            android:text="系统公告"
             android:textColor="#2f3941"
             android:textSize="15sp" />
 
@@ -41,7 +39,8 @@
             android:layout_height="8dp"
             android:layout_gravity="center"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/oriange_circle" />
+            android:src="@drawable/oriange_circle"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <TextView
@@ -54,7 +53,6 @@
         android:ellipsize="end"
         android:lineSpacingExtra="5dp"
         android:maxLines="2"
-        android:text="根据上面的解释，由于各种数据类型大小测量的标准不统一，具体测量的方法应该由使用者来实现，如上面给出的一个在实现LruCache时重写sizeOf的一种常用实现方式。"
         android:textColor="@color/co3"
         android:textSize="12sp" />
 
@@ -65,7 +63,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="10dp"
-        android:text="2017-06-12 05:47:55"
         android:textColor="@color/co4"
         android:textSize="11sp" />
 

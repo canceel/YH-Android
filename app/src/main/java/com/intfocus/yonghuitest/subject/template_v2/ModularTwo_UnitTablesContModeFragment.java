@@ -396,8 +396,14 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             String itemName = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", itemName);
             intent.putExtra("Data", subdata);
-            int checkId = ((ModularTwo_UnitTablesModeFragment) getParentFragment()).suRootID;
-            intent.putExtra("suRootID", checkId);
+            if (getParentFragment() != null) {
+                int checkId = ((ModularTwo_UnitTablesModeFragment) getParentFragment()).suRootID;
+                intent.putExtra("suRootID", checkId);
+            }
+            else {
+                intent.putExtra("suRootID", 0);
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
             } else {

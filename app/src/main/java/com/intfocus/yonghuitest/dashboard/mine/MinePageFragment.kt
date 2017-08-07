@@ -59,11 +59,20 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
-                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
+                    line_orange.visibility=View.VISIBLE
+                    line_green.visibility=View.INVISIBLE
+                    line_blue.visibility=View.INVISIBLE
+//                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
                 } else if (position == 1) {
-                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color2))
+                    line_orange.visibility=View.INVISIBLE
+                    line_green.visibility=View.VISIBLE
+                    line_blue.visibility=View.INVISIBLE
+//                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color2))
                 } else {
-                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color1))
+                    line_orange.visibility=View.INVISIBLE
+                    line_green.visibility=View.INVISIBLE
+                    line_blue.visibility=View.VISIBLE
+//                    tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color1))
                 }
             }
 

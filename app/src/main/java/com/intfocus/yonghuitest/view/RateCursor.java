@@ -14,8 +14,8 @@ import static android.animation.ObjectAnimator.ofFloat;
  */
 public class RateCursor extends android.support.v7.widget.AppCompatImageView {
 
-    private int[] sources = new int[]{R.mipmap.icon_redarrow,
-            R.mipmap.icon_yellowarrow, R.mipmap.icon_greenarrow};
+    private int[] sources = new int[]{R.drawable.icon_redarrow,
+            R.drawable.icon_yellowarrow, R.drawable.icon_greenarrow};
     boolean currAnim;
     private ObjectAnimator downAnimator;
     private ObjectAnimator upAnimator;

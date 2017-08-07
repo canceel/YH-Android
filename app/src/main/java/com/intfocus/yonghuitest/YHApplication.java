@@ -161,6 +161,8 @@ public class YHApplication extends Application {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("fromMessage", true);
             intent.putExtra("message", uMessage.custom);
+            intent.putExtra("message_body_title", uMessage.title);
+            intent.putExtra("message_body_text", uMessage.text);
             startActivity(intent);
         }
     };

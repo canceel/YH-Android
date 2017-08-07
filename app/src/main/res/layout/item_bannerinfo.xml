@@ -52,5 +52,5 @@
         android:layout_marginBottom="36dp"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
-        app:srcCompat="@mipmap/pop_close" />
+        app:srcCompat="@drawable/pop_close" />
 </RelativeLayout>

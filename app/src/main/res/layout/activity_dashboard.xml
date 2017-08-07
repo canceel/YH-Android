@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".dashboard.DashboardActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".dashboard.DashboardActivity">
 
     <LinearLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_alignParentBottom="true"
         android:background="@color/co10_syr"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_kpi"
@@ -28,14 +28,14 @@
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_form_s"
             app:src="@drawable/tab_form"
-            app:text="报表"/>
+            app:text="报表" />
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_app"
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_special_s"
             app:src="@drawable/tab_special"
-            app:text="工具箱"/>
+            app:text="工具箱" />
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_message"
@@ -43,7 +43,7 @@
             app:active="false"
             app:active_src="@drawable/tab_my_s"
             app:src="@drawable/tab_my"
-            app:text="我的"/>
+            app:text="我的" />
 
     </LinearLayout>
 
@@ -51,13 +51,14 @@
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/view_shadow">
+        android:layout_above="@+id/toolBar">
     </com.intfocus.yonghuitest.view.NoScrollViewPager>
 
     <View
         android:id="@+id/view_shadow"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="8dp"
         android:layout_above="@+id/toolBar"
         android:background="@drawable/pic_shadow"/>
+
 </RelativeLayout>

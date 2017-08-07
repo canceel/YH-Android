@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/argb_transparent"
-                android:drawableLeft="@mipmap/icon_back"
+                android:drawableLeft="@drawable/icon_back"
                 android:drawablePadding="@dimen/space_default_small_s"
                 android:gravity="center_vertical"
                 android:maxLines="1"

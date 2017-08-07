@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fl_input_barcode_group"
+    android:id="@+id/rl_input_barcode_group"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/co5_syr">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,6 +44,7 @@
             android:inputType="number"
             android:letterSpacing="0.1"
             android:textColor="@color/co10"
+            android:textCursorDrawable="@drawable/cursor_input_barcode"
             android:textSize="40sp"/>
 
         <LinearLayout
@@ -75,33 +75,16 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_input_barcode_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="56dp"
-            android:background="@drawable/color_btn_forget_pwd_submit_background"
-            android:gravity="center"
-            android:text="确认"
-            android:textColor="@color/co1_syr"
-            android:textSize="16sp"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_input_barcode_notice"
+    <Button
+        android:id="@+id/btn_input_barcode_confirm"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_input_barcode_notice"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_notice_login_failure"
-            android:gravity="center"
-            android:text="条码无效"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-</FrameLayout>
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/color_btn_forget_pwd_submit_background"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="@color/co1_syr"
+        android:textSize="16sp"/>
+</RelativeLayout>

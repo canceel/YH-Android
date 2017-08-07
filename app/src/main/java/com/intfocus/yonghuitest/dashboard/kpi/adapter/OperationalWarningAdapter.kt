@@ -41,13 +41,11 @@ class OperationalWarningAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
-        holder.viewLeft.visibility = if (0 == position) View.INVISIBLE else View.GONE
-        holder.viewRight.visibility = if (datas!!.size == position + 1) View.INVISIBLE else View.GONE
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
         holder.tvNumberMain.text = formatNumber(number)
-        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+//        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare
         holder.tvNnumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
@@ -79,7 +77,5 @@ class OperationalWarningAdapter(val context: Context,
         var tvNnumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
         var tvNumberTitle = itemView.findViewById(R.id.tv_number_title) as TextView
         var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
-        var viewLeft = itemView.findViewById(R.id.view_left)
-        var viewRight = itemView.findViewById(R.id.view_right)
     }
 }

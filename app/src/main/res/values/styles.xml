@@ -88,7 +88,7 @@
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
 
-    <style name="ButtonBarButton" />
+    <style name="ButtonBarButton"/>
 
     <style name="ToolBarTab">
         <item name="android:layout_width">match_parent</item>
@@ -132,11 +132,11 @@
     </style>
 
     <style name="SettingArrow">
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">5dp</item>
+        <item name="android:layout_height">12dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:src">@drawable/arrow_right</item>
+        <item name="android:src">@drawable/btn_more</item>
     </style>
 
     <style name="SettingValue">
@@ -171,9 +171,9 @@
 
     <style name="NarrowSmallDivider">
         <item name="android:layout_width">330dp</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">1px</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:background">@color/item_line</item>
+        <item name="android:background">@color/co9_syr</item>
     </style>
 
     <style name="NullDivider">
@@ -306,11 +306,16 @@
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@color/black</item>
     </style>
+    android:id="@+id/actionBar"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:layout_marginBottom="10dp"
+    android:background="@color/co10_syr"
 
     <style name="TitleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/co10_syr</item>
     </style>
 
     <style name="BackStyle">
@@ -496,9 +501,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/co10_syr</item>
-        <item name="android:divider">@drawable/list_divider_line</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:divider">@null</item>
         <item name="android:scrollbars">none</item>
     </style>
 
@@ -517,18 +520,12 @@
 
     <style name="SettingGroupOptionSetting">
         <item name="android:layout_height">50dp</item>
-        <item name="android:background">@color/co10_syr</item>
+        <item name="android:background">@drawable/color_btn_forget_pwd_submit_background</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>
 
-    <style name="OptionSettingDivider">
-        <item name="android:layout_height">0.5dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-    </style>
     <!--设置底部弹出popupWindows的动画-->
     <style name="anim_popup_bottombar">
         <item name="android:windowEnterAnimation">@anim/popup_bottombar_in</item>
@@ -540,6 +537,7 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+
     <style name="TitleText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -547,6 +545,22 @@
         <item name="android:textColor">@color/co6_syr</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="OptionSettingDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/co9_syr</item>
+        <item name="android:layout_alignParentBottom">true</item>
     </style>
 
 </resources>

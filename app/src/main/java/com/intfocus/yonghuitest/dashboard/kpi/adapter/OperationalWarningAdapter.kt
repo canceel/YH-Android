@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.constant.Constant
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import org.greenrobot.eventbus.EventBus
@@ -52,7 +53,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(itemData)
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
         }
     }
 

@@ -193,6 +193,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOffline) {
+                            mTitle.setText(bannerName + "(离线)");
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        mMyApp.setCurrentActivity(this);
     }
 
     private void initActiongBar() {
@@ -297,29 +325,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void onResume() {
-        animLoading.setVisibility(View.VISIBLE);
-        checkInterfaceOrientation(this.getResources().getConfiguration());
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
 
-        mMyApp.setCurrentActivity(this);
         super.onResume();
     }
 
@@ -427,13 +433,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             getWindow().setAttributes(attr);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
-        mWebView.post(new Runnable() {
-            @Override
-            public void run() {
-                loadHtml();
-            }
-        });
     }
 
     private void loadHtml() {

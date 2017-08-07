@@ -28,7 +28,7 @@ class LauncherActivity : AppCompatActivity() {
 
             finish()
         } else if (mSharedPreferences!!.getInt("Version", 0) != packageInfo.versionCode) {
-            intent = Intent(this, LoginActivity::class.java)
+            intent = Intent(this, GuideActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)
 

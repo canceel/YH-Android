@@ -20,6 +20,7 @@ import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTablesParentMode;
+import com.intfocus.yonghuitest.util.DisplayUtil;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.zbl.lib.baseframe.core.Subject;
 
@@ -130,15 +131,15 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
                 fl_titleContainer.addView(scroll_title);
                 radioGroup = (RadioGroup) scroll_title.findViewById(R.id.radioGroup);
 
-                int marg = getResources().getDimensionPixelSize(R.dimen.space_default);
+                int marg = getResources().getDimensionPixelSize(R.dimen.space_float);
                 for (int i = 0; i < dataSize; i++) {
                     RadioButton rbtn = new RadioButton(ctx);
                     RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.WRAP_CONTENT,
-                            RadioGroup.LayoutParams.WRAP_CONTENT);
+                            DisplayUtil.dip2px(ctx, 45f));
                     rbtn.setTag(i);
                     rbtn.setPadding(marg, 0, marg, 0);
-                    Bitmap a=null;
+                    Bitmap a = null;
                     rbtn.setButtonDrawable(new BitmapDrawable(a));
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_table_rbtn);
                     rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
@@ -154,7 +155,6 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         } else
             ToastUtils.INSTANCE.show(ctx, "数据实体为空");
     }
-
 
     /**
      * 切换页面的重载，优化了fragment的切换

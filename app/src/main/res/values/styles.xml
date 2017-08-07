@@ -38,16 +38,16 @@
 
 
     <!-- Launch theme. -->
-    <style name="LauncherTheme" parent="Theme.AppCompat.Light">
+    <style name="LauncherTheme" parent="android:Theme.NoTitleBar.Fullscreen">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:windowActionBar">false</item>
+        <!--<item name="android:windowActionBar">false</item>-->
         <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/launch_color</item>
-        <item name="colorPrimaryDark">@color/launch_color</item>
+        <!--<item name="colorPrimary">@color/launch_color</item>-->
+        <!--<item name="colorPrimaryDark">@color/launch_color</item>-->
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
-        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- GuidePage theme. -->
@@ -471,7 +471,20 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/co3</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="tv_unit_chart_n">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/co3</item>
+        <item name="android:gravity">left</item>
     </style>
 
     <style name="tv_unit_chart_x" parent="tv_unit_chart_m">

@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@mipmap/graph_blackpot" />
+            android:src="@drawable/graph_blackpot" />
 
         <TextView
             android:id="@+id/tv_tableName_value"

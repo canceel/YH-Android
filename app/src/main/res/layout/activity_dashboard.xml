@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="49dp"
         android:layout_alignParentBottom="true"
         android:background="@color/co10_syr"
         android:orientation="horizontal"
@@ -28,14 +28,14 @@
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_form_s"
             app:src="@drawable/tab_form"
-            app:text="报表"/>
+            app:text="报表" />
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_app"
             style="@style/ToolBarTab"
             app:active_src="@drawable/tab_special_s"
             app:src="@drawable/tab_special"
-            app:text="工具箱"/>
+            app:text="工具箱" />
 
         <com.intfocus.yonghuitest.view.TabView
             android:id="@+id/tab_message"
@@ -43,7 +43,7 @@
             app:active="false"
             app:active_src="@drawable/tab_my_s"
             app:src="@drawable/tab_my"
-            app:text="我的"/>
+            app:text="我的" />
 
     </LinearLayout>
 

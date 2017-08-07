@@ -8,28 +8,45 @@
     android:orientation="vertical"
     android:paddingTop="20dp">
 
-    <TextView
-        android:id="@+id/tv_number_compare"
+    <LinearLayout
+        android:id="@+id/ll_number_compare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="28dp"
-        android:maxLines="1"
-        android:maxWidth="87dp"
-        android:text="5.7%"
-        android:textColor="@color/co2_syr"
-        android:textSize="18sp" />
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/tv_number_compare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:maxWidth="74dp"
+            android:textColor="@color/co2_syr"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tv_number_compare_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_number_compare"
+            android:layout_toRightOf="@+id/tv_number_compare"
+            android:maxLines="1"
+            android:text="%"
+            android:textColor="@color/co2_syr"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_number_compare_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/ll_number_compare"
         android:layout_marginLeft="28dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:maxWidth="87dp"
-        android:text="周同比"
         android:textColor="@color/co4_syr"
         android:textSize="12sp" />
 
@@ -50,7 +67,6 @@
         android:layout_toRightOf="@+id/view_vertical"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="第二集群销售额"
         android:textColor="@color/co6_syr"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -59,13 +75,11 @@
         android:id="@+id/tv_number_sub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/ll_number_compare"
         android:layout_marginLeft="28dp"
         android:layout_toRightOf="@+id/view_vertical"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="销售额"
         android:textColor="@color/co3_syr"
         android:textSize="12sp" />
 
@@ -73,13 +87,11 @@
         android:id="@+id/tv_number_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/ll_number_compare"
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/tv_number_sub"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="100"
         android:textColor="@color/co15_syr"
         android:textSize="12sp" />
 
@@ -87,12 +99,10 @@
         android:id="@+id/tv_number_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/ll_number_compare"
         android:layout_toRightOf="@+id/tv_number_main"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="万元"
         android:textColor="@color/co15_syr"
         android:textSize="12sp" />
 

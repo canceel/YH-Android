@@ -97,6 +97,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         init();
     }
 
+
     private void init() {
         Intent intent = getIntent();
         group_id = String.valueOf(intent.getIntExtra("groupID", 0));
@@ -155,7 +156,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         setACTitle(banner_name);
         if (entity != null) {
             int dataSize = entity.datas.data.size();
-            if (dataSize > 1) {//TODO 多个根页签
+            if (dataSize > 1) {    // 多个根页签
                 View scroll_title = LayoutInflater.from(ctx)
                         .inflate(R.layout.item_mdetal_scroll_title, null);
                 fl_titleContainer.addView(scroll_title);
@@ -182,13 +183,13 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                     if (i == 0)
                         rbtn.setChecked(true);
                 }
-
-            } else if (dataSize == 1) {//TODO 只有一个根页签
-                View single_title = LayoutInflater.from(ctx)
-                        .inflate(R.layout.item_mdetal_single_title, null);
-                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
-                fl_titleContainer.addView(single_title);
-                tv_single_title.setText(entity.datas.data.get(0).title);
+            } else if (dataSize == 1) {    // 只有一个根页签
+//                View single_title = LayoutInflater.from(ctx)
+//                        .inflate(R.layout.item_mdetal_single_title, null);
+//                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
+//                fl_titleContainer.addView(single_title);
+//                tv_single_title.setText(entity.datas.data.get(0).title);
+                fl_titleContainer.setVisibility(View.GONE);
                 switchFragment(0);
             }
         } else

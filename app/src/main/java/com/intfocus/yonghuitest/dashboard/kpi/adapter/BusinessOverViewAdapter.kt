@@ -45,13 +45,21 @@ class BusinessOverViewAdapter(val context: Context,
         var number = itemData.data!!.high_light!!.number + ""
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberUnit.text = itemData.unit
-        holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare
         holder.tvNumberCompare.typeface = mTypeface
+        holder.tvNumberCompareT.typeface = mTypeface
         holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+        holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+        if (itemData.data!!.high_light!!.compare.contains("%")) {
+            holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare.replace("%", "")
+            holder.tvNumberCompareT.visibility = View.VISIBLE
+        } else {
+            holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare
+            holder.tvNumberCompare.visibility = View.GONE
+        }
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2
         holder.rlBusinessOverview.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean("/" + itemData.target_url!!, itemData.title!!, 1, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
         }
     }
 
@@ -69,6 +77,7 @@ class BusinessOverViewAdapter(val context: Context,
         var tvNumberMain = itemView.findViewById(R.id.tv_number_main) as TextView
         var tvNumberUnit = itemView.findViewById(R.id.tv_number_unit) as TextView
         var tvNumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
+        var tvNumberCompareT = itemView.findViewById(R.id.tv_number_compare_t) as TextView
         var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
         var tvNumberCompareText = itemView.findViewById(R.id.tv_number_compare_name) as TextView
         var rlBusinessOverview = itemView.findViewById(R.id.rl_business_overview) as RelativeLayout

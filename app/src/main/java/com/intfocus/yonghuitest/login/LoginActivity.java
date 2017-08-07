@@ -246,7 +246,6 @@ public class LoginActivity extends BaseActivity {
                 return false;
             }
         });
-
     }
 //
 //    private void hideKeyBoard() {

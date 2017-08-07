@@ -13,6 +13,7 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.constant.Constant
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
+import com.intfocus.yonghuitest.util.Utils
 import org.greenrobot.eventbus.EventBus
 
 
@@ -41,13 +42,13 @@ class OperationalWarningAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
-        holder.viewLeft.visibility = if (0 == position) View.INVISIBLE else View.GONE
-        holder.viewRight.visibility = if (datas!!.size == position + 1) View.INVISIBLE else View.GONE
+        holder.viewEmpty.visibility = if (0 == position) View.VISIBLE else View.GONE
+        holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 40) / (2.5)).toInt()
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
         holder.tvNumberMain.text = formatNumber(number)
-        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+//        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare
         holder.tvNnumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
@@ -55,7 +56,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean("/" + itemData.target_url!!, itemData.title!!, 1, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
         }
     }
 
@@ -74,12 +75,11 @@ class OperationalWarningAdapter(val context: Context,
 
     class OperationalWarningHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rlNumberItem = itemView.findViewById(R.id.rl_number_item) as RelativeLayout
+        var viewEmpty = itemView.findViewById(R.id.view_empty)
         var tvNumberMain = itemView.findViewById(R.id.tv_number_main) as TextView
         var tvNumberUnit = itemView.findViewById(R.id.tv_number_unit) as TextView
         var tvNnumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
         var tvNumberTitle = itemView.findViewById(R.id.tv_number_title) as TextView
         var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
-        var viewLeft = itemView.findViewById(R.id.view_left)
-        var viewRight = itemView.findViewById(R.id.view_right)
     }
 }

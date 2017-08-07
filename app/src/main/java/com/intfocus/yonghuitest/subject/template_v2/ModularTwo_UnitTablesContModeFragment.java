@@ -72,6 +72,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
      */
 //    @ViewInject(R.id.thscroll_unit_table_header)
     private TableHorizontalScrollView thscroll_header;
+
     /**
      * 水平滑动的数据ScrollView
      */

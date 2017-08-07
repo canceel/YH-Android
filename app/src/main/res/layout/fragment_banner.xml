@@ -43,7 +43,7 @@
             android:layout_marginTop="0dp"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:src="@mipmap/btn_inf" />
+            android:src="@drawable/btn_inf" />
 
     </LinearLayout>
 </FrameLayout>

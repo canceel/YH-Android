@@ -24,7 +24,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
-        android:background="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:background="@color/white" />
 </RelativeLayout>

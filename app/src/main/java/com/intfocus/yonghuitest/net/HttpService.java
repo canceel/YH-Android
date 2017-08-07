@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.net;
 
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
+import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
@@ -87,5 +88,12 @@ public interface HttpService {
     @GET(K.kNewNoticeListPath)
     Observable<NoticesResult> getNoticeList(@Path("userId") String userId, @QueryMap Map<String, String> queryMap);
 
+    /**
+     * 获取筛选菜单信息
+     *
+     * @return
+     */
+    @GET(K.KFilterMenuPath)
+    Observable<MenuResult> getFilterMenu();
 
 }

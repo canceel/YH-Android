@@ -42,17 +42,11 @@
             android:layout_gravity="right" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view_line_t"
-        style="@style/SmallDivider"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/menu_linear_layout" />
-
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_line_t">
+        android:layout_below="@+id/menu_linear_layout">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

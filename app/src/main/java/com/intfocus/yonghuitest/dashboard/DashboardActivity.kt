@@ -20,9 +20,10 @@ import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.DashboardItemBean
-import com.intfocus.yonghuitest.bean.PushMessage
 import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
+import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
+import com.intfocus.yonghuitest.db.OrmDBHelper
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
@@ -39,9 +40,13 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
 import org.json.JSONObject
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import sumimakito.android.advtextswitcher.AdvTextSwitcher
 import java.io.File
 import java.io.IOException
+import java.sql.SQLException
 
 class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
     private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
@@ -90,6 +95,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         var intent = intent
         if (intent.getBooleanExtra("fromMessage", false)) {
             handlePushMessage(intent.getStringExtra("message"))
+
         } else {
             HttpUtil.checkAssetsUpdated(mContext)
         }
@@ -109,7 +115,26 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      */
     fun handlePushMessage(message: String) {
         Log.i("testlog", message)
-        var pushMessage = mGson!!.fromJson(message, PushMessage::class.java)
+        var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
+        pushMessage.body_title = intent.getStringExtra("message_body_title")
+        pushMessage.body_text = intent.getStringExtra("message_body_text")
+        pushMessage.new_msg = true
+        pushMessage.user_id = userID
+        var personDao = OrmDBHelper.getInstance(this).pushMessageDao
+        //  RxJava异步存储推送过来的数据
+        Observable.create(Observable.OnSubscribe <PushMessageBean> {
+            try {
+                personDao.createIfNotExists(pushMessage)
+            } catch(e: SQLException) {
+                e.printStackTrace()
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { }
+        // RxBus通知消息界面 ShowPushMessageActivity 更新数据
+        RxBusUtil.getInstance().post("UpDatePushMessage")
+
         when (pushMessage.type) {
             "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", 1, 1)
             "analyse" -> {
@@ -170,7 +195,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
             builder.show()
             return
-        } else if (user!!.store_ids.size == 0) {
+        } else if (user!!.store_ids == null || user!!.store_ids.size == 0) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
@@ -320,7 +345,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     fun pageLink(mBannerName: String, link: String, objectId: Int, objectType: Int) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
-                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId,0)
+                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId, 0)
                 val reportID = TextUtils.split(link, "/")[8]
                 var urlString: String
                 val intent: Intent
@@ -348,7 +373,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.putExtra("reportID", reportID)
                         startActivity(intent)
                     }
-                    link.indexOf("template/3") > 0-> {
+                    link.indexOf("template/3") > 0 -> {
                         intent = Intent(this, HomeTricsActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "3", reportID)
@@ -361,7 +386,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.putExtra("urlString", urlString)
                         startActivity(intent)
                     }
-                    link.indexOf("template/5") > 0  -> {
+                    link.indexOf("template/5") > 0 -> {
                         intent = Intent(this, TableActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "5", reportID)
@@ -395,8 +420,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
             logParams.put(URLs.kObjTitle, mBannerName)
             ActionLogUtil.actionLog(mAppContext, logParams)
-        }
-        else {
+        } else {
             val intent = Intent(this, WebApplicationActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(URLs.kBannerName, mBannerName)

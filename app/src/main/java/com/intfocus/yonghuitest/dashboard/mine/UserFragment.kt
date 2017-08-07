@@ -21,6 +21,7 @@ import android.widget.PopupWindow
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
+import com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.login.LoginActivity
@@ -123,6 +124,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_issue.setOnClickListener { startIssueActivity() }
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
+        rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
     }
 
@@ -153,6 +155,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     fun startFavoriteActivity() {
         var intent = Intent(activity, FavoriteActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+    }
+
+    fun startMessageActivity() {
+        var intent = Intent(activity, ShowPushMessageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
@@ -200,7 +208,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
     }
-    
+
     /**
      * 退出登录
      */

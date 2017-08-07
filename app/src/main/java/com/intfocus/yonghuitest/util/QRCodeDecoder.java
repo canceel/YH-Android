@@ -95,14 +95,14 @@ public class QRCodeDecoder {
     private static Bitmap getDecodeAbleBitmap(String picturePath) {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(picturePath, options);
-            int sampleSize = options.outHeight / 400;
-            if (sampleSize <= 0) {
-                sampleSize = 1;
-            }
-            options.inSampleSize = sampleSize;
-            options.inJustDecodeBounds = false;
+//            options.inJustDecodeBounds = true;
+//            BitmapFactory.decodeFile(picturePath, options);
+//            int sampleSize = options.outHeight / 400;
+//            if (sampleSize <= 0) {
+//                sampleSize = 1;
+//            }
+//            options.inSampleSize = sampleSize;
+//            options.inJustDecodeBounds = false;
 
             return BitmapFactory.decodeFile(picturePath, options);
         } catch (Exception e) {

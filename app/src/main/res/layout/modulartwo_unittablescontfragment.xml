@@ -14,7 +14,7 @@
     <FrameLayout
         android:id="@+id/fl_tableTitle_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_default_medium"/>
+        android:layout_height="46dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
             <com.intfocus.yonghuitest.view.NotScrollListView
                 android:id="@+id/nslistView_unit_table_LineName"
                 android:layout_width="0dp"
+                android:dividerHeight="1px"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 

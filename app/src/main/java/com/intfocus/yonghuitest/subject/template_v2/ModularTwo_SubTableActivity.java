@@ -42,7 +42,6 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modular_two_subtable);
         x.view().inject(this);
-        getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide().setDuration(500));
             getWindow().setExitTransition(new Slide().setDuration(500));
@@ -56,7 +55,7 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
             if (StringUtil.isEmpty(subData))
                 finish();
 
-            ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(subData);
+            ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID,subData);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.fl_subtable_container, toFragment);

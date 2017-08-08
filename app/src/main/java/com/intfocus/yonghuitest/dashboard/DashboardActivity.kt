@@ -89,7 +89,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
-        checkUserModifiedInitPassword() // 检测用户密码
+//        checkUserModifiedInitPassword() // 检测用户密码
         checkPgyerVersionUpgrade(this@DashboardActivity, false)
 
         var intent = intent
@@ -346,7 +346,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
                 val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId, 0)
-                val reportID = TextUtils.split(link, "/")[8]
+                val reportID = TextUtils.split(link, "report/")[1].split("/")[0]
                 var urlString: String
                 val intent: Intent
 

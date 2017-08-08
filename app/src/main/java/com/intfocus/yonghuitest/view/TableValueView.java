@@ -9,6 +9,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
 
+
 import com.intfocus.yonghuitest.util.DisplayUtil;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class TableValueView extends View {
         int nlSize = tableValues.size();
         float endX = getWidth();
         for (int i = 0; i < nlSize; i++) {
-            float starty = itemHeight * (i + 1) + i;
+            float starty = itemHeight * (i + deviderHeight/2) + (i + deviderHeight/2);
             canvas.drawLine(0, starty, endX, starty, deviderPaint);
         }
 
@@ -121,6 +122,7 @@ public class TableValueView extends View {
             }
         }
     }
+
 
     public int itemHeight;
     public ArrayList<Integer> headerLenghts = new ArrayList<>();

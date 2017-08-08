@@ -193,6 +193,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOffline) {
+                            mTitle.setText(bannerName + "(离线)");
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        mMyApp.setCurrentActivity(this);
     }
 
     private void initActiongBar() {
@@ -297,29 +325,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void onResume() {
-        animLoading.setVisibility(View.VISIBLE);
-        checkInterfaceOrientation(this.getResources().getConfiguration());
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
 
-        mMyApp.setCurrentActivity(this);
         super.onResume();
     }
 
@@ -427,13 +433,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             getWindow().setAttributes(attr);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
-        mWebView.post(new Runnable() {
-            @Override
-            public void run() {
-                loadHtml();
-            }
-        });
     }
 
     private void loadHtml() {
@@ -839,9 +838,32 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
+//            try {
+//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+//                FileUtil.writeFile(searchItemsPath, arrayString);
+//
+//                /**
+//                 *  判断筛选的条件: arrayString 数组不为空
+//                 *  报表第一次加载时，此处为判断筛选功能的关键点
+//                 */
+//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
+//                    isSupportSearch = true;
+//                    displayBannerTitleAndSearchIcon();
+//                } else {
+//                    isSupportSearch = false;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        }
+
+        @JavascriptInterface
+        public void reportSearchItemsV2(final String arrayString) {
             try {
                 String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
                 FileUtil.writeFile(searchItemsPath, arrayString);
+
+                Log.i("testlog", arrayString);
 
                 /**
                  *  判断筛选的条件: arrayString 数组不为空

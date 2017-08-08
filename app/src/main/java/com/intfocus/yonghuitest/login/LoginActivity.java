@@ -108,8 +108,8 @@ public class LoginActivity extends BaseActivity {
             showVersionWarring();
         }
 
-//        View v = new View(this);
-//        actionSubmit(v);
+        View v = new View(this);
+        actionSubmit(v);
 
         /*
          * 检测登录界面，版本是否升级
@@ -319,11 +319,11 @@ public class LoginActivity extends BaseActivity {
      */
     public void actionSubmit(View v) {
         try {
-            usernameString = usernameEditText.getText().toString();
-            passwordString = passwordEditText.getText().toString();
+//            usernameString = usernameEditText.getText().toString();
+//            passwordString = passwordEditText.getText().toString();
 
-//            usernameString = "13162726850";
-//            passwordString = "1";
+            usernameString = "13162726850";
+            passwordString = "1";
 
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
@@ -376,7 +376,6 @@ public class LoginActivity extends BaseActivity {
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             LoginActivity.this.startActivity(intent);
-
 
                             /*
                              * 用户行为记录, 单独异常处理，不可影响用户体验

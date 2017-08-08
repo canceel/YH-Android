@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.filter
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import com.amap.api.location.AMapLocation
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.RefreshActivity
 import com.intfocus.yonghuitest.dashboard.mine.adapter.FilterMenuAdapter
@@ -15,11 +17,15 @@ import com.intfocus.yonghuitest.data.response.filter.MenuResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
+import com.intfocus.yonghuitest.service.LocationService
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.view.addressselector.AddressPopupWindow
 import com.intfocus.yonghuitest.view.addressselector.FilterPopupWindow
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by CANC on 2017/8/3.
@@ -48,7 +54,9 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
         setRefreshLayout()
+        EventBus.getDefault().register(this)
         initView()
+        startService(Intent(this, LocationService::class.java))
         getMenuData()
     }
 
@@ -186,4 +194,18 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
         filterPopupWindow!!.dismiss()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun Location(location: AMapLocation) {
+        if (location != null && location.errorCode == 0) {
+            tvLocationAddress.text = location.address
+        } else {
+            tvLocationAddress.text = "定位失败"
+        }
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        startService(Intent(this, LocationService::class.java))
+        super.onDestroy()
+    }
 }

@@ -235,4 +235,10 @@
     <color name="co18_syr">#72b54d</color>
 
     <color name="col_report_left_text">#2f3941</color>
+
+    <!--预警色-->
+    <color name="warring_red">#ff0000</color>
+    <color name="warring_yellow">#F4BC45</color>
+    <color name="warring_green">#6aa657</color>
+
 </resources>

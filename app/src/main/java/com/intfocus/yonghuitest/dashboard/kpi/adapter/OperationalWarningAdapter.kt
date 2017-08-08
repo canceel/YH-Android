@@ -43,11 +43,13 @@ class OperationalWarningAdapter(val context: Context,
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
         holder.viewEmpty.visibility = if (0 == position) View.VISIBLE else View.GONE
-        holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 40) / (2.5)).toInt()
+        holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 20) / (2.5)).toInt()
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
-        holder.tvNumberMain.text = formatNumber(number)
+        if (!number.equals("null")) {
+            holder.tvNumberMain.text = formatNumber(number)
+        }
 //        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare

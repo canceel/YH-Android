@@ -21,6 +21,7 @@ import android.widget.PopupWindow
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
+import com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.login.LoginActivity
@@ -123,6 +124,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_issue.setOnClickListener { startIssueActivity() }
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
+        rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
     }
 
@@ -147,8 +149,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         startActivity(intent)
 
         var logParams = JSONObject()
-        logParams.put(URLs.kAction, "我的/修改密码")
-        ApiHelper.actionNewThreadLog(activity, logParams)
+        logParams.put(URLs.kAction, "点击/个人信息/修改密码")
+        ActionLogUtil.actionLog(ctx, logParams)
     }
 
     fun startFavoriteActivity() {
@@ -157,14 +159,16 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         startActivity(intent)
     }
 
+    fun startMessageActivity() {
+        var intent = Intent(activity, ShowPushMessageActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+    }
+
     fun startIssueActivity() {
         var intent = Intent(activity, FeedbackActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
-
-        var logParams = JSONObject()
-        logParams.put(URLs.kAction, "我的/问题反馈")
-        ApiHelper.actionNewThreadLog(activity, logParams)
     }
 
     fun startSettingActivity() {
@@ -204,7 +208,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
     }
-    
+
     /**
      * 退出登录
      */
@@ -241,7 +245,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "退出登录")
-        ApiHelper.actionNewThreadLog(activity, logParams)
+        ActionLogUtil.actionLog(ctx, logParams)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -312,8 +316,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         }
 
         var logParams = JSONObject()
-        logParams.put(URLs.kAction, "我的/设置头像")
-        ApiHelper.actionNewThreadLog(activity, logParams)
+        logParams.put(URLs.kAction, "点击/个人信息/设置头像")
+        ActionLogUtil.actionLog(ctx, logParams)
     }
 
     /*

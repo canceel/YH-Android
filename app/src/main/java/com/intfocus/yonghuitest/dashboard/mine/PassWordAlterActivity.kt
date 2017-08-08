@@ -12,6 +12,7 @@ import android.widget.EditText
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.login.LoginActivity
+import com.intfocus.yonghuitest.util.ActionLogUtil
 import com.intfocus.yonghuitest.util.ApiHelper
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
@@ -103,7 +104,7 @@ class PassWordAlterActivity : BaseActivity() {
 
                     var logParams = JSONObject()
                     logParams.put(URLs.kAction, "点击/密码修改")
-                    ApiHelper.actionNewThreadLog(this, logParams)
+                    ActionLogUtil.actionLog(this, logParams)
                 }
             }).start()
         } else {

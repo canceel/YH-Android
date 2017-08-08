@@ -9,7 +9,6 @@
     <color name="colorPrimary">#51aa38</color>
     <color name="launch_color">#64B04B</color>
     <color name="loading">#51aa38</color>
-    <color name="category">#6aa657</color>
 
     <color name="colors0">#ffffff</color>
     <color name="colors1">#ffcd0a</color>
@@ -23,7 +22,7 @@
     <color name="colors9">#000000</color>
 
     <!-- 透明 -->
-    <color name="transparent">#0000</color>
+    <color name="transparent">#0000</color>1
     <!-- 基本色 -->
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
@@ -234,4 +233,6 @@
     <color name="co17_syr">#f44f4f</color>
     <!-- 深绿文字 -->
     <color name="co18_syr">#72b54d</color>
+
+    <color name="col_report_left_text">#2f3941</color>
 </resources>

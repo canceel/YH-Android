@@ -23,13 +23,13 @@ import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GifSizeFilter extends Filter {
+ public class GifSizeFilter extends Filter {
 
     private int mMinWidth;
     private int mMinHeight;
     private int mMaxSize;
 
-    public GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
+     public GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
         mMinWidth = minWidth;
         mMinHeight = minHeight;
         mMaxSize = maxSizeInBytes;

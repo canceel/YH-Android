@@ -72,6 +72,11 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kNewNoticeListPath        = "/api/v1/user/{userId}/notices";
 
   /**
+   * 筛选
+   */
+  public final static String KFilterMenuPath           = "/api/v1/report/menus";
+
+  /**
    *  Config#Application
    */
   public final static String kConfigDirName             = "Configs";

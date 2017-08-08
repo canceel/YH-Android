@@ -109,8 +109,12 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
             JSONObject jsonObject = new JSONObject(mParam1);
             if (jsonObject.has("title")) {
                 String name = jsonObject.getString("title");
-                tv_title.setText(name);
-                tv_name.setText(name);
+                if (!name.isEmpty()) {
+                    tv_title.setText(name);
+                }
+                else {
+                    tv_title.setVisibility(View.GONE);
+                }
             }
 
             if (jsonObject.has("date")) {

@@ -11,16 +11,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -36,12 +37,10 @@ public class LoginActivity extends BaseActivity {
     private EditText usernameEditText, passwordEditText;
     private String usernameString, passwordString;
     private SharedPreferences mUserSP;
-    private TextView mTvLoginResultNotice;
-    private LinearLayout mLlLoginResultNotice;
     private View mLinearUsernameBelowLine;
     private View mLinearPasswordBelowLine;
-    private ImageView mIvEtUsernameClear;
-    private ImageView mIvEtPasswordClear;
+    private LinearLayout mLlEtUsernameClear;
+    private LinearLayout mLlEtPasswordClear;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -84,9 +83,45 @@ public class LoginActivity extends BaseActivity {
         passwordEditText = (EditText) findViewById(R.id.etPassword);
         mLinearUsernameBelowLine = findViewById(R.id.linearUsernameBelowLine);
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
-        mIvEtUsernameClear = (ImageView) findViewById(R.id.iv_etUsername_clear);
-        mIvEtPasswordClear = (ImageView) findViewById(R.id.iv_etPassword_clear);
-//        TextView versionTv = (TextView) findViewById(R.id.versionTv);
+        mLlEtUsernameClear = (LinearLayout) findViewById(R.id.ll_etUsername_clear);
+        mLlEtPasswordClear = (LinearLayout) findViewById(R.id.ll_etPassword_clear);
+
+        // 初始化监听
+        initListener();
+
+
+        /*
+         *  基本目录结构
+         */
+//        makeSureFolder(mAppContext, K.kSharedDirName);
+//        makeSureFolder(mAppContext, K.kCachedDirName);
+
+        /*
+         * 显示记住用户名称
+         */
+        usernameEditText.setText(mUserSP.getString("user_login_name", ""));
+
+        /*
+         *  当用户系统不在我们支持范围内时,发出警告。
+         */
+        if (Build.VERSION.SDK_INT > K.kMaxSdkVersion || Build.VERSION.SDK_INT < K.kMinSdkVersion) {
+            showVersionWarring();
+        }
+
+//        View v = new View(this);
+//        actionSubmit(v);
+
+        /*
+         * 检测登录界面，版本是否升级
+         */
+        checkVersionUpgrade(assetsPath);
+    }
+
+    /**
+     * 初始化监听器
+     */
+    private void initListener() {
+        // 忘记密码监听
         findViewById(R.id.forgetPasswordTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,25 +129,30 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
+        // 注册监听
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号");
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号", R.color.co11_syr);
             }
         });
+
+        // 用户名输入框 焦点监听 隐藏/显示 清空按钮
 
         usernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 changeEditTextFocusUnderLineColor(hasFocus, mLinearUsernameBelowLine);
                 if (usernameEditText.getText().length() > 0 && hasFocus) {
-                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                    mLlEtUsernameClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtUsernameClear.setVisibility(View.GONE);
+                    mLlEtUsernameClear.setVisibility(View.GONE);
                 }
             }
         });
+
+        // 用户名输入框 文本变化监听
+        // 处理 显示/隐藏 清空按钮事件
         usernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,31 +166,37 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
-                    mIvEtUsernameClear.setVisibility(View.VISIBLE);
+                    mLlEtUsernameClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtUsernameClear.setVisibility(View.GONE);
+                    mLlEtUsernameClear.setVisibility(View.GONE);
                 }
 
             }
         });
-        mIvEtUsernameClear.setOnClickListener(new View.OnClickListener() {
+
+        // 清空用户名 按钮 监听
+        mLlEtUsernameClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 usernameEditText.setText("");
             }
         });
 
+        // 密码输入框 焦点监听 隐藏/显示 清空按钮
         passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 changeEditTextFocusUnderLineColor(hasFocus, mLinearPasswordBelowLine);
                 if (passwordEditText.getText().length() > 0 && hasFocus) {
-                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                    mLlEtPasswordClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtPasswordClear.setVisibility(View.GONE);
+                    mLlEtPasswordClear.setVisibility(View.GONE);
                 }
             }
         });
+
+        // 密码输入框 文本变化监听
+        // 处理 显示/隐藏 清空按钮事件
         passwordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -164,48 +210,56 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
-                    mIvEtPasswordClear.setVisibility(View.VISIBLE);
+                    mLlEtPasswordClear.setVisibility(View.VISIBLE);
                 } else {
-                    mIvEtPasswordClear.setVisibility(View.GONE);
+                    mLlEtPasswordClear.setVisibility(View.GONE);
                 }
 
             }
         });
-        mIvEtPasswordClear.setOnClickListener(new View.OnClickListener() {
+
+        // 密码输入框 回车 监听
+        passwordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+//                    actionSubmit(v);
+                    hideKeyboard();
+                }
+                return false;
+            }
+        });
+
+        // 清空密码 按钮 监听
+        mLlEtPasswordClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 passwordEditText.setText("");
             }
         });
 
-        /*
-         *  基本目录结构
-         */
-//        makeSureFolder(mAppContext, K.kSharedDirName);
-//        makeSureFolder(mAppContext, K.kCachedDirName);
-
-        /*
-         * 显示记住用户名称
-         */
-        usernameEditText.setText(mUserSP.getString("user_login_name", ""));
-
-        mTvLoginResultNotice = (TextView) findViewById(R.id.tv_login_result_notice);
-        mLlLoginResultNotice = (LinearLayout) findViewById(R.id.ll_login_result_notice);
-        mLlLoginResultNotice.setVisibility(View.GONE);
-
-        /*
-         *  当用户系统不在我们支持范围内时,发出警告。
-         */
-        if (Build.VERSION.SDK_INT > K.kMaxSdkVersion || Build.VERSION.SDK_INT < K.kMinSdkVersion) {
-            showVersionWarring();
-        }
-
-        /*
-         * 检测登录界面，版本是否升级
-         */
-        checkVersionUpgrade(assetsPath);
+        // 背景布局 触摸 监听
+        findViewById(R.id.login_layout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
     }
+//
+//    private void hideKeyBoard() {
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
+//        imm.hideSoftInputFromWindow(usernameEditText.getWindowToken(), 0);
+//    }
 
+    /**
+     * 改变 EditText 正在编辑/不在编辑 下划线颜色
+     *
+     * @param hasFocus
+     * @param underLineView
+     */
     private void changeEditTextFocusUnderLineColor(boolean hasFocus, View underLineView) {
         if (hasFocus) {
             underLineView.setBackgroundColor(getResources().getColor(R.color.co1_syr));
@@ -268,6 +322,9 @@ public class LoginActivity extends BaseActivity {
             usernameString = usernameEditText.getText().toString();
             passwordString = passwordEditText.getText().toString();
 
+//            usernameString = "13162726850";
+//            passwordString = "1";
+
             mUserSP.edit().putString("user_login_name", usernameString).commit();
 
             if (usernameString.isEmpty() || passwordString.isEmpty()) {
@@ -303,7 +360,7 @@ public class LoginActivity extends BaseActivity {
                                     logParams.put(URLs.kAction, "unlogin");
                                     logParams.put(URLs.kUserName, usernameString + "|;|" + passwordString);
                                     logParams.put(URLs.kObjTitle, info);
-                                    ApiHelper.actionLoginLog(mAppContext, logParams);
+                                    ActionLogUtil.actionLoginLog(mAppContext, logParams);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -327,7 +384,7 @@ public class LoginActivity extends BaseActivity {
                             try {
                                 logParams = new JSONObject();
                                 logParams.put("action", "登录");
-                                new Thread(mRunnableForLogger).start();
+                                ActionLogUtil.actionLog(mAppContext, logParams);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -345,24 +402,6 @@ public class LoginActivity extends BaseActivity {
             if (mProgressDialog != null) mProgressDialog.dismiss();
             toast(e.getLocalizedMessage());
         }
-    }
-
-    /**
-     * 设置顶部提示弹窗
-     *
-     * @param text
-     * @param colorId
-     */
-    private void setNoticeTextAndBackgroundColor(String text, int colorId) {
-        mTvLoginResultNotice.setText(text);
-        mTvLoginResultNotice.setBackgroundColor(this.getResources().getColor(colorId));
-        mLlLoginResultNotice.setVisibility(View.VISIBLE);
-        mLlLoginResultNotice.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mLlLoginResultNotice.setVisibility(View.GONE);
-            }
-        }, 2000);
     }
 
     /**

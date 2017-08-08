@@ -34,5 +34,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/space_default"
         android:background="@android:color/transparent"
-        app:srcCompat="@mipmap/pop_close" />
+        app:srcCompat="@drawable/pop_close" />
 </RelativeLayout>

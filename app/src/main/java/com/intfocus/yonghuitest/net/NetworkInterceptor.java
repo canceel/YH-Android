@@ -53,5 +53,4 @@ public class NetworkInterceptor implements Interceptor {
         }
         return response;
     }
-
 }

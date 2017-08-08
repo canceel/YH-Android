@@ -69,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="110.5dp"
         android:orientation="vertical"
+        android:background="@color/co10_syr"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 

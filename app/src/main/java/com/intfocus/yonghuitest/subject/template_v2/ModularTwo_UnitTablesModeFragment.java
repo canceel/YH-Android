@@ -17,24 +17,25 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.base.BaseFragment;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTablesParentMode;
-import com.intfocus.yonghuitest.util.DisplayUtil;
-import com.intfocus.yonghuitest.util.ToastUtils;
 import com.zbl.lib.baseframe.core.Subject;
+import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.Random;
 
+import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageModeFragment.SU_ROOTID;
+
 /**
  * 表格根
  */
 public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> {
     private String fragmentTag;
-    private static final String SU_ROOTID = "suRootID";
     private static final String ARG_PARAM1 = "TablesParam";
 
     private String mParam;
@@ -131,15 +132,15 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
                 fl_titleContainer.addView(scroll_title);
                 radioGroup = (RadioGroup) scroll_title.findViewById(R.id.radioGroup);
 
-                int marg = getResources().getDimensionPixelSize(R.dimen.space_float);
+                int marg = getResources().getDimensionPixelSize(R.dimen.space_default);
                 for (int i = 0; i < dataSize; i++) {
                     RadioButton rbtn = new RadioButton(ctx);
                     RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.WRAP_CONTENT,
-                            DisplayUtil.dip2px(ctx, 45f));
+                            RadioGroup.LayoutParams.WRAP_CONTENT);
                     rbtn.setTag(i);
                     rbtn.setPadding(marg, 0, marg, 0);
-                    Bitmap a = null;
+                    Bitmap a=null;
                     rbtn.setButtonDrawable(new BitmapDrawable(a));
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_table_rbtn);
                     rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
@@ -153,8 +154,9 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
                 }
             }
         } else
-            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
+            ToastUtil.showToast(ctx, "数据实体为空");
     }
+
 
     /**
      * 切换页面的重载，优化了fragment的切换
@@ -168,7 +170,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
             return;
 
         if (toFragment == null)
-            toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(entity.datas.get(checkId).config);
+            toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID,entity.datas.get(checkId).config);
 
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

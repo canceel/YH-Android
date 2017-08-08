@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.intfocus.yonghuitest.subject.template_v2.view.SortCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+<com.intfocus.yonghuitest.view.SortCheckBox
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cbox_name"
     style="@style/tv_unit_chart_m"

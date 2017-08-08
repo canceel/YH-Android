@@ -33,7 +33,7 @@ import java.util.Random;
  * 模块二根标签页面
  */
 public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
-    private static final String SU_ROOTID = "suRootID";
+    public static final String SU_ROOTID = "suRootID";
     private static final String ARG_PARAM = "param";
     private String mParam;
 
@@ -49,12 +49,13 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
      */
     private int suRootID;
 
+
     @Override
     public Subject setSubject() {
         return new MDetalRootPageMode(ctx);
     }
 
-    public static ModularTwo_RootPageModeFragment newInstance(int suRootID, String param) {
+    public static ModularTwo_RootPageModeFragment newInstance(int suRootID,String param) {
         ModularTwo_RootPageModeFragment fragment = new ModularTwo_RootPageModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOTID, suRootID);

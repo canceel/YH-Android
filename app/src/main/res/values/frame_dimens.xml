@@ -8,7 +8,7 @@
     <dimen name="size_default">40dp</dimen>
     <dimen name="size_default_small">32dp</dimen>
     <dimen name="size_default_xsmall">40dp</dimen>
-    <dimen name="size_default_medium">59dp</dimen>
+    <dimen name="size_default_medium">46dp</dimen>
     <dimen name="size_default_large">50dp</dimen>
     <dimen name="size_default_xlarge">60dp</dimen>
     <dimen name="size_default_xxlarge">80dp</dimen>
@@ -23,7 +23,7 @@
     <!-- 大标题 -->
     <dimen name="font_large">18sp</dimen>
     <!-- 小标题 -->
-    <dimen name="font_medium">15sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
     <!-- 副标题 -->
     <dimen name="font_small">12sp</dimen>
     <!-- 副标题 -->
@@ -44,14 +44,13 @@
     <!-- ====================================================================================== -->
     <!-- =======================================以下为控件的内外边距================================== -->
     <!-- ====================================================================================== -->
-    <dimen name="space_default">10dp</dimen>
+    <dimen name="space_default">20dp</dimen>
     <dimen name="space_default_large_s">20dp</dimen>
     <dimen name="space_default_large">16dp</dimen>
     <dimen name="space_default_medium">12dp</dimen>
     <dimen name="space_default_small">6dp</dimen>
     <dimen name="space_default_small_s">4dp</dimen>
-    <dimen name="space_float">25dp</dimen>
-    <dimen name="space_large">30dp</dimen>
+    <dimen name="space_float">24dp</dimen>
     <!-- ====================================================================================== -->
     <!-- =======================================以上为控件的内外边距================================== -->
     <!-- ====================================================================================== -->

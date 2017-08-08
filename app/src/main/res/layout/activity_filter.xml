@@ -37,8 +37,10 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_location"
             android:drawablePadding="15dp"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="获取当前位置"
+            android:maxLines="1"
             android:textColor="@color/co15_syr"
             android:textColorHint="@color/co4_syr"
             android:textSize="14sp" />

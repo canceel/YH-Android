@@ -70,7 +70,6 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
      */
     private MDetalActRequestResult entity;
 
-
     @Override
     public int setLayoutRes() {
         return R.layout.actvity_meter_detal;

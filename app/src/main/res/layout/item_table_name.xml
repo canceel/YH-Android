@@ -10,7 +10,7 @@
 
         <ImageView
             android:id="@+id/img_tableName_dot"
-            android:layout_width="@dimen/space_default"
+            android:layout_width="@dimen/space_default_large_s"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerInside"
@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/tv_tableName_value"
-            style="@style/tv_unit_chart_m"
+            style="@style/tv_unit_chart_m_two"
             android:layout_height="match_parent"
             android:layout_weight="3" />
     </TableRow>

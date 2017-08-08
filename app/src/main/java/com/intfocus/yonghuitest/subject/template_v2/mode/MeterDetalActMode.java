@@ -58,7 +58,7 @@ public class MeterDetalActMode extends AbstractMode {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                try {
+//                try {
                     String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
                     Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
 
@@ -71,11 +71,15 @@ public class MeterDetalActMode extends AbstractMode {
                     }
 
                     StringReader stringReader = new StringReader(response.get("body"));
-                    InputStream is = new FileInputStream(jsonFilePath);
-                    InputStreamReader isr = new InputStreamReader(is);
-                    JSONReader reader = new JSONReader(isr);
+                    JSONReader reader = new JSONReader(stringReader);
                     reader.startArray();
                     reader.startObject();
+
+//                InputStream is = ctx.getAssets().open("kpi_detaldata.json");
+//                InputStreamReader isr = new InputStreamReader(is);
+//                JSONReader reader = new JSONReader(isr);
+//                reader.startArray();
+//                reader.startObject();
 
                     entity = new MererDetalEntity();
                     entity.data = new ArrayList<>();
@@ -118,11 +122,11 @@ public class MeterDetalActMode extends AbstractMode {
                     reader.endArray();
                     EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
                     Log.i(TAG, "EndTime:" + TimeUtil.getNowTime());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                    EventBus.getDefault().post(result1);
-                }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+//                    EventBus.getDefault().post(result1);
+//                }
             }
         });
     }

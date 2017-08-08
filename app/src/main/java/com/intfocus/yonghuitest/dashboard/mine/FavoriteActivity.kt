@@ -60,7 +60,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                     isEmpty!!, false, R.drawable.pic_3, {
                 getData(true)
             })
-            ToastUtils.show(mActivity, "请检查网络链接", R.color.co11_syr)
+            ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
@@ -75,7 +75,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onError(apiException: ApiException) {
                         finshRequest()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
@@ -109,7 +109,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
      */
     fun ArticleOperating(articleId: String, status: String) {
         if (!HttpUtil.isConnected(mActivity)) {
-            ToastUtils.show(mActivity, "请检查网络链接", R.color.co11_syr)
+            ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         showLoading()
@@ -121,7 +121,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onError(apiException: ApiException) {
                         dismissLoading()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: BaseResult) {

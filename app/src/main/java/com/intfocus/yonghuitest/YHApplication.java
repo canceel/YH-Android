@@ -18,7 +18,7 @@ import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.pgyersdk.crash.PgyCrashManager;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
@@ -74,6 +74,12 @@ public class YHApplication extends Application {
          *  蒲公英平台，收集闪退日志
          */
 //        PgyCrashManager.register(this);
+
+        Log.i("testlog", BuildConfig.DEBUG + "");
+        /*
+         * Bugly 异常上报
+         */
+        CrashReport.initCrashReport(getApplicationContext(), "1690ecea95", BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -155,6 +161,8 @@ public class YHApplication extends Application {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("fromMessage", true);
             intent.putExtra("message", uMessage.custom);
+            intent.putExtra("message_body_title", uMessage.title);
+            intent.putExtra("message_body_text", uMessage.text);
             startActivity(intent);
         }
     };
@@ -170,7 +178,7 @@ public class YHApplication extends Application {
      */
     @Override
     public void onTerminate() {
-        PgyCrashManager.unregister(); // 解除注册蒲公英异常信息上传
+//        PgyCrashManager.unregister(); // 解除注册蒲公英异常信息上传
         super.onTerminate();
     }
 

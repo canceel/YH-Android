@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.bean.table.Head;
-import com.intfocus.yonghuitest.bean.table.MainData;
+import com.intfocus.yonghuitest.subject.table.bean.Head;
+import com.intfocus.yonghuitest.subject.table.bean.MainData;
 
 import java.util.List;
 

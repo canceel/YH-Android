@@ -18,32 +18,35 @@ import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.ResetPasswordActivity
 import com.intfocus.yonghuitest.YHApplication
-import com.intfocus.yonghuitest.bean.PushMessage
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.bean.User
-import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
-import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
-import com.intfocus.yonghuitest.scanner.BarCodeScannerActivityV2
+import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
+import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
+import com.intfocus.yonghuitest.db.OrmDBHelper
+import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.NoScrollViewPager
 import com.intfocus.yonghuitest.view.TabView
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
-import com.zbl.lib.baseframe.utils.ToastUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
 import org.json.JSONObject
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import sumimakito.android.advtextswitcher.AdvTextSwitcher
 import java.io.File
 import java.io.IOException
+import java.sql.SQLException
 
 class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
     private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
@@ -61,6 +64,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var mAppContext: Context? = null
     private var mGson: Gson? = null
     lateinit var mUserSP: SharedPreferences
+
+    private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
     companion object {
         val PAGE_KPI = 0
@@ -90,6 +95,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         var intent = intent
         if (intent.getBooleanExtra("fromMessage", false)) {
             handlePushMessage(intent.getStringExtra("message"))
+
         } else {
             HttpUtil.checkAssetsUpdated(mContext)
         }
@@ -109,9 +115,28 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      */
     fun handlePushMessage(message: String) {
         Log.i("testlog", message)
-        var pushMessage = mGson!!.fromJson(message, PushMessage::class.java)
+        var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
+        pushMessage.body_title = intent.getStringExtra("message_body_title")
+        pushMessage.body_text = intent.getStringExtra("message_body_text")
+        pushMessage.new_msg = true
+        pushMessage.user_id = userID
+        var personDao = OrmDBHelper.getInstance(this).pushMessageDao
+        //  RxJava异步存储推送过来的数据
+        Observable.create(Observable.OnSubscribe <PushMessageBean> {
+            try {
+                personDao.createIfNotExists(pushMessage)
+            } catch(e: SQLException) {
+                e.printStackTrace()
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { }
+        // RxBus通知消息界面 ShowPushMessageActivity 更新数据
+        RxBusUtil.getInstance().post("UpDatePushMessage")
+
         when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "")
+            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", 1, 1)
             "analyse" -> {
                 mViewPager!!.currentItem = PAGE_REPORTS
                 mTabView!![mViewPager!!.currentItem].setActive(true)
@@ -170,7 +195,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
             builder.show()
             return
-        } else if (user!!.store_ids.size == 0) {
+        } else if (user!!.store_ids == null || user!!.store_ids.size == 0) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
@@ -178,12 +203,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             builder.show()
             return
         } else {
-            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivityV2::class.java)
+            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
             mContext!!.startActivity(barCodeScannerIntent)
 
             var logParams = JSONObject()
-            logParams.put(URLs.kAction, "点击/扫码")
-            ApiHelper.actionNewThreadLog(mAppContext, logParams)
+            logParams.put(URLs.kAction, "点击/扫一扫")
+            ActionLogUtil.actionLog(mAppContext, logParams)
         }
     }
 
@@ -290,7 +315,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         alertDialog.setMessage("安全起见，请在【个人信息】-【基本信息】-【修改登录密码】页面修改初始密码")
 
         alertDialog.setPositiveButton("立即前往") { _, _ ->
-            val intent = Intent(this@DashboardActivity, ResetPasswordActivity::class.java)
+            val intent = Intent(this@DashboardActivity, PassWordAlterActivity::class.java)
             startActivity(intent)
         }.setNegativeButton("稍后修改") { _, _ ->
             // 返回DashboardActivity
@@ -302,24 +327,26 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 图表点击事件统一处理方法
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(datas: KpiGroupItem?) {
-        if (datas != null) {
-            val link = "/" + datas!!.target_url
-            val bannerName = datas!!.title + ""
-            pageLink(bannerName, link)
+    fun onMessageEvent(items: DashboardItemBean?) {
+        if (items != null) {
+            val link = items.link
+            val bannerName = items.bannerName + ""
+            val objectId = items.objectId
+            val objectType = items.objectType
+            pageLink(bannerName, link, objectId, objectType)
         } else {
-            ToastUtil.showToast(this, "没有指定链接")
+            ToastUtils.show(this, "没有指定链接")
         }
     }
 
     /*
      * 页面跳转事件
      */
-    fun pageLink(mBannerName: String, link: String) {
+    fun pageLink(mBannerName: String, link: String, objectId: Int, objectType: Int) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
-                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId,0)
-                val reportID = TextUtils.split(link, "/")[8]
+                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId, 0)
+                val reportID = TextUtils.split(link, "report/")[1].split("/")[0]
                 var urlString: String
                 val intent: Intent
 
@@ -329,8 +356,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, 1)
-                        intent.putExtra(URLs.kObjectType, 1)
+                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
                         startActivity(intent)
@@ -340,42 +367,46 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, 1)
-                        intent.putExtra(URLs.kObjectType, 1)
+                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
                         startActivity(intent)
                     }
-                    link.indexOf("template/3") > 0-> {
+                    link.indexOf("template/3") > 0 -> {
                         intent = Intent(this, HomeTricsActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, 1)
-                        intent.putExtra(URLs.kObjectType, 1)
+                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
                         intent.putExtra("urlString", urlString)
                         startActivity(intent)
                     }
-                    link.indexOf("template/5") > 0  -> {
+                    link.indexOf("template/5") > 0 -> {
                         intent = Intent(this, TableActivity::class.java)
                         urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, 1)
-                        intent.putExtra(URLs.kObjectType, 1)
+                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
                         intent.putExtra("urlString", urlString)
                         startActivity(intent)
                     }
                     link.indexOf("template/1") > 0 -> {
-                        val intent = Intent(this, ModularTwo_Activity::class.java)
+                        val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
+                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectType, objectType)
+                        intent.putExtra("groupID", groupID)
+                        intent.putExtra("reportID", reportID)
                         intent.putExtra(URLs.kLink, link)
                         startActivity(intent)
                     }
@@ -384,21 +415,25 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-        }
-        else {
+
+            var logParams = JSONObject()
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
+            logParams.put(URLs.kObjTitle, mBannerName)
+            ActionLogUtil.actionLog(mAppContext, logParams)
+        } else {
             val intent = Intent(this, WebApplicationActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(URLs.kBannerName, mBannerName)
             intent.putExtra(URLs.kLink, link)
-            intent.putExtra(URLs.kObjectId, 1)
-            intent.putExtra(URLs.kObjectType, 1)
+            intent.putExtra(URLs.kObjectId, objectId)
+            intent.putExtra(URLs.kObjectType, objectType)
             startActivity(intent)
-        }
 
-        var logParams = JSONObject()
-        logParams.put(URLs.kAction, "点击/生意概况/报表")
-        logParams.put(URLs.kObjTitle, mBannerName)
-        ApiHelper.actionNewThreadLog(this, logParams)
+            var logParams = JSONObject()
+            logParams.put(URLs.kAction, "点击/生意概况/链接")
+            logParams.put(URLs.kObjTitle, mBannerName)
+            ActionLogUtil.actionLog(mAppContext, logParams)
+        }
     }
 
     internal fun showTemplateErrorDialog() {

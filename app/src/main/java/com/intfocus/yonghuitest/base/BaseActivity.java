@@ -44,11 +44,14 @@ import android.widget.Toast;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.login.LoginActivity;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -536,21 +539,6 @@ public class BaseActivity extends Activity {
         }
     }
 
-    public final Runnable mRunnableForLogger = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                String action = logParams.getString(URLs.kAction);
-                if (action == null) {
-                    return;
-                }
-                ApiHelper.actionLog(mAppContext, logParams);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
     public void modifiedUserConfig(boolean isLogin) {
         try {
             JSONObject configJSON = new JSONObject();
@@ -622,7 +610,7 @@ public class BaseActivity extends Activity {
 
                     if (newVersionCode % 2 == 1) {
                         if (isShowToast) {
-                            toast(String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode));
+                            toast(String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
 
                         return;
@@ -665,7 +653,7 @@ public class BaseActivity extends Activity {
             @Override
             public void onNoUpdateAvailable() {
                 if (isShowToast) {
-                    toast("已是最新版本");
+                    toast("已是最新版本", ToastColor.SUCCESS);
                 }
             }
         });
@@ -734,17 +722,12 @@ public class BaseActivity extends Activity {
         }
     }
 
+    protected void toast(String info, ToastColor toastColor) {
+        ToastUtils.INSTANCE.show(this, info, toastColor);
+    }
+
     protected void toast(String info) {
-        try {
-            if (null == toast) {
-                toast = Toast.makeText(mAppContext, info, Toast.LENGTH_SHORT);
-            } else {
-                toast.setText(info); //若当前已有 Toast 在显示,则直接修改当前 Toast 显示的内容
-            }
-            toast.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ToastUtils.INSTANCE.show(this, info);
     }
 
     public class JavaScriptBase {

@@ -43,7 +43,6 @@ class NoticeFragment : RefreshFragment(), NoticeListAdapter.NoticeItemListener, 
     lateinit var noticeMenuAdapter: NoticeMenuAdapter //筛选适配器
     var noticeMenuDatas: MutableList<NoticeMenuBean>? = null//筛选数据
     var typeStr: String? = null //筛选条件
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_notice, container, false)
@@ -159,8 +158,8 @@ class NoticeFragment : RefreshFragment(), NoticeListAdapter.NoticeItemListener, 
         startActivity(intent)
 
         var logParams = JSONObject()
-        logParams.put(URLs.kAction, "点击/公告列表")
-        ApiHelper.actionNewThreadLog(activity, logParams)
+        logParams.put(URLs.kAction, "点击/公告预警")
+        ActionLogUtil.actionLog(activity, logParams)
     }
 
     /**
@@ -183,6 +182,7 @@ class NoticeFragment : RefreshFragment(), NoticeListAdapter.NoticeItemListener, 
             }
             noticeMenuAdapter.setData(noticeMenuDatas)
         }
+
         getData(true)
     }
 }

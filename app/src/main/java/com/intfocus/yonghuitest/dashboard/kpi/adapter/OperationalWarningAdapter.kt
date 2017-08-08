@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.constant.Constant
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.util.Utils
@@ -42,11 +43,13 @@ class OperationalWarningAdapter(val context: Context,
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
         holder.viewEmpty.visibility = if (0 == position) View.VISIBLE else View.GONE
-        holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 40) / (2.5)).toInt()
+        holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 20) / (2.5)).toInt()
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
-        holder.tvNumberMain.text = formatNumber(number)
+        if (!number.equals("null")) {
+            holder.tvNumberMain.text = formatNumber(number)
+        }
 //        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare
@@ -55,7 +58,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(itemData)
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
         }
     }
 

@@ -9,24 +9,6 @@
     android:gravity="center_horizontal"
     tools:context=".login.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_login_result_notice"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_login_result_notice"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_notice_login_success"
-            android:gravity="center"
-            android:text="登陆成功"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-
     <View
         android:id="@+id/linearUsernameBelowLine"
         android:layout_width="245dp"
@@ -66,15 +48,20 @@
             android:textCursorDrawable="@drawable/login_edit_cursor"
             android:textSize="16sp"/>
 
-        <ImageView
-            android:id="@+id/iv_etUsername_clear"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="3dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/btn_empty"
-            android:visibility="gone"/>
+        <LinearLayout
+            android:id="@+id/ll_etUsername_clear"
+            android:layout_width="18dp"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/btn_empty"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
@@ -118,15 +105,19 @@
             android:textCursorDrawable="@drawable/login_edit_cursor"
             android:textSize="16sp"/>
 
-        <ImageView
-            android:id="@+id/iv_etPassword_clear"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="3dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/btn_empty"
-            android:visibility="gone"/>
+        <LinearLayout
+            android:id="@+id/ll_etPassword_clear"
+            android:layout_width="18dp"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom|left"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/btn_empty"/>
+        </LinearLayout>
     </LinearLayout>
 
     <View

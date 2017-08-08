@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MererEntity;
-import com.intfocus.yonghuitest.bean.dashboard.kpi.MeterClickEventEntity;
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity;
+import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity;
 import com.intfocus.yonghuitest.view.RingChart;
 
 import org.greenrobot.eventbus.EventBus;

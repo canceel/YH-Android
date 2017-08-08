@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/space_default"
     android:background="@drawable/shadow_banner_border"
-    tools:context="com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_UnitBannerFragment">
+    tools:context="com.intfocus.yonghuitest.subject.template_v2.ModularTwo_UnitBannerModeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +17,9 @@
         <TextView
             android:id="@+id/tv_mdrp_unit_banner_title"
             style="@style/tv_mererMinTitle_stytle"
+            android:paddingRight="10dp"
             android:text="title"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_mdrp_unit_banner_time"
@@ -26,7 +27,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
-            android:layout_marginLeft="@dimen/space_default"
             android:layout_marginTop="0dp"
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"

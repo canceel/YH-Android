@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
-import android.util.Log
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.*
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
@@ -14,9 +14,9 @@ import okhttp3.*
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 
 /**
@@ -26,8 +26,6 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mIssueSP: SharedPreferences = ctx.getSharedPreferences("IssueList", Context.MODE_PRIVATE)
-    var mIssueListBean: UserInfoBean? = null
-    var mIssueListBeanString: String? = null
     var gson = Gson()
     var fileList: MutableList<File> = mutableListOf()
 
@@ -97,10 +95,13 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                 File(str).delete()
             }
             fileList.add(FileUtil.saveImage(str, bmp))
+        } else {
+            ToastUtils.show(ctx, "仅可上传3张图片")
         }
-        else {
-            WidgetUtil.showToastShort(ctx, "仅可上传3张图片")
-        }
+    }
+
+    fun setUploadImg(imgFile: File) {
+        fileList.add(imgFile)
     }
 
     /**
@@ -118,57 +119,55 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     }
      */
     fun commitIssue2(issueInfo: IssueCommitInfo) {
-        Thread(Runnable {
-            var mOkHttpClient = OkHttpClient()
+        var mOkHttpClient = OkHttpClient()
 
-            var feedback = JSONObject()
-            var feedbackParams = JSONObject()
-            feedbackParams.put("content", issueInfo.issue_content)
-            feedbackParams.put("user_num", issueInfo.user_num)
-            feedbackParams.put("app_version", issueInfo.app_version)
-            feedbackParams.put("platform", issueInfo.platform)
-            feedbackParams.put("platform_version", issueInfo.platform_version)
-            feedback.put("feedback", feedbackParams)
+        var feedback = JSONObject()
+        var feedbackParams = JSONObject()
+        feedbackParams.put("content", issueInfo.issue_content)
+        feedbackParams.put("user_num", issueInfo.user_num)
+        feedbackParams.put("app_version", issueInfo.app_version)
+        feedbackParams.put("platform", issueInfo.platform)
+        feedbackParams.put("platform_version", issueInfo.platform_version)
+        feedback.put("feedback", feedbackParams)
 
-            val requestBody = MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("content", issueInfo.issue_content)
-                    .addFormDataPart("user_num", issueInfo.user_num)
-                    .addFormDataPart("app_version", issueInfo.app_version)
-                    .addFormDataPart("platform", issueInfo.platform)
-                    .addFormDataPart("platform_version", issueInfo.platform_version)
+        val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("content", issueInfo.issue_content)
+                .addFormDataPart("user_num", issueInfo.user_num)
+                .addFormDataPart("app_version", issueInfo.app_version)
+                .addFormDataPart("platform", issueInfo.platform)
+                .addFormDataPart("platform_version", issueInfo.platform_version)
 
-            if (!fileList.isEmpty()) {
-                for ((i, file) in fileList.withIndex()) {
-                    requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
-                }
+        if (!fileList.isEmpty()) {
+            for ((i, file) in fileList.withIndex()) {
+                requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
+            }
+        }
+
+        val request = Request.Builder()
+                .url(String.format("%s/api/v1/feedback", K.kBaseUrl))
+                .post(requestBody.build())
+                .build()
+
+        mOkHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                var request = IssueCommitRequest(false, "提交失败")
+                EventBus.getDefault().post(request)
+
+                var logParams = JSONObject()
+                logParams.put(URLs.kAction, "点击/问题反馈/失败")
+                ActionLogUtil.actionLog(ctx, logParams)
             }
 
-            val request = Request.Builder()
-                    .url(String.format("%s/api/v1/feedback", K.kBaseUrl))
-                    .post(requestBody.build())
-                    .build()
+            override fun onResponse(call: Call?, response: Response?) {
+                var request = IssueCommitRequest(true, "提交成功")
+                EventBus.getDefault().post(request)
 
-            mOkHttpClient.newCall(request).enqueue(object: okhttp3.Callback {
-                override fun onFailure(call: Call?, e: IOException?) {
-                    var request = IssueCommitRequest(false, "提交失败")
-                    EventBus.getDefault().post(request)
-
-                    var logParams = JSONObject()
-                    logParams.put(URLs.kAction, "点击/问题反馈失败")
-                    ApiHelper.actionNewThreadLog(ctx, logParams)
-                }
-
-                override fun onResponse(call: Call?, response: Response?) {
-                    var request = IssueCommitRequest(true, "提交成功")
-                      EventBus.getDefault().post(request)
-
-                    var logParams = JSONObject()
-                    logParams.put(URLs.kAction, "点击/问题反馈/成功")
-                    ApiHelper.actionNewThreadLog(ctx, logParams)
-                }
-            })
-        }).start()
+                var logParams = JSONObject()
+                logParams.put(URLs.kAction, "点击/问题反馈/成功")
+                ActionLogUtil.actionLog(ctx, logParams)
+            }
+        })
 
     }
 }

@@ -3,7 +3,7 @@
     android:id="@+id/rl_reports_category_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color8"
+    android:background="@color/co8_syr"
     android:orientation="horizontal">
 
 
@@ -20,9 +20,9 @@
         android:id="@+id/tv_reports_category_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
+        android:layout_marginLeft="12dp"
+        android:gravity="center_vertical"
         android:text="所有报表"
-        android:textColor="@color/color6"
+        android:textColor="@color/col_report_left_text"
         android:textSize="14sp" />
 </LinearLayout>

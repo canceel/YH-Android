@@ -40,6 +40,7 @@
 -keep class com.alibaba.sdk.android.**{*;}
 -keep class com.ut.**{*;}
 -keep class com.ta.**{*;}
+-keep class com.umeng.socialize**{*;}
 
 -keep public class **.R$*{
    public static final int *;
@@ -134,3 +135,16 @@
 
      -keep class com.linkedin.** { *; }
      -keepattributes Signature
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+# Bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

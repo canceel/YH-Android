@@ -72,13 +72,10 @@ open abstract class RefreshActivity : BaseActivity() {
                 getData(false)
             }
         })
-
     }
-
 
     /**
      * 获取数据
-
      * @param isShowDialog
      */
     protected abstract fun getData(isShowDialog: Boolean)

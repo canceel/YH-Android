@@ -8,22 +8,21 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.app.adapter.AppListAdapter
 import com.intfocus.yonghuitest.dashboard.app.adapter.AppListItemAdapter
-import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.bean.dashboard.AppListPageRequest
-import com.intfocus.yonghuitest.bean.dashboard.CategoryBean
 import com.intfocus.yonghuitest.dashboard.app.mode.AppListMode
+import com.intfocus.yonghuitest.dashboard.app.mode.AppListPageRequest
+import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
 import com.intfocus.yonghuitest.subject.WebApplicationActivity
-import com.intfocus.yonghuitest.subject.template_v2.ui.ModularTwo_Activity
+import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*
@@ -37,13 +36,11 @@ import org.json.JSONObject
  * 主页 - 专题
  * Created by liuruilin on 2017/6/15.
  */
-class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
-    lateinit var ctx: Context
+class AppFragment: BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefreshListener {
     var rootView : View? = null
     var datas: List<CategoryBean>? = null
 
     override fun setSubject(): Subject {
-        ctx = act.applicationContext
         return AppListMode(ctx,"app")
     }
 
@@ -79,7 +76,7 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            WidgetUtil.showToastShort(context, "请检查网络")
+            ToastUtils.show(context, "请检查网络")
         }
     }
 
@@ -90,85 +87,9 @@ class AppFragment: BaseModeFragment<AppListMode>(), AppListItemAdapter.ItemListe
             val mLayoutManager = LinearLayoutManager(ctx)
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             rv_app_list.layoutManager = mLayoutManager
-            rv_app_list.adapter = AppListAdapter(ctx, datas!![0].data, this)
+            rv_app_list.adapter = AppListAdapter(ctx, datas!![0].data)
         }
         swipe_container.isRefreshing = false
-    }
-
-    override fun itemClick(bannerName: String?, link: String?) {
-        if (!link!!.isEmpty()) {
-            if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
-                try {
-                    val groupID = act.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId,0)
-                    val reportID = TextUtils.split(link, "/")[8]
-                    var urlString: String
-                    val intent: Intent
-
-                    when {
-                        link.indexOf("template/2") > 0 || link.indexOf("template/4") > 0 -> {
-                            intent = Intent(activity, SubjectActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kLink, link)
-                            intent.putExtra(URLs.kObjectId, 1)
-                            intent.putExtra(URLs.kObjectType, 1)
-                            intent.putExtra("groupID", groupID)
-                            intent.putExtra("reportID", reportID)
-                            startActivity(intent)
-                        }
-                        link.indexOf("template/3") > 0-> {
-                            intent = Intent(ctx, HomeTricsActivity::class.java)
-                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
-                                    K.kBaseUrl, groupID, "3", reportID)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kObjectId, 1)
-                            intent.putExtra(URLs.kObjectType, 1)
-                            intent.putExtra("groupID", groupID)
-                            intent.putExtra("reportID", reportID)
-                            intent.putExtra("urlString", urlString)
-                            startActivity(intent)
-                        }
-                        link.indexOf("template/5") > 0  -> {
-                            intent = Intent(ctx, TableActivity::class.java)
-                            urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
-                                    K.kBaseUrl, groupID, "5", reportID)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kObjectId, 1)
-                            intent.putExtra(URLs.kObjectType, 1)
-                            intent.putExtra("groupID", groupID)
-                            intent.putExtra("reportID", reportID)
-                            intent.putExtra("urlString", urlString)
-                            startActivity(intent)
-                        }
-                        link.indexOf("template/1") > 0 -> {
-                            val intent = Intent(activity, ModularTwo_Activity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            intent.putExtra(URLs.kBannerName, bannerName)
-                            intent.putExtra(URLs.kLink, link)
-                            startActivity(intent)
-                        }
-                        else -> showTemplateErrorDialog()
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-            else {
-                val intent = Intent(ctx, WebApplicationActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                intent.putExtra(URLs.kBannerName, bannerName)
-                intent.putExtra(URLs.kLink, link)
-                intent.putExtra(URLs.kObjectId, 1)
-                intent.putExtra(URLs.kObjectType, 1)
-                startActivity(intent)
-            }
-        }
-        var logParams = JSONObject()
-        logParams.put(URLs.kAction, "点击/专题/报表")
-        logParams.put(URLs.kObjTitle, bannerName)
-        ApiHelper.actionNewThreadLog(activity, logParams)
     }
 
     internal fun showTemplateErrorDialog() {

@@ -36,7 +36,7 @@
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/iv_search"
             android:background="@drawable/background_white_radius_border_white"
             android:textCursorDrawable="@drawable/login_edit_cursor"
@@ -45,7 +45,7 @@
             android:imeOptions="actionSearch"
             android:maxLines="1"
             android:inputType="text"
-            android:textColorHint="@color/co4"
+            android:textColorHint="@color/co4_syr"
             android:textSize="14dp" />
     </RelativeLayout>
 

@@ -29,7 +29,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         animation.setAnimationListener(this)
         logo.startAnimation(animation)
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
-
     }
 
     override fun onAnimationRepeat(p0: Animation?) {
@@ -52,7 +51,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             finish()
         } else if (mSharedPreferences!!.getInt("Version", 0) != packageInfo.versionCode) {
-            intent = Intent(this, GuidePageActivity::class.java)
+            intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)
 

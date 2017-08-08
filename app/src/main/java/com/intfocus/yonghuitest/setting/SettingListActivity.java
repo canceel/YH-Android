@@ -12,12 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.ResetPasswordActivity;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.SimpleListAdapter;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.URLs;
 import com.umeng.message.PushAgent;
 
@@ -54,7 +54,7 @@ public class SettingListActivity extends BaseActivity {
         switch (type) {
             case "基本信息" :
                 try {
-                    mItemNameList = new String[]{"用户名", "用户角色", "所属商行", "手机号码", "邮箱", "修改密码"};
+                    mItemNameList = new String[]{"用户名", "用户角色", "所属商行", "手机号码", "邮箱"};
                     mItemContentList = new String[]{user.getString(URLs.kUserName),
                                                     user.getString(URLs.kRoleName),
                                                     user.getString(URLs.kGroupName),
@@ -155,7 +155,7 @@ public class SettingListActivity extends BaseActivity {
                         break;
                     } else {
                         mLastExitTime = System.currentTimeMillis();
-                        toast("再点击一下将打开 开发者选项");
+                        toast("再点击一下将打开 开发者选项", ToastColor.SUCCESS);
                     }
                     break;
 
@@ -211,10 +211,6 @@ public class SettingListActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     break;
-
-                case "修改密码" :
-                    Intent intent = new Intent(SettingListActivity.this, ResetPasswordActivity.class);
-                    startActivity(intent);
             }
         }
     };

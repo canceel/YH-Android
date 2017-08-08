@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.constant.Constant
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import org.greenrobot.eventbus.EventBus
@@ -58,7 +59,7 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2
         holder.rlBusinessOverview.setOnClickListener {
-            EventBus.getDefault().post(itemData)
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
         }
     }
 

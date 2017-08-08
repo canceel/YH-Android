@@ -1,7 +1,6 @@
 package com.intfocus.yonghuitest.subject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,15 +12,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,19 +33,19 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
-import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
@@ -64,7 +58,6 @@ import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -200,6 +193,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOffline) {
+                            mTitle.setText(bannerName + "(离线)");
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        mMyApp.setCurrentActivity(this);
     }
 
     private void initActiongBar() {
@@ -304,29 +325,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void onResume() {
-        animLoading.setVisibility(View.VISIBLE);
-        checkInterfaceOrientation(this.getResources().getConfiguration());
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
 
-        mMyApp.setCurrentActivity(this);
         super.onResume();
     }
 
@@ -434,13 +433,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             getWindow().setAttributes(attr);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
-        mWebView.post(new Runnable() {
-            @Override
-            public void run() {
-                loadHtml();
-            }
-        });
     }
 
     private void loadHtml() {
@@ -570,7 +562,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             intent.putExtra("selectedItemPath", selectedItemPath);
             mContext.startActivity(intent);
         } else {
-            WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+            ToastUtils.INSTANCE.show(mContext, "该报表暂不支持筛选");
         }
     }
 
@@ -580,7 +572,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         clipboardManager.setText(link);
-        WidgetUtil.showToastShort(mContext, "链接已拷贝");
+        ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
     /*
@@ -662,8 +654,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
          */
         try {
             logParams = new JSONObject();
-            logParams.put("action", "微信分享");
-            new Thread(mRunnableForLogger).start();
+            logParams.put("action", "分享");
+            ActionLogUtil.actionLog(mContext, logParams);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -838,7 +830,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 logParams.put("obj_id", objectID);
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mContext, logParams);
             } catch (Exception e) {
                 e.printStackTrace();
             }

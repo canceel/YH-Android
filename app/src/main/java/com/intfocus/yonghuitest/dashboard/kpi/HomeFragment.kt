@@ -53,6 +53,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
         titleTop = mView!!.findViewById(R.id.title_top) as LinearLayout
         recyclerView.layoutManager = MyLinearLayoutManager(context)
         adapter = HomePageAdapter(context, homeDatas, this)
+
         recyclerView.adapter = adapter
 
         var headerView = DefaultRefreshView(mActivity)
@@ -79,6 +80,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                 showLoading()
             }
         }
+
         RetrofitUtil.getHttpService().getHomeIndex(groupId, roleId)
                 .compose(RetrofitUtil.CommonOptions<KpiResult>())
                 .subscribe(object : CodeHandledSubscriber<KpiResult>() {

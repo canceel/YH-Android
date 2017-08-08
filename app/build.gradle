@@ -12,6 +12,11 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         multiDexEnabled true
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a', 'mips', 'mips64'
+        }
     }
     if (System.getenv().containsKey("KEYSTORE"))
         signingConfigs {
@@ -80,6 +85,12 @@ dependencies {
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     //高德定位
     //    compile 'me.dm7.barcodescanner:zbar:1.9'
+    //高德定位
+    compile files('libs/pinyin4j-2.5.0.jar')
+    // Bugly-SDK
+    // Bugly-NDK
+    compile 'com.amap.api:location:latest.integration'
+    compile 'com.amap.api:location:latest.integration'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.5.6'
     compile 'commons-io:commons-io:2.4'
@@ -96,15 +107,18 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
-    compile 'com.amap.api:location:latest.integration' //高德定位
     compile 'pub.devrel:easypermissions:0.4.0'
-    compile files('libs/pinyin4j-2.5.0.jar')
-    compile 'com.amap.api:location:latest.integration'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zbar:1.1.7@aar'
-
+    compile 'com.zhihu.android:matisse:0.4.3'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'top.zibin:Luban:1.1.2'
+    compile 'com.google.zxing:core:3.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
 }

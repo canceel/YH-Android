@@ -1,10 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.work_box
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.bean.dashboard.AppListPageRequest
-import com.intfocus.yonghuitest.bean.dashboard.ListPageBean
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs

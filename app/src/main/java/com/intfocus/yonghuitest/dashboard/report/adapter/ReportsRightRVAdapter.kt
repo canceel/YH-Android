@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.bean.dashboard.ListGroupBean
+import com.intfocus.yonghuitest.dashboard.report.mode.ListGroupBean
 import com.intfocus.yonghuitest.view.MyGridView
 
 /**
  * Created by liuruilin on 2017/6/17.
  */
-class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?,
-                            var listener: ReportsRightGVAdapter.ItemListener)
+class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?)
                             : RecyclerView.Adapter<ReportsRightRVAdapter.ReportsRightListHolder>() {
 
     var inflater = LayoutInflater.from(ctx)
@@ -31,7 +30,7 @@ class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?,
 
     override fun onBindViewHolder(holder: ReportsRightRVAdapter.ReportsRightListHolder, position: Int) {
         holder.tvReportsListTitle.text = datas!![position].group_name
-        holder.gvReportsListItem.adapter = ReportsRightGVAdapter(ctx, datas!![position].data, listener)
+        holder.gvReportsListItem.adapter = ReportsRightGVAdapter(ctx, datas!![position].data)
     }
 
     override fun getItemCount(): Int {

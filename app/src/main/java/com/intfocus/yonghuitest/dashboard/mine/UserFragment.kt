@@ -229,6 +229,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 val response = HttpUtil.httpPost(postUrl, HashMap<String, String>())
                 activity.runOnUiThread({
                     if (response["code"] == "200") {
+                        val sharedPreferences = activity.getSharedPreferences("loginToken", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putBoolean("loginToken", false).commit()
+
                         model.modifiedUserConfig(false)
                         val intent = Intent()
                         intent.setClass(activity, LoginActivity::class.java)

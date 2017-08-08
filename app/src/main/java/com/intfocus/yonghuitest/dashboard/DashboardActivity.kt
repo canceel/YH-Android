@@ -93,8 +93,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         checkPgyerVersionUpgrade(this@DashboardActivity, false)
 
         var intent = intent
-        if (intent.getBooleanExtra("fromMessage", false)) {
-            handlePushMessage(intent.getStringExtra("message"))
+        if (intent.hasExtra("msgData")) {
+            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
 
         } else {
             HttpUtil.checkAssetsUpdated(mContext)
@@ -116,8 +116,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     fun handlePushMessage(message: String) {
         Log.i("testlog", message)
         var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
-        pushMessage.body_title = intent.getStringExtra("message_body_title")
-        pushMessage.body_text = intent.getStringExtra("message_body_text")
+        pushMessage.body_title = intent.getBundleExtra("msgData").getString("message_body_title")
+        pushMessage.body_text = intent.getBundleExtra("msgData").getString("message_body_text")
         pushMessage.new_msg = true
         pushMessage.user_id = userID
         var personDao = OrmDBHelper.getInstance(this).pushMessageDao
@@ -189,8 +189,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
-                    .setPositiveButton("确认") { dialog, which -> goToAppSetting() }
-                    .setNegativeButton("取消") { dialog, which ->
+                    .setPositiveButton("确认") { _, _ -> goToAppSetting() }
+                    .setNegativeButton("取消") { _, _ ->
                         // 返回DashboardActivity
                     }
             builder.show()

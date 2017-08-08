@@ -339,7 +339,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     String firstName = "";
                     String secondName = "";
                     String thirdName = "";
-                    if (items.getData().size() != 0) {
+                    if (items != null && items.getData().size() != 0) {
                         firstName = items.getData().get(0).getTitles();
 
                         if (items.getData().get(0).getInfos().size() != 0) {

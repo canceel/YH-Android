@@ -339,7 +339,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     String firstName = "";
                     String secondName = "";
                     String thirdName = "";
-                    if (items.getData().size() != 0) {
+                    if (items != null && items.getData().size() != 0) {
                         firstName = items.getData().get(0).getTitles();
 
                         if (items.getData().get(0).getInfos().size() != 0) {
@@ -838,32 +838,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
-//            try {
-//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-//                FileUtil.writeFile(searchItemsPath, arrayString);
-//
-//                /**
-//                 *  判断筛选的条件: arrayString 数组不为空
-//                 *  报表第一次加载时，此处为判断筛选功能的关键点
-//                 */
-//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
-//                    isSupportSearch = true;
-//                    displayBannerTitleAndSearchIcon();
-//                } else {
-//                    isSupportSearch = false;
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-        }
-
-        @JavascriptInterface
-        public void reportSearchItemsV2(final String arrayString) {
             try {
                 String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
                 FileUtil.writeFile(searchItemsPath, arrayString);
-
-                Log.i("testlog", arrayString);
 
                 /**
                  *  判断筛选的条件: arrayString 数组不为空
@@ -878,6 +855,29 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        @JavascriptInterface
+        public void reportSearchItemsV2(final String arrayString) {
+//            try {
+//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+//                FileUtil.writeFile(searchItemsPath, arrayString);
+//
+//                Log.i("testlog", arrayString);
+//
+//                /**
+//                 *  判断筛选的条件: arrayString 数组不为空
+//                 *  报表第一次加载时，此处为判断筛选功能的关键点
+//                 */
+//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
+//                    isSupportSearch = true;
+//                    displayBannerTitleAndSearchIcon();
+//                } else {
+//                    isSupportSearch = false;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @JavascriptInterface

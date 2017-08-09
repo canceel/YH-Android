@@ -201,6 +201,13 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new WebApplicationActivity.JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
     }
 
     public class MyWebChromeClient extends WebChromeClient {
@@ -331,34 +338,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     public void onResume() {
-        if (!isFromActivityResult) {
-            animLoading.setVisibility(View.VISIBLE);
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadHtml();
-                }
-            });
-            isWeiXinShared = false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isOffline) {
-                                mTitle.setText(bannerName + "(离线)");
-                            }
-                        }
-                    });
-                }
-            }).start();
-        }
         mMyApp.setCurrentActivity(this);
         super.onResume();
     }

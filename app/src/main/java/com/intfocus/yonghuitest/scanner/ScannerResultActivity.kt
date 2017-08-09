@@ -81,7 +81,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
 
      * @param clickView
      */
-    fun showComplaintsPopWindow(clickView: View) {
+    fun launchDropMenuActivity(clickView: View) {
         val contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null)
         contentView.findViewById(R.id.ll_shaixuan).visibility = View.VISIBLE
         x.view().inject(this, contentView)

@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="576"
-          android:versionName="3.0.26">
+          android:versionCode="578"
+          android:versionName="3.0.28">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -138,10 +138,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
-        <activity
-            android:name=".InputBarCodeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
             android:name=".scanner.BarCodeScannerActivity"

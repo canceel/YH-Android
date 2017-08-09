@@ -3,7 +3,7 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/argb_background">
+    android:background="@color/co8_syr">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:id="@+id/fl_baseUI_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/co7" />
+            android:background="@color/co8_syr" />
     </LinearLayout>
 
     <ProgressBar

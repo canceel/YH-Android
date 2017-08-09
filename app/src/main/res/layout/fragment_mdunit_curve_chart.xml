@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/tv_chart_table_target1"
-                style="@style/tv_unit_chart_x" />
+                style="@style/tv_unit_chart_x"/>
 
             <TextView
                 android:id="@+id/tv_chart_table_target2"
@@ -61,14 +61,17 @@
 
             <TextView
                 android:id="@+id/tv_chart_table_target1name"
+                android:textSize="12sp"
                 style="@style/tv_unit_chart_m" />
 
             <TextView
                 android:id="@+id/tv_chart_table_target2name"
+                android:textSize="12sp"
                 style="@style/tv_unit_chart_m" />
 
             <TextView
                 style="@style/tv_unit_chart_m"
+                android:textSize="12sp"
                 android:text="变化率" />
         </TableRow>
     </LinearLayout>

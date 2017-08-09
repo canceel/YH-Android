@@ -306,11 +306,7 @@
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@color/black</item>
     </style>
-    android:id="@+id/actionBar"
-    android:layout_width="match_parent"
-    android:layout_height="44dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/co10_syr"
+
 
     <style name="TitleStyle">
         <item name="android:layout_width">match_parent</item>
@@ -458,7 +454,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_cont</item>
-        <item name="android:textColor">@color/co3</item>
+        <item name="android:textColor">@color/co3_syr</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -470,8 +466,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">@dimen/font_medium</item>
-        <item name="android:textColor">@color/co3</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/co3_syr</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -500,6 +495,8 @@
     </style>
 
     <style name="tv_unit_chart_x" parent="tv_unit_chart_m">
+        <item name="textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_large_s</item>
     </style>
 

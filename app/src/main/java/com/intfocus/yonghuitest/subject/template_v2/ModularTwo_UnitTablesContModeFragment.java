@@ -21,6 +21,7 @@ import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
 import com.intfocus.yonghuitest.subject.template_v2.adapter.ModularTwo_TableNameAdapter;
 import com.intfocus.yonghuitest.subject.template_v2.adapter.ModularTwo_TableValueAdapter;
+import com.intfocus.yonghuitest.subject.template_v2.entity.DataHolder;
 import com.intfocus.yonghuitest.subject.template_v2.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTableRect;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTableContMode;
@@ -404,7 +405,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             Intent intent = new Intent(ctx, ModularTwo_SubTableActivity.class);
             String itemName = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", itemName);
-            intent.putExtra("Data", subdata);
+//            intent.putExtra("Data", subdata);
+            DataHolder.getInstance().setData(subdata);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

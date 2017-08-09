@@ -54,7 +54,7 @@ class BusinessOverViewAdapter(val context: Context,
             holder.tvNumberCompareT.visibility = View.VISIBLE
         } else {
             holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare
-            holder.tvNumberCompare.visibility = View.GONE
+            holder.tvNumberCompareT.visibility = View.GONE
         }
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2

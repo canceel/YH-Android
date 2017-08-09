@@ -1,12 +1,10 @@
 package com.intfocus.yonghuitest.dashboard.mine.adapter
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
@@ -31,28 +29,12 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     override fun onBindViewHolder(holder: MessageHolder?, position: Int) {
         // 加载数据
         if (mData.size > 0) {
-            holder!!.tvNoticeType.visibility = View.GONE
 
-            holder.tvNoticeTitle.text = mData[position].title
-            holder.tvNoticeListContent.text = mData[position].body_text
-            holder.tvNoticeTime.text = mData[position].debug_timestamp
+            holder!!.tvPushMsgTitle.text = mData[position].title
+            holder.tvPushMsgContent.text = mData[position].body_text
+            holder.tvPushMsgTime.text = mData[position].debug_timestamp.substring(0,19)
 
-            // 根据 new_msg 判断是否是新消息 处理 item 样式
-            if (mData[position].new_msg) {
-                holder.tvNoticePoint.visibility = View.VISIBLE
-
-                holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
-                holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
-                holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext, R.color.co3_syr))
-            } else {
-                holder.tvNoticePoint.visibility = View.GONE
-
-                holder.tvNoticeTitle.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
-                holder.tvNoticeListContent.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
-                holder.tvNoticeTime.setTextColor(ContextCompat.getColor(mContext, R.color.co4_syr))
-            }
-
-            holder.llNoticeItem.setOnClickListener {
+            holder.llPushMsgItem.setOnClickListener {
                 listener.onItemClick(position)
             }
         } else {
@@ -61,7 +43,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MessageHolder {
-        return MessageHolder(LayoutInflater.from(mContext).inflate(R.layout.item_notice_list, parent, false))
+        return MessageHolder(LayoutInflater.from(mContext).inflate(R.layout.item_push_msg_list, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -75,12 +57,10 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     }
 
     class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        val llNoticeItem = itemView!!.findViewById(R.id.ll_notice_item) as LinearLayout
-        val tvNoticeType = itemView!!.findViewById(R.id.tv_notice_type) as TextView
-        val tvNoticeTitle = itemView!!.findViewById(R.id.tv_notice_title) as TextView
-        val tvNoticePoint = itemView!!.findViewById(R.id.iv_notice_point) as ImageView
-        val tvNoticeListContent = itemView!!.findViewById(R.id.tv_notice_list_content) as TextView
-        val tvNoticeTime = itemView!!.findViewById(R.id.tv_notice_time) as TextView
+        val llPushMsgItem = itemView!!.findViewById(R.id.ll_push_msg_item) as LinearLayout
+        val tvPushMsgTitle = itemView!!.findViewById(R.id.tv_push_msg_title) as TextView
+        val tvPushMsgContent = itemView!!.findViewById(R.id.tv_push_msg_content) as TextView
+        val tvPushMsgTime = itemView!!.findViewById(R.id.tv_push_msg_time) as TextView
     }
 
     interface OnPushMessageListener {

@@ -60,22 +60,21 @@ public class LoginActivity extends BaseActivity {
          *  如果是从触屏界面过来，则直接进入主界面如
          *  不是的话，相当于直接启动应用，则检测是否有设置锁屏
          */
-        Intent intent = getIntent();
-        if (intent.hasExtra(kFromActivity) && intent.getStringExtra(kFromActivity).equals("ConfirmPassCodeActivity")) {
-            intent = new Intent(LoginActivity.this, DashboardActivity.class);
-            intent.putExtra(kFromActivity, intent.getStringExtra(kFromActivity));
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            LoginActivity.this.startActivity(intent);
-
-            finish();
-        } else {
+//        if (intent.hasExtra(kFromActivity) && intent.getStringExtra(kFromActivity).equals("ConfirmPassCodeActivity")) {
+//            intent = new Intent(LoginActivity.this, DashboardActivity.class);
+//            intent.putExtra(kFromActivity, intent.getStringExtra(kFromActivity));
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            LoginActivity.this.startActivity(intent);
+//
+//            finish();
+//        } else {
             /*
              *  检测版本更新
              *    1. 与锁屏界面互斥；取消解屏时，返回登录界面，则不再检测版本更新；
              *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,若此时有AlertDialog，会报错误:Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
              */
-            checkPgyerVersionUpgrade(LoginActivity.this, false);
-        }
+        checkPgyerVersionUpgrade(LoginActivity.this, false);
+//        }
 
         setContentView(R.layout.activity_login_new);
 
@@ -368,15 +367,26 @@ public class LoginActivity extends BaseActivity {
                                 return;
                             }
 
-                            // 检测用户空间，版本是否升级
-                            assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
-                            checkVersionUpgrade(assetsPath);
+                            SharedPreferences sharedPreferences = getSharedPreferences("loginToken", Context.MODE_PRIVATE);
+                            sharedPreferences.edit().putBoolean("loginToken", true).commit();
 
-                            // 跳转至主界面
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            LoginActivity.this.startActivity(intent);
+                            if (getIntent().hasExtra("msgData")) {
+                                Bundle msgData = getIntent().getBundleExtra("msgData");
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("msgData", msgData);
+                                LoginActivity.this.startActivity(intent);
+                            } else {
 
+                                // 检测用户空间，版本是否升级
+                                assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
+                                checkVersionUpgrade(assetsPath);
+
+                                // 跳转至主界面
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                LoginActivity.this.startActivity(intent);
+                            }
 
                             /*
                              * 用户行为记录, 单独异常处理，不可影响用户体验

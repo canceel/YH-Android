@@ -24,8 +24,15 @@ class MenuItem : CityInterface {
     @SerializedName("data")
     var data: ArrayList<MenuItem>? = null
 
-    var arrorDirection: Boolean? = false//记录是否点击了 false未点击 true已点击
+    var arrorDirection: Boolean = false//记录是否点击了 false未点击 true已点击
+
+    constructor(id: String?, name: String?) {
+        this.id = id
+        this.name = name
+    }
+
     override fun getCityName(): String? {
         return name
     }
+
 }

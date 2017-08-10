@@ -63,7 +63,11 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
             }
         })
         ivClose.setOnClickListener { this.dismiss() }
-        titleList.add("请选择")
+        var currentStr = "请选择"
+        datas!!
+                .filter { it.arrorDirection }
+                .forEach { currentStr = it.name!! }
+        titleList.add(currentStr)
         fragments.add(NewFilterFragment(datas!!, this))
         adapter = FragmentAdapter(childFragmentManager, fragments, titleList)
         viewPager.adapter = adapter
@@ -76,7 +80,7 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         /**
          * 还有下一节点，继续添加新界面,没有下一节点，调用完成方法
          */
-        if (menuDatas!![position].data != null) {
+        if (menuDatas!![position].data != null && menuDatas!![position].data!!.size > 0) {
             titleList[currentPosition!!] = menuDatas[position].name!!
             var menuItem = MenuItem(menuDatas[position].id, menuDatas[position].name)
             if (selectedDatas.size >= currentPosition!!) {

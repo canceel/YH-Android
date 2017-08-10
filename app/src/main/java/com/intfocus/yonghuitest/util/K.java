@@ -119,4 +119,12 @@ public class K extends PrivateURLs implements Serializable {
    */
   public final static int kMinSdkVersion = 14;
   public final static int kMaxSdkVersion = 25;
+
+  /**
+   * 新API及所需api key
+   */
+  public final static String API_TOKEN="api_token";
+  public final static String ANDROID_API_KEY ="578905f6e0c4189caa344ee4b1e460e5";//加密所需api key
+  public final static String KNoticeList ="/api/v1.1/my/notices";//公告列表
+
 }

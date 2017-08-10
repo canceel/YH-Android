@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.widget.CheckBox
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -49,10 +50,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         zbarview_barcode_scanner.startSpot()
     }
 
+
     override fun onStart() {
         super.onStart()
         zbarview_barcode_scanner.startCamera()
     }
+
 
     override fun onStop() {
         super.onStop()
@@ -79,32 +82,19 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         zbarview_barcode_scanner.startSpot()
     }
 
-    private fun openFlashLight(tv: TextView) {
-
-    }
-
-    private fun closeFlashLight(tv: TextView) {
-
-    }
-
     /**
      * 初始化监听器
      */
     private fun initListener() {
         //手电筒开关
         ll_btn_light_switch.setOnClickListener {
-            if (cb_barcode_light.isChecked) {
-                tv_barcode_light.text = "打开手电筒"
-                cb_barcode_light.isChecked = false
-                tv_barcode_light.setTextColor(resources.getColor(R.color.co10_syr))
-                zbarview_barcode_scanner.closeFlashlight()
-            } else {
-                tv_barcode_light.text = "关闭手电筒"
-                cb_barcode_light.isChecked = true
-                tv_barcode_light.setTextColor(resources.getColor(R.color.co7_syr))
-                zbarview_barcode_scanner.openFlashlight()
-            }
             isLightOn = !isLightOn
+            checkLightStatus(isLightOn, tv_barcode_light, cb_barcode_light)
+            if (isLightOn) {
+                zbarview_barcode_scanner.openFlashlight()
+            } else {
+                zbarview_barcode_scanner.closeFlashlight()
+            }
         }
         //手动输入条码点击样式
         ll_btn_input_bar_code.setOnTouchListener { _, event ->
@@ -124,6 +114,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         ll_btn_input_bar_code.setOnClickListener {
             popupWindow!!.showAsDropDown(barcode_top_reference, 0, 0)
             zbarview_barcode_scanner.stopSpot()
+            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
         }
         iv_barcode_back.setOnClickListener {
             finish()
@@ -131,16 +122,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
         //popupWindows中打开手电筒点击事件
         view!!.ll_btn_input_barcode_light_switch.setOnClickListener {
-            if (view!!.cb_input_barcode_light.isChecked) {
-                view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co10_syr))
-                view!!.cb_input_barcode_light.isChecked = false
-                view!!.tv_input_barcode_light.text = "打开手电筒"
-                zbarview_barcode_scanner.closeFlashlight()
-            } else {
-                view!!.tv_input_barcode_light.setTextColor(resources.getColor(R.color.co7_syr))
-                view!!.cb_input_barcode_light.isChecked = true
-                view!!.tv_input_barcode_light.text = "关闭手电筒"
+            isLightOn = !isLightOn
+            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
+            if (isLightOn) {
                 zbarview_barcode_scanner.openFlashlight()
+            } else {
+                zbarview_barcode_scanner.closeFlashlight()
             }
         }
         view!!.btn_input_barcode_confirm.setOnClickListener {
@@ -150,6 +137,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 return@setOnClickListener
             }
 
+            zbarview_barcode_scanner.closeFlashlight()
+            isLightOn = false
+            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
             val intent = Intent(this, ScannerResultActivity::class.java)
             intent.putExtra(URLs.kCodeInfo, trim)
             intent.putExtra(URLs.kCodeType, "input")
@@ -158,6 +148,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
 
         view!!.iv_input_barcode_back.setOnClickListener {
+            checkLightStatus(isLightOn, tv_barcode_light, cb_barcode_light)
             popupWindow!!.dismiss()
             zbarview_barcode_scanner.startSpot()
         }
@@ -179,7 +170,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                         .imageEngine(GlideEngine())
                         .forResult(FeedbackActivity.REQUEST_CODE_CHOOSE)
             }
-
         }
     }
 
@@ -198,6 +188,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         var toIntOrNull = result!!.toLongOrNull()
         if (toIntOrNull == null) {
             ToastUtils.show(this@BarCodeScannerActivity, "暂时只支持条形码")
+            Handler().postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
             return
         }
         val intent = Intent(this, ScannerResultActivity::class.java)
@@ -210,9 +201,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        zbarview_barcode_scanner.showScanRect()
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             var mProgressDialog = ProgressDialog.show(this, "稍等", "正在扫描")
-            zbarview_barcode_scanner.showScanRect()
             zbarview_barcode_scanner.stopSpot()
             tv_barcode_scanning.visibility = View.VISIBLE
             val picturePath = ImageUtil.handleImageOnKitKat(Matisse.obtainResult(data)[0], this)
@@ -223,19 +214,31 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 }
 
                 override fun onPostExecute(result: String) {
+                    mProgressDialog.dismiss()
                     if (TextUtils.isEmpty(result) || "".equals(result)) {
                         ToastUtils.show(this@BarCodeScannerActivity, "未发现条形码")
                     } else {
                         onScanQRCodeSuccess(result)
                     }
-                    mProgressDialog.dismiss()
                     tv_barcode_scanning.visibility = View.GONE
                     zbarview_barcode_scanner.startSpot()
                 }
             }.execute()
-
         }
     }
 
+    /**
+     * 改变手电筒按钮 开/关 样式
+     */
+    fun checkLightStatus(status: Boolean, tv: TextView, checkBox: CheckBox) {
+        if (status) {
+            tv.setTextColor(resources.getColor(R.color.co7_syr))
+            tv.text = "关闭手电筒"
+        } else {
+            tv.setTextColor(resources.getColor(R.color.co10_syr))
+            tv.text = "打开手电筒"
+        }
+        checkBox.isChecked = status
+    }
 }
 

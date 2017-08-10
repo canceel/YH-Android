@@ -59,6 +59,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String KFavouriteArticlesPath    = "/api/v1/user/{userId}/page/{page}/limit/{pageSize}/favourite_articles";
   public final static String KArticleCollectionPath    = "/api/v1/user/{userId}/article/{articleId}/favourite_status/{status}";
   public final static String kNewNoticeListPath        = "/api/v1/user/{userId}/notices";
+  public final static String kUserIconUploadPath = "/api/v1/device/{deviceId}/upload/user/{userId}/gravatar";
 
   /**
    * 筛选

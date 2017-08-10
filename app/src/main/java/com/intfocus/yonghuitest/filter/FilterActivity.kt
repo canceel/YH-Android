@@ -2,15 +2,13 @@ package com.intfocus.yonghuitest.filter
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import com.amap.api.location.AMapLocation
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.base.RefreshActivity
 import com.intfocus.yonghuitest.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.yonghuitest.data.response.filter.MenuItem
 import com.intfocus.yonghuitest.data.response.filter.MenuResult
@@ -18,11 +16,9 @@ import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.service.LocationService
+import com.intfocus.yonghuitest.util.LogUtil
 import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.view.addressselector.AddressPopupWindow
 import com.intfocus.yonghuitest.view.addressselector.FilterPopupWindow
-import com.lcodecore.tkrefreshlayout.footer.LoadingView
-import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -30,11 +26,12 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by CANC on 2017/8/3.
  */
-class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter {
+class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
+
+    lateinit var mActivity: FragmentActivity
     /**
      * 地址选择
      */
-    lateinit var addressPopupWindow: AddressPopupWindow
     lateinit var locationDatas: ArrayList<MenuItem>
     /**
      * 菜单
@@ -53,8 +50,8 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
-        setRefreshLayout()
         EventBus.getDefault().register(this)
+        mActivity = this
         initView()
         startService(Intent(this, LocationService::class.java))
         getMenuData()
@@ -76,36 +73,22 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
         menuAdpter = FilterMenuAdapter(mActivity, menuDatas, this)
         filterRecyclerView.adapter = menuAdpter
 
-        var headerView = SinaRefreshView(mActivity)
-        headerView.setArrowResource(R.drawable.loading_up)
-        var bottomView = LoadingView(mActivity)
-        refreshLayout.setHeaderView(headerView)
-        refreshLayout.setBottomView(bottomView)
-
-        tvAddressFilter.setOnClickListener { showAddressPop() }
+        tvAddressFilter.setOnClickListener {
+            showDialogFragment()
+        }
     }
 
-    fun initAddressPopup() {
-        addressPopupWindow = AddressPopupWindow(this, locationDatas, this)
-        addressPopupWindow.init()
-    }
 
-    private fun showAddressPop() {
-        if (addressPopupWindow == null) {
-            initAddressPopup()
+    fun showDialogFragment() {
+        val mFragTransaction = supportFragmentManager.beginTransaction()
+        val fragment = supportFragmentManager.findFragmentByTag("dialogFragment")
+        if (fragment != null) {
+            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
+            mFragTransaction.remove(fragment)
         }
-        val params = mActivity.window.attributes
-        params.alpha = 0.7f
-        mActivity.window.attributes = params
-        addressPopupWindow.animationStyle = R.style.anim_popup_bottombar
-        addressPopupWindow.showAtLocation(tvAddressFilter, Gravity.BOTTOM, 0, 0)
-        tvAddressFilter.setTextColor(ContextCompat.getColor(mActivity, R.color.co1_syr))
-        addressPopupWindow.setOnDismissListener {
-            tvAddressFilter.setTextColor(ContextCompat.getColor(mActivity, R.color.co6_syr))
-            val paramsa = mActivity.window.attributes
-            paramsa.alpha = 1f
-            mActivity.window.attributes = paramsa
-        }
+        val dialogFragment = MyFilterDialogFragment(locationDatas, this)
+        dialogFragment!!.show(mFragTransaction!!, "dialogFragment")//显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+
     }
 
     fun initMenuPopup(position: Int) {
@@ -149,28 +132,14 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
                         for (menu in data!!.data) {
                             if ("location".equals(menu.type)) {
                                 locationDatas = menu.data!!
-                                tvLocationAddress.text = menu.current_location!!.display
                             }
                             if ("faster_select".equals(menu.type)) {
                                 menuDatas = menu.data!!
+                                menuAdpter.setData(menuDatas)
                             }
-                            menuAdpter.setData(menuDatas)
-                            initAddressPopup()
                         }
                     }
                 })
-    }
-
-    override fun getData(isShowDialog: Boolean) {
-
-    }
-
-    /**
-     * 地址选择完成
-     */
-    override fun complete(firstData: MenuItem, seconedData: MenuItem, thirdData: MenuItem) {
-        tvLocationAddress.text = firstData.name + "|" + seconedData.name + "|" + thirdData.name
-        addressPopupWindow.dismiss()
     }
 
     /**
@@ -205,7 +174,17 @@ class FilterActivity : RefreshActivity(), AddressPopupWindow.AddressLisenter, Fi
 
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
-        startService(Intent(this, LocationService::class.java))
+        stopService(Intent(this, LocationService::class.java))
         super.onDestroy()
     }
+
+    override fun complete(menuItems: ArrayList<MenuItem>) {
+        var addressStr: String? = ""
+        for (menuItem in menuItems) {
+            addressStr += menuItem.name
+        }
+        tvLocationAddress.text = addressStr
+        LogUtil.d("complete", menuItems.size.toString())
+    }
+
 }

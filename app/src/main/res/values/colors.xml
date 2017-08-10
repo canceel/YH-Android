@@ -177,8 +177,8 @@
     <color name="color18">@color/co18</color>
 
     <array name="co_order">
-        <item>@color/co17</item>
-        <item>@color/co16</item>
+        <item>@color/co14_syr</item>
+        <item>@color/co16_syr</item>
         <item>@color/co15</item>
         <item>@color/co2</item>
         <item>@color/co11</item>

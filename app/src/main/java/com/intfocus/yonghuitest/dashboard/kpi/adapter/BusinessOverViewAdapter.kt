@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.dashboard.mine.adapter
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,15 +47,16 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNumberCompare.typeface = mTypeface
-        holder.tvNumberCompareT.typeface = mTypeface
-        holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
-        holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
-        if (itemData.data!!.high_light!!.compare.contains("%")) {
+            holder.tvNumberCompareT.typeface = mTypeface
+            holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+            holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+            Log.i("testlog", itemData.data!!.high_light!!.arrow.toString())
+            if (itemData.data!!.high_light!!.compare.contains("%")) {
             holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare.replace("%", "")
             holder.tvNumberCompareT.visibility = View.VISIBLE
         } else {
             holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare
-            holder.tvNumberCompare.visibility = View.GONE
+            holder.tvNumberCompareT.visibility = View.GONE
         }
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2

@@ -50,7 +50,7 @@ class OperationalWarningAdapter(val context: Context,
         if (!number.equals("null")) {
             holder.tvNumberMain.text = formatNumber(number)
         }
-//        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+        holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare
         holder.tvNnumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])

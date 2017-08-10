@@ -229,6 +229,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 val response = HttpUtil.httpPost(postUrl, HashMap<String, String>())
                 activity.runOnUiThread({
                     if (response["code"] == "200") {
+                        val sharedPreferences = activity.getSharedPreferences("loginToken", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putBoolean("loginToken", false).commit()
+
                         model.modifiedUserConfig(false)
                         val intent = Intent()
                         intent.setClass(activity, LoginActivity::class.java)
@@ -301,10 +304,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         contentView.findViewById(R.id.rl_camera).setOnClickListener {
             // 打开相机
             startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
+            popupWindow.dismiss()
         }
         contentView.findViewById(R.id.rl_gallery).setOnClickListener {
             // 打开相册
             startActivityForResult(getGallery(), CODE_GALLERY_REQUEST)
+            popupWindow.dismiss()
         }
         contentView.findViewById(R.id.rl_cancel).setOnClickListener {
             // 取消

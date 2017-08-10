@@ -8,8 +8,6 @@ import com.intfocus.yonghuitest.data.response.BaseResult
  * Created by CANC on 2017/7/31.
  */
 class HomeMsgResult : BaseResult() {
-
-
     @SerializedName("data")
     var data: List<KpiGroupItem>? = null
 }

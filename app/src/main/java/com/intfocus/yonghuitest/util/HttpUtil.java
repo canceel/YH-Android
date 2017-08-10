@@ -11,8 +11,6 @@ import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.intfocus.yonghuitest.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,8 +36,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.taobao.accs.ACCSManager.mContext;
 
 public class HttpUtil {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -602,7 +598,7 @@ public class HttpUtil {
             mWakeLock.release();
 
             if (result != null) {
-                ToastUtils.INSTANCE.show(mContext, String.format("静态资源更新失败(%s)", result));
+                ToastUtils.INSTANCE.show(context, String.format("静态资源更新失败(%s)", result));
             } else {
                 FileUtil.checkAssets(context, assetFilename, isInAssets);
             }

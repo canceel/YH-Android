@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,7 +45,6 @@ import android.widget.Toast;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.login.LoginActivity;
-import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
@@ -71,7 +71,7 @@ import java.util.Map;
 /**
  * Created by lijunjie on 16/1/14.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
     public final static String kLoading = "loading";
     public final static String kPath = "path";

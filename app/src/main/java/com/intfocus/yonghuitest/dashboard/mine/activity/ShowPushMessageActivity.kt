@@ -16,7 +16,6 @@ import com.intfocus.yonghuitest.dashboard.mine.adapter.ShowPushMessageAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
 import com.intfocus.yonghuitest.dashboard.mine.presenter.PushMessagePresenter
 import com.intfocus.yonghuitest.dashboard.mine.view.PushMessageView
-import com.intfocus.yonghuitest.db.OrmDBHelper
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
 import com.intfocus.yonghuitest.subject.TableActivity
@@ -48,10 +47,6 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
      * 显示消息的 adapter
      */
     val adapter = ShowPushMessageAdapter(this, this)
-    /**
-     * 数据库处理帮助类，封装了 CURD 的 dao 类
-     */
-    val pushMessageDao = OrmDBHelper.getInstance(this).pushMessageDao!!
     /**
      * RxBus 接收推送消息的类，需要手动取消注册释放资源
      */
@@ -120,8 +115,6 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
     override fun onItemClick(position: Int) {
         // 更新点击状态
         var pushMessageBean = adapter.mData[position]
-        pushMessageBean.new_msg = false
-        pushMessageDao.update(pushMessageBean)
 
         // 重新获取数据
         presenter.loadData()

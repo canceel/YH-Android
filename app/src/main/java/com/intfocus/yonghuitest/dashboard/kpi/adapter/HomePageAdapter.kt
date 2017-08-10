@@ -16,6 +16,7 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.MyViewPagerAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
+import com.intfocus.yonghuitest.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.yonghuitest.view.AutoScrollViewPager
 import com.yonghui.homemetrics.utils.Utils
@@ -200,7 +201,9 @@ class HomePageAdapter(val context: Context,
                         }
                     })
                     holder.tvNotice.startAnimation(translateAnimation)
-                    holder.tvNotice.setOnClickListener{ }
+                    holder.tvNotice.setOnClickListener {
+                        EventBus.getDefault().post(NoticeBoardRequest(true))
+                    }
                 }
             }
             is OperationalWarningHolder -> {

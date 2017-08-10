@@ -74,7 +74,6 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         return fragment;
     }
 
-
     @Override
     public Subject setSubject() {
         return new ModularTwo_UnitTablesParentMode(ctx);

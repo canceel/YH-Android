@@ -25,6 +25,7 @@ import com.intfocus.yonghuitest.subject.template_v2.entity.DataHolder;
 import com.intfocus.yonghuitest.subject.template_v2.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTableRect;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTableContMode;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.NotScrollListView;
 import com.intfocus.yonghuitest.view.RootScrollView;
 import com.intfocus.yonghuitest.view.SortCheckBox;
@@ -60,6 +61,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     private String mParam;
 
     private View rootView;
+
+    public static String mCurrentData;
 
     private FragmentManager fm;
 
@@ -125,10 +128,11 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         return new ModularTwo_UnitTableContMode(ctx);
     }
 
-    public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID,String param) {
+    public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+//        args.putString(ARG_PARAM, param);
+        mCurrentData = param;
         args.putInt(SU_ROOTID, suRootID);
         fragment.setArguments(args);
         return fragment;
@@ -140,7 +144,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         EventBus.getDefault().register(this);
         if (getArguments() != null){
             suRootID = getArguments().getInt(SU_ROOTID);
-            mParam = getArguments().getString(ARG_PARAM);
+            mParam = mCurrentData;
         }
     }
 
@@ -302,6 +306,10 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        if (dataEntity.data.get(position).sub_data.equals("[]")) {
+            ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
+            return;
+        }
         startSubTable(position);
     }
 

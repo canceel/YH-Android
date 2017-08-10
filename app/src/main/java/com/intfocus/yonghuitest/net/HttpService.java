@@ -29,6 +29,16 @@ import rx.Observable;
 public interface HttpService {
 
     /**
+     * 扫码结果
+     * {{host}}/api/v1.1/scan/barcode?api_token=123&store_id=123&code_info=123
+     * @param storeId
+     * @param codeInfo
+     * @return
+     */
+    @GET (K.KScannerResult)
+    Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
+
+    /**
      * 获取文章收藏列表
      *
      * @param userId
@@ -100,6 +110,14 @@ public interface HttpService {
     @GET(K.KFilterMenuPath)
     Observable<MenuResult> getFilterMenu();
 
+
+    /**
+     * 头像上传
+     * @param deviceId
+     * @param userId
+     * @param file
+     * @return
+     */
     @Multipart
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);

@@ -1,7 +1,12 @@
 package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
@@ -67,27 +72,41 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     }
 
     private fun getHtml() {
-        Thread(Runnable {
-            var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, barcode)
-            var htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
+//        Thread(Runnable {
+//            var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, barcode)
+//            var htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
+//
+//            var response = HttpUtil.httpGet(htmlUrl, HashMap<String, String>())
+//
+//            if (response["code"].equals("200")) {
+//                var htmlContent = response["body"]
+//                htmlContent = htmlContent!!.replace("/javascripts/", String.format("%s/javascripts/", "../../Shared/assets"))
+//                htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", "../../Shared/assets"))
+//                htmlContent = htmlContent.replace("/images/", String.format("%s/images/", "../../Shared/assets"))
+//                FileUtil.writeFile(htmlPath, htmlContent)
+//                val result1 = ScannerRequest(true, 200)
+//                result1.htmlPath = htmlPath
+//                EventBus.getDefault().post(result1)
+//            } else {
+//                val result1 = ScannerRequest(false, 400)
+//                result1.errorInfo = response["code"] + response["body"]
+//                EventBus.getDefault().post(result1)
+//            }
+//        }).start()
+        RetrofitUtil.getHttpService().getScannerResult(store_id, barcode)
+                .compose(RetrofitUtil.CommonOptions<BaseResult>())
+                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                    override fun onCompleted() {
+                    }
 
-            var response = HttpUtil.httpGet(htmlUrl, HashMap<String, String>())
+                    override fun onError(apiException: ApiException?) {
+                        Log.i("testlog", apiException.toString())
+                    }
 
-            if (response["code"].equals("200")) {
-                var htmlContent = response["body"]
-                htmlContent = htmlContent!!.replace("/javascripts/", String.format("%s/javascripts/", "../../Shared/assets"))
-                htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", "../../Shared/assets"))
-                htmlContent = htmlContent.replace("/images/", String.format("%s/images/", "../../Shared/assets"))
-                FileUtil.writeFile(htmlPath, htmlContent)
-                val result1 = ScannerRequest(true, 200)
-                result1.htmlPath = htmlPath
-                EventBus.getDefault().post(result1)
-            } else {
-                val result1 = ScannerRequest(false, 400)
-                result1.errorInfo = response["code"] + response["body"]
-                EventBus.getDefault().post(result1)
-            }
-        }).start()
+                    override fun onBusinessNext(data: BaseResult?) {
+                        Log.i("testlog", data!!.code)
+                    }
+                })
     }
 
     @Throws(JSONException::class, IOException::class)

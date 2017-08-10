@@ -304,10 +304,12 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         contentView.findViewById(R.id.rl_camera).setOnClickListener {
             // 打开相机
             startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
+            popupWindow.dismiss()
         }
         contentView.findViewById(R.id.rl_gallery).setOnClickListener {
             // 打开相册
             startActivityForResult(getGallery(), CODE_GALLERY_REQUEST)
+            popupWindow.dismiss()
         }
         contentView.findViewById(R.id.rl_cancel).setOnClickListener {
             // 取消

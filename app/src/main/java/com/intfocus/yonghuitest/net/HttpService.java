@@ -103,5 +103,5 @@ public interface HttpService {
 
     @Multipart
     @POST(K.kUserIconUploadPath)
-    Observable<UserIconResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
+    Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
 }

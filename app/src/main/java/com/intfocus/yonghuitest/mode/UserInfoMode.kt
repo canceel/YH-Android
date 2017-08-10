@@ -7,6 +7,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
@@ -106,16 +107,16 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
             var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getInt(kUserId, 0).toString() + "icon", requestBody)
             RetrofitUtil.getHttpService().userIconUpload(mUserSP.getInt(kUserDeviceId, 0), mUserSP.getInt(kUserId, 0), multiPartBody)
-                    .compose(RetrofitUtil.CommonOptions<UserIconResult>())
-                    .subscribe(object : CodeHandledSubscriber<UserIconResult>() {
-                        override fun onBusinessNext(data: UserIconResult?) {
+                    .compose(RetrofitUtil.CommonOptions<BaseResult>())
+                    .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                        override fun onBusinessNext(data: BaseResult?) {
+                            ToastUtils.show(ctx, "头像已上传")
                         }
 
                         override fun onError(apiException: ApiException?) {
                         }
 
                         override fun onCompleted() {
-                            ToastUtils.show(ctx, "头像已上传")
                         }
                     })
         }).start()

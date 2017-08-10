@@ -1,20 +1,18 @@
 package com.intfocus.yonghuitest.subject
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import com.google.gson.Gson
-
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.subject.selecttree.Bean
-import com.intfocus.yonghuitest.subject.selecttree.TreeListViewAdapter
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems
+import com.intfocus.yonghuitest.subject.selecttree.TreeListViewAdapter
 import com.intfocus.yonghuitest.util.FileUtil
 import kotlinx.android.synthetic.main.activity_selector_tree.*
-import java.util.ArrayList
+import java.util.*
 
 class SelectorTreeActivity : BaseActivity() {
     val mDatas = ArrayList<Bean>()
@@ -42,24 +40,27 @@ class SelectorTreeActivity : BaseActivity() {
             var id = 1
             var first: Int
             var second: Int
-            for (selectItem in selectItems.data!!.iterator()) {
-                mDatas.add(Bean(id, 0, selectItem.titles))
-                first = id
-                id += 1
-                if (selectItem.infos != null) {
-                    for (info in selectItem.infos!!.iterator()) {
-                        mDatas.add(Bean(id, first, info.titles))
-                        second = id
-                        id += 1
-                        if (info.infos != null) {
-                            for (info in info.infos!!.iterator()) {
-                                mDatas.add(Bean(id, second, info.titles))
-                                id += 1
+            if (selectItems!=null) {
+                for (selectItem in selectItems.data!!.iterator()) {
+                    mDatas.add(Bean(id, 0, selectItem.titles))
+                    first = id
+                    id += 1
+                    if (selectItem.infos != null) {
+                        for (info in selectItem.infos!!.iterator()) {
+                            mDatas.add(Bean(id, first, info.titles))
+                            second = id
+                            id += 1
+                            if (info.infos != null) {
+                                for (info in info.infos!!.iterator()) {
+                                    mDatas.add(Bean(id, second, info.titles))
+                                    id += 1
+                                }
                             }
                         }
                     }
                 }
             }
+
             runOnUiThread {
                 mAdapter = SimpleTreeAdapter(mTree, this, mDatas, 10)
                 anim_loading.visibility = View.GONE

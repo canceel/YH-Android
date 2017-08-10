@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color8">
+    android:background="@color/color8"
+    android:orientation="vertical">
 
     <View
         android:id="@+id/view_line"
@@ -42,20 +42,14 @@
             android:layout_gravity="right" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view_line_t"
-        style="@style/SmallDivider"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/menu_linear_layout" />
-
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-        android:id="@+id/trl_refresh_layout"
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_line_t">
+        android:layout_below="@+id/menu_linear_layout">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_notice_list"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never" />

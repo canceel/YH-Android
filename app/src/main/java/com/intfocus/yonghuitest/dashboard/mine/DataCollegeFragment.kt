@@ -98,7 +98,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
                     override fun onError(apiException: ApiException) {
                         finshRequest()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
@@ -138,7 +138,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
                     override fun onError(apiException: ApiException) {
                         dismissLoading()
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: BaseResult) {

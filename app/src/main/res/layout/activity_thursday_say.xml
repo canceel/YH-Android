@@ -1,34 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBar">
+        style="@style/TitleStyle"
+        android:layout_width="match_parent">
 
         <ImageView
             android:id="@+id/bannerBack"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            style="@style/BannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            android:onClick="dismissActivity" />
+            style="@style/BackStyle"
+            android:onClick="dismissActivity"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="更新日志"
-            style="@style/BannerTitle" />
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-
+            style="@style/TitleText"
+            android:text="更新日志"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -41,7 +31,7 @@
             android:id="@+id/browser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/actionBar" />
+            android:layout_below="@id/actionBar"/>
 
         <RelativeLayout
             android:id="@+id/anim_loading"

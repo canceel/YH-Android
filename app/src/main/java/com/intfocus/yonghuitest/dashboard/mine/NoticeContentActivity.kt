@@ -6,7 +6,7 @@ import android.view.View
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentRequest
 import com.intfocus.yonghuitest.mode.NoticeContentMode
-import com.intfocus.yonghuitest.util.WidgetUtil
+import com.intfocus.yonghuitest.util.ToastUtils
 import com.zbl.lib.baseframe.core.AbstractActivity
 import com.zbl.lib.baseframe.core.Subject
 import com.zzhoujay.richtext.RichText
@@ -49,7 +49,7 @@ class NoticeContentActivity : AbstractActivity<NoticeContentMode>() {
             tv_notice_content_time.text = result.noticeContent!!.time
             tv_notice_content.text = result.noticeContent!!.content
         } else {
-            WidgetUtil.showToastLong(ctx, "文章加载失败, 请重试!")
+            ToastUtils.show(ctx, "文章加载失败, 请重试!")
         }
     }
 

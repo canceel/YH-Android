@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
@@ -94,9 +95,9 @@ public class CommentActivity extends BaseActivity {
              */
             try {
                 logParams = new JSONObject();
-                logParams.put(URLs.kAction, "发表/评论");
+                logParams.put(URLs.kAction, "评论");
                 logParams.put(URLs.kObjTitle, bannerName);
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mAppContext, logParams);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,7 +114,7 @@ public class CommentActivity extends BaseActivity {
                 logParams.put("obj_id", objectID);
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("评论页面/%s/%s", bannerName, ex));
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mAppContext, logParams);
 
                 //点击两次还是有异常 异常报出
                 if (loadCount < 2) {

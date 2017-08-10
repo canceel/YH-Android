@@ -13,8 +13,10 @@ import android.view.animation.TranslateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.dashboard.kpi.adapter.MyViewPagerAdapter
 import com.intfocus.yonghuitest.dashboard.kpi.bean.HomeBean
+import com.intfocus.yonghuitest.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.yonghuitest.view.AutoScrollViewPager
 import com.yonghui.homemetrics.utils.Utils
@@ -34,7 +36,7 @@ class HomePageAdapter(val context: Context,
     var TEXT_SWITCHER: Int = VIEW_PAGER + 1//跳动文字
     var OPERATIONAL_WARNING: Int = TEXT_SWITCHER + 1//经营预警
     var BUSINESS_OVERVIEW: Int = OPERATIONAL_WARNING + 1//生意概况
-    var HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// BOttom
+    var HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// Bottom
 
     var inflater = LayoutInflater.from(context)
     fun setData(data: List<HomeBean>?) {
@@ -116,7 +118,7 @@ class HomePageAdapter(val context: Context,
                         tv_number_one_sub_title.text = themeItem.memo1
                         tv_number_one_sub.text = themeItem.data!!.high_light!!.compare
                         rl_kpi_number_one.setOnClickListener {
-                            EventBus.getDefault().post(themeItem)
+                            EventBus.getDefault().post(DashboardItemBean(themeItem.target_url!!, themeItem.title!!, 1, 1))
                         }
                         views!!.add(contentView)
                     }
@@ -199,7 +201,9 @@ class HomePageAdapter(val context: Context,
                         }
                     })
                     holder.tvNotice.startAnimation(translateAnimation)
-                    holder.tvNotice.setOnClickListener{ }
+                    holder.tvNotice.setOnClickListener {
+                        EventBus.getDefault().post(NoticeBoardRequest(true))
+                    }
                 }
             }
             is OperationalWarningHolder -> {

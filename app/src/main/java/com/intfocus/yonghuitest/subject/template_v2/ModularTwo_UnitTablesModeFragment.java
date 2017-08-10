@@ -28,14 +28,17 @@ import org.xutils.x;
 
 import java.util.Random;
 
+import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageModeFragment.SU_ROOTID;
+
 /**
  * 表格根
  */
 public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> {
     private String fragmentTag;
-    private static final String SU_ROOTID = "suRootID";
-    private static final String ARG_PARAM1 = "TablesParam";
+    //private static final String ARG_PARAM1 = "TablesParam";
 
+    //
+    public static String mCurrentData;
     private String mParam;
 
     private View rootView;
@@ -65,7 +68,8 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOTID, suRootID);
-        args.putString(ARG_PARAM1, param);
+        mCurrentData = param;
+        //args.putString(ARG_PARAM1, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +89,8 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         fm = getChildFragmentManager();
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOTID);
-            mParam = getArguments().getString(ARG_PARAM1);
+            //mParam = getArguments().getString(ARG_PARAM1);
+            mParam = mCurrentData;
         }
     }
 
@@ -138,7 +143,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
                             RadioGroup.LayoutParams.WRAP_CONTENT);
                     rbtn.setTag(i);
                     rbtn.setPadding(marg, 0, marg, 0);
-                    Bitmap a=null;
+                    Bitmap a = null;
                     rbtn.setButtonDrawable(new BitmapDrawable(a));
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_table_rbtn);
                     rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
@@ -168,7 +173,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
             return;
 
         if (toFragment == null)
-            toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(entity.datas.get(checkId).config);
+            toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, entity.datas.get(checkId).config);
 
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

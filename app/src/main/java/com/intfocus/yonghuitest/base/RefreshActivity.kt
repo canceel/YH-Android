@@ -62,7 +62,7 @@ open abstract class RefreshActivity : BaseActivity() {
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
                 super.onLoadMore(refreshLayout)
                 if (isLasePage!!) {
-                    ToastUtils.show(mActivity, "已经是最后一页");
+                    ToastUtils.show(mActivity, "已经是最后一页", R.color.co11_syr)
                     refreshLayout!!.finishRefreshing()
                     refreshLayout.finishLoadmore()
                     return
@@ -72,13 +72,10 @@ open abstract class RefreshActivity : BaseActivity() {
                 getData(false)
             }
         })
-
     }
-
 
     /**
      * 获取数据
-
      * @param isShowDialog
      */
     protected abstract fun getData(isShowDialog: Boolean)

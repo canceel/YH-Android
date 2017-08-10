@@ -2,14 +2,24 @@ package com.intfocus.yonghuitest.net;
 
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
+import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
+import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult;
+import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.util.K;
 
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -73,5 +83,24 @@ public interface HttpService {
     @GET(K.kNewMsgDataMobilePath)
     Observable<HomeMsgResult> getHomeMsg(@Path("groupId") String groupId, @Path("roleId") String roleId, @Path("userId") String userId);
 
+    /**
+     * 公告预警
+     *
+     * @param queryMap
+     * @return
+     */
+    @GET(K.KNoticeList)
+    Observable<NoticesResult> getNoticeList( @QueryMap Map<String, String> queryMap);
 
+    /**
+     * 获取筛选菜单信息
+     *
+     * @return
+     */
+    @GET(K.KFilterMenuPath)
+    Observable<MenuResult> getFilterMenu();
+
+    @Multipart
+    @POST(K.kUserIconUploadPath)
+    Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
 }

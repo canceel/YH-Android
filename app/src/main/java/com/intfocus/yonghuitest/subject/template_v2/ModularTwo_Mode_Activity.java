@@ -23,9 +23,9 @@ import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTable
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalActRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.MeterDetalActMode;
 import com.intfocus.yonghuitest.util.DisplayUtil;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.RootScrollView;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,7 +69,6 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
      * 数据实体
      */
     private MDetalActRequestResult entity;
-
 
     @Override
     public int setLayoutRes() {
@@ -156,7 +155,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         setACTitle(banner_name);
         if (entity != null) {
             int dataSize = entity.datas.data.size();
-            if (dataSize > 1) {//TODO 多个根页签
+            if (dataSize > 1) {    // 多个根页签
                 View scroll_title = LayoutInflater.from(ctx)
                         .inflate(R.layout.item_mdetal_scroll_title, null);
                 fl_titleContainer.addView(scroll_title);
@@ -183,17 +182,17 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                     if (i == 0)
                         rbtn.setChecked(true);
                 }
-
-            } else if (dataSize == 1) {//TODO 只有一个根页签
-                View single_title = LayoutInflater.from(ctx)
-                        .inflate(R.layout.item_mdetal_single_title, null);
-                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
-                fl_titleContainer.addView(single_title);
-                tv_single_title.setText(entity.datas.data.get(0).title);
+            } else if (dataSize == 1) {    // 只有一个根页签
+//                View single_title = LayoutInflater.from(ctx)
+//                        .inflate(R.layout.item_mdetal_single_title, null);
+//                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
+//                fl_titleContainer.addView(single_title);
+//                tv_single_title.setText(entity.datas.data.get(0).title);
+                fl_titleContainer.setVisibility(View.GONE);
                 switchFragment(0);
             }
         } else
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
     }
 
     class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {

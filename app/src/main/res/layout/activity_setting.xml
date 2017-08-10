@@ -7,36 +7,24 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/co10_syr"
-        android:orientation="horizontal">
+        style="@style/TitleStyle"
+        android:layout_width="match_parent">
 
-        <ImageButton
-            android:id="@+id/iv_banner_back"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:onClick="dismissActivity"
-            android:layout_alignParentLeft="true"
-            android:background="@null"
-            android:src="@drawable/nav_back_black"/>
+        <ImageView
+            style="@style/BackStyle"
+            android:onClick="dismissActivity"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="设置"
-            android:textColor="@color/co6_syr"
-            android:textSize="16sp"/>
+            style="@style/TitleText"
+            android:text="设置"/>
     </RelativeLayout>
-
 
     <ListView
         android:id="@+id/list_setting"
-        style="@style/lv_setting_act"/>
+        style="@style/lv_setting_act"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"/>
 
 </LinearLayout>

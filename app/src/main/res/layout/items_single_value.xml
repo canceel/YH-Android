@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:layout_below="@+id/ll_mine_user_top"
+    android:background="@color/co10_syr"
     android:weightSum="3"
     android:orientation="horizontal">
 

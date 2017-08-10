@@ -15,13 +15,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
 import org.json.JSONException;
@@ -237,8 +238,7 @@ public class InitPassCodeActivity extends Activity {
                 break;
             default:
                 if (this.password == Integer.parseInt(stringBuilder.toString())) {
-
-                    Toast.makeText(InitPassCodeActivity.this, "设置锁屏成功", Toast.LENGTH_SHORT).show();
+                    ToastUtils.INSTANCE.show(mContext, "设置锁屏成功", R.color.co1_syr);
 
                     try {
                         String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
@@ -258,11 +258,11 @@ public class InitPassCodeActivity extends Activity {
                             @Override
                             public void run() {
                                 try {
-                                    ApiHelper.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
+                                    ActionLogUtil.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
 
                                     JSONObject params = new JSONObject();
                                     params.put(URLs.kAction, "设置锁屏");
-                                    ApiHelper.actionLog(mContext, params);
+                                    ActionLogUtil.actionLog(mContext, params);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

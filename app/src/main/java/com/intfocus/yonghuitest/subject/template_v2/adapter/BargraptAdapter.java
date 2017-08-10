@@ -33,7 +33,7 @@ public class BargraptAdapter extends BaseAdapter {
     public BargraptAdapter(Context ctx, LinkedList<BargraphComparator> ltdata) {
         this.ctx = ctx;
         setData(ltdata);
-        herearrow = ctx.getResources().getDrawable(R.mipmap.icon_herearrow);
+        herearrow = ctx.getResources().getDrawable(R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
         defauteColor = ctx.getResources().getColor(R.color.co3);
@@ -90,7 +90,7 @@ public class BargraptAdapter extends BaseAdapter {
         if (selectItemIndex == position) {
             viewHolder.tv_name.setTextColor(selectColor);
             viewHolder.tv_percentage.setTextColor(selectColor);
-            viewHolder.img_cursor.setImageResource(R.mipmap.icon_herearrow);
+            viewHolder.img_cursor.setImageResource(R.drawable.icon_herearrow);
         } else {
             viewHolder.tv_name.setTextColor(defauteColor);
             viewHolder.tv_percentage.setTextColor(defauteColor);

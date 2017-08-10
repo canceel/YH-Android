@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.intfocus.yonghuitest.R
+import com.intfocus.yonghuitest.bean.DashboardItemBean
 import com.intfocus.yonghuitest.util.DisplayUtil
 import com.zbl.lib.baseframe.utils.PhoneUtil
+import org.greenrobot.eventbus.EventBus
 import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/7/28.
  */
-class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxBean.WorkBoxItemBean>?, var listener: WorkBoxAdapter.ItemListener) : BaseAdapter() {
+class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxBean.WorkBoxItemBean>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / 3, PhoneUtil.getScreenWidth(ctx) / 3)
 
@@ -54,14 +56,12 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxBean.WorkBoxItemBe
 
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
-        viewTag.rlItem.setOnClickListener { listener.itemClick(datas!![position].name, datas!![position].link_path) }
+        viewTag.rlItem.setOnClickListener {
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 3, 3))
+        }
 
         return convertView
     }
 
     internal inner class ItemViewTag(var rlItem: RelativeLayout, var mIcon: ImageView, var mName: TextView)
-
-    interface ItemListener {
-        fun itemClick(bannerName: String?, link: String?)
-    }
 }

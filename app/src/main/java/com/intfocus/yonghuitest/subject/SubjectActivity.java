@@ -1,7 +1,6 @@
 package com.intfocus.yonghuitest.subject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,15 +12,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,19 +37,26 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.dashboard.mine.adapter.FilterMenuAdapter;
+import com.intfocus.yonghuitest.data.response.filter.Menu;
+import com.intfocus.yonghuitest.data.response.filter.MenuItem;
+import com.intfocus.yonghuitest.data.response.filter.MenuResult;
+import com.intfocus.yonghuitest.filter.MyFilterDialogFragment;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
-import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
+import com.intfocus.yonghuitest.view.addressselector.FilterPopupWindow;
 import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
@@ -62,20 +67,23 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
-public class SubjectActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
+public class SubjectActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener
+        , FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
     @ViewInject(R.id.ll_shaixuan)
     LinearLayout llShaixuan;
     @ViewInject(R.id.ll_copylink)
@@ -103,6 +111,29 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private static final int CODE_CAMERA_REQUEST = 0xa1;
     private static final int CODE_CAMERA_RESULT = 0xa0;
 
+    /**
+     * 筛选
+     *
+     * @param savedInstanceState
+     */
+    private LinearLayout llFilter;
+    private RelativeLayout rlAddressFilter;
+    private TextView tvLocationAddress;
+    private TextView tvAddressFilter;
+    private RecyclerView filterRecyclerView;
+    private View viewLine;
+    /**
+     * 地址选择
+     */
+    private List<MenuItem> locationDatas;
+    /**
+     * 菜单
+     */
+    private int currentPosition = 0;//当前展开的menu
+    private List<MenuItem> menuDatas;
+    private FilterMenuAdapter menuAdpter;
+    private FilterPopupWindow filterPopupWindow;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +147,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         setContentView(R.layout.activity_subject);
 
         mContext = this;
-
-		/*
+        /*
          * JSON Data
 		 */
         try {
@@ -133,6 +163,24 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
         mWebView = (WebView) findViewById(R.id.browser);
+        llFilter = (LinearLayout) findViewById(R.id.ll_filter);
+        rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
+        tvLocationAddress = (TextView) findViewById(R.id.tv_location_address);
+        tvAddressFilter = (TextView) findViewById(R.id.tv_address_filter);
+        filterRecyclerView = (RecyclerView) findViewById(R.id.filter_recycler_view);
+        viewLine = findViewById(R.id.view_line);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        filterRecyclerView.setLayoutManager(mLayoutManager);
+        menuAdpter = new FilterMenuAdapter(mContext, menuDatas, this);
+        filterRecyclerView.setAdapter(menuAdpter);
+        tvAddressFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogFragment();
+            }
+        });
+
         initActiongBar();
         initSubWebView();
 
@@ -187,6 +235,22 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                         e.printStackTrace();
                     }
                 }
+                //是否有筛选数据，有就显示出来
+                if (locationDatas != null && locationDatas.size() > 0) {
+                    rlAddressFilter.setVisibility(View.VISIBLE);
+                    LogUtil.d("location", locationDatas.size() + "");
+                } else {
+                    rlAddressFilter.setVisibility(View.GONE);
+                }
+                if (menuDatas != null && menuDatas.size() > 0) {
+                    LogUtil.d("faster_select", menuDatas.size() + "");
+                    filterRecyclerView.setVisibility(View.VISIBLE);
+                    viewLine.setVisibility(View.VISIBLE);
+                    menuAdpter.setData(menuDatas);
+                } else {
+                    filterRecyclerView.setVisibility(View.GONE);
+                    viewLine.setVisibility(View.GONE);
+                }
             }
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -200,6 +264,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOffline) {
+                            mTitle.setText(bannerName + "(离线)");
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        mMyApp.setCurrentActivity(this);
     }
 
     private void initActiongBar() {
@@ -304,29 +396,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void onResume() {
-        animLoading.setVisibility(View.VISIBLE);
-        checkInterfaceOrientation(this.getResources().getConfiguration());
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
 
-        mMyApp.setCurrentActivity(this);
         super.onResume();
     }
 
@@ -340,7 +410,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     String firstName = "";
                     String secondName = "";
                     String thirdName = "";
-                    if (items.getData().size() != 0) {
+                    if (items != null && items.getData().size() != 0) {
                         firstName = items.getData().get(0).getTitles();
 
                         if (items.getData().get(0).getInfos().size() != 0) {
@@ -434,13 +504,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             getWindow().setAttributes(attr);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
-        mWebView.post(new Runnable() {
-            @Override
-            public void run() {
-                loadHtml();
-            }
-        });
     }
 
     private void loadHtml() {
@@ -570,7 +633,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             intent.putExtra("selectedItemPath", selectedItemPath);
             mContext.startActivity(intent);
         } else {
-            WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+            ToastUtils.INSTANCE.show(mContext, "该报表暂不支持筛选");
         }
     }
 
@@ -580,7 +643,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         clipboardManager.setText(link);
-        WidgetUtil.showToastShort(mContext, "链接已拷贝");
+        ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
     /*
@@ -662,8 +725,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
          */
         try {
             logParams = new JSONObject();
-            logParams.put("action", "微信分享");
-            new Thread(mRunnableForLogger).start();
+            logParams.put("action", "分享");
+            ActionLogUtil.actionLog(mContext, logParams);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -742,6 +805,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         animLoading.setVisibility(View.VISIBLE);
         new refreshTask().execute();
     }
+
 
     private class refreshTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -838,12 +902,12 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 logParams.put("obj_id", objectID);
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mContext, logParams);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        
+
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             try {
@@ -863,6 +927,44 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        @JavascriptInterface
+        public void reportSearchItemsV2(final String arrayString) {
+            if (!TextUtils.isEmpty(arrayString)) {
+                LogUtil.largeLogD("reportSearchItemsV2", arrayString);
+                MenuResult msg = new Gson().fromJson(arrayString, MenuResult.class);
+                if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
+                    for (Menu menu : msg.getData()) {
+                        if ("location".equals(menu.getType())) {
+                            locationDatas = menu.getData();
+                        }
+                        if ("faster_select".equals(menu.getType())) {
+                            menuDatas = menu.getData();
+                        }
+                    }
+                }
+            }
+
+//            try {
+//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+//                FileUtil.writeFile(searchItemsPath, arrayString);
+//
+//                Log.i("testlog", arrayString);
+//
+//                /**
+//                 *  判断筛选的条件: arrayString 数组不为空
+//                 *  报表第一次加载时，此处为判断筛选功能的关键点
+//                 */
+//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
+//                    isSupportSearch = true;
+//                    displayBannerTitleAndSearchIcon();
+//                } else {
+//                    isSupportSearch = false;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @JavascriptInterface
@@ -975,5 +1077,80 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, intent);
+    }
+
+    private void showDialogFragment() {
+        FragmentTransaction mFragTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("dialogFragment");
+        if (fragment != null) {
+            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
+            mFragTransaction.remove(fragment);
+        }
+        MyFilterDialogFragment dialogFragment = new MyFilterDialogFragment((ArrayList<MenuItem>) locationDatas, this);
+        dialogFragment.show(mFragTransaction, "dialogFragment");//显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+    }
+
+    /**
+     * 点击普通筛选栏
+     */
+    @Override
+    public void itemClick(int position) {
+        //标记点击位置
+        menuDatas.get(position).setArrorDirection(true);
+        menuAdpter.setData(menuDatas);
+        currentPosition = position;
+        showMenuPop(position);
+    }
+
+    private void showMenuPop(int position) {
+        if (filterPopupWindow == null) {
+            initMenuPopup(position);
+        } else {
+            filterPopupWindow.upDateDatas(menuDatas.get(position).getData());
+        }
+//        viewBg.visibility = View.VISIBLE
+        filterPopupWindow.showAsDropDown(viewLine);
+        filterPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                for (MenuItem menuItem : menuDatas) {
+                    menuItem.setArrorDirection(false);
+                }
+                menuAdpter.setData(menuDatas);
+//            viewBg.visibility = View.GONE
+
+            }
+        });
+    }
+
+    private void initMenuPopup(int position) {
+        filterPopupWindow = new FilterPopupWindow(this, menuDatas.get(position).getData(), this);
+        filterPopupWindow.init();
+    }
+
+    /**
+     * 普通排序列表点击
+     *
+     * @param position
+     */
+    @Override
+    public void menuItemClick(int position) {
+        for (MenuItem menuItem : menuDatas.get(currentPosition).getData()) {
+            menuItem.setArrorDirection(false);
+        }
+        //标记点击位置
+        menuDatas.get(currentPosition).getData().get(position).setArrorDirection(true);
+        filterPopupWindow.dismiss();
+
+    }
+
+    @Override
+    public void complete(@NotNull ArrayList<MenuItem> data) {
+        String addStr = "";
+        for (MenuItem menuItem : data) {
+            addStr += menuItem.getName() + "|";
+        }
+        addStr = addStr.substring(0, addStr.length() - 1);
+        tvLocationAddress.setText(addStr);
     }
 }

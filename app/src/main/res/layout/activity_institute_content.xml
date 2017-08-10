@@ -27,10 +27,6 @@
             android:maxLines="1"
             android:ellipsize="end"
             style="@style/BannerTitle" />
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-
     </RelativeLayout>
 
     <FrameLayout

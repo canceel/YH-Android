@@ -204,8 +204,14 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
     private void drawCoordinate(Canvas canvas, Paint paint) {
         // X轴坐标
         paint.setTextAlign(Paint.Align.CENTER);
+
         int xlength = xLabel.length;
         for (int i = 0; i < xlength; i++) {
+
+            if (i % 2 == 0) {
+                continue;
+            }
+
             float startX = 0;
             if (mChartStyle == ChartStyle.BAR)
                 startX = barWidth / 2;
@@ -454,7 +460,6 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         }
         mVa.start();
     }
-
 
     /**
      * 设置默认颜色

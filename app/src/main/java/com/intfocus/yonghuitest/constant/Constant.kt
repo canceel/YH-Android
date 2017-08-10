@@ -7,5 +7,5 @@ package com.intfocus.yonghuitest.constant
  *
  */
 object Constant {
-    var colorsRGY = intArrayOf(0xffff0000.toInt(), 0xfff39800.toInt(), 0xff6aa657.toInt(), 0xffff0000.toInt(), 0xfff39800.toInt(), 0xff6aa657.toInt())
+    var colorsRGY = intArrayOf(0xffff0000.toInt(), 0xffF4BC45.toInt(), 0xff6aa657.toInt(), 0xffff0000.toInt(), 0xffF4BC45.toInt(), 0xff6aa657.toInt())
 }

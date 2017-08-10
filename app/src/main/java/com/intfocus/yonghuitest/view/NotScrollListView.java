@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @date: 2016-6-8 上午9:45:00
  * @version: 1.0
  **/
+
 public class NotScrollListView extends android.widget.ListView {
 
     public NotScrollListView(Context context) {

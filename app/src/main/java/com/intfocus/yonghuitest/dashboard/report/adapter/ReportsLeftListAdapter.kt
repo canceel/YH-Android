@@ -54,12 +54,12 @@ class ReportsLeftListAdapter(var ctx: android.content.Context,
         if (position == currentPosition) {
             viewTag.ivCategorySign.visibility = View.VISIBLE
             viewTag.rlCategory.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color10))
-            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.color1))
+            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.co1_syr))
             viewTag.tvCategoryName.paint.isFakeBoldText = true
         } else {
             viewTag.ivCategorySign.visibility = View.INVISIBLE
             viewTag.rlCategory.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color8))
-            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
+            viewTag.tvCategoryName.setTextColor(ContextCompat.getColor(ctx, R.color.col_report_left_text))
             viewTag.tvCategoryName.paint.isFakeBoldText = false
         }
         viewTag.rlCategory.setOnClickListener { listener.reportLeftItemClick(viewTag.ivCategorySign, position) }

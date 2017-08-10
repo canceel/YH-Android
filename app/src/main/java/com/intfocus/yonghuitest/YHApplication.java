@@ -11,14 +11,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
-import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -158,10 +159,21 @@ public class YHApplication extends Application {
         @Override
         public void dealWithCustomAction(Context context, UMessage uMessage) {
             super.dealWithCustomAction(context, uMessage);
-            Intent intent = new Intent(appContext, DashboardActivity.class);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("loginToken", Context.MODE_PRIVATE);
+            boolean loginToken = sharedPreferences.getBoolean("loginToken", false);
+
+            Intent intent = null;
+            if (loginToken) {
+                intent = new Intent(appContext, DashboardActivity.class);
+            } else {
+                intent = new Intent(appContext, LoginActivity.class);
+            }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("fromMessage", true);
-            intent.putExtra("message", uMessage.custom);
+            Bundle bundle = new Bundle();
+            bundle.putString("message", uMessage.custom);
+            bundle.putString("message_body_title", uMessage.title);
+            bundle.putString("message_body_text", uMessage.text);
+            intent.putExtra("msgData", bundle);
             startActivity(intent);
         }
     };

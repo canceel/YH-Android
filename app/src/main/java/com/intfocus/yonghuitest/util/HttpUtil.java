@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -599,7 +598,7 @@ public class HttpUtil {
             mWakeLock.release();
 
             if (result != null) {
-                Toast.makeText(context, String.format("静态资源更新失败(%s)", result), Toast.LENGTH_LONG).show();
+                ToastUtils.INSTANCE.show(context, String.format("静态资源更新失败(%s)", result));
             } else {
                 FileUtil.checkAssets(context, assetFilename, isInAssets);
             }

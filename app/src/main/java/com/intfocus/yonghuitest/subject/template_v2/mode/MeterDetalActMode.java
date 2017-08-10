@@ -71,11 +71,15 @@ public class MeterDetalActMode extends AbstractMode {
                     }
 
                     StringReader stringReader = new StringReader(response.get("body"));
-//                    InputStream is = new FileInputStream(jsonFilePath);
-//                    InputStreamReader isr = new InputStreamReader(is);
                     JSONReader reader = new JSONReader(stringReader);
                     reader.startArray();
                     reader.startObject();
+
+//                InputStream is = ctx.getAssets().open("kpi_detaldata.json");
+//                InputStreamReader isr = new InputStreamReader(is);
+//                JSONReader reader = new JSONReader(isr);
+//                reader.startArray();
+//                reader.startObject();
 
                     entity = new MererDetalEntity();
                     entity.data = new ArrayList<>();
@@ -127,7 +131,7 @@ public class MeterDetalActMode extends AbstractMode {
         });
     }
 
-/*    *//**
+     /**
      * 解析数据
      *
      * @param result

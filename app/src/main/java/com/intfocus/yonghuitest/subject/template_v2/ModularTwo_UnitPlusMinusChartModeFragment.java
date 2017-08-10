@@ -15,10 +15,10 @@ import com.intfocus.yonghuitest.subject.template_v2.entity.BargraphComparator;
 import com.intfocus.yonghuitest.subject.template_v2.entity.MDRPUnitBargraph;
 import com.intfocus.yonghuitest.util.BargraphDataComparator;
 import com.intfocus.yonghuitest.util.PinyinUtil;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.NotScrollListView;
 import com.intfocus.yonghuitest.view.PlusMinusChart;
 import com.intfocus.yonghuitest.view.SortCheckBox;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -151,7 +151,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         adapter.setSelectItem(position);
         String xValue = entityData.xAxis.data[position];
-        ToastUtil.showToast(ctx, xValue);
+        ToastUtils.INSTANCE.show(ctx, xValue);
     }
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {

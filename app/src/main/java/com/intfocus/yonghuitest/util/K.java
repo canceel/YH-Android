@@ -32,24 +32,17 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kBarCodeScanAPIViewPath  = "%s/mobile/v2/store/%s/barcode/%s/view";
   public final static String kBarCodeScanAPIDataPath  = "%s/mobile/v2/store/%s/barcode/%s/attachment";
   public final static String kDownloadAssetsAPIPath   = "%s/api/v1/download/%s.zip";
-  public final static String kUploadGravatarAPIPath   = "%s/api/v1/device/%s/upload/user/%s/gravatar";
   public final static String kDeviceTokenAPIPath      = "%s/api/v1/user/%s/devices";
   public final static String kDeleteDeviceIdAPIPath   = "%s/api/v1/android/%s/logout";
 
   /**
    *  Mobile#View Path
    */
-  public final static String kKPIMobilePath            = "%s/mobile/%s/group/%s/role/%s/kpi";
   public final static String kKPIMobileDataPath        = "%s/mobile/%s/data/group/%s/role/%s/kpi";
   public final static String kKPIApiDataPath           = "%s/api/v1/group/%s/role/%s/kpi";
   public final static String kMessageDataMobilePath    = "%s/api/v1/role/%s/group/%s/user/%s/message";
-  public final static String kMessageMobilePath        = "%s/mobile/%s/role/%s/group/%s/user/%s/message";
-  public final static String kAppMobilePath            = "%s/mobile/%s/role/%s/app";
-  public final static String kAnalyseMobilePath        = "%s/mobile/%s/role/%s/analyse";
   public final static String kCommentMobilePath        = "%s/mobile/%s/id/%s/type/%s/comment";
-  public final static String kResetPwdMobilePath       = "%s/mobile/%s/update_user_password";
   public final static String kThursdaySayMobilePath    = "%s/mobile/%s/thursday_say";
-  public final static String kForgetPwdMobilePath      = "%s/mobile/%s/forget_user_password";
   public final static String kNewKPIApiDataPath        = "/api/v1/group/{groupId}/role/{roleId}/kpi";
   public final static String kNewMsgDataMobilePath     = "/api/v1/role/{roleId}/group/{groupId}/user/{userId}/message";
 
@@ -58,17 +51,20 @@ public class K extends PrivateURLs implements Serializable {
    */
   public final static String KUserInfoPath             = "%s/api/v1/user/%s/group/%s/role/%s/statistics";
   public final static String kNoticeListPath           = "%s/api/v1/user/%s/notices?type=%s&page=%s&limit=%s";
-  public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
-  public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
-  public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
   public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
   public final static String KWorkBoxListPath          = "%s/api/v1/group/%s/role/%s/app_covers";
   public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
   public final static String KInstituteListPath        = "/api/v1/user/{userId}/page/{page}/limit/{pageSize}/articles";
-//  public final static String KInstituteListPath        = "%s/api/v1/user/%s/page/%s/limit/%s/articles?keyword=%s";
   public final static String KInstituteCollectionPath  = "%s/api/v1/user/%s/article/%s/favourite_status/%s";
   public final static String KFavouriteArticlesPath    = "/api/v1/user/{userId}/page/{page}/limit/{pageSize}/favourite_articles";
   public final static String KArticleCollectionPath    = "/api/v1/user/{userId}/article/{articleId}/favourite_status/{status}";
+  public final static String kNewNoticeListPath        = "/api/v1/user/{userId}/notices";
+  public final static String kUserIconUploadPath = "/api/v1/device/{deviceId}/upload/user/{userId}/gravatar";
+
+  /**
+   * 筛选
+   */
+  public final static String KFilterMenuPath           = "/api/v1/report/menus";
 
   /**
    *  Config#Application
@@ -124,4 +120,12 @@ public class K extends PrivateURLs implements Serializable {
    */
   public final static int kMinSdkVersion = 14;
   public final static int kMaxSdkVersion = 25;
+
+  /**
+   * 新API及所需api key
+   */
+  public final static String API_TOKEN="api_token";
+  public final static String ANDROID_API_KEY ="578905f6e0c4189caa344ee4b1e460e5";//加密所需api key
+  public final static String KNoticeList ="/api/v1.1/my/notices";//公告列表
+
 }

@@ -15,7 +15,6 @@ public class ModularTwo_UnitTableEntity implements Serializable {
 
     public ArrayList<TableRowEntity> data;
 
-
     public class TableRowEntity implements Serializable {
         public String[] main_data;
         public String sub_data;

@@ -15,7 +15,10 @@ import com.intfocus.yonghuitest.subject.table.bean.TableBarChart;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -218,5 +221,43 @@ public class Utils {
             child.setLayoutParams(params);
             child.invalidate();
         }
+    }
+
+    /**
+     * 将字符串转成MD5值
+     *
+     * @param str
+     * @return
+     */
+    public static String stringToMD5(String str) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(str.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10)
+                hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString();
+    }
+
+    /**
+     * 获取Api_Token
+     *
+     * @param apiPath
+     * @return
+     */
+    public static String getApiToken(String apiPath) {
+        String finalStr = K.ANDROID_API_KEY + apiPath + K.ANDROID_API_KEY;
+        return stringToMD5(finalStr);
     }
 }

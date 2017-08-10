@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -27,7 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -45,13 +43,14 @@ import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
+import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.URLs;
-import com.intfocus.yonghuitest.util.WidgetUtil;
 import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
@@ -202,6 +201,13 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new WebApplicationActivity.JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
+        mWebView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadHtml();
+            }
+        });
+        isWeiXinShared = false;
     }
 
     public class MyWebChromeClient extends WebChromeClient {
@@ -332,34 +338,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     public void onResume() {
-        if (!isFromActivityResult) {
-            animLoading.setVisibility(View.VISIBLE);
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadHtml();
-                }
-            });
-            isWeiXinShared = false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isOffline) {
-                                mTitle.setText(bannerName + "(离线)");
-                            }
-                        }
-                    });
-                }
-            }).start();
-        }
         mMyApp.setCurrentActivity(this);
         super.onResume();
     }
@@ -571,7 +549,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             intent.putExtra("selectedItemPath", selectedItemPath);
             mContext.startActivity(intent);
         } else {
-            WidgetUtil.showToastShort(mContext, "该报表暂不支持筛选");
+            toast("该报表暂不支持筛选");
         }
     }
 
@@ -581,7 +559,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         clipboardManager.setText(link);
-        WidgetUtil.showToastShort(mContext, "链接已拷贝");
+        toast("链接已拷贝", ToastColor.SUCCESS);
     }
 
     /*
@@ -624,8 +602,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             if (mWebView.getMeasuredHeight() > imgMaxHight) {
                 imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
                         displayMetrics.heightPixels * 3, Bitmap.Config.ARGB_8888);
-            }
-            else {
+            } else {
                 imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
                         mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
             }
@@ -664,8 +641,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
          */
         try {
             logParams = new JSONObject();
-            logParams.put("action", "微信分享");
-            new Thread(mRunnableForLogger).start();
+            logParams.put("action", "分享");
+            ActionLogUtil.actionLog(mContext, logParams);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -840,7 +817,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 logParams.put("obj_id", objectID);
                 logParams.put(URLs.kObjType, objectType);
                 logParams.put(URLs.kObjTitle, String.format("主题页面/%s/%s", bannerName, ex));
-                new Thread(mRunnableForLogger).start();
+                ActionLogUtil.actionLog(mContext, logParams);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1043,12 +1020,12 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
          */
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(),"upload.jpg"));
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }else {
-                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"upload.jpg"));
+            } else {
+                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
             }
             intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         }

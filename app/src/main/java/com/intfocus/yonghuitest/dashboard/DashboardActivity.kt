@@ -91,14 +91,13 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
 //        checkUserModifiedInitPassword() // 检测用户密码
-        checkPgyerVersionUpgrade(this@DashboardActivity, false)
+//        checkPgyerVersionUpgrade(this@DashboardActivity, false)
 
         var intent = intent
         if (intent.hasExtra("msgData")) {
             handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
-
         } else {
-            HttpUtil.checkAssetsUpdated(mContext)
+//            HttpUtil.checkAssetsUpdated(mContext)
         }
     }
 

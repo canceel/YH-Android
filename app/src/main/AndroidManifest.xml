@@ -84,12 +84,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
-        <!-- 引导页 -->
-        <activity
-            android:name=".login.GuidePageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/LauncherTheme"/>
-
         <!-- 模板三 -->
         <activity
             android:name=".subject.HomeTricsActivity"
@@ -184,15 +178,11 @@
             android:name=".subject.template_v2.ModularTwo_SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-
         <!-- 外部链接 -->
         <activity
             android:name=".subject.WebApplicationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <!-- 报表选择页 -->
-
-
         <!-- 评论页 -->
         <activity
             android:name=".CommentActivity"
@@ -234,6 +224,22 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name=".setting.ShowListMsgActivity"/>
+        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
+        <activity
+            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <!--消息页-->
+        <activity
+            android:name=".dashboard.mine.activity.PushMessageContentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <!--引导页-->
+        <activity
+            android:name=".login.GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <!-- 蒲公英 必选 -->
         <meta-data
@@ -250,21 +256,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>
-
-        <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
-        <activity
-            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity
-            android:name=".dashboard.mine.activity.PushMessageContentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity
-            android:name=".login.GuideActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

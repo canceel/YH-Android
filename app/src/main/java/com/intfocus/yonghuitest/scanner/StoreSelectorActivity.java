@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest;
+package com.intfocus.yonghuitest.subject;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;

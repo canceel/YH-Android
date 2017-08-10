@@ -231,7 +231,6 @@ public class Utils {
      */
     public static String stringToMD5(String str) {
         byte[] hash;
-
         try {
             hash = MessageDigest.getInstance("MD5").digest(str.getBytes("UTF-8"));
         } catch (NoSuchAlgorithmException e) {
@@ -249,5 +248,16 @@ public class Utils {
             hex.append(Integer.toHexString(b & 0xFF));
         }
         return hex.toString();
+    }
+
+    /**
+     * 获取Api_Token
+     *
+     * @param apiPath
+     * @return
+     */
+    public static String getApiToken(String apiPath) {
+        String finalStr = K.ANDROID_API_KEY + apiPath + K.ANDROID_API_KEY;
+        return stringToMD5(finalStr);
     }
 }

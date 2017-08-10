@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -18,6 +19,7 @@ import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
 import kotlinx.android.synthetic.main.activity_password_alter.*
 import org.json.JSONObject
+import java.util.regex.Pattern
 
 /**
  * Created by liuruilin on 2017/6/9.
@@ -69,15 +71,22 @@ class PassWordAlterActivity : BaseActivity() {
         var newPassword = et_pwd_alter_new_pwd.text.toString()
         var confirmNewPassword = et_pwd_alter_confirm_new_pwd.text.toString()
 
-        if (oldPassword.isEmpty()) {
+        if (TextUtils.isEmpty(oldPassword)) {
             ToastUtils.show(this, "请输入旧密码")
             return
         }
 
-        if (!newPassword.equals(confirmNewPassword) || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+        if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(confirmNewPassword) || !newPassword.equals(confirmNewPassword)) {
             ToastUtils.show(this, "两次输入密码不一致")
             return
+        } else if (newPassword.length < 6) {
+            ToastUtils.show(this, "密码不得小于6位")
+            return
+        } else if (!checkPassword(newPassword)) {
+            ToastUtils.show(this, "密码必须为数字与字母的组合")
+            return
         }
+
         if (URLs.MD5(oldPassword) == user.get(URLs.kPassword)) {
             Thread(Runnable {
                 val response = ApiHelper.resetPassword(user.get("user_id").toString(), URLs.MD5(newPassword))
@@ -109,7 +118,16 @@ class PassWordAlterActivity : BaseActivity() {
             }).start()
         } else {
             ToastUtils.show(this, "旧密码输入有误")
-            Thread(mRunnableForDetecting).start()
         }
+    }
+
+    /**
+     * 正则判断密码  至少6位，必须包含数字和字母
+     */
+    fun checkPassword(str: String): Boolean {
+        val regexp = "^(?!\\d+\$)(?![a-zA-Z]+\$)\\w{6,16}"
+        val pattern = Pattern.compile(regexp)
+        val matcher = pattern.matcher(str)
+        return matcher.matches()
     }
 }

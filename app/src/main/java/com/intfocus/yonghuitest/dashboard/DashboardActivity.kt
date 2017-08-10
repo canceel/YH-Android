@@ -90,7 +90,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
-        checkUserModifiedInitPassword() // 检测用户密码
+//        checkUserModifiedInitPassword() // 检测用户密码
         checkPgyerVersionUpgrade(this@DashboardActivity, false)
 
         var intent = intent

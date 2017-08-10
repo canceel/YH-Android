@@ -28,9 +28,9 @@
             android:layout_height="10dp"/>
 
         <RelativeLayout
-            android:background="@color/co10_syr"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="@color/co10_syr">
 
             <ImageView
                 android:id="@+id/iv_mine_user_group"
@@ -55,8 +55,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@color/co10_syr"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="@color/co10_syr">
 
             <ImageView
                 android:id="@+id/iv_mine_user_num"
@@ -227,7 +227,8 @@
         <RelativeLayout
             android:id="@+id/rl_logout"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="@color/co10_syr">
 
             <TextView
                 android:id="@+id/tv_mine_user_logout"

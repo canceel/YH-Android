@@ -81,12 +81,11 @@ public interface HttpService {
     /**
      * 公告预警
      *
-     * @param userId
      * @param queryMap
      * @return
      */
-    @GET(K.kNewNoticeListPath)
-    Observable<NoticesResult> getNoticeList(@Path("userId") String userId, @QueryMap Map<String, String> queryMap);
+    @GET(K.KNoticeList)
+    Observable<NoticesResult> getNoticeList( @QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息

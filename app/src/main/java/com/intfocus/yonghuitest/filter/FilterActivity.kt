@@ -174,7 +174,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
 
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
-        startService(Intent(this, LocationService::class.java))
+        stopService(Intent(this, LocationService::class.java))
         super.onDestroy()
     }
 

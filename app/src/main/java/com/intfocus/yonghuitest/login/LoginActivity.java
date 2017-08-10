@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -346,10 +347,10 @@ public class LoginActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (info.compareTo(kSuccess) > 0 || info.compareTo(kSuccess) < 0) {
-                                if (mProgressDialog != null) {
-                                    mProgressDialog.dismiss();
-                                }
+                                if (info.compareTo(kSuccess) > 0 || info.compareTo(kSuccess) < 0) {
+                                    if (mProgressDialog != null) {
+                                        mProgressDialog.dismiss();
+                                    }
 
                                 /*
                                  * 用户行为记录, 单独异常处理，不可影响用户体验

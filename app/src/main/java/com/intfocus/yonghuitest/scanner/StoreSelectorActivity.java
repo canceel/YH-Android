@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest.subject;
+package com.intfocus.yonghuitest.scanner;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

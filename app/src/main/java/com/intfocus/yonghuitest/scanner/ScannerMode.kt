@@ -1,7 +1,12 @@
 package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
+import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus

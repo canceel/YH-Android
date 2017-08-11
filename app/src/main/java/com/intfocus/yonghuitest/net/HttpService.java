@@ -1,16 +1,18 @@
 package com.intfocus.yonghuitest.net;
 
+import com.intfocus.yonghuitest.data.request.RequestFavourite;
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
-import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult;
+import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
+import retrofit2.http.Body;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.GET;
@@ -29,69 +31,88 @@ import rx.Observable;
 public interface HttpService {
 
     /**
-     * 获取文章收藏列表
+     * 用户信息
      *
-     * @param userId
-     * @param page
-     * @param pageSize
+     * @param userNum
      * @return
      */
-    @GET(K.KFavouriteArticlesPath)
-    Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize);
+    @GET (K.KUserInfo)
+    Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 
     /**
-     * 操作文章收藏
-     *
-     * @param userId
-     * @param articleId
-     * @param status
+     * 获取概况页公告列表
+     * /api/v1.1/user/notifications
+     * @param groupId
+     * @param roleId
      * @return
      */
-    @POST(K.KArticleCollectionPath)
-    Observable<BaseResult> articleOperating(@Path("userId") String userId, @Path("articleId") String articleId, @Path("status") String status);
+    @GET (K.KNotifications)
+    Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
+
+    /**
+     * 扫码结果
+     * {{host}}/api/v1.1/scan/barcode?api_token=123&store_id=123&code_info=123
+     * @param storeId
+     * @param codeInfo
+     * @return
+     */
+    @GET (K.KScannerResult)
+    Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
+
+    /**
+     * 获取文章收藏列表
+     *
+     * @param queryMap
+     * @return
+     */
+    @GET(K.KMyFavouritedList)
+    Observable<ArticleResult> getMyFavouritedList(@QueryMap Map<String, String> queryMap);
+
+    /**
+     * 收藏状态
+     *
+     * @param requestFavourite
+     * @return
+     */
+    @POST(K.KFavouriteStatus)
+    Observable<BaseResult> articleOperating(@Body RequestFavourite requestFavourite);
 
     /**
      * 获取数据学院文章列表
      *
-     * @param userId
-     * @param page
-     * @param pageSize
-     * @param keyWorld
+     * @param queryMap
      * @return
      */
-    @GET(K.KInstituteListPath)
-    Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize, @Query("keyword") String keyWorld);
+    @GET(K.KArticlesList)
+    Observable<ArticleResult> getArticleList(@QueryMap Map<String, String> queryMap);
 
 
     /**
      * 获取首页概况数据
      *
-     * @param groupId
-     * @param roleId
+     * @param queryMap
      * @return
      */
-    @GET(K.kNewKPIApiDataPath)
-    Observable<KpiResult> getHomeIndex(@Path("groupId") String groupId, @Path("roleId") String roleId);
+    @GET(K.KOverview)
+    Observable<KpiResult> getHomeIndex(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取首页消息数据
      *
-     * @param groupId
-     * @param roleId
-     * @return
-     */
-    @GET(K.kNewMsgDataMobilePath)
-    Observable<HomeMsgResult> getHomeMsg(@Path("groupId") String groupId, @Path("roleId") String roleId, @Path("userId") String userId);
-
-    /**
-     * 公告预警
-     *
-     * @param userId
      * @param queryMap
      * @return
      */
-    @GET(K.kNewNoticeListPath)
-    Observable<NoticesResult> getNoticeList(@Path("userId") String userId, @QueryMap Map<String, String> queryMap);
+    @GET(K.KNotifications)
+    Observable<HomeMsgResult> getHomeMsg(@QueryMap Map<String, String> queryMap);
+
+    /**
+     * 公告预警列表
+     *
+     * @param queryMap
+     * @return
+     */
+    @GET(K.KNoticeList)
+    Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息
@@ -101,6 +122,14 @@ public interface HttpService {
     @GET(K.KFilterMenuPath)
     Observable<MenuResult> getFilterMenu();
 
+
+    /**
+     * 头像上传
+     * @param deviceId
+     * @param userId
+     * @param file
+     * @return
+     */
     @Multipart
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);

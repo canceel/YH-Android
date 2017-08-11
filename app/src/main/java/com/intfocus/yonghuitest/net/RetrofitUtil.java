@@ -21,6 +21,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -40,7 +41,7 @@ public class RetrofitUtil {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                  /*设置 自定义ResponseConverterFactory处理服务器返回错误码*/
                 .addConverterFactory(ResponseConverterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                  /*设置 ScalarsConverterFactory返回纯String*/
 //                .addConverterFactory(ScalarsConverterFactory.create())
                 .client(getClientBuilder().build())
@@ -69,7 +70,7 @@ public class RetrofitUtil {
             throw new RuntimeException(e);
         }
 //        clientBuilder.sslSocketFactory(createSSLSocketFactory());
-
+        clientBuilder.addInterceptor(new ApiTokenIntercepter());
         clientBuilder.addInterceptor(new NetworkInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         return clientBuilder;

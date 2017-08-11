@@ -107,10 +107,11 @@ class NoticeFragment : RefreshFragment(), NoticeListAdapter.NoticeItemListener, 
                 showLoading()
             }
         }
+        queryMap.put("user_num", userId)
         queryMap.put("type", typeStr.toString())
         queryMap.put("page", page.toString())
         queryMap.put("limit", pagesize.toString())
-        RetrofitUtil.getHttpService().getNoticeList(userId, queryMap)
+        RetrofitUtil.getHttpService().getNoticeList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<NoticesResult>())
                 .subscribe(object : CodeHandledSubscriber<NoticesResult>() {
                     override fun onCompleted() {

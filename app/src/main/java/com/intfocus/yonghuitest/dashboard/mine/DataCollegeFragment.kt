@@ -13,6 +13,7 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.RefreshFragment
 import com.intfocus.yonghuitest.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.yonghuitest.data.request.RequestFavourite
 import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
@@ -34,9 +35,12 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
+    lateinit var queryMap: MutableMap<String, String>
+    lateinit var statusMap: MutableMap<String, String>
     lateinit var userId: String
     var keyWord: String? = ""
     lateinit var editSearch: EditText
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_instiute, container, false)
@@ -49,6 +53,8 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     }
 
     fun initView() {
+        queryMap = mutableMapOf()
+        statusMap = mutableMapOf()
         editSearch = mView!!.findViewById(R.id.edit_search) as EditText
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -89,7 +95,11 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                 showLoading()
             }
         }
-        RetrofitUtil.getHttpService().getArticleList(userId, page.toString(), pagesize.toString(), keyWord)
+        queryMap.put("user_num", userId)
+        queryMap.put("page", page.toString())
+        queryMap.put("limit", pagesize.toString())
+        queryMap.put("keyWord", keyWord.toString())
+        RetrofitUtil.getHttpService().getArticleList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {
                     override fun onCompleted() {
@@ -130,7 +140,11 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
             return
         }
         showLoading()
-        RetrofitUtil.getHttpService().articleOperating(userId, articleId, status)
+        var body = RequestFavourite()
+        body.user_num = userId
+        body.article_id = articleId
+        body.favourite_status = status
+        RetrofitUtil.getHttpService().articleOperating(body)
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onCompleted() {

@@ -231,8 +231,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onBusinessNext(data: BaseResult?) {
                         if (data!!.code == "200") {
-                            val sharedPreferences = activity.getSharedPreferences("isLogin", Context.MODE_PRIVATE)
-                            sharedPreferences.edit().putBoolean("isLogin", false).commit()
+                            activity.getSharedPreferences("UserBean", MODE_PRIVATE).edit().putBoolean("isLogin", false).commit()
 
                             model.modifiedUserConfig(false)
                             val intent = Intent()

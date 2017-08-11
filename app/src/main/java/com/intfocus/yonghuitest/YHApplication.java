@@ -20,6 +20,7 @@ import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -159,10 +160,9 @@ public class YHApplication extends Application {
         @Override
         public void dealWithCustomAction(Context context, UMessage uMessage) {
             super.dealWithCustomAction(context, uMessage);
-            SharedPreferences sharedPreferences = context.getSharedPreferences("isLogin", Context.MODE_PRIVATE);
-            boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
 
             Intent intent = null;
+            boolean isLogin = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE).getBoolean(URLs.kIsLogin, false);
             if (isLogin) {
                 intent = new Intent(appContext, DashboardActivity.class);
             } else {

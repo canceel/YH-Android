@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -40,20 +41,18 @@ import com.pgyersdk.update.PgyUpdateManager;
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 public class LoginActivity extends BaseActivity {
     public String kFromActivity = "from_activity";         // APP 启动标识
     public String kSuccess = "success";               // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
-    private String usernameString, passwordString;
-    private SharedPreferences mUserSP;
+    private String userNum, userPass;
     private View mLinearUsernameBelowLine;
     private View mLinearPasswordBelowLine;
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
     private DeviceRequest mDeviceRequest;
     private JSONObject mUserJSON;
+    private SharedPreferences mUserSP;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -111,7 +110,7 @@ public class LoginActivity extends BaseActivity {
         /*
          * 显示记住用户名称
          */
-        usernameEditText.setText(mUserSP.getString("user_login_name", ""));
+        usernameEditText.setText(mUserSP.getString("user_num", ""));
 
         /*
          *  当用户系统不在我们支持范围内时,发出警告。
@@ -331,15 +330,15 @@ public class LoginActivity extends BaseActivity {
      */
     public void actionSubmit(View v) {
         try {
-            usernameString = usernameEditText.getText().toString();
-            passwordString = passwordEditText.getText().toString();
+            userNum = usernameEditText.getText().toString();
+            userPass = passwordEditText.getText().toString();
 
-//            usernameString = "13162726850";
-//            passwordString = "1";
+//            userNum = "13162726850";
+//            userPass = "1";
 
-            mUserSP.edit().putString("user_login_name", usernameString).commit();
+            mUserSP.edit().putString("user_num", userNum).commit();
 
-            if (usernameString.isEmpty() || passwordString.isEmpty()) {
+            if (userNum.isEmpty() || userPass.isEmpty()) {
                 ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码");
                 return;
             }
@@ -352,44 +351,18 @@ public class LoginActivity extends BaseActivity {
                 }
             });
 
-//            JSONObject mDeviceRequest = new JSONObject();
-//            mDeviceRequest.put("name", );
-//            mDeviceRequest.put("platform", "android");
-//            mDeviceRequest.put("os", android.os.Build.MODEL);
-//            mDeviceRequest.put("os_version", );
-//            mDeviceRequest.put("uuid", OpenUDID_manager.getOpenUDID());
-//
-//            JSONObject params = new JSONObject();
-//            params.put("mDeviceRequest", mDeviceRequest);
-//            params.put("coordinate", mUserSP.getString("location", "0,0"));
-//            params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
-//
-//            mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
-//            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
-//            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 
-            SharedPreferences mUserSP = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
-
-            // 上传设备信息
-            mDeviceRequest = new DeviceRequest();
-            mDeviceRequest.setUser_num(usernameString);
-            DeviceRequest.DeviceBean deviceBean = new DeviceRequest.DeviceBean();
-            deviceBean.setUuid(OpenUDID_manager.getOpenUDID());
-            deviceBean.setOs(android.os.Build.MODEL);
-            deviceBean.setName(android.os.Build.MODEL);
-            deviceBean.setOs_version(Build.VERSION.RELEASE);
-            deviceBean.setPlatform("android");
-            mDeviceRequest.setDevice(deviceBean);
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            mDeviceRequest.setApp_version(packageInfo.versionName);
-            mDeviceRequest.setBrowser(new WebView(this).getSettings().getUserAgentString());
+            // 上传设备信息
+            uploadDeviceInformation(packageInfo);
 
+            mUserSP = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+            mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
+            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
+            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 
             // 登录验证
-            HashMap<String, String> loginMap = new HashMap<>();
-            loginMap.put("user_num", usernameString);
-            loginMap.put("password", URLs.MD5(passwordString));
-            RetrofitUtil.getHttpService().userLogin(loginMap)
+            RetrofitUtil.getHttpService().userLogin(userNum, URLs.MD5(userPass))
                     .compose(new RetrofitUtil.CommonOptions<NewUser>())
                     .subscribe(new CodeHandledSubscriber<NewUser>() {
 
@@ -408,7 +381,7 @@ public class LoginActivity extends BaseActivity {
                             try {
                                 logParams = new JSONObject();
                                 logParams.put(URLs.kAction, "unlogin");
-                                logParams.put(URLs.kUserName, usernameString + "|;|" + passwordString);
+                                logParams.put(URLs.kUserName, userNum + "|;|" + userPass);
                                 logParams.put(URLs.kObjTitle, apiException.getDisplayMessage());
                                 ActionLogUtil.actionLoginLog(mAppContext, logParams);
                             } catch (Exception e) {
@@ -434,6 +407,21 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @NonNull
+    private void uploadDeviceInformation(PackageInfo packageInfo) {
+        mDeviceRequest = new DeviceRequest();
+        mDeviceRequest.setUser_num(userNum);
+        DeviceRequest.DeviceBean deviceBean = new DeviceRequest.DeviceBean();
+        deviceBean.setUuid(OpenUDID_manager.getOpenUDID());
+        deviceBean.setOs(Build.MODEL);
+        deviceBean.setName(Build.MODEL);
+        deviceBean.setOs_version(Build.VERSION.RELEASE);
+        deviceBean.setPlatform("android");
+        mDeviceRequest.setDevice(deviceBean);
+        mDeviceRequest.setApp_version(packageInfo.versionName);
+        mDeviceRequest.setBrowser(new WebView(this).getSettings().getUserAgentString());
+    }
+
     /**
      * 上传设备信息
      */
@@ -443,7 +431,7 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new CodeHandledSubscriber<Device>() {
                     @Override
                     public void onError(ApiException apiException) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getMessage());
+                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
                     }
 
                     /**
@@ -466,8 +454,7 @@ public class LoginActivity extends BaseActivity {
      * 登录成功后处理的逻辑
      */
     private void loginSuccess() {
-        SharedPreferences sharedPreferences = getSharedPreferences("isLogin", Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("isLogin", true).commit();
+        mUserSP.edit().putBoolean(URLs.kIsLogin, true).commit();
 
         // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
         if (getIntent().hasExtra("msgData")) {

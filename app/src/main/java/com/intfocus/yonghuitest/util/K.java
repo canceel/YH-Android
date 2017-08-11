@@ -130,5 +130,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String KNewLogin = "/api/v1.1/user/authentication";
   public final static String KNewDevice = "/api/v1.1/app/device";
   public final static String KNewLogout = "/api/v1.1/user/logout";
+  public final static String KNewUpdataPwd = "/api/v1.1/user/update_password";
+  public final static String KNewResetPwd = "/api/v1.1/user/reset_password";
 
 }

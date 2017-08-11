@@ -108,15 +108,17 @@ public interface HttpService {
 
     /**
      * 登录post请求
-     * @param queryMap
+     * @param userNum　用户名
+     * @param password　密码
      * @return
      */
     @POST(K.KNewLogin)
-    Observable<NewUser> userLogin(@QueryMap Map<String, String> queryMap);
+    Observable<NewUser> userLogin(@Query("user_num") String userNum, @Query("password") String password);
 
     /**
      * 上传设备信息
-     * @param deviceRequest
+     *
+     * @param deviceRequest　设备信息
      * @return
      */
     @POST(K.KNewDevice)
@@ -124,9 +126,29 @@ public interface HttpService {
 
     /**
      * 退出登录
-     * @param user_device_id
+     *
+     * @param userDeviceId　
      * @return
      */
     @POST(K.KNewLogout)
-    Observable<BaseResult> userLogout(@Query("user_device_id") String user_device_id);
+    Observable<BaseResult> userLogout(@Query("user_device_id") String userDeviceId);
+
+    /**
+     * 更新密码
+     *
+     * @param userNum　用户名
+     * @param newPwd　新密码
+     * @return
+     */
+    @POST(K.KNewUpdataPwd)
+    Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
+
+    /**
+     * 重置密码
+     * @param userNum　用户名
+     * @param mobile　手机号
+     * @return
+     */
+    @POST(K.KNewResetPwd)
+    Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
 }

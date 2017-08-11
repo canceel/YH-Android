@@ -106,10 +106,27 @@ public interface HttpService {
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
 
-
+    /**
+     * 登录post请求
+     * @param queryMap
+     * @return
+     */
     @POST(K.KNewLogin)
-    Observable<NewUser> userLogin(@QueryMap Map<String,String> queryMap);
+    Observable<NewUser> userLogin(@QueryMap Map<String, String> queryMap);
 
+    /**
+     * 上传设备信息
+     * @param deviceRequest
+     * @return
+     */
     @POST(K.KNewDevice)
     Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
+
+    /**
+     * 退出登录
+     * @param user_device_id
+     * @return
+     */
+    @POST(K.KNewLogout)
+    Observable<BaseResult> userLogout(@Query("user_device_id") String user_device_id);
 }

@@ -414,7 +414,7 @@ public class LoginActivity extends BaseActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
+                            ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
                         }
 
                         /**
@@ -443,7 +443,7 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new CodeHandledSubscriber<Device>() {
                     @Override
                     public void onError(ApiException apiException) {
-
+                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getMessage());
                     }
 
                     /**

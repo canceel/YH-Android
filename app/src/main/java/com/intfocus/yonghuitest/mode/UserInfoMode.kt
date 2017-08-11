@@ -3,27 +3,23 @@ package com.intfocus.yonghuitest.mode
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.data.response.BaseResult
-import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult
+import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.PrivateURLs
 import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.util.K.*
 import com.zbl.lib.baseframe.core.AbstractMode
-import com.zbl.lib.baseframe.utils.StringUtil
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Retrofit
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -35,66 +31,25 @@ import java.util.*
 class UserInfoMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
-    val mSharedPreferences: SharedPreferences = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
     var gson = Gson()
 
-    fun getUrl(): String {
-        var url = String.format(K.KUserInfoPath, K.kBaseUrl, mUserSP.getString(URLs.kUserNum, ""), mUserSP.getInt(URLs.kGroupId, 0).toString(), mUserSP.getInt(URLs.kRoleId, 0).toString())
-        return url
-    }
-
     override fun requestData() {
-        Thread(Runnable {
-            urlString = getUrl()
-            if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
-                result = response["body"]
-                if (StringUtil.isEmpty(result)) {
-                    val result1 = UserInfoRequest(true, 400)
-                    EventBus.getDefault().post(result1)
-                    return@Runnable
-                }
-                analysisData(result)
-            } else {
-                val result1 = UserInfoRequest(true, 400)
-                EventBus.getDefault().post(result1)
-                return@Runnable
-            }
-        }).start()
-    }
+        RetrofitUtil.getHttpService().getUserInfo(mUserSP.getString(URLs.kUserNum, ""))
+                .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
+                .subscribe(object : CodeHandledSubscriber<UserInfoResult>(){
+                    override fun onBusinessNext(data: UserInfoResult?) {
+                        val result1 = UserInfoRequest(true, 200)
+                        result1.userInfoBean = data
+                        EventBus.getDefault().post(result1)
+                    }
 
-    /**
-     * 解析数据
-     * @param result
-     */
-    private fun analysisData(result: String?): UserInfoRequest {
-        try {
-            val jsonObject = JSONObject(result)
-            if (jsonObject.has("code")) {
-                val code = jsonObject.getInt("code")
-                if (code != 200) {
-                    val result1 = UserInfoRequest(true, code)
-                    EventBus.getDefault().post(result1)
-                    return result1
-                }
-            }
+                    override fun onError(apiException: ApiException?) {
+                    }
 
-            mSharedPreferences.edit().putString("UserInfo", jsonObject.toString()).commit()
-            var userInfo = gson.fromJson(jsonObject.toString(), UserInfoBean::class.java)
-            val result1 = UserInfoRequest(true, 200)
-            result1.userInfoBean = userInfo
-            EventBus.getDefault().post(result1)
-            return result1
-        } catch (e: JSONException) {
-            e.printStackTrace()
-            val result1 = UserInfoRequest(true, -1)
-            EventBus.getDefault().post(result1)
-        }
-
-        val result1 = UserInfoRequest(true, 0)
-        EventBus.getDefault().post(result1)
-        return result1
+                    override fun onCompleted() {
+                    }
+                })
     }
 
     fun uplodeUserIcon(bitmap: Bitmap, imgPath: String) {

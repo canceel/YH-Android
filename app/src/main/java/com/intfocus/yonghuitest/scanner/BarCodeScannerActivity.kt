@@ -144,6 +144,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             intent.putExtra(URLs.kCodeInfo, trim)
             intent.putExtra(URLs.kCodeType, "input")
             startActivity(intent)
+            popupWindow!!.dismiss()
             finish()
         }
 

@@ -132,5 +132,8 @@ public class K extends PrivateURLs implements Serializable {
   public final static String KNewLogout = "/api/v1.1/user/logout";
   public final static String KNewUpdataPwd = "/api/v1.1/user/update_password";
   public final static String KNewResetPwd = "/api/v1.1/user/reset_password";
-
+  public final static String KNoticeList ="/api/v1.1/my/notices"; //公告列表
+  public final static String KScannerResult ="/api/v1.1/scan/barcode"; //扫码结果
+  public final static String KNotifications = "/api/v1.1/user/notifications"; //生意概况页轮播公告
+  public final static String KUserInfo = "/api/v1.1/my/statistics"; //个人信息
 }

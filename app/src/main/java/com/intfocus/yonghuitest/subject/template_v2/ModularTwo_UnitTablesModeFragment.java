@@ -111,7 +111,6 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         getModel().analysisData(mParam);
     }
 
-
     public void onMessageEvent(final MDetalRootPageRequestResult entity) {
         if (entity != null && entity.stateCode == 200) {
             act.runOnUiThread(new Runnable() {

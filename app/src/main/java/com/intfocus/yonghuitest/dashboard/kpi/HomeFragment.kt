@@ -153,7 +153,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
             })
             return
         }
-        RetrofitUtil.getHttpService().getHomeMsg(groupId, roleId, userId)
+        RetrofitUtil.getHttpService().getNotifications(groupId, roleId)
                 .compose(RetrofitUtil.CommonOptions<HomeMsgResult>())
                 .subscribe(object : CodeHandledSubscriber<HomeMsgResult>() {
                     override fun onCompleted() {

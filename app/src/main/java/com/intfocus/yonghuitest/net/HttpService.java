@@ -28,6 +28,12 @@ import rx.Observable;
 
 public interface HttpService {
 
+    /**
+     * 用户信息
+     *
+     * @param userNum
+     * @return
+     */
     @GET (K.KUserInfo)
     Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 

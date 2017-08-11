@@ -70,6 +70,8 @@ public class RetrofitUtil {
             throw new RuntimeException(e);
         }
 //        clientBuilder.sslSocketFactory(createSSLSocketFactory());
+        //Http状态码处理,针对已知状态码的处理
+        clientBuilder.addInterceptor(new HttpStateInterceptor());
         clientBuilder.addInterceptor(new ApiTokenIntercepter());
         clientBuilder.addInterceptor(new NetworkInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);

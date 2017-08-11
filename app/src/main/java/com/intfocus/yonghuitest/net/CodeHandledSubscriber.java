@@ -17,7 +17,7 @@ import rx.Subscriber;
  */
 public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     //对应HTTP的状态码
-    private static final int UNAUTHORIZED = 401;
+    public static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;
     private static final int NOT_FOUND = 404;
     private static final int REQUEST_TIMEOUT = 408;
@@ -93,6 +93,11 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
             ResultException resultException = (ResultException) e;
             ex = new ApiException(resultException, resultException.getErrorCode());
             ex.setDisplayMessage(resultException.getMessage());
+            onError(ex);
+        } else if (e instanceof HttpStateException) {
+            HttpStateException httpStateException = (HttpStateException) e;
+            ex = new ApiException(e, httpStateException.getErrorCode());
+            ex.setDisplayMessage(httpStateException.getMsg());
             onError(ex);
         } else {
             /*未知错误*/

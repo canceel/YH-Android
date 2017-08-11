@@ -3,12 +3,9 @@ package com.intfocus.yonghuitest.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Environment;
-import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -20,10 +17,6 @@ import com.amap.api.location.AMapLocationListener;
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.common.task.PriorityExecutor;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,10 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.MODE_PRIVATE;
-import static com.intfocus.yonghuitest.util.K.kAppVersion;
 import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
 import static com.intfocus.yonghuitest.util.K.kFontsMd5;
 import static com.intfocus.yonghuitest.util.K.kIconsMd5;

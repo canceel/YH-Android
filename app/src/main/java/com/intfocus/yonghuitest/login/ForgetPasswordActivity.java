@@ -8,23 +8,21 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.net.ApiException;
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
+import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
-import com.intfocus.yonghuitest.util.HttpUtil;
-import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Map;
 
 public class ForgetPasswordActivity extends BaseActivity {
 
@@ -32,16 +30,11 @@ public class ForgetPasswordActivity extends BaseActivity {
     private EditText mEtEmployeeId;
     private TextView mBtnSubmit;
     private EditText mEtEmployeePhoneNum;
-    private String mResult;
-    private boolean mFlag;
-    private LinearLayout mLlFindPwdResultNotice;
-    private TextView mTvFindPwdResultNotice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_forget_password);
-
         initView();
         initListener();
     }
@@ -54,8 +47,6 @@ public class ForgetPasswordActivity extends BaseActivity {
         mEtEmployeeId = (EditText) findViewById(R.id.et_find_pwd_employee_id);
         mEtEmployeePhoneNum = (EditText) findViewById(R.id.et_find_pwd_employee_phone_num);
         mBtnSubmit = (TextView) findViewById(R.id.tv_btn_find_pwd_submit);
-        mLlFindPwdResultNotice = (LinearLayout) findViewById(R.id.ll_find_pwd_result_notice);
-        mTvFindPwdResultNotice = (TextView) findViewById(R.id.tv_find_pwd_result_notice);
     }
 
     /**
@@ -79,27 +70,20 @@ public class ForgetPasswordActivity extends BaseActivity {
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "员工号无效", R.color.color_notice_login_failure);
+                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效", R.color.color_notice_login_failure);
                 } else if (mobile.length() == 11) {
-                    try {
-                        JSONObject jsonParams = new JSONObject();
-                        jsonParams.put("user_num", userNum);
-                        jsonParams.put("mobile", mobile);
-                        String urlString = String.format(K.kUserForgetAPIPath, K.kBaseUrl);
-                        submitData(urlString, jsonParams);
+                    // 发起 post 请求
+                    startPost(userNum, mobile);
 
                         /*
                          * 用户行为记录, 单独异常处理，不可影响用户体验
                          */
-                        try {
-                            logParams = new JSONObject();
-                            logParams.put(URLs.kAction, "重置密码");
-                            ActionLogUtil.actionLog(mAppContext, logParams);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } catch (JSONException e1) {
-                        e1.toString();
+                    try {
+                        logParams = new JSONObject();
+                        logParams.put(URLs.kAction, "重置密码");
+                        ActionLogUtil.actionLog(mAppContext, logParams);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 } else {
                     ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "请输入正确的手机号", R.color.color_notice_login_failure);
@@ -108,40 +92,39 @@ public class ForgetPasswordActivity extends BaseActivity {
         });
     }
 
-    public void submitData(final String urlString, final JSONObject jsonParams) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Map<String, String> response = HttpUtil.httpPost(urlString, jsonParams);
-                try {
-                    JSONObject jsonResponse = new JSONObject(response.get("body").toString());
-                    mResult = jsonResponse.getString("info");
-                    if (response.get("code").equals("201")) {
-                        mFlag = true;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                runOnUiThread(new Runnable() {
+    /**
+     * 发起 post 请求
+     *
+     * @param userNum
+     * @param mobile
+     */
+    public void startPost(String userNum, String mobile) {
+        RetrofitUtil.getHttpService().resetPwd(userNum, mobile)
+                .compose(new RetrofitUtil.CommonOptions<BaseResult>())
+                .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override
-                    public void run() {
-                        isSuccess(mResult, mFlag);
+                    public void onError(ApiException apiException) {
+                        showErrorMsg(apiException.getDisplayMessage());
+                    }
+
+                    @Override
+                    public void onBusinessNext(BaseResult data) {
+                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), R.color.color_notice_login_success);
+                    }
+
+                    @Override
+                    public void onCompleted() {
                     }
                 });
-            }
-        }).start();
+
     }
 
-    public void isSuccess(String info, boolean flag) {
-        if (flag) {
-            ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, info, R.color.color_notice_login_success);
-            return;
-        }
-        showPopUpWindows(info);
-    }
-
-    public void showPopUpWindows(String message) {
+    /**
+     * 显示错误信息
+     *
+     * @param message
+     */
+    public void showErrorMsg(String message) {
         View view = LayoutInflater.from(this).inflate(R.layout.popup_forget_pwd_notice, null);
         final PopupWindow popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true);
         TextView tv_forget_pwd_notice_content = (TextView) view.findViewById(R.id.tv_forget_pwd_notice_content);

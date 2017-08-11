@@ -7,12 +7,15 @@ import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
+import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -113,7 +116,7 @@ public interface HttpService {
      * @return
      */
     @GET(K.KNoticeList)
-    Observable<NoticesResult> getNoticeList( @QueryMap Map<String, String> queryMap);
+    Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息
@@ -134,4 +137,50 @@ public interface HttpService {
     @Multipart
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
+
+    /**
+     * 登录post请求
+     * @param userNum　用户名
+     * @param password　密码
+     * @return
+     */
+    @POST(K.KNewLogin)
+    Observable<NewUser> userLogin(@Query("user_num") String userNum, @Query("password") String password);
+
+    /**
+     * 上传设备信息
+     *
+     * @param deviceRequest　设备信息
+     * @return
+     */
+    @POST(K.KNewDevice)
+    Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
+
+    /**
+     * 退出登录
+     *
+     * @param userDeviceId　
+     * @return
+     */
+    @POST(K.KNewLogout)
+    Observable<BaseResult> userLogout(@Query("user_device_id") String userDeviceId);
+
+    /**
+     * 更新密码
+     *
+     * @param userNum　用户名
+     * @param newPwd　新密码
+     * @return
+     */
+    @POST(K.KNewUpdataPwd)
+    Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
+
+    /**
+     * 重置密码
+     * @param userNum　用户名
+     * @param mobile　手机号
+     * @return
+     */
+    @POST(K.KNewResetPwd)
+    Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
 }

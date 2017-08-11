@@ -116,7 +116,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kPushDeviceUUID     = "device_uuid";
 
   /**
-   * Config#User Device Info
+   * Config#User DeviceRequest Info
    */
   public final static int kMinSdkVersion = 14;
   public final static int kMaxSdkVersion = 25;

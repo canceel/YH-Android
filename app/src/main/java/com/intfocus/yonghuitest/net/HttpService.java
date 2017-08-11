@@ -6,8 +6,8 @@ import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.Device;
-import com.intfocus.yonghuitest.login.bean.DeviceResult;
 import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.util.K;
 
@@ -111,5 +111,5 @@ public interface HttpService {
     Observable<NewUser> userLogin(@QueryMap Map<String,String> queryMap);
 
     @POST(K.KNewDevice)
-    Observable<DeviceResult> deviceUpLoad(@Body Device device);
+    Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
 }

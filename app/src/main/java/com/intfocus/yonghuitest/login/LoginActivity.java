@@ -22,8 +22,8 @@ import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.Device;
-import com.intfocus.yonghuitest.login.bean.DeviceResult;
 import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.net.ApiException;
@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
     private View mLinearPasswordBelowLine;
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
-    private Device device;
+    private DeviceRequest mDeviceRequest;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -351,15 +351,15 @@ public class LoginActivity extends BaseActivity {
                 }
             });
 
-//            JSONObject device = new JSONObject();
-//            device.put("name", );
-//            device.put("platform", "android");
-//            device.put("os", android.os.Build.MODEL);
-//            device.put("os_version", );
-//            device.put("uuid", OpenUDID_manager.getOpenUDID());
+//            JSONObject mDeviceRequest = new JSONObject();
+//            mDeviceRequest.put("name", );
+//            mDeviceRequest.put("platform", "android");
+//            mDeviceRequest.put("os", android.os.Build.MODEL);
+//            mDeviceRequest.put("os_version", );
+//            mDeviceRequest.put("uuid", OpenUDID_manager.getOpenUDID());
 //
 //            JSONObject params = new JSONObject();
-//            params.put("device", device);
+//            params.put("mDeviceRequest", mDeviceRequest);
 //            params.put("coordinate", mUserSP.getString("location", "0,0"));
 //            params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
 //
@@ -368,18 +368,18 @@ public class LoginActivity extends BaseActivity {
 //            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 
             // 上传设备信息
-            device = Device.INSTANCE;
-            device.setApp_version(usernameString);
-            Device.DeviceBean deviceBean = new Device.DeviceBean();
+            mDeviceRequest = new DeviceRequest();
+            mDeviceRequest.setUser_num(usernameString);
+            DeviceRequest.DeviceBean deviceBean = new DeviceRequest.DeviceBean();
             deviceBean.setUuid(OpenUDID_manager.getOpenUDID());
             deviceBean.setOs(android.os.Build.MODEL);
             deviceBean.setName(android.os.Build.MODEL);
             deviceBean.setOs_version(Build.VERSION.RELEASE);
             deviceBean.setPlatform("android");
-            device.setDevice(deviceBean);
+            mDeviceRequest.setDevice(deviceBean);
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            device.setApp_version(packageInfo.versionName);
-            device.setBrowser(new WebView(this).getSettings().getUserAgentString());
+            mDeviceRequest.setApp_version(packageInfo.versionName);
+            mDeviceRequest.setBrowser(new WebView(this).getSettings().getUserAgentString());
 
 
             // 登录验证
@@ -424,16 +424,16 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void upLoadDevice() {
-        RetrofitUtil.getHttpService().deviceUpLoad(device)
-                .compose(new RetrofitUtil.CommonOptions<DeviceResult>())
-                .subscribe(new CodeHandledSubscriber<DeviceResult>() {
+        RetrofitUtil.getHttpService().deviceUpLoad(mDeviceRequest)
+                .compose(new RetrofitUtil.CommonOptions<Device>())
+                .subscribe(new CodeHandledSubscriber<Device>() {
                     @Override
                     public void onError(ApiException apiException) {
 
                     }
 
                     @Override
-                    public void onBusinessNext(DeviceResult data) {
+                    public void onBusinessNext(Device data) {
                         ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getDevice_uuid());
 
                     }

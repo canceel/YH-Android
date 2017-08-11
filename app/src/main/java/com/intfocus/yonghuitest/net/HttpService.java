@@ -5,7 +5,7 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
-import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult;
+import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.util.K;
 
@@ -27,6 +27,19 @@ import rx.Observable;
  */
 
 public interface HttpService {
+
+    @GET (K.KUserInfo)
+    Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
+
+    /**
+     * 获取概况页公告列表
+     * /api/v1.1/user/notifications
+     * @param groupId
+     * @param roleId
+     * @return
+     */
+    @GET (K.KNotifications)
+    Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 扫码结果

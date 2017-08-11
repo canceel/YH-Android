@@ -30,14 +30,11 @@ public class ForgetPasswordActivity extends BaseActivity {
     private EditText mEtEmployeeId;
     private TextView mBtnSubmit;
     private EditText mEtEmployeePhoneNum;
-    private String mResult;
-    private boolean mFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_forget_password);
-
         initView();
         initListener();
     }
@@ -73,7 +70,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "员工号无效", R.color.color_notice_login_failure);
+                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效", R.color.color_notice_login_failure);
                 } else if (mobile.length() == 11) {
                     // 发起 post 请求
                     startPost(userNum, mobile);
@@ -97,6 +94,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     /**
      * 发起 post 请求
+     *
      * @param userNum
      * @param mobile
      */
@@ -106,22 +104,16 @@ public class ForgetPasswordActivity extends BaseActivity {
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override
                     public void onError(ApiException apiException) {
-                        mResult = apiException.getMessage();
+                        showErrorMsg(apiException.getDisplayMessage());
                     }
 
                     @Override
                     public void onBusinessNext(BaseResult data) {
-                        mResult = data.getMessage();
-                        mFlag = true;
+                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), R.color.color_notice_login_success);
                     }
 
                     @Override
                     public void onCompleted() {
-                        if (mFlag) {
-                            ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, mResult, R.color.color_notice_login_success);
-                            return;
-                        }
-                        showErrorMsg(mResult);
                     }
                 });
 
@@ -129,6 +121,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     /**
      * 显示错误信息
+     *
      * @param message
      */
     public void showErrorMsg(String message) {

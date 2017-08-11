@@ -51,7 +51,6 @@ public class LoginActivity extends BaseActivity {
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
     private DeviceRequest mDeviceRequest;
-    private JSONObject mUserJSON;
     private SharedPreferences mUserSP;
 
     @Override

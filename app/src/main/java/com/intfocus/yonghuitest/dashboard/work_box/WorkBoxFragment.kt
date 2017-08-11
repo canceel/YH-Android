@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRefreshListener {
     var rootView : View? = null
-    var datas: List<WorkBoxBean.WorkBoxItemBean>? = null
+    var datas: List<WorkBoxItem>? = null
 
     override fun setSubject(): Subject {
         return WorkBoxMode(ctx)
@@ -65,7 +65,7 @@ class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRef
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(request: WorkBoxRequest) {
         if (request.isSuccess) {
-            datas = request.workBoxDatas!!.data
+            datas = request.workBoxDatas
             gv_work_box.adapter = WorkBoxAdapter(ctx, datas)
         }
         swipe_container.isRefreshing = false

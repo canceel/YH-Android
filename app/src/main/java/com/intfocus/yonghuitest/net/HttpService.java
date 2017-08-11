@@ -6,6 +6,8 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
+import com.intfocus.yonghuitest.data.response.home.ReportListResult;
+import com.intfocus.yonghuitest.data.response.home.WorkBoxResult;
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.data.response.scanner.StoreListResult;
@@ -30,6 +32,23 @@ import rx.Observable;
 
 public interface HttpService {
 
+    @GET (K.KWorkBoxList)
+    Observable<WorkBoxResult> getWorkBox(@Query("group_id") String groupId, @Query("role_id") String roleId);
+
+    /**
+     * 报表页面列表
+     * @param groupId
+     * @param roleId
+     * @return
+     */
+    @GET (K.KReportList)
+    Observable<ReportListResult> getReportList(@Query("group_id") String groupId, @Query("role_id") String roleId);
+
+    /**
+     * 门店列表
+     * @param userNum
+     * @return
+     */
     @GET (K.KStoreList)
     Observable<StoreListResult> getStoreList(@Query("user_num") String userNum);
 

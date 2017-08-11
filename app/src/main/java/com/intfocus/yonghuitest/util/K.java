@@ -136,4 +136,5 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KNotifications = "/api/v1.1/user/notifications";//用户公告
     public final static String KStoreList = "/api/v1.1/user/stores"; //门店列表
     public final static String KReportList = "/api/v1.1/app/component/reports"; //报表列表
+    public final static String KWorkBoxList = "/api/v1.1/app/component/toolbox"; //工具箱
 }

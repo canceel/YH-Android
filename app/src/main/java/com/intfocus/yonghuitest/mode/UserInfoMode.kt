@@ -3,6 +3,7 @@ package com.intfocus.yonghuitest.mode
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
@@ -40,7 +41,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>(){
                     override fun onBusinessNext(data: UserInfoResult?) {
                         val result1 = UserInfoRequest(true, 200)
-                        result1.userInfoBean = data
+                        result1.userInfoBean = data!!.data
                         EventBus.getDefault().post(result1)
                     }
 

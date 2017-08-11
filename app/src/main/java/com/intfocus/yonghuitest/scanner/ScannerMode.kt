@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.data.response.scanner.StoreItem
+import com.intfocus.yonghuitest.data.response.scanner.StoreListResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
@@ -34,20 +36,52 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     var jsUrl = ""
     var htmlUrl = ""
     var store_id = ""
-    var barcode = ""
+    var currentBarcode = ""
 
     fun requestData(barcode: String) {
-        store_id = getStoreID()
-        this.barcode = barcode
-        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
-        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
-        requestData()
+        RetrofitUtil.getHttpService().getStoreList(mUserSP.getString("user_num", "0"))
+                .compose(RetrofitUtil.CommonOptions<StoreListResult>())
+                .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
+                    override fun onCompleted() {
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+                    }
+
+                    override fun onBusinessNext(data: StoreListResult?) {
+                        var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
+                        var cachedJSON: JSONObject
+                        cachedJSON = FileUtil.readConfigFile(cachedPath)
+                        var flag = false
+                        var storeName: String
+                        if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
+                                data != null) {
+                            storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
+                            for (i in 0..data.data!!.size - 1) {
+                                if (data.data!![i].name == storeName) {
+                                    flag = true
+                                }
+                            }
+                        }
+
+                        if (!flag) {
+                            cachedJSON.put(URLs.kStore, data!!.data!![0].name)
+                            FileUtil.writeFile(cachedPath, cachedJSON.toString())
+                        }
+
+                        currentBarcode = barcode
+                        store_id = cachedJSON.getJSONObject(URLs.kStore).getString("id")
+                        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
+                        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
+                        requestData()
+                    }
+                })
     }
 
     override fun requestData() {
         if (!jsUrl.isEmpty()) {
             val params = RequestParams(jsUrl)
-            var jsFileName = String.format("store_%s_barcode_%s.js", store_id, barcode)
+            var jsFileName = String.format("store_%s_barcode_%s.js", store_id, currentBarcode)
             val jsPath = String.format("%s/assets/javascripts/%s", FileUtil.sharedPath(ctx), jsFileName)
             params.isAutoRename = false //设置是否根据头信息自动命名文件
             params.saveFilePath = jsPath
@@ -73,7 +107,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     private fun getHtml() {
         Thread(Runnable {
-            var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, barcode)
+            var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, currentBarcode)
             var htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
 
             var response = HttpUtil.httpGet(htmlUrl, HashMap<String, String>())
@@ -95,34 +129,4 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
         }).start()
     }
 
-    @Throws(JSONException::class, IOException::class)
-    private fun getStoreID(): String {
-        val userConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kUserConfigFileName)
-        var user = FileUtil.readConfigFile(userConfigPath)
-        if (!user.has(URLs.kStoreIds)) {
-            return "0"
-        }
-
-        var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
-        var cachedJSON: JSONObject
-        cachedJSON = FileUtil.readConfigFile(cachedPath)
-        var flag = false
-        var storeName: String
-        if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
-                user.has(URLs.kStoreIds)) {
-            storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
-            for (i in 0..user.getJSONArray(URLs.kStoreIds).length() - 1) {
-                if (user.getJSONArray(URLs.kStoreIds).getJSONObject(i).getString("name") == storeName) {
-                    flag = true
-                }
-            }
-        }
-
-        if (!flag) {
-            cachedJSON.put(URLs.kStore, user.getJSONArray(URLs.kStoreIds).get(0))
-            FileUtil.writeFile(cachedPath, cachedJSON.toString())
-        }
-
-        return cachedJSON.getJSONObject(URLs.kStore).getString("id")
-    }
 }

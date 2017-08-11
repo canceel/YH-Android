@@ -1,4 +1,4 @@
-package com.intfocus.yonghuitest.data.response.mine_page
+package com.intfocus.yonghuitest.data.response.scanner
 
 import com.google.gson.annotations.SerializedName
 import com.intfocus.yonghuitest.data.response.BaseResult
@@ -6,7 +6,7 @@ import com.intfocus.yonghuitest.data.response.BaseResult
 /**
  * Created by liuruilin on 2017/8/11.
  */
-class UserInfoResult: BaseResult() {
+class StoreListResult: BaseResult() {
     @SerializedName("data")
-    var data: UserInfo? = null
+    var data: List<StoreItem>? = null
 }

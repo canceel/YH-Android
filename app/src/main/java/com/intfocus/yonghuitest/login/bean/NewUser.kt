@@ -16,9 +16,9 @@ import com.intfocus.yonghuitest.data.response.BaseResult
 class NewUser : BaseResult() {
 
     @SerializedName("data")
-    private var mResult: LoginResult? = null
+    var mResult: LoginResult? = null
 
-    internal inner class LoginResult {
+    inner class LoginResult {
         /**
          * user_num : 13913778859
          * user_name : 王施君

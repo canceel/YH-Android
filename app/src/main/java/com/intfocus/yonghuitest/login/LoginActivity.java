@@ -22,10 +22,10 @@ import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
-import com.intfocus.yonghuitest.login.bean.DeviceRequest;
-import com.intfocus.yonghuitest.login.bean.Device;
-import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
+import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
@@ -53,6 +53,7 @@ public class LoginActivity extends BaseActivity {
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
     private DeviceRequest mDeviceRequest;
+    private JSONObject mUserJSON;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -367,6 +368,8 @@ public class LoginActivity extends BaseActivity {
 //            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
 //            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 
+            SharedPreferences mUserSP = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+
             // 上传设备信息
             mDeviceRequest = new DeviceRequest();
             mDeviceRequest.setUser_num(usernameString);
@@ -394,6 +397,10 @@ public class LoginActivity extends BaseActivity {
                         public void onCompleted() {
                         }
 
+                        /**
+                         * 登录请求失败
+                         * @param apiException
+                         */
                         @Override
                         public void onError(ApiException apiException) {
                             if (mProgressDialog != null)
@@ -410,6 +417,10 @@ public class LoginActivity extends BaseActivity {
                             ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
                         }
 
+                        /**
+                         * 登录成功
+                         * @param data 返回的数据
+                         */
                         @Override
                         public void onBusinessNext(NewUser data) {
                             upLoadDevice();
@@ -423,6 +434,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 上传设备信息
+     */
     private void upLoadDevice() {
         RetrofitUtil.getHttpService().deviceUpLoad(mDeviceRequest)
                 .compose(new RetrofitUtil.CommonOptions<Device>())
@@ -432,9 +446,13 @@ public class LoginActivity extends BaseActivity {
 
                     }
 
+                    /**
+                     * 上传设备信息成功
+                     * @param data 返回的数据
+                     */
                     @Override
                     public void onBusinessNext(Device data) {
-                        ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getDevice_uuid());
+                        ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getMResult().getDevice_uuid());
 
                     }
 
@@ -444,10 +462,14 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 登录成功后处理的逻辑
+     */
     private void loginSuccess() {
         SharedPreferences sharedPreferences = getSharedPreferences("isLogin", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("isLogin", true).commit();
 
+        // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
         if (getIntent().hasExtra("msgData")) {
             Bundle msgData = getIntent().getBundleExtra("msgData");
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);

@@ -8,6 +8,7 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.RefreshActivity
 import com.intfocus.yonghuitest.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.yonghuitest.data.request.RequestFavourite
 import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
@@ -26,6 +27,8 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
     lateinit var userId: String
+    lateinit var statusMap: MutableMap<String, String>
+    lateinit var queryMap: MutableMap<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,8 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     }
 
     fun init() {
+        statusMap = mutableMapOf()
+        queryMap = mutableMapOf()
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = mLayoutManager
@@ -66,7 +71,10 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
             showLoading()
         }
-        RetrofitUtil.getHttpService().getArticleList(userId, page.toString(), pageSize.toString())
+        queryMap.put("user_num", userId)
+        queryMap.put("page", page.toString())
+        queryMap.put("limit", pageSize.toString())
+        RetrofitUtil.getHttpService().getMyFavouritedList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {
                     override fun onCompleted() {
@@ -113,7 +121,11 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
             return
         }
         showLoading()
-        RetrofitUtil.getHttpService().articleOperating(userId, articleId, status)
+        var body = RequestFavourite()
+        body.user_num = userId
+        body.article_id = articleId
+        body.favourite_status = status
+        RetrofitUtil.getHttpService().articleOperating(body)
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onCompleted() {
@@ -134,7 +146,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
         var intent = Intent(mActivity, InstituteContentActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra("id", instituteDataBean!!.acticleId.toString())
         intent.putExtra("title", instituteDataBean!!.title.toString())
         startActivity(intent)

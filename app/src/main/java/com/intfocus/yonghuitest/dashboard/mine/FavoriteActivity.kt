@@ -88,7 +88,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onBusinessNext(data: ArticleResult) {
                         finshRequest()
-                        totalPage = data.data!!.totalPage
+                        totalPage = data.total_page
                         isLasePage = page == totalPage
                         if (datas == null) {
                             datas = ArrayList()
@@ -96,7 +96,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                         if (isRefresh!!) {
                             datas!!.clear()
                         }
-                        datas!!.addAll(data.data!!.list)
+                        datas!!.addAll(data.data)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,

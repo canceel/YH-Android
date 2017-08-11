@@ -113,7 +113,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
                     override fun onBusinessNext(data: ArticleResult) {
                         finshRequest()
-                        total = data.data!!.totalPage
+                        total = data.total_page
                         isLasePage = page == total
                         if (datas == null) {
                             datas = ArrayList()
@@ -122,7 +122,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                             datas!!.clear()
                         }
 
-                        datas!!.addAll(data.data!!.list)
+                        datas!!.addAll(data.data)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,

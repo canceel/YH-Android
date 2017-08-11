@@ -5,14 +5,16 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
-import com.intfocus.yonghuitest.data.response.mine_page.UserIconResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
+import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.DeviceResult;
+import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -90,7 +92,7 @@ public interface HttpService {
      * @return
      */
     @GET(K.KNoticeList)
-    Observable<NoticesResult> getNoticeList( @QueryMap Map<String, String> queryMap);
+    Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息
@@ -103,4 +105,11 @@ public interface HttpService {
     @Multipart
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
+
+
+    @POST(K.KNewLogin)
+    Observable<NewUser> userLogin(@QueryMap Map<String,String> queryMap);
+
+    @POST(K.KNewDevice)
+    Observable<DeviceResult> deviceUpLoad(@Body Device device);
 }

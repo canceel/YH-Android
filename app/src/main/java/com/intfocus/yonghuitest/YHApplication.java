@@ -159,11 +159,11 @@ public class YHApplication extends Application {
         @Override
         public void dealWithCustomAction(Context context, UMessage uMessage) {
             super.dealWithCustomAction(context, uMessage);
-            SharedPreferences sharedPreferences = context.getSharedPreferences("loginToken", Context.MODE_PRIVATE);
-            boolean loginToken = sharedPreferences.getBoolean("loginToken", false);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("isLogin", Context.MODE_PRIVATE);
+            boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
 
             Intent intent = null;
-            if (loginToken) {
+            if (isLogin) {
                 intent = new Intent(appContext, DashboardActivity.class);
             } else {
                 intent = new Intent(appContext, LoginActivity.class);

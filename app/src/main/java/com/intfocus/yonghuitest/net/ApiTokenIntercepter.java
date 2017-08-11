@@ -40,9 +40,6 @@ public class ApiTokenIntercepter implements Interceptor {
                 .build();
         LogUtil.d("apiPath", apiPath);
         LogUtil.d("apiToken", apiToken);
-        LogUtil.d("new_url", newRequest.url().toString());
-
-        //打印responseBody
         okhttp3.Response response = chain.proceed(newRequest);
         return response;
     }

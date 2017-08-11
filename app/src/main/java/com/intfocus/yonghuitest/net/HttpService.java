@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.net;
 
+import com.intfocus.yonghuitest.data.request.RequestFavourite;
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
@@ -11,6 +12,7 @@ import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
+import retrofit2.http.Body;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.GET;
@@ -60,66 +62,57 @@ public interface HttpService {
     /**
      * 获取文章收藏列表
      *
-     * @param userId
-     * @param page
-     * @param pageSize
+     * @param queryMap
      * @return
      */
-    @GET(K.KFavouriteArticlesPath)
-    Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize);
+    @GET(K.KMyFavouritedList)
+    Observable<ArticleResult> getMyFavouritedList(@QueryMap Map<String, String> queryMap);
 
     /**
-     * 操作文章收藏
+     * 收藏状态
      *
-     * @param userId
-     * @param articleId
-     * @param status
+     * @param requestFavourite
      * @return
      */
-    @POST(K.KArticleCollectionPath)
-    Observable<BaseResult> articleOperating(@Path("userId") String userId, @Path("articleId") String articleId, @Path("status") String status);
+    @POST(K.KFavouriteStatus)
+    Observable<BaseResult> articleOperating(@Body RequestFavourite requestFavourite);
 
     /**
      * 获取数据学院文章列表
      *
-     * @param userId
-     * @param page
-     * @param pageSize
-     * @param keyWorld
+     * @param queryMap
      * @return
      */
-    @GET(K.KInstituteListPath)
-    Observable<ArticleResult> getArticleList(@Path("userId") String userId, @Path("page") String page, @Path("pageSize") String pageSize, @Query("keyword") String keyWorld);
+    @GET(K.KArticlesList)
+    Observable<ArticleResult> getArticleList(@QueryMap Map<String, String> queryMap);
 
 
     /**
      * 获取首页概况数据
      *
-     * @param groupId
-     * @param roleId
+     * @param queryMap
      * @return
      */
-    @GET(K.kNewKPIApiDataPath)
-    Observable<KpiResult> getHomeIndex(@Path("groupId") String groupId, @Path("roleId") String roleId);
+    @GET(K.KOverview)
+    Observable<KpiResult> getHomeIndex(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取首页消息数据
      *
-     * @param groupId
-     * @param roleId
+     * @param queryMap
      * @return
      */
-    @GET(K.kNewMsgDataMobilePath)
-    Observable<HomeMsgResult> getHomeMsg(@Path("groupId") String groupId, @Path("roleId") String roleId, @Path("userId") String userId);
+    @GET(K.KNotifications)
+    Observable<HomeMsgResult> getHomeMsg(@QueryMap Map<String, String> queryMap);
 
     /**
-     * 公告预警
+     * 公告预警列表
      *
      * @param queryMap
      * @return
      */
     @GET(K.KNoticeList)
-    Observable<NoticesResult> getNoticeList( @QueryMap Map<String, String> queryMap);
+    Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息

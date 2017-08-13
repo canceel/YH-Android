@@ -1,23 +1,21 @@
 package com.intfocus.yonghuitest.subject.template_v2;
 
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
+import com.intfocus.yonghuitest.dashboard.mine.adapter.TableTitleAdapter;
+import com.intfocus.yonghuitest.subject.template_v2.entity.MDetalUnitEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTablesParentMode;
 import com.zbl.lib.baseframe.core.Subject;
@@ -26,6 +24,8 @@ import com.zbl.lib.baseframe.utils.ToastUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageModeFragment.SU_ROOTID;
@@ -33,10 +33,9 @@ import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageMo
 /**
  * 表格根
  */
-public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> {
+public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
     //private static final String ARG_PARAM1 = "TablesParam";
-
     //
     public static String mCurrentData;
     private String mParam;
@@ -56,13 +55,19 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     private String currentFtName;
 
     private RadioGroup radioGroup;
-    private RootTableCheckedChangeListener rootTableListener;
+    private ModularTwo_Mode_Activity.RootTableCheckedChangeListener rootTableListener;
     private MDetalRootPageRequestResult entity;
 
     /**
      * 最上层跟跟标签ID
      */
     public int suRootID;
+    //title
+    @ViewInject(R.id.recycler_view)
+    private RecyclerView recyclerView;
+    private TableTitleAdapter adapter;
+    private List<MDetalUnitEntity> datas;
+
 
     public static ModularTwo_UnitTablesModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
@@ -106,8 +111,12 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
 
 
     private void init() {
-        rootTableListener = new RootTableCheckedChangeListener();
+//        rootTableListener = new RootTableCheckedChangeListener();
         getModel().analysisData(mParam);
+        datas = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        adapter = new TableTitleAdapter(getContext(), datas, this);
+        recyclerView.setAdapter(adapter);
     }
 
     public void onMessageEvent(final MDetalRootPageRequestResult entity) {
@@ -124,36 +133,40 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     private void bindData(MDetalRootPageRequestResult entity) {
         this.entity = entity;
         if (entity != null) {
-            int dataSize = entity.datas.size();
-            if (dataSize != 0) {
-                View scroll_title = LayoutInflater.from(ctx)
-                        .inflate(R.layout.item_mdetal_scroll_title, null);
-                int cl = getResources().getColor(R.color.co8);
-                scroll_title.setBackgroundColor(cl);
-                fl_titleContainer.addView(scroll_title);
-                radioGroup = (RadioGroup) scroll_title.findViewById(R.id.radioGroup);
+            datas = entity.datas;
+            adapter.setData(datas);
 
-                int marg = getResources().getDimensionPixelSize(R.dimen.space_default);
-                for (int i = 0; i < dataSize; i++) {
-                    RadioButton rbtn = new RadioButton(ctx);
-                    RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
-                            RadioGroup.LayoutParams.WRAP_CONTENT,
-                            RadioGroup.LayoutParams.WRAP_CONTENT);
-                    rbtn.setTag(i);
-                    rbtn.setPadding(marg, 0, marg, 0);
-                    Bitmap a = null;
-                    rbtn.setButtonDrawable(new BitmapDrawable(a));
-                    rbtn.setBackgroundResource(R.drawable.selector_mdetal_table_rbtn);
-                    rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
-                    ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_table_rbtn);
-                    rbtn.setTextColor(colorStateList);
-                    rbtn.setText(entity.datas.get(i).type);
-                    radioGroup.addView(rbtn, params_rb);
-                    rbtn.setOnCheckedChangeListener(rootTableListener);
-                    if (i == 0)
-                        rbtn.setChecked(true);
-                }
-            }
+            switchFragment(0);
+//            int dataSize = entity.datas.size();
+//            if (dataSize != 0) {
+//                View scroll_title = LayoutInflater.from(ctx)
+//                        .inflate(R.layout.item_mdetal_scroll_title, null);
+//                int cl = getResources().getColor(R.color.co8);
+//                scroll_title.setBackgroundColor(cl);
+//                fl_titleContainer.addView(scroll_title);
+//                radioGroup = (RadioGroup) scroll_title.findViewById(R.id.radioGroup);
+//
+//                int marg = getResources().getDimensionPixelSize(R.dimen.space_default);
+//                for (int i = 0; i < dataSize; i++) {
+//                    RadioButton rbtn = new RadioButton(ctx);
+//                    RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
+//                            RadioGroup.LayoutParams.WRAP_CONTENT,
+//                            RadioGroup.LayoutParams.WRAP_CONTENT);
+//                    rbtn.setTag(i);
+//                    rbtn.setPadding(marg, 0, marg, 0);
+//                    Bitmap a = null;
+//                    rbtn.setButtonDrawable(new BitmapDrawable(a));
+//                    rbtn.setBackgroundResource(R.drawable.selector_mdetal_table_rbtn);
+//                    rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
+//                    ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_table_rbtn);
+//                    rbtn.setTextColor(colorStateList);
+//                    rbtn.setText(entity.datas.get(i).type);
+//                    radioGroup.addView(rbtn, params_rb);
+//                    rbtn.setOnCheckedChangeListener(rootTableListener);
+//                    if (i == 0)
+//                        rbtn.setChecked(true);
+//                }
+//            }
         } else
             ToastUtil.showToast(ctx, "数据实体为空");
     }
@@ -163,6 +176,12 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
      * 切换页面的重载，优化了fragment的切换
      */
     public void switchFragment(int checkId) {
+
+        for (int i = 0; i < datas.size(); i++) {
+            datas.get(i).isCheck = (i == checkId);
+        }
+        adapter.setData(datas);
+
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
@@ -195,14 +214,19 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         currFragment = toFragment;
     }
 
-    class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                int tag = (Integer) buttonView.getTag();
-                switchFragment(tag);
-            }
-        }
+    @Override
+    public void itemClick(int position) {
+        switchFragment(position);
     }
+
+//    class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {
+//
+//        @Override
+//        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//            if (isChecked) {
+//                int tag = (Integer) buttonView.getTag();
+//                switchFragment(tag);
+//            }
+//        }
+//    }
 }

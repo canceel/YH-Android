@@ -1,9 +1,7 @@
 package com.intfocus.yonghuitest.subject.template_v2;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -142,7 +140,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (getArguments() != null){
+        if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOTID);
             mParam = mCurrentData;
         }
@@ -417,11 +415,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             DataHolder.getInstance().setData(subdata);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
-            } else {
-                startActivity(intent);
-            }
+            //去除动画效果，动画导致返回上移报表数据丢失
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
+//            } else {
+            startActivity(intent);
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

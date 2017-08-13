@@ -39,6 +39,13 @@ import rx.Observable;
 
 public interface HttpService {
 
+    @POST (K.KPushToken)
+    Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
+
+    /**
+     * 获取AssetsMD5
+     * @return
+     */
     @GET (K.KAssetsMD5)
     Observable<AssetsResult> getAssetsMD5();
 

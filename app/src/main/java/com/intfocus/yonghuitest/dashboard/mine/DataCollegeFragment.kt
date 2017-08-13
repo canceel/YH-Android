@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.dashboard.mine
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -13,15 +14,14 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.RefreshFragment
 import com.intfocus.yonghuitest.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yonghuitest.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.yonghuitest.data.request.RequestFavourite
 import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 import org.xutils.x
@@ -34,21 +34,28 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
-    lateinit var userId: String
+    lateinit var queryMap: MutableMap<String, String>
+    lateinit var statusMap: MutableMap<String, String>
+    lateinit var userNum: String
     var keyWord: String? = ""
     lateinit var editSearch: EditText
+    lateinit var mUserSP: SharedPreferences
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_instiute, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        userId = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        userNum = mUserSP.getString(URLs.kUserNum, "")
         getData(true)
         return mView
     }
 
     fun initView() {
+        queryMap = mutableMapOf()
+        statusMap = mutableMapOf()
         editSearch = mView!!.findViewById(R.id.edit_search) as EditText
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -84,12 +91,18 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
             })
             return
         }
+
         if (isShowDialog) {
             if (loadingDialog == null || !loadingDialog!!.isShowing) {
                 showLoading()
             }
         }
-        RetrofitUtil.getHttpService().getArticleList(userId, page.toString(), pagesize.toString(), keyWord)
+
+        queryMap.put("user_num", userNum)
+        queryMap.put("page", page.toString())
+        queryMap.put("limit", pagesize.toString())
+        queryMap.put("keyword", keyWord.toString())
+        RetrofitUtil.getHttpService().getArticleList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {
                     override fun onCompleted() {
@@ -97,13 +110,12 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                     }
 
                     override fun onError(apiException: ApiException) {
-                        finshRequest()
                         ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
                         finshRequest()
-                        total = data.data!!.totalPage
+                        total = data.total_page
                         isLasePage = page == total
                         if (datas == null) {
                             datas = ArrayList()
@@ -112,7 +124,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                             datas!!.clear()
                         }
 
-                        datas!!.addAll(data.data!!.list)
+                        datas!!.addAll(data.data!!)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
@@ -130,7 +142,11 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
             return
         }
         showLoading()
-        RetrofitUtil.getHttpService().articleOperating(userId, articleId, status)
+        var body = RequestFavourite()
+        body.user_num = userNum
+        body.article_id = articleId
+        body.favourite_status = status
+        RetrofitUtil.getHttpService().articleOperating(body)
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onCompleted() {
@@ -158,10 +174,12 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, InstituteContentActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        intent.putExtra("id", instituteDataBean!!.id.toString())
-        intent.putExtra("title", instituteDataBean!!.title.toString())
+        var intent = Intent(mActivity, WebApplicationActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.id.toString())
+        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        intent.putExtra(URLs.kLink, link)
+        intent.putExtra("hideBannerSetting",true)
         startActivity(intent)
     }
 

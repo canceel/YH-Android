@@ -28,7 +28,7 @@ class AppListMode(ctx: Context, var type: String?) : AbstractMode() {
 
     fun getUrl(): String {
         var url = String.format(K.KAppListPath, K.kBaseUrl,
-                    mUserSP.getInt(kGroupId,0).toString(), mUserSP.getInt(kRoleId,0).toString())
+                mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
         return url
     }
 

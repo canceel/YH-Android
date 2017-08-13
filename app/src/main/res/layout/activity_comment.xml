@@ -27,10 +27,6 @@
             android:id="@+id/bannerTitle"
             android:text="对象"
             style="@style/BannerTitle" />
-
-        <View style="@style/SmallDivider"
-              android:layout_alignParentBottom="true"/>
-
     </RelativeLayout>
 
     <FrameLayout

@@ -26,7 +26,6 @@ import org.xutils.x
  * Created by CANC on 2017/7/27.
  */
 class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
-
     lateinit var titleTop: LinearLayout
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
@@ -34,22 +33,26 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
     lateinit var userId: String
     lateinit var roleId: String
     lateinit var groupId: String
+    lateinit var queryMap: MutableMap<String, String>
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_home, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
-        initView()
         mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         userId = mUserSP.getString(URLs.kUserNum, "")
-        roleId = mUserSP.getInt(URLs.kRoleId, 0).toString()
-        groupId = mUserSP.getInt(URLs.kGroupId, 0).toString()
+        roleId = mUserSP.getString(URLs.kRoleId, "0")
+        groupId = mUserSP.getString(URLs.kGroupId, "0")
+        initView()
         getData(true)
         return mView
     }
 
     fun initView() {
+        queryMap = mutableMapOf()
+        queryMap.put("group_id", groupId)
+        queryMap.put("role_id", roleId)
         titleTop = mView!!.findViewById(R.id.title_top) as LinearLayout
         recyclerView.layoutManager = MyLinearLayoutManager(context)
         adapter = HomePageAdapter(context, homeDatas, this)
@@ -80,8 +83,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                 showLoading()
             }
         }
-
-        RetrofitUtil.getHttpService().getHomeIndex(groupId, roleId)
+        RetrofitUtil.getHttpService().getHomeIndex(queryMap)
                 .compose(RetrofitUtil.CommonOptions<KpiResult>())
                 .subscribe(object : CodeHandledSubscriber<KpiResult>() {
                     override fun onCompleted() {
@@ -153,7 +155,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
             })
             return
         }
-        RetrofitUtil.getHttpService().getHomeMsg(groupId, roleId, userId)
+        RetrofitUtil.getHttpService().getHomeMsg(queryMap)
                 .compose(RetrofitUtil.CommonOptions<HomeMsgResult>())
                 .subscribe(object : CodeHandledSubscriber<HomeMsgResult>() {
                     override fun onCompleted() {

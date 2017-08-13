@@ -55,7 +55,7 @@ class FilterMenuAdapter(val context: Context,
     }
 
     class FilterMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var contentView = itemView;
+        var contentView = itemView
         var rlFilter = itemView.findViewById(R.id.rl_filter) as RelativeLayout
         var tvFilterName = itemView.findViewById(R.id.tv_filter_name) as TextView
         var ivArrow = itemView.findViewById(R.id.iv_arrow) as ImageView

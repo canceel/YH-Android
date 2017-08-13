@@ -1,9 +1,7 @@
 package com.intfocus.yonghuitest.subject.template_v2;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,9 +19,11 @@ import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
 import com.intfocus.yonghuitest.subject.template_v2.adapter.ModularTwo_TableNameAdapter;
 import com.intfocus.yonghuitest.subject.template_v2.adapter.ModularTwo_TableValueAdapter;
+import com.intfocus.yonghuitest.subject.template_v2.entity.DataHolder;
 import com.intfocus.yonghuitest.subject.template_v2.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.EventRefreshTableRect;
 import com.intfocus.yonghuitest.subject.template_v2.mode.ModularTwo_UnitTableContMode;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.view.NotScrollListView;
 import com.intfocus.yonghuitest.view.RootScrollView;
 import com.intfocus.yonghuitest.view.SortCheckBox;
@@ -59,6 +59,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     private String mParam;
 
     private View rootView;
+
+    public static String mCurrentData;
 
     private FragmentManager fm;
 
@@ -124,10 +126,11 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         return new ModularTwo_UnitTableContMode(ctx);
     }
 
-    public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID,String param) {
+    public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+//        args.putString(ARG_PARAM, param);
+        mCurrentData = param;
         args.putInt(SU_ROOTID, suRootID);
         fragment.setArguments(args);
         return fragment;
@@ -137,9 +140,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (getArguments() != null){
+        if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOTID);
-            mParam = getArguments().getString(ARG_PARAM);
+            mParam = mCurrentData;
         }
     }
 
@@ -301,6 +304,10 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        if (dataEntity.data.get(position).sub_data.equals("[]")) {
+            ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
+            return;
+        }
         startSubTable(position);
     }
 
@@ -404,14 +411,16 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             Intent intent = new Intent(ctx, ModularTwo_SubTableActivity.class);
             String itemName = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", itemName);
-            intent.putExtra("Data", subdata);
+//            intent.putExtra("Data", subdata);
+            DataHolder.getInstance().setData(subdata);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
-            } else {
-                startActivity(intent);
-            }
+            //去除动画效果，动画导致返回上移报表数据丢失
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
+//            } else {
+            startActivity(intent);
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

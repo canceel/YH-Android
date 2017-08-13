@@ -53,13 +53,11 @@ public class ActionLogUtil {
             public void run() {
                 try {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
-                    String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
-                    JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
-                    param.put(K.kUserId, userJSON.getInt(K.kUserId));
+                    param.put(K.kUserId, mUserSP.getString(K.kUserId, ""));
                     param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum,""));
-                    param.put(kUserName, userJSON.getString(K.kUserName));
-                    param.put(K.kUserDeviceId, userJSON.getInt(K.kUserDeviceId));
+                    param.put(kUserName, mUserSP.getString(K.kUserName, ""));
+                    param.put(K.kUserDeviceId, mUserSP.getString(K.kUserDeviceId, ""));
 
                     PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                     param.put(kAppVersion, String.format("a%s", packageInfo.versionName));
@@ -69,8 +67,8 @@ public class ActionLogUtil {
                     params.put("action_log", param);
 
                     JSONObject userParams = new JSONObject();
-                    userParams.put(kUserName, userJSON.getString(kUserName));
-                    userParams.put("user_pass", userJSON.getString(URLs.kPassword));
+                    userParams.put(kUserName, mUserSP.getString(kUserName, ""));
+                    userParams.put("user_pass", mUserSP.getString(URLs.kPassword, ""));
                     params.put("user", userParams);
 
                     String urlString = String.format(K.kActionLogAPIPath, K.kBaseUrl);

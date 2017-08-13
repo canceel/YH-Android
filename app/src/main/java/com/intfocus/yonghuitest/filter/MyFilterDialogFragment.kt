@@ -129,7 +129,6 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
             tabLayout.setupWithViewPager(viewPager)
             viewPager.currentItem = currentPosition!!
             lisenter!!.complete(selectedDatas)
-            ToastUtils.show(activity, "没有下一级别")
             this.dismiss()
         }
     }
@@ -138,7 +137,7 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         val params = dialog.window!!.attributes
         params.width = LayoutParams.MATCH_PARENT
         params.height = LayoutParams.WRAP_CONTENT
-        dialog.window!!.attributes = params as android.view.WindowManager.LayoutParams
+        dialog.window!!.attributes = params
         super.onResume()
     }
 

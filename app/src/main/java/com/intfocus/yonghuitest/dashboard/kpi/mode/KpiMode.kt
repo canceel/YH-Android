@@ -31,14 +31,14 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 
     fun getUrl(): String {
         var url = String.format(K.kKPIApiDataPath, K.kBaseUrl,
-                mUserSP.getInt(URLs.kGroupId, 0).toString(), mUserSP.getInt(URLs.kRoleId, 0).toString())
+                mUserSP.getString(URLs.kGroupId, "0"), mUserSP.getString(URLs.kRoleId, "0"))
         return url
     }
 
     fun getMessageUrl(): String {
-        val url = String.format(K.kMessageDataMobilePath, K.kBaseUrl, mUserSP.getInt(URLs.kRoleId, 0).toString(),
-                mUserSP.getInt(URLs.kGroupId, 0).toString(),
-                mUserSP.getInt("user_id", 0).toString())
+        val url = String.format(K.kMessageDataMobilePath, K.kBaseUrl, mUserSP.getString(URLs.kRoleId, "0"),
+                mUserSP.getString(URLs.kGroupId, "0"),
+                mUserSP.getString("user_id", "0"))
         return url
     }
 

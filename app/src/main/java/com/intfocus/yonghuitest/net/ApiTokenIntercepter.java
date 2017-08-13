@@ -1,5 +1,7 @@
 package com.intfocus.yonghuitest.net;
 
+import android.util.Log;
+
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.Utils;
@@ -38,11 +40,8 @@ public class ApiTokenIntercepter implements Interceptor {
                 .method(oriRequest.method(), oriRequest.body())
                 .url(authorizedUrlBuilder.build())
                 .build();
-        LogUtil.d("apiPath", apiPath);
-        LogUtil.d("apiToken", apiToken);
-        LogUtil.d("new_url", newRequest.url().toString());
-
-        //打印responseBody
+        Log.i("apiPath", apiPath);
+        Log.i("apiToken", apiToken);
         okhttp3.Response response = chain.proceed(newRequest);
         return response;
     }

@@ -15,6 +15,8 @@ public class MDetalUnitEntity {
      * bargraph 条状图(横);
      * tables#v3 类Excel冻结横竖首列表格;
      */
-    public String type ;
-    public String config ;
+    public String type;
+    public String config;
+    //是否选中
+    public boolean isCheck = false;
 }

@@ -8,6 +8,7 @@ import java.io.Serializable
 class KpiGroupItem : Serializable {
     var title: String? = null
     var dashboard_type: String? = null
+    var report_title: String? = null
     var target_url: String? = null
     var unit: String? = null
     var memo1: String? = null

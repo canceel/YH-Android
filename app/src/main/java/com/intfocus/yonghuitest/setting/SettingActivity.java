@@ -49,7 +49,7 @@ public class SettingActivity extends BaseActivity {
      */
     private void initSettingListItem() {
         ArrayList<String> listItem = new ArrayList<>();
-        String[] itemName = {"基本信息", "应用信息", "选项配置", "消息推送", "更新日志"};
+        String[] itemName = {"应用信息", "选项配置", "消息推送", "更新日志"};
 
         for (int i = 0; i < itemName.length; i++) {
             listItem.add(itemName[i]);
@@ -117,8 +117,7 @@ public class SettingActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    String postUrl = String.format(K.kDeleteDeviceIdAPIPath, K.kBaseUrl, user.getString("user_device_id"));
+                    String postUrl = String.format(K.kDeleteDeviceIdAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", "0"));
                     final Map<String, String> response = HttpUtil.httpPost(postUrl, new HashMap());
                     runOnUiThread(new Runnable() {
                         @Override
@@ -134,9 +133,6 @@ public class SettingActivity extends BaseActivity {
                             }
                         }
                     });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         }).start();
     }

@@ -608,8 +608,6 @@ public class HttpUtil {
 
             if (result != null) {
                 ToastUtils.INSTANCE.show(context, String.format("静态资源更新失败(%s)", result));
-            } else {
-                FileUtil.checkAssets(context, assetFilename, isInAssets);
             }
 
             if (type.equals("cache-clean")) {
@@ -630,7 +628,6 @@ public class HttpUtil {
         checkAssetUpdated(context, URLs.kIcons, true, type);
         checkAssetUpdated(context, URLs.kStylesheets, true, type);
         checkAssetUpdated(context, URLs.kJavaScripts, true, type);
-        checkAssetUpdated(context, URLs.kBarCodeScan, false, type);
     }
 
     public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets, String type) {
@@ -638,11 +635,10 @@ public class HttpUtil {
         boolean isShouldUpdateAssets = false;
         String sharedPath = FileUtil.sharedPath(context);
         String assetZipPath = String.format("%s/%s.zip", sharedPath, assetName);
-        isShouldUpdateAssets = !(new File(assetZipPath)).exists();
 
         String localKeyName = String.format("local_%s_md5", assetName);
         String keyName = String.format("%s_md5", assetName);
-        isShouldUpdateAssets = !isShouldUpdateAssets && !mAssetsSP.getString(localKeyName, "0").equals(mAssetsSP.getString(keyName, "0"));
+        isShouldUpdateAssets = !mAssetsSP.getString(localKeyName, "0").equals(mAssetsSP.getString(keyName, "0"));
         if (!isShouldUpdateAssets) {
             return;
         }

@@ -727,8 +727,7 @@ public class FileUtil {
             makeSureFolder(ctx, K.kSharedDirName);
             makeSureFolder(ctx, K.kCachedDirName);
 
-            if (type.equals("new-install")) {
-                            /*
+            /*
              *  新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
              *  避免再从服务器下载更新，浪费用户流量
              */
@@ -747,10 +746,8 @@ public class FileUtil {
                 FileUtil.checkAssets(ctx, URLs.kIcons, true);
                 FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
                 FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
-                FileUtil.checkAssets(ctx, URLs.kBarCodeScan, false);
-                // FileUtil.checkAssets(mContext, URLs.kAdvertisement, false);
-            }
-            else {
+
+            if (type.equals("cache-clean")) {
                 if (!HttpUtil.isConnected(ctx)) {
                     return;
                 }
@@ -763,7 +760,6 @@ public class FileUtil {
                                 SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
 
                                 AssetsMD5 assetsMD5s = data.getData();
-                                mAssetsSPEdit.clear().commit();
                                 mAssetsSPEdit.putString("assets_md5", assetsMD5s.getAssets_md5()).commit();
                                 mAssetsSPEdit.putString("loading_md5", assetsMD5s.getLoading_md5()).commit();
                                 mAssetsSPEdit.putString("fonts_md5", assetsMD5s.getFonts_md5()).commit();
@@ -784,9 +780,9 @@ public class FileUtil {
                             public void onError(ApiException apiException) {
 
                             }
-
                         });
             }
+
 
         }
     }

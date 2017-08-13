@@ -411,8 +411,6 @@ public class LoginActivity extends FragmentActivity {
      * 上传设备信息
      */
     private void upLoadDevice() {
-        //TODO: 上传定位信息
-
         RetrofitUtil.getHttpService().deviceUpLoad(mDeviceRequest)
                 .compose(new RetrofitUtil.CommonOptions<Device>())
                 .subscribe(new CodeHandledSubscriber<Device>() {

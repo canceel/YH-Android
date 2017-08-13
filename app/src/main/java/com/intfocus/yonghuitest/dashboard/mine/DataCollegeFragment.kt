@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.dashboard.mine
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -20,10 +21,8 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 import org.xutils.x
@@ -41,6 +40,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     lateinit var userNum: String
     var keyWord: String? = ""
     lateinit var editSearch: EditText
+    lateinit var mUserSP: SharedPreferences
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,7 +48,8 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        userNum = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        userNum = mUserSP.getString(URLs.kUserNum, "")
         getData(true)
         return mView
     }
@@ -174,10 +175,11 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, InstituteContentActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        intent.putExtra("id", instituteDataBean!!.id.toString())
-        intent.putExtra("title", instituteDataBean!!.title.toString())
+        var intent = Intent(mActivity, WebApplicationActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.id.toString())
+        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        intent.putExtra(URLs.kLink, link)
         startActivity(intent)
     }
 

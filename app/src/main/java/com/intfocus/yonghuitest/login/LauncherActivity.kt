@@ -90,7 +90,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                     }
 
                     override fun onCompleted() {
-                        enter()
                     }
 
                     override fun onBusinessNext(data: AssetsResult?) {

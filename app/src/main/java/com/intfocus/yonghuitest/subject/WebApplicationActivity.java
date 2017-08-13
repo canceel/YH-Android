@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -241,6 +239,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         bannerName = intent.getStringExtra(URLs.kBannerName);
         objectID = intent.getIntExtra(URLs.kObjectId, -1);
         objectType = intent.getIntExtra(URLs.kObjectType, -1);
+
         isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
         mTitle.setText(bannerName);
 
@@ -249,6 +248,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             mPDFView.setVisibility(View.INVISIBLE);
         }
         iv_BannerSetting.setVisibility(View.VISIBLE);
+        if (intent.getBooleanExtra("hideBannerSetting", false))
+            iv_BannerSetting.setVisibility(View.INVISIBLE);
     }
 
     /*
@@ -570,7 +571,9 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
 
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(WebApplicationActivity.this);
-        if (bmpScrennShot == null) { ToastUtils.INSTANCE.show(this, "截图失败");}
+        if (bmpScrennShot == null) {
+            ToastUtils.INSTANCE.show(this, "截图失败");
+        }
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")

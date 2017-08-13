@@ -192,7 +192,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     private void drawAxesLine(Canvas canvas, Paint paint) {
         // X
-        canvas.drawLine(xPoint - barWidth, yPoint, this.getWidth(), yPoint, paint);
+        canvas.drawLine(xPoint - barWidth, yPoint + 10, this.getWidth(), yPoint + 10, paint);
     }
 
     /**
@@ -232,7 +232,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             }
 
             paint.setColor(color);
-            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
+//            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
+            canvas.drawText(xLabel[i], startX, yPoint + 40, paint);
             xpoints.add(startX);
         }
 

@@ -46,23 +46,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
-        RetrofitUtil.getHttpService().assetsMD5
-                .compose(RetrofitUtil.CommonOptions<AssetsResult>())
-                .subscribe(object : CodeHandledSubscriber<AssetsResult>() {
-                    override fun onError(apiException: ApiException?) {
-
-                    }
-
-                    override fun onCompleted() {
-                        enter()
-                    }
-
-                    override fun onBusinessNext(data: AssetsResult?) {
-                        var assetsMD5s = data!!.data!!
-                        checkAssetsIsUpdata(assetsMD5s)
-                        enter()
-                    }
-                })
+        enter()
     }
 
     override fun onAnimationStart(p0: Animation?) {
@@ -71,6 +55,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     fun enter() {
         val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
         if (mSettingSP!!.getBoolean("ScreenLock", false)) {
+            checkAssetsIsUpdata(ctx)
             intent = Intent(this, ConfirmPassCodeActivity::class.java)
             intent.putExtra("is_from_login", true)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -84,6 +69,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             finish()
         } else {
+            checkAssetsIsUpdata(ctx)
             intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)
@@ -92,25 +78,42 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         }
     }
 
-    fun checkAssetsIsUpdata(assetsMD5s: AssetsMD5) {
-        /*
-        * assets_md5 : ca94578b33a0d620de4caad6bba41fbd
-        * loading_md5 : 8bd5c6a91d38848d3160e6c8a462b852
-        * fonts_md5 : 5901960c857600316c3d141401c3af08
-        * icons_md5 : 7afa625cca643d01a6b12d80a19d4756
-        * images_md5 : 65266455bea40469dcb9f022f63ce769
-        * javascripts_md5 : 9a072008dfd547026c5828cd65d3e973
-        * stylesheets_md5 : 4b5b98d9ad460a67e0943805e2be17c9
-        * advertisement_md5 : 0239802a086466ec31d566ca910da0c9
-        */
+    fun checkAssetsIsUpdata(ctx: Context) {
+        if (!HttpUtil.isConnected(ctx)) {
+            return
+        }
+        RetrofitUtil.getHttpService().assetsMD5
+                .compose(RetrofitUtil.CommonOptions<AssetsResult>())
+                .subscribe(object : CodeHandledSubscriber<AssetsResult>() {
+                    override fun onError(apiException: ApiException?) {
 
-        mAssetsSPEdit.putString("assets_md5", assetsMD5s.assets_md5).commit()
-        mAssetsSPEdit.putString("loading_md5", assetsMD5s.loading_md5).commit()
-        mAssetsSPEdit.putString("fonts_md5", assetsMD5s.fonts_md5).commit()
-        mAssetsSPEdit.putString("images_md5", assetsMD5s.images_md5).commit()
-        mAssetsSPEdit.putString("icons_md5", assetsMD5s.icons_md5).commit()
-        mAssetsSPEdit.putString("javascripts_md5", assetsMD5s.javascripts_md5).commit()
-        mAssetsSPEdit.putString("stylesheets_md5", assetsMD5s.stylesheets_md5).commit()
-        HttpUtil.checkAssetsUpdated(ctx)
+                    }
+
+                    override fun onCompleted() {
+                        enter()
+                    }
+
+                    override fun onBusinessNext(data: AssetsResult?) {
+                        var assetsMD5s = data!!.data!!
+                        /*
+                         * assets_md5 : ca94578b33a0d620de4caad6bba41fbd
+                         * loading_md5 : 8bd5c6a91d38848d3160e6c8a462b852
+                         * fonts_md5 : 5901960c857600316c3d141401c3af08
+                         * icons_md5 : 7afa625cca643d01a6b12d80a19d4756
+                         * images_md5 : 65266455bea40469dcb9f022f63ce769
+                         * javascripts_md5 : 9a072008dfd547026c5828cd65d3e973
+                         * stylesheets_md5 : 4b5b98d9ad460a67e0943805e2be17c9
+                         * advertisement_md5 : 0239802a086466ec31d566ca910da0c9
+                         */
+                        mAssetsSPEdit.putString("assets_md5", assetsMD5s.assets_md5).commit()
+                        mAssetsSPEdit.putString("loading_md5", assetsMD5s.loading_md5).commit()
+                        mAssetsSPEdit.putString("fonts_md5", assetsMD5s.fonts_md5).commit()
+                        mAssetsSPEdit.putString("images_md5", assetsMD5s.images_md5).commit()
+                        mAssetsSPEdit.putString("icons_md5", assetsMD5s.icons_md5).commit()
+                        mAssetsSPEdit.putString("javascripts_md5", assetsMD5s.javascripts_md5).commit()
+                        mAssetsSPEdit.putString("stylesheets_md5", assetsMD5s.stylesheets_md5).commit()
+                        HttpUtil.checkAssetsUpdated(ctx, "launch")
+                    }
+                })
     }
 }

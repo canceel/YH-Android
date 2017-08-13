@@ -20,6 +20,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.data.response.assets.AssetsMD5;
+import com.intfocus.yonghuitest.data.response.assets.AssetsResult;
+import com.intfocus.yonghuitest.net.ApiException;
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
+import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
 
@@ -353,6 +358,8 @@ public class FileUtil {
         try {
             String sharedPath = FileUtil.sharedPath(mContext);
             String zipFileName = String.format("%s.zip", fileName);
+            SharedPreferences mAssetsSP = mContext.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
+            SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
 
             // InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipName);
             String zipFilePath = String.format("%s/%s", sharedPath, zipFileName);
@@ -365,13 +372,9 @@ public class FileUtil {
             String md5String = FileUtil.MD5(zipStream);
             String keyName = String.format("local_%s_md5", fileName);
 
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
             boolean isShouldUnZip = true;
-            JSONObject userJSON = new JSONObject();
-            if ((new File(userConfigPath)).exists()) {
-                userJSON = FileUtil.readConfigFile(userConfigPath);
-                isShouldUnZip = !(userJSON.has(keyName) && userJSON.getString(keyName).equals(md5String));
-            }
+            isShouldUnZip = !(mAssetsSP.getString(keyName, "0").equals("0") && mAssetsSP.getString(keyName, "0").equals(md5String));
+
 
             if (isShouldUnZip) {
                 Log.i("checkAssets", String.format("%s[%s] != %s", zipFileName, keyName, md5String));
@@ -394,12 +397,11 @@ public class FileUtil {
                 FileUtil.unZip(zipStream, folderPath, true);
                 Log.i("unZip", String.format("%s, %s", zipFileName, md5String));
 
-                userJSON.put(keyName, md5String);
-                FileUtil.writeFile(userConfigPath, userJSON.toString());
+                mAssetsSPEdit.putString(keyName, md5String).commit();
             }
 
             zipStream.close();
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -706,8 +708,7 @@ public class FileUtil {
         protected String doInBackground(String... params) {
             if (type.equals("new-install")) {
                 CacheCleanManager.cleanFiles(ctx);
-            }
-            else {
+            } else {
                 String sharedPath = FileUtil.sharedPath(ctx);
                 String userSpace = FileUtil.userspace(ctx);
                 CacheCleanManager.cleanCustomCache(sharedPath);
@@ -726,27 +727,67 @@ public class FileUtil {
             makeSureFolder(ctx, K.kSharedDirName);
             makeSureFolder(ctx, K.kCachedDirName);
 
-            /*
+            if (type.equals("new-install")) {
+                            /*
              *  新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
              *  避免再从服务器下载更新，浪费用户流量
              */
-            copyAssetFiles(ctx, sharedPath);
+                copyAssetFiles(ctx, sharedPath);
 
-            /*
-             *  校正静态资源
-             *
-             *  sharedPath/filename.zip md5 值 <=> user.plist 中 filename_md5
-             *  不一致时，则删除原解压后文件夹，重新解压 zip
-             */
-            FileUtil.checkAssets(ctx, URLs.kAssets, false);
-            FileUtil.checkAssets(ctx, URLs.kLoading, false);
-            FileUtil.checkAssets(ctx, URLs.kFonts, true);
-            FileUtil.checkAssets(ctx, URLs.kImages, true);
-            FileUtil.checkAssets(ctx, URLs.kIcons, true);
-            FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
-            FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
-            FileUtil.checkAssets(ctx, URLs.kBarCodeScan, false);
-            // FileUtil.checkAssets(mContext, URLs.kAdvertisement, false);
+                /*
+                 *  校正静态资源
+                 *
+                 *  sharedPath/filename.zip md5 值 <=> user.plist 中 filename_md5
+                 *  不一致时，则删除原解压后文件夹，重新解压 zip
+                 */
+                FileUtil.checkAssets(ctx, URLs.kAssets, false);
+                FileUtil.checkAssets(ctx, URLs.kLoading, false);
+                FileUtil.checkAssets(ctx, URLs.kFonts, true);
+                FileUtil.checkAssets(ctx, URLs.kImages, true);
+                FileUtil.checkAssets(ctx, URLs.kIcons, true);
+                FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
+                FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
+                FileUtil.checkAssets(ctx, URLs.kBarCodeScan, false);
+                // FileUtil.checkAssets(mContext, URLs.kAdvertisement, false);
+            }
+            else {
+                if (!HttpUtil.isConnected(ctx)) {
+                    return;
+                }
+                RetrofitUtil.getHttpService().getAssetsMD5()
+                        .compose(new RetrofitUtil.CommonOptions<AssetsResult>())
+                        .subscribe(new CodeHandledSubscriber<AssetsResult>() {
+                            @Override
+                            public void onBusinessNext(AssetsResult data) {
+                                SharedPreferences mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
+
+                                AssetsMD5 assetsMD5s = data.getData();
+                                mAssetsSPEdit.clear().commit();
+                                mAssetsSPEdit.putString("assets_md5", assetsMD5s.getAssets_md5()).commit();
+                                mAssetsSPEdit.putString("loading_md5", assetsMD5s.getLoading_md5()).commit();
+                                mAssetsSPEdit.putString("fonts_md5", assetsMD5s.getFonts_md5()).commit();
+                                mAssetsSPEdit.putString("images_md5", assetsMD5s.getImages_md5()).commit();
+                                mAssetsSPEdit.putString("icons_md5", assetsMD5s.getIcons_md5()).commit();
+                                mAssetsSPEdit.putString("javascripts_md5", assetsMD5s.getJavascripts_md5()).commit();
+                                mAssetsSPEdit.putString("stylesheets_md5", assetsMD5s.getStylesheets_md5()).commit();
+
+                                HttpUtil.checkAssetsUpdated(ctx, "cache-clean");
+                            }
+
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(ApiException apiException) {
+
+                            }
+
+                        });
+            }
+
         }
     }
 
@@ -776,11 +817,12 @@ public class FileUtil {
 
     /**
      * 读取assets目录中的文件
+     *
      * @param ctx
      * @param fileName
      * @return
      */
-    public static String readAssetsFile(Context ctx,String fileName){
+    public static String readAssetsFile(Context ctx, String fileName) {
         try {
             InputStream is = ctx.getAssets().open(fileName);
             int size = is.available();

@@ -98,10 +98,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         var intent = intent
         if (intent.hasExtra("msgData")) {
             handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
-        } else {
-//            HttpUtil.checkAssetsUpdated(mContext)
         }
-
     }
 
     override fun onResume() {

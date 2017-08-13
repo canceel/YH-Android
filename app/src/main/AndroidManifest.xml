@@ -195,7 +195,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name=".StoreSelectorActivity"
+            android:name=".scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->

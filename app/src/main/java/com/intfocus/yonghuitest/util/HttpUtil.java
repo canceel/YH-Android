@@ -503,20 +503,24 @@ public class HttpUtil {
         private PowerManager.WakeLock mWakeLock;
         private final String assetFilename;
         private final boolean isInAssets;
+        private final String type;
         private ProgressDialog mProgressDialog;
 
-        public DownloadAssetsTask(Context context, String assetFilename, boolean isInAssets) {
+        public DownloadAssetsTask(Context context, String assetFilename, boolean isInAssets, String type) {
             this.context = context;
             this.assetFilename = assetFilename;
             this.isInAssets = isInAssets;
+            this.type = type;
 
-            // 初始化进度条
-            mProgressDialog = new ProgressDialog(context);
-            mProgressDialog.setTitle("提示信息");
-            mProgressDialog.setMessage("正在更新静态资源，请稍候...");
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setCanceledOnTouchOutside(false);
+            if (type.equals("cache-clean")) {
+                // 初始化进度条
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setTitle("提示信息");
+                mProgressDialog.setMessage("正在更新静态资源，请稍候...");
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+            }
         }
 
         @Override
@@ -584,14 +588,18 @@ public class HttpUtil {
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
-            mProgressDialog.show();
-            mProgressDialog.setProgress(0);
+            if (type.equals("clear-cache")) {
+                mProgressDialog.show();
+                mProgressDialog.setProgress(0);
+            }
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
-            mProgressDialog.setProgress(progress[0]);
+            if (type.equals("cache-clean")) {
+                mProgressDialog.setProgress(progress[0]);
+            }
         }
 
         @Override
@@ -603,7 +611,10 @@ public class HttpUtil {
             } else {
                 FileUtil.checkAssets(context, assetFilename, isInAssets);
             }
-            mProgressDialog.cancel();
+
+            if (type.equals("cache-clean")) {
+                mProgressDialog.cancel();
+            }
         }
     }
 
@@ -611,37 +622,37 @@ public class HttpUtil {
      * 检测服务器端静态文件是否更新
      * to do
      */
-    public static void checkAssetsUpdated(final Context context) {
-        checkAssetUpdated(context, URLs.kAssets, false);
-        checkAssetUpdated(context, URLs.kLoading, false);
-        checkAssetUpdated(context, URLs.kFonts, true);
-        checkAssetUpdated(context, URLs.kImages, true);
-        checkAssetUpdated(context, URLs.kIcons, true);
-        checkAssetUpdated(context, URLs.kStylesheets, true);
-        checkAssetUpdated(context, URLs.kJavaScripts, true);
-        checkAssetUpdated(context, URLs.kBarCodeScan, false);
+    public static void checkAssetsUpdated(final Context context, String type) {
+        checkAssetUpdated(context, URLs.kAssets, false, type);
+        checkAssetUpdated(context, URLs.kLoading, false, type);
+        checkAssetUpdated(context, URLs.kFonts, true, type);
+        checkAssetUpdated(context, URLs.kImages, true, type);
+        checkAssetUpdated(context, URLs.kIcons, true, type);
+        checkAssetUpdated(context, URLs.kStylesheets, true, type);
+        checkAssetUpdated(context, URLs.kJavaScripts, true, type);
+        checkAssetUpdated(context, URLs.kBarCodeScan, false, type);
     }
 
-    public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
-            SharedPreferences mAssetsSP = context.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
-            boolean isShouldUpdateAssets = false;
-            String sharedPath = FileUtil.sharedPath(context);
-            String assetZipPath = String.format("%s/%s.zip", sharedPath, assetName);
-            isShouldUpdateAssets = !(new File(assetZipPath)).exists();
+    public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets, String type) {
+        SharedPreferences mAssetsSP = context.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
+        boolean isShouldUpdateAssets = false;
+        String sharedPath = FileUtil.sharedPath(context);
+        String assetZipPath = String.format("%s/%s.zip", sharedPath, assetName);
+        isShouldUpdateAssets = !(new File(assetZipPath)).exists();
 
-            String localKeyName = String.format("local_%s_md5", assetName);
-            String keyName = String.format("%s_md5", assetName);
-            isShouldUpdateAssets = !isShouldUpdateAssets && !mAssetsSP.getString(localKeyName, "").equals(mAssetsSP.getString(keyName, ""));
-            if (!isShouldUpdateAssets) {
-                return;
-            }
+        String localKeyName = String.format("local_%s_md5", assetName);
+        String keyName = String.format("%s_md5", assetName);
+        isShouldUpdateAssets = !isShouldUpdateAssets && !mAssetsSP.getString(localKeyName, "0").equals(mAssetsSP.getString(keyName, "0"));
+        if (!isShouldUpdateAssets) {
+            return;
+        }
 
-            LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, mAssetsSP.getString(localKeyName, ""), mAssetsSP.getString(keyName, "")));
-            // execute this when the downloader must be fired
-            final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
+        LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, mAssetsSP.getString(localKeyName, ""), mAssetsSP.getString(keyName, "")));
+        // execute this when the downloader must be fired
+        final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets, type);
 
-            // AsyncTask并行下载
-            downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
+        // AsyncTask并行下载
+        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
     }
 
 

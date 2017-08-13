@@ -1,22 +1,17 @@
 package com.intfocus.yonghuitest.login;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +21,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.login.bean.Device;
 import com.intfocus.yonghuitest.login.bean.DeviceRequest;
@@ -45,10 +39,7 @@ import com.pgyersdk.update.PgyUpdateManager;
 import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONObject;
 
-import kotlin.jvm.Throws;
-
 import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
-import static com.intfocus.yonghuitest.util.K.kUserDeviceId;
 import static com.intfocus.yonghuitest.util.K.kUserId;
 import static com.intfocus.yonghuitest.util.K.kUserName;
 import static com.intfocus.yonghuitest.util.URLs.kGroupId;

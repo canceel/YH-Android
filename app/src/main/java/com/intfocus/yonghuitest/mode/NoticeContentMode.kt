@@ -8,6 +8,8 @@ import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentRequest
 import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.data.response.mine_page.NoticeContentResult
+import com.intfocus.yonghuitest.data.response.notice.NoticesResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
@@ -43,8 +45,8 @@ class NoticeContentMode(ctx : Context) : AbstractMode() {
     }
     override fun requestData() {
         RetrofitUtil.getHttpService().getNoticeContent(id, mUserSP.getString(K.kUserId,"0"))
-                .compose(RetrofitUtil.CommonOptions<BaseResult>())
-                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                .compose(RetrofitUtil.CommonOptions<NoticeContentResult>())
+                .subscribe(object : CodeHandledSubscriber<NoticeContentResult>() {
                     override fun onError(apiException: ApiException?) {
                         val result1 = NoticeContentRequest(false, -1)
                         EventBus.getDefault().post(result1)
@@ -53,9 +55,9 @@ class NoticeContentMode(ctx : Context) : AbstractMode() {
                     override fun onCompleted() {
                     }
 
-                    override fun onBusinessNext(data: BaseResult?) {
+                    override fun onBusinessNext(data: NoticeContentResult?) {
                         val result1 = NoticeContentRequest(true, 200)
-//                        result1.noticeContent = data
+                        result1.noticeContent = data!!.data
                         EventBus.getDefault().post(result1)
                     }
                 })

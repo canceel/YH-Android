@@ -1,5 +1,7 @@
 package com.intfocus.yonghuitest.dashboard.mine.bean
 
+import com.intfocus.yonghuitest.data.response.BaseResult
+
 /**
  * Created by liuruilin on 2017/6/15.
  */

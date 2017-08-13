@@ -50,6 +50,7 @@ import com.intfocus.yonghuitest.util.ImageUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.ToastColor;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
@@ -558,8 +559,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      * 分享截图至微信
      */
     public void actionShare2Weixin(View v) {
-        SharedPreferences mSettingSP = getSharedPreferences("SettingPreference", MODE_PRIVATE);
-
         if (link.toLowerCase().endsWith(".pdf")) {
             toast("暂不支持 PDF 分享");
             return;
@@ -570,64 +569,16 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             return;
         }
 
-        Bitmap imgBmp;
-        String filePath = Environment.getExternalStorageDirectory().toString() + "/" + "SnapShot" + System.currentTimeMillis() + ".png";
-
-        if (!mSettingSP.getBoolean("ScreenShot", false)) {
-            // WebView 生成当前屏幕大小的图片，shortImage 就是最终生成的图片
-            imgBmp = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(imgBmp);   // 画布的宽高和屏幕的宽高保持一致
-            Paint paint = new Paint();
-            canvas.drawBitmap(imgBmp, displayMetrics.widthPixels, displayMetrics.heightPixels, paint);
-            mWebView.draw(canvas);
-            FileUtil.saveImage(filePath, imgBmp);
-        } else {
-            mWebView.setDrawingCacheEnabled(true);
-            mWebView.measure(View.MeasureSpec.makeMeasureSpec(
-                    View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-            mWebView.buildDrawingCache();
-
-            int imgMaxHight = displayMetrics.heightPixels * 3;
-
-            if (mWebView.getMeasuredHeight() > imgMaxHight) {
-                imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
-                        displayMetrics.heightPixels * 3, Bitmap.Config.ARGB_8888);
-            } else {
-                imgBmp = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
-                        mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            if (imgBmp == null && imgBmp.getWidth() <= 0 && imgBmp.getHeight() <= 0) {
-                toast("截图失败");
-                return;
-            }
-
-            Canvas canvas = new Canvas(imgBmp);
-            Paint paint = new Paint();
-            int iHeight = imgBmp.getHeight();
-            canvas.drawBitmap(imgBmp, 0, iHeight, paint);
-            mWebView.draw(canvas);
-            FileUtil.saveImage(filePath, imgBmp);
-            mWebView.setDrawingCacheEnabled(false);
-        }
-
-        imgBmp.recycle(); // 回收 bitmap 资源，避免内存浪费
-
-        File file = new File(filePath);
-        if (file.exists() && file.length() > 0) {
-            UMImage image = new UMImage(WebApplicationActivity.this, file);
-            new ShareAction(this)
-                    .withMedia(image)
-                    .setPlatform(SHARE_MEDIA.WEIXIN)
-                    .setDisplayList(SHARE_MEDIA.WEIXIN)
-                    .setCallback(umShareListener)
-                    .open();
-        } else {
-            toast("截图失败,请尝试系统截图");
-        }
-
+        Bitmap bmpScrennShot = ImageUtil.takeScreenShot(WebApplicationActivity.this);
+        if (bmpScrennShot == null) { ToastUtils.INSTANCE.show(this, "截图失败");}
+        UMImage image = new UMImage(this, bmpScrennShot);
+        new ShareAction(this)
+                .withText("截图分享")
+                .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setDisplayList(SHARE_MEDIA.WEIXIN)
+                .withMedia(image)
+                .setCallback(umShareListener)
+                .open();
         /*
          * 用户行为记录, 单独异常处理，不可影响用户体验
          */

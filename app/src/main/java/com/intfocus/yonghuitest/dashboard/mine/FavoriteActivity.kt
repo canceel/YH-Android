@@ -14,10 +14,8 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.CommonPopupWindow
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
@@ -143,12 +141,12 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 })
     }
 
-
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, InstituteContentActivity::class.java)
+        var intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent.putExtra("id", instituteDataBean!!.acticleId.toString())
-        intent.putExtra("title", instituteDataBean!!.title.toString())
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.acticleId.toString())
+        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        intent.putExtra(URLs.kLink, link)
         startActivity(intent)
     }
 

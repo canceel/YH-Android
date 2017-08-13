@@ -10,6 +10,7 @@ import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
 import com.intfocus.yonghuitest.data.response.home.ReportListResult;
 import com.intfocus.yonghuitest.data.response.home.WorkBoxResult;
+import com.intfocus.yonghuitest.data.response.mine_page.NoticeContentResult;
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.data.response.scanner.StoreListResult;
@@ -48,7 +49,7 @@ public interface HttpService {
      * @return
      */
     @GET (K.KNoticeContent)
-    Observable<BaseResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
+    Observable<NoticeContentResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
 
     /**
      * 发表评论
@@ -187,6 +188,24 @@ public interface HttpService {
     @Multipart
     @POST(K.kUserIconUploadPath)
     Observable<BaseResult> userIconUpload(@Path("deviceId") String deviceId, @Path("userId") String userId, @Part MultipartBody.Part file);
+
+    /**
+     * 问题反馈上传
+     * "api_token": "a2d37407a3704b850c728da5fbdc6c5b",
+     * "user_num": 13,
+     * "title": "test",
+     * "content": "13564379606",
+     * "app_version": "ios123",
+     * "platform": "ios",
+     * "platform_version": "ios 9.0"
+     * @param deviceId
+     * @param userId
+     * @param file
+     * @return
+     */
+    @Multipart
+    @POST(K.kUserIconUploadPath)
+    Observable<BaseResult> submitFeedback(@Path("user_num") String userNum, @Path("title") String title, @Path("content") String content, @Path("app_version") String appVersion, @Path("platform") String platform, @Path("platform_version") String platformVersion, @Part MultipartBody.Part file);
 
     /**
      * 登录post请求

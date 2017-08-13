@@ -58,7 +58,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1, 1))
         }
     }
 

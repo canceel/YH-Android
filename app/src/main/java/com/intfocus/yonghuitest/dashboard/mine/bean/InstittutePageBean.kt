@@ -14,5 +14,5 @@ class InstittutePageBean : Pagination() {
     "totalPage":2
      * code : 200
      */
-    var list: List<InstituteDataBean> = listOf()
+
 }

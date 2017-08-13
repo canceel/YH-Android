@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     var datas: MutableList<InstituteDataBean>? = null
     lateinit var queryMap: MutableMap<String, String>
     lateinit var statusMap: MutableMap<String, String>
-    lateinit var userId: String
+    lateinit var userNum: String
     var keyWord: String? = ""
     lateinit var editSearch: EditText
 
@@ -47,7 +48,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        userId = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        userNum = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
         getData(true)
         return mView
     }
@@ -90,15 +91,17 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
             })
             return
         }
+
         if (isShowDialog) {
             if (loadingDialog == null || !loadingDialog!!.isShowing) {
                 showLoading()
             }
         }
-        queryMap.put("user_num", userId)
+
+        queryMap.put("user_num", userNum)
         queryMap.put("page", page.toString())
         queryMap.put("limit", pagesize.toString())
-        queryMap.put("keyWord", keyWord.toString())
+        queryMap.put("keyword", keyWord.toString())
         RetrofitUtil.getHttpService().getArticleList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {
@@ -107,13 +110,12 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                     }
 
                     override fun onError(apiException: ApiException) {
-                        finshRequest()
                         ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
                         finshRequest()
-                        total = data.data!!.totalPage
+                        total = data.total_page
                         isLasePage = page == total
                         if (datas == null) {
                             datas = ArrayList()
@@ -122,7 +124,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                             datas!!.clear()
                         }
 
-                        datas!!.addAll(data.data!!.list)
+                        datas!!.addAll(data.data!!)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
@@ -141,7 +143,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         }
         showLoading()
         var body = RequestFavourite()
-        body.user_num = userId
+        body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
         RetrofitUtil.getHttpService().articleOperating(body)

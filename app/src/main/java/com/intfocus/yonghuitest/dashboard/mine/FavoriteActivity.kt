@@ -26,7 +26,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
-    lateinit var userId: String
+    lateinit var userNum: String
     lateinit var statusMap: MutableMap<String, String>
     lateinit var queryMap: MutableMap<String, String>
 
@@ -34,7 +34,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
         setRefreshLayout()
-        userId = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        userNum = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
         init()
     }
 
@@ -71,7 +71,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
             showLoading()
         }
-        queryMap.put("user_num", userId)
+        queryMap.put("user_num", userNum)
         queryMap.put("page", page.toString())
         queryMap.put("limit", pageSize.toString())
         RetrofitUtil.getHttpService().getMyFavouritedList(queryMap)
@@ -88,7 +88,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onBusinessNext(data: ArticleResult) {
                         finshRequest()
-                        totalPage = data.data!!.totalPage
+                        totalPage = data.total_page
                         isLasePage = page == totalPage
                         if (datas == null) {
                             datas = ArrayList()
@@ -96,7 +96,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                         if (isRefresh!!) {
                             datas!!.clear()
                         }
-                        datas!!.addAll(data.data!!.list)
+                        datas!!.addAll(data.data!!)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
@@ -122,7 +122,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         }
         showLoading()
         var body = RequestFavourite()
-        body.user_num = userId
+        body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
         RetrofitUtil.getHttpService().articleOperating(body)

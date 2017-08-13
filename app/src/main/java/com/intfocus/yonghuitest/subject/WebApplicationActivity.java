@@ -85,7 +85,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     private PDFView mPDFView;
     private File pdfFile;
     private String bannerName, link;
-    private int groupID, objectID, objectType;
+    private int objectID, objectType;
+    private String groupID;
     private String userNum;
     private RelativeLayout bannerView;
     private Context mContext;
@@ -117,17 +118,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         mContext = this;
 
-		/*
-         * JSON Data
-		 */
-        try {
-            groupID = user.getInt(URLs.kGroupId);
-            userNum = user.getString(URLs.kUserNum);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            groupID = -2;
-            userNum = "not-set";
-        }
+        groupID = mUserSP.getString(URLs.kGroupId, "-2");
+        userNum = mUserSP.getString(URLs.kUserNum, "no-set");
 
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
@@ -346,9 +338,9 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String selectedItem = FileUtil.reportSelectedItem(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID);
+                String selectedItem = FileUtil.reportSelectedItem(WebApplicationActivity.this, groupID, templateID, reportID);
                 if (selectedItem == null || selectedItem.length() == 0) {
-                    SelectItems items = FileUtil.reportSearchItems(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID);
+                    SelectItems items = FileUtil.reportSearchItems(WebApplicationActivity.this, groupID, templateID, reportID);
                     String firstName = "";
                     String secondName = "";
                     String thirdName = "";
@@ -441,7 +433,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
              *  初次加载时，判断筛选功能的条件还未生效
              *  此处仅在第二次及以后才会生效
              */
-            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%d", groupID), templateID, reportID);
+            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, groupID, templateID, reportID);
             if (isSupportSearch) {
                 displayBannerTitleAndSearchIcon();
             }
@@ -449,14 +441,14 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+                    reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
                     String jsFileName = "";
 
                     // 模板 4 的 groupID 为 0
                     if (Integer.valueOf(templateID) == 4) {
                         jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
                     } else {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", String.format("%d", groupID), templateID, reportID);
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
                     }
                     String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
                     if (new File(javascriptPath).exists()) {
@@ -542,8 +534,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      */
     public void actionLaunchReportSelectorActivity(View v) {
         if (isSupportSearch) {
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID));
-            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, groupID, templateID, reportID));
+            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, groupID, templateID, reportID));
             Intent intent = new Intent(mContext, SelectorTreeActivity.class);
             intent.putExtra("searchItemsPath", searchItemsPath);
             intent.putExtra("selectedItemPath", selectedItemPath);
@@ -736,7 +728,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 }
                 urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
                 ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
                 if (reportDataState) {
                     new Thread(mRunnableForDetecting).start();
                 } else {
@@ -826,7 +818,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             try {
-                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID));
+                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, groupID, templateID, reportID));
                 FileUtil.writeFile(searchItemsPath, arrayString);
 
                 /**
@@ -861,7 +853,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = "";
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, String.format("%d", groupID), templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivity.this, groupID, templateID, reportID));
             if (new File(selectedItemPath).exists()) {
                 item = FileUtil.readFile(selectedItemPath);
             }

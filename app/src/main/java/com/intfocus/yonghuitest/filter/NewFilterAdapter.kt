@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.data.response.filter.MenuItem
 
-
 /**
  * Created by CANC on 2017/8/8.
  * 筛选适配器

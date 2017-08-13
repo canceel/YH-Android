@@ -9,21 +9,53 @@ import java.util.List;
 public class testbean {
 
     /**
+     * current_page : 1
+     * page_size : 10
+     * total_count : 8
+     * total_page : 1
+     * data : [{"createTime":"2017-07-08 20:48:49","id":71,"title":"超市如何监管收银漏洞","favorite":"0","tagInfo":""},{"createTime":"2017-07-08 20:45:51","id":70,"title":"降低生鲜品损耗的6大环节","favorite":"1","tagInfo":""},{"createTime":"2017-07-08 20:35:17","id":69,"title":"门店商品组合的\u2018基本\u2019方法","favorite":"0","tagInfo":"新零售"},{"createTime":"2017-07-08 20:30:03","id":68,"title":"门店补救单对移动均价的影响","favorite":"0","tagInfo":"分析师"},{"createTime":"2017-07-08 20:24:48","id":67,"title":"生鲜进销存精细化管理介绍","favorite":"0","tagInfo":"分析师"},{"createTime":"2017-07-08 20:18:33","id":66,"title":"常用促销手段都有哪些利弊附操作建议？","favorite":"0","tagInfo":""},{"createTime":"2017-07-08 20:13:06","id":65,"title":"零售数据分析#价格带定位分析","favorite":"1","tagInfo":"分析师,大数据"},{"createTime":"2017-06-30 17:14:10","id":60,"title":"618永辉销售数据分析","favorite":"1","tagInfo":"分析师,新零售,大数据"}]
+     * message : successfully
      * code : 200
-     * message : 获取数据成功
-     * data : [{"id":"9275","name":"宝安大道店"},{"id":"9294","name":"西田店"},{"id":"9295","name":"半壁店"},{"id":"9306","name":"华府景城店"},{"id":"9310","name":"季华店"},{"id":"9312","name":"温都水城广场店"},{"id":"9313","name":"政和大道万达店"},{"id":"9318","name":"通河路店"},{"id":"9319","name":"笛扬路店"},{"id":"9320","name":"红豆广场店"},{"id":"9322","name":"太阳宫店"},{"id":"9325","name":"长江北路店"},{"id":"9326","name":"清扬路店"},{"id":"9328","name":"江宁万达店"},{"id":"9329","name":"慈溪店"},{"id":"9337","name":"鲁班路店"},{"id":"9342","name":"松江万达店"},{"id":"9353","name":"东城万达店"},{"id":"9358","name":"武进万达店"},{"id":"9361","name":"中南城店"},{"id":"9362","name":"金帝银泰城店"},{"id":"9363","name":"东方伟业广场店"},{"id":"9374","name":"深圳沙井店"},{"id":"9378","name":"通州万达店"},{"id":"9379","name":"平阳万达店"},{"id":"9383","name":"鸿坤理想城店"},{"id":"9391","name":"龙湖长楹天街店"},{"id":"9393","name":"新塘大道店"},{"id":"9395","name":"海昌路店"},{"id":"9396","name":"长江国际店"},{"id":"9397","name":"长阳半岛店"},{"id":"9398","name":"喜隆多店"},{"id":"9399","name":"后沙峪店"},{"id":"9403","name":"金泉广场店"},{"id":"9407","name":"世界村店"},{"id":"9421","name":"金山万达广场店"},{"id":"9435","name":"厚街万达店"},{"id":"9442","name":"隆昌店"},{"id":"9449","name":"南沙万达店"},{"id":"9450","name":"谷阳大道宝龙店"},{"id":"9452","name":"天津大港店"},{"id":"9457","name":"萧山宝龙店"},{"id":"9458","name":"吴中万达店"},{"id":"9463","name":"绿地缤纷城店"},{"id":"9469","name":"凯德天津湾店"},{"id":"9471","name":"熙悦汇店"},{"id":"9473","name":"深圳平湖店"},{"id":"9475","name":"亚乐城店"},{"id":"9098","name":"六里桥店"},{"id":"9109","name":"鲁谷店"},{"id":"9131","name":"旧宫店"},{"id":"9155","name":"增光路店"},{"id":"9156","name":"山水文园店"},{"id":"9157","name":"草桥店"},{"id":"9167","name":"回龙观店"},{"id":"9178","name":"双桥店"},{"id":"9179","name":"恒基店"},{"id":"9222","name":"千禧街店"},{"id":"9218","name":"龙旗广场店"},{"id":"9202","name":"垡头店"},{"id":"9221","name":"金沟河店"},{"id":"9230","name":"清河店"},{"id":"9220","name":"马家堡店"},{"id":"9227","name":"新世界店"},{"id":"9245","name":"文慧园店"},{"id":"9268","name":"百子湾店"},{"id":"9274","name":"汇珑新天地店"},{"id":"9182","name":"滨江新城店"},{"id":"9197","name":"盐城宝龙店"},{"id":"9229","name":"雨花台店"},{"id":"9233","name":"常熟百盛店"},{"id":"9267","name":"淮安承德店"},{"id":"9263","name":"枫桥路店"},{"id":"9272","name":"太仓万达店"},{"id":"9181","name":"集贤店"},{"id":"9203","name":"双街店"},{"id":"9276","name":"龙湾万达店"},{"id":"9478","name":"旧宫万科店"},{"id":"9350","name":"红星苑店"},{"id":"9387","name":"福清万达店"},{"id":"9429","name":"天嘉店"},{"id":"9438","name":"爱琴海购物中心店"},{"id":"9439","name":"奥体中心广场店"},{"id":"9440","name":"闽江世纪金源店"},{"id":"9446","name":"石狮泰禾广场店"},{"id":"9448","name":"正荣财富中心店"},{"id":"9459","name":"泰禾城市广场店"},{"id":"9010","name":"屏西店"},{"id":"9013","name":"津泰店"},{"id":"9019","name":"屏山店"},{"id":"9033","name":"融侨店"},{"id":"9038","name":"大学城店"},{"id":"9144","name":"东方名城店"},{"id":"9163","name":"公园道店"},{"id":"9047","name":"昙石山店"},{"id":"9479","name":"南山茂业店"},{"id":"9485","name":"嘉定大融城店"},{"id":"9332","name":"北城天街店"},{"id":"9365","name":"凯德天府店"},{"id":"9401","name":"沙湾凯德广场店"},{"id":"9433","name":"金楠天街店"},{"id":"9444","name":"银泰城店"},{"id":"9476","name":"蜀都万达广场店"},{"id":"9477","name":"青枫公园宝龙店"},{"id":"9443","name":"太原万达店"},{"id":"9367","name":"曲江池东路店"},{"id":"9389","name":"南关正街店"},{"id":"9426","name":"曲江龙湖店"},{"id":"9480","name":"杭新店"},{"id":"9300","name":"江北生活广场店"},{"id":"9447","name":"巴南万达店"},{"id":"9456","name":"大坪协信店"},{"id":"9176","name":"南坪万达广场店"},{"id":"9486","name":"龙湖时代天街店"},{"id":"9489","name":"深圳卓悦汇店"},{"id":"9484","name":"万科金域国际店"},{"id":"9498","name":"中铁国际店"},{"id":"9494","name":"成都电视塔店"},{"id":"9506","name":"嘉定宝龙店"},{"id":"9505","name":"登云店"},{"id":"9488","name":"瑶海万达店"},{"id":"9491","name":"万达文旅城店"},{"id":"9497","name":"泸州万象汇店"},{"id":"9499","name":"五缘湾店"},{"id":"9509","name":"学府宝龙店"},{"id":"9464","name":"兴华路店"},{"id":"9423","name":"现代城店"},{"id":"9496","name":"滨江金榕店"},{"id":"9512","name":"杏林万科店"},{"id":"9508","name":"禧越广场店"},{"id":"9517","name":"爱琴海店"},{"id":"9510","name":"桃源路店"},{"id":"9502","name":"泉港永嘉店"},{"id":"9301","name":"重工街店"},{"id":"9302","name":"宽城万达店"},{"id":"9323","name":"哈西万达店"},{"id":"9355","name":"汪河路店"},{"id":"9356","name":"临河街店"},{"id":"9405","name":"镜湖公园店"},{"id":"9414","name":"站前万达店"},{"id":"9415","name":"建华万达店"},{"id":"9441","name":"解放路店"},{"id":"9211","name":"黑龙江万达店"},{"id":"9262","name":"北一路万达店"},{"id":"9525","name":"上虞万达广场店"},{"id":"9487","name":"秦淮茂业店"},{"id":"9519","name":"瓯海大道银泰店"},{"id":"9253","name":"太康店"},{"id":"9277","name":"荔华东万达店"},{"id":"9285","name":"连江贵安新天地店"},{"id":"9293","name":"集美万达店"},{"id":"9296","name":"大儒世家店"},{"id":"9327","name":"平宁路店"},{"id":"9330","name":"金源滨海新城店"},{"id":"9340","name":"中骏世界城店"},{"id":"9341","name":"裕德源广场店"},{"id":"9344","name":"邵武恒华店"},{"id":"9375","name":"龙岩万宝广场店"},{"id":"9388","name":"龙岩万达店"},{"id":"9400","name":"翠峰广场店"},{"id":"9417","name":"天博广场店"},{"id":"9434","name":"馨宜新天地店"},{"id":"9141","name":"新华店"},{"id":"9041","name":"前屿店"},{"id":"9011","name":"西门店"},{"id":"9012","name":"黎明店"},{"id":"9009","name":"铜盘店"},{"id":"9014","name":"象园店"},{"id":"9015","name":"国棉店"},{"id":"9017","name":"华林店"},{"id":"9018","name":"汇达店"},{"id":"9021","name":"杨桥店"},{"id":"9022","name":"甘蔗店"},{"id":"9043","name":"岳峰店"},{"id":"9023","name":"群众店"},{"id":"9024","name":"马尾店"},{"id":"9026","name":"茶会店"},{"id":"9027","name":"金辉店"},{"id":"9020","name":"井楼门店"},{"id":"9025","name":"碧水芳洲店"},{"id":"9029","name":"上渡店"},{"id":"9039","name":"五四北店"},{"id":"9032","name":"省府店"},{"id":"9045","name":"鳌峰店"},{"id":"9046","name":"福飞店"},{"id":"9049","name":"鼓山苑店"},{"id":"9078","name":"江南水都店"},{"id":"9068","name":"浦新店"},{"id":"9079","name":"西园店"},{"id":"9120","name":"鹤林店"},{"id":"9134","name":"居住主题公园店"},{"id":"9113","name":"白沙店"},{"id":"9139","name":"福新店"},{"id":"9165","name":"福湾店"},{"id":"9187","name":"金祥店"},{"id":"9209","name":"松城店"},{"id":"9199","name":"首山店"},{"id":"9250","name":"新天宇广场店"},{"id":"9105","name":"吴航店"},{"id":"9129","name":"郑和店"},{"id":"9067","name":"坂东店"},{"id":"9225","name":"金牛山广场店"},{"id":"9064","name":"步行街店"},{"id":"9074","name":"商贸城店"},{"id":"9116","name":"中环店"},{"id":"9030","name":"琅岐店"},{"id":"9007","name":"西洪店"},{"id":"9053","name":"管葡店"},{"id":"9050","name":"体育公园店"},{"id":"9058","name":"东溪店"},{"id":"9076","name":"建贸店"},{"id":"9127","name":"佳禾馨苑店"},{"id":"9224","name":"建阳金都店"},{"id":"9194","name":"顺昌中山店"},{"id":"9048","name":"荔城北店"},{"id":"9124","name":"城涵东店"},{"id":"9166","name":"正荣时代店"},{"id":"9172","name":"滨江嘉苑店"},{"id":"9192","name":"鲤城广场店"},{"id":"9063","name":"泉秀店"},{"id":"9062","name":"振兴店"},{"id":"9075","name":"建设南路店"},{"id":"9140","name":"浮桥店"},{"id":"9136","name":"水头店"},{"id":"9158","name":"兴南店"},{"id":"9252","name":"晋江万达广场店"},{"id":"9060","name":"五四店"},{"id":"9061","name":"五洲店"},{"id":"9128","name":"龙门店"},{"id":"9174","name":"日照东门店"},{"id":"9173","name":"三明鸿图店"},{"id":"9071","name":"祥和店"},{"id":"9073","name":"康乐店"},{"id":"9057","name":"海天店"},{"id":"9111","name":"思东店"},{"id":"9122","name":"禹洲店"},{"id":"9154","name":"新阳店"},{"id":"9193","name":"龙海龙池店"},{"id":"9195","name":"金湖店"},{"id":"9264","name":"漳浦龙湖店"},{"id":"9265","name":"漳州万达店"},{"id":"9511","name":"扬州宝龙店"},{"id":"9529","name":"龙湖虹桥天街店"},{"id":"9531","name":"南屿正荣店"},{"id":"9514","name":"SM广场店"},{"id":"9526","name":"滨江宝龙店"},{"id":"9540","name":"愧房万达广场店"},{"id":"9541","name":"丰科万达店"},{"id":"9518","name":"沙井市民广场店"},{"id":"9539","name":"武清大光明店"},{"id":"9530","name":"三明万达广场店"},{"id":"9548","name":"吾悦广场店"},{"id":"9528","name":"昆山弥敦城店"},{"id":"9527","name":"新纪元广场店"},{"id":"9552","name":"大庆毅滕店"},{"id":"9559","name":"金辉淮安半岛店"},{"id":"9568","name":"江北万达店"},{"id":"9416","name":"万豪天悦店"},{"id":"9513","name":"望京西路店"},{"id":"9554","name":"碧江广场店"},{"id":"9557","name":"惠安禹州店"},{"id":"9545","name":"大兴康庄店"},{"id":"9553","name":"吴泾嘉怡水岸店"},{"id":"9470","name":"大世界购物中心店"},{"id":"9492","name":"长社路店"},{"id":"9504","name":"中信悦方店"},{"id":"9521","name":"天鹅湖万达店"},{"id":"9536","name":"融恒时代广场店"},{"id":"9543","name":"思唐财富广场店"},{"id":"9307","name":"嘉兴旭辉广场店"},{"id":"9213","name":"星光耀广场店"},{"id":"9549","name":"马尾中环广场店"},{"id":"9431","name":"桐乡新城吾悦广场店"},{"id":"9578","name":"衢州新城吾悦广场店"},{"id":"9581","name":"盐城万达店"},{"id":"9584","name":"松北万达城店"},{"id":"9540","name":"槐房万达广场店"},{"id":"9437","name":"汇金广场店"},{"id":"9582","name":"昆山万达店"},{"id":"9370","name":"临平万宝城店"},{"id":"9508","name":"禧樾广场店"},{"id":"9583","name":"常熟万达店"},{"id":"9605","name":"长春吾悦广场店"},{"id":"9555","name":"高淳悦达广场店"},{"id":"9609","name":"红旗街万达店"},{"id":"9600","name":"G1蜂汇广场店"}]
      */
 
-    private int code;
+    private int current_page;
+    private int page_size;
+    private int total_count;
+    private int total_page;
     private String message;
+    private int code;
     private List<DataBean> data;
 
-    public int getCode() {
-        return code;
+    public int getCurrent_page() {
+        return current_page;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setCurrent_page(int current_page) {
+        this.current_page = current_page;
+    }
+
+    public int getPage_size() {
+        return page_size;
+    }
+
+    public void setPage_size(int page_size) {
+        this.page_size = page_size;
+    }
+
+    public int getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(int total_count) {
+        this.total_count = total_count;
+    }
+
+    public int getTotal_page() {
+        return total_page;
+    }
+
+    public void setTotal_page(int total_page) {
+        this.total_page = total_page;
     }
 
     public String getMessage() {
@@ -32,6 +64,14 @@ public class testbean {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public List<DataBean> getData() {
@@ -44,27 +84,57 @@ public class testbean {
 
     public static class DataBean {
         /**
-         * id : 9275
-         * name : 宝安大道店
+         * createTime : 2017-07-08 20:48:49
+         * id : 71
+         * title : 超市如何监管收银漏洞
+         * favorite : 0
+         * tagInfo :
          */
 
-        private String id;
-        private String name;
+        private String createTime;
+        private int id;
+        private String title;
+        private String favorite;
+        private String tagInfo;
 
-        public String getId() {
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public String getTitle() {
+            return title;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getFavorite() {
+            return favorite;
+        }
+
+        public void setFavorite(String favorite) {
+            this.favorite = favorite;
+        }
+
+        public String getTagInfo() {
+            return tagInfo;
+        }
+
+        public void setTagInfo(String tagInfo) {
+            this.tagInfo = tagInfo;
         }
     }
 }

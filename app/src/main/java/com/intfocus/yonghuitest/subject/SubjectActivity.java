@@ -94,7 +94,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private PDFView mPDFView;
     private File pdfFile;
     private String bannerName, link;
-    private int groupID, objectID, objectType;
+    private String groupID;
+    private int objectType, objectID;
     private String userNum;
     private RelativeLayout bannerView;
     private Context mContext;
@@ -113,7 +114,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
     /**
      * 筛选
-     *
      * @param savedInstanceState
      */
     private LinearLayout llFilter;
@@ -147,17 +147,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         setContentView(R.layout.activity_subject);
 
         mContext = this;
-        /*
-         * JSON Data
-		 */
-        try {
-            groupID = user.getInt(URLs.kGroupId);
-            userNum = user.getString(URLs.kUserNum);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            groupID = -2;
-            userNum = "not-set";
-        }
+        groupID = mUserSP.getString(URLs.kGroupId, "-2");
+        userNum = mUserSP.getString(URLs.kUserNum, "not-set");
 
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
@@ -271,6 +262,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 loadHtml();
             }
         });
+
         isWeiXinShared = false;
         new Thread(new Runnable() {
             @Override
@@ -396,7 +388,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void onResume() {
-
         super.onResume();
     }
 
@@ -404,9 +395,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String selectedItem = FileUtil.reportSelectedItem(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
+                String selectedItem = FileUtil.reportSelectedItem(SubjectActivity.this, groupID, templateID, reportID);
                 if (selectedItem == null || selectedItem.length() == 0) {
-                    SelectItems items = FileUtil.reportSearchItems(SubjectActivity.this, String.format("%d", groupID), templateID, reportID);
+                    SelectItems items = FileUtil.reportSearchItems(SubjectActivity.this, groupID, templateID, reportID);
                     String firstName = "";
                     String secondName = "";
                     String thirdName = "";
@@ -514,7 +505,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             // format: /mobile/report/:report_id/group/:group_id
             templateID = TextUtils.split(link, "/")[6];
             reportID = TextUtils.split(link, "/")[8];
-            String urlPath = format(link.replace("%@", "%d"), groupID);
+            String urlPath = format(link.replace("%@", "%s"), groupID);
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
@@ -526,22 +517,22 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
              *  初次加载时，判断筛选功能的条件还未生效
              *  此处仅在第二次及以后才会生效
              */
-            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%d", groupID), templateID, reportID);
-            if (isSupportSearch) {
-                displayBannerTitleAndSearchIcon();
-            }
+            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%s", groupID), templateID, reportID);
+//            if (isSupportSearch) {
+//                displayBannerTitleAndSearchIcon();
+//            }
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, reportID);
                     String jsFileName = "";
 
                     // 模板 4 的 groupID 为 0
                     if (Integer.valueOf(templateID) == 4) {
                         jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
                     } else {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", String.format("%d", groupID), templateID, reportID);
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
                     }
                     String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
                     if (new File(javascriptPath).exists()) {
@@ -626,8 +617,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      */
     public void actionLaunchReportSelectorActivity(View v) {
         if (isSupportSearch) {
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
             Intent intent = new Intent(mContext, SelectorTreeActivity.class);
             intent.putExtra("searchItemsPath", searchItemsPath);
             intent.putExtra("selectedItemPath", selectedItemPath);
@@ -821,7 +812,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 }
                 urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
                 ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                boolean reportDataState = ApiHelper.reportData(mAppContext, String.format("%d", groupID), templateID, reportID);
+                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
                 if (reportDataState) {
                     new Thread(mRunnableForDetecting).start();
                 } else {
@@ -911,7 +902,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             try {
-                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
                 FileUtil.writeFile(searchItemsPath, arrayString);
 
                 /**
@@ -920,7 +911,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                  */
                 if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
                     isSupportSearch = true;
-                    displayBannerTitleAndSearchIcon();
+//                    displayBannerTitleAndSearchIcon();
                 } else {
                     isSupportSearch = false;
                 }
@@ -932,7 +923,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public void reportSearchItemsV2(final String arrayString) {
             if (!TextUtils.isEmpty(arrayString)) {
-                LogUtil.largeLogD("reportSearchItemsV2", arrayString);
                 MenuResult msg = new Gson().fromJson(arrayString, MenuResult.class);
                 if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
                     for (Menu menu : msg.getData()) {
@@ -945,26 +935,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     }
                 }
             }
-
-//            try {
-//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
-//                FileUtil.writeFile(searchItemsPath, arrayString);
-//
-//                Log.i("testlog", arrayString);
-//
-//                /**
-//                 *  判断筛选的条件: arrayString 数组不为空
-//                 *  报表第一次加载时，此处为判断筛选功能的关键点
-//                 */
-//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
-//                    isSupportSearch = true;
-//                    displayBannerTitleAndSearchIcon();
-//                } else {
-//                    isSupportSearch = false;
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
 
         @JavascriptInterface
@@ -984,9 +954,16 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = "";
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, String.format("%d", groupID), templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
             if (new File(selectedItemPath).exists()) {
                 item = FileUtil.readFile(selectedItemPath);
+                final String filterText = item;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvLocationAddress.setText(filterText);
+                    }
+                });
             }
             return item;
         }
@@ -1087,7 +1064,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             mFragTransaction.remove(fragment);
         }
         MyFilterDialogFragment dialogFragment = new MyFilterDialogFragment((ArrayList<MenuItem>) locationDatas, this);
-        dialogFragment.show(mFragTransaction, "dialogFragment");//显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+        dialogFragment.show(mFragTransaction, "dialogFragment"); //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
     }
 
     /**
@@ -1138,19 +1115,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         for (MenuItem menuItem : menuDatas.get(currentPosition).getData()) {
             menuItem.setArrorDirection(false);
         }
+
         //标记点击位置
         menuDatas.get(currentPosition).getData().get(position).setArrorDirection(true);
         filterPopupWindow.dismiss();
-
     }
 
     @Override
     public void complete(@NotNull ArrayList<MenuItem> data) {
-        String addStr = "";
-        for (MenuItem menuItem : data) {
-            addStr += menuItem.getName() + "|";
+        try {
+            String addStr = "";
+            for (MenuItem menuItem : data) {
+                addStr += menuItem.getName() + "|";
+            }
+
+            addStr = addStr.substring(0, addStr.length() - 1);
+            tvLocationAddress.setText(addStr);
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+            FileUtil.writeFile(selectedItemPath, addStr);
+
+            animLoading.setVisibility(View.VISIBLE);
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    loadHtml();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        addStr = addStr.substring(0, addStr.length() - 1);
-        tvLocationAddress.setText(addStr);
     }
 }

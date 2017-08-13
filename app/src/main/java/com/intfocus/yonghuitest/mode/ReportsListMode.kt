@@ -28,7 +28,7 @@ class ReportsListMode(ctx: Context) : AbstractMode() {
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 
     override fun requestData() {
-        RetrofitUtil.getHttpService().getReportList(mUserSP.getInt(kGroupId, 0).toString(), mUserSP.getInt(kRoleId, 0).toString())
+        RetrofitUtil.getHttpService().getReportList(mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
                 .compose(RetrofitUtil.CommonOptions<ReportListResult>())
                 .subscribe(object : CodeHandledSubscriber<ReportListResult>() {
 

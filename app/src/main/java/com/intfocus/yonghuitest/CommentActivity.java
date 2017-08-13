@@ -10,9 +10,15 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.data.request.CommentBody;
+import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.net.ApiException;
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
+import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
 import org.json.JSONException;
@@ -45,7 +51,7 @@ public class CommentActivity extends BaseActivity {
 
         Intent intent = getIntent();
         bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID   = intent.getIntExtra(URLs.kObjectId, -1);
+        objectID = intent.getIntExtra(URLs.kObjectId, -1);
         objectType = intent.getIntExtra(URLs.kObjectType, -1);
 
         mTitle.setText(bannerName);
@@ -66,29 +72,33 @@ public class CommentActivity extends BaseActivity {
         CommentActivity.this.onBackPressed();
     }
 
-    private class JavaScriptInterface extends JavaScriptBase  {
+    private class JavaScriptInterface extends JavaScriptBase {
         /*
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
         @JavascriptInterface
         public void writeComment(final String content) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("object_title", bannerName);
-                        params.put("user_name", user.getString("user_name"));
-                        params.put("content", content);
-                        Log.i("PARAMS", params.toString());
-                        ApiHelper.writeComment(userID, objectType, objectID, params);
+            CommentBody commentBody = new CommentBody();
+            commentBody.setUserNum(mUserSP.getString(URLs.kUserNum, "0"));
+            commentBody.setContent(content);
 
-                        new Thread(mRunnableForDetecting).start();
-                    } catch (JSONException | UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            RetrofitUtil.getHttpService().submitComment(commentBody)
+                    .compose(new RetrofitUtil.CommonOptions<BaseResult>())
+                    .subscribe(new CodeHandledSubscriber<BaseResult>() {
+                        @Override
+                        public void onError(ApiException apiException) {
+                        }
+
+                        @Override
+                        public void onBusinessNext(BaseResult data) {
+                            ToastUtils.INSTANCE.show(mAppContext, "评论成功");
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                        }
+                    });
+
 
             /*
              * 用户行为记录, 单独异常处理，不可影响用户体验

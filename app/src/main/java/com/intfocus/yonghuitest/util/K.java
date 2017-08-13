@@ -24,7 +24,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kReportJsonAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/json";
     public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
     public final static String kScreenLockAPIPath = "%s/api/v1/user_device/%s/screen_lock";
-    public final static String kDeviceStateAPIPath = "%s/api/v1/user_device/%d/state";
+    public final static String kDeviceStateAPIPath = "%s/api/v1/user_device/%s/state";
     public final static String kRsetPwdAPIPath = "%s/api/v1/update/%s/password";
     public final static String kActionLogAPIPath = "%s/api/v1/android/logger";
     public final static String kPushDeviceTokenAPIPath = "%s/api/v1/device/%s/push_token/%s";
@@ -129,6 +129,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KScannerResult = "/api/v1.1/scan/barcode"; //扫码结果
     public final static String KUserInfo = "/api/v1.1/my/statistics"; //个人信息
     public final static String KNoticeList = "/api/v1.1/my/notices";//公告预警
+    public final static String KNoticeContent = "/api/v1.1/my/view/notice"; //公告预警详情
     public final static String KArticlesList = "/api/v1.1/my/articles";//数据学院文章列表
     public final static String KFavouriteStatus = "/api/v1.1/my/article/favourite_status";//收藏状态
     public final static String KMyFavouritedList = "/api/v1.1/my/favourited/articles";//我的收藏列表
@@ -137,4 +138,12 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KStoreList = "/api/v1.1/user/stores"; //门店列表
     public final static String KReportList = "/api/v1.1/app/component/reports"; //报表列表
     public final static String KWorkBoxList = "/api/v1.1/app/component/toolbox"; //工具箱
+    public final static String KNewLogin = "/api/v1.1/user/authentication"; //用户验证
+    public final static String KNewDevice = "/api/v1.1/app/device"; //上传设备信息
+    public final static String KNewLogout = "/api/v1.1/user/logout"; //退出登录
+    public final static String KNewUpdataPwd = "/api/v1.1/user/update_password"; //更新密码
+    public final static String KNewResetPwd = "/api/v1.1/user/reset_password"; //重置密码
+    public final static String KComment = "/api/v1.1/comment"; //发表评论
+    public final static String KFeedBack = "/api/v1.1/feedback"; //提交反馈
+    public final static String KAssetsMD5 = "/api/v1.1/assets/md5"; //静态资源MD5
 }

@@ -24,12 +24,19 @@ import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.mode.UserInfoMode
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.setting.SettingActivity
-import com.intfocus.yonghuitest.util.*
+import com.intfocus.yonghuitest.util.ActionLogUtil
+import com.intfocus.yonghuitest.util.DisplayUtil
 import com.intfocus.yonghuitest.util.ImageUtil.*
 import com.intfocus.yonghuitest.util.K.kUserDeviceId
+import com.intfocus.yonghuitest.util.ToastUtils
+import com.intfocus.yonghuitest.util.URLs
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -39,12 +46,10 @@ import kotlinx.android.synthetic.main.items_single_value.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
 import org.json.JSONObject
 import org.xutils.image.ImageOptions
 import org.xutils.x
 import java.io.File
-import java.util.*
 
 /**
  * Created by liuruilin on 2017/6/7.
@@ -194,6 +199,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         //设置可以点击
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
+        popupWindow.
 
         contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出
@@ -219,36 +225,37 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             return
         }
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
-        mEditor.putBoolean("ScreenLock", false)
-        mEditor.commit()
-        Thread(Runnable {
-            try {
-                val postUrl = String.format(K.kDeleteDeviceIdAPIPath,
-                        K.kBaseUrl,
-                        activity.getSharedPreferences("UserBean", MODE_PRIVATE).getInt(kUserDeviceId, 0).toString())
-                val response = HttpUtil.httpPost(postUrl, HashMap<String, String>())
-                activity.runOnUiThread({
-                    if (response["code"] == "200") {
-                        val sharedPreferences = activity.getSharedPreferences("loginToken", Context.MODE_PRIVATE)
-                        sharedPreferences.edit().putBoolean("loginToken", false).commit()
+        mEditor.putBoolean("ScreenLock", false).commit()
+        // 退出登录 POST 请求
+        RetrofitUtil.getHttpService().userLogout(mUserSP.getString(kUserDeviceId, "0"))
+                .compose(RetrofitUtil.CommonOptions<BaseResult>())
+                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                    override fun onBusinessNext(data: BaseResult?) {
+                        if (data!!.code == "200") {
+                            mUserSP.edit().putBoolean("isLogin", false).commit()
 
-                        model.modifiedUserConfig(false)
-                        val intent = Intent()
-                        intent.setClass(activity, LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                    } else {
-                        ToastUtils.show(ctx, response.toString())
+                            var logParams = JSONObject()
+                            logParams.put(URLs.kAction, "退出登录")
+                            ActionLogUtil.actionLog(ctx, logParams)
+
+                            model.modifiedUserConfig(false)
+                            val intent = Intent()
+                            intent.setClass(activity, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        } else {
+                            ToastUtils.show(ctx, data.message!!)
+                        }
                     }
-                })
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }).start()
 
-        var logParams = JSONObject()
-        logParams.put(URLs.kAction, "退出登录")
-        ActionLogUtil.actionLog(ctx, logParams)
+                    override fun onCompleted() {
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+                        ToastUtils.show(ctx, apiException!!.message!!)
+                    }
+
+                })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

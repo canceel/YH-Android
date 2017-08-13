@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.util;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
 
@@ -89,7 +91,7 @@ public class FileUtil {
         SharedPreferences mUserSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
         String spacePath = "";
 
-        spacePath = String.format("%s/User-%d", FileUtil.basePath(context), mUserSP.getInt(kUserId, 0));
+        spacePath = String.format("%s/User-%s", FileUtil.basePath(context), mUserSP.getString(kUserId, "0"));
         return spacePath;
     }
 
@@ -791,6 +793,51 @@ public class FileUtil {
             return text;
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * app升级后，清除缓存头文件
+     */
+    public static void checkVersionUpgrade(Context ctx, String assetsPath, String sharedPath) {
+        try {
+            SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+            String versionConfigPath = String.format("%s/%s", assetsPath, K.kCurrentVersionFileName);
+            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+
+            String localVersion = "new-installer";
+            boolean isUpgrade = true;
+            if ((new File(versionConfigPath)).exists()) {
+                localVersion = FileUtil.readFile(versionConfigPath);
+                isUpgrade = !localVersion.equals(packageInfo.versionName);
+            }
+
+            if (isUpgrade) {
+                LogUtil.d("VersionUpgrade",
+                        String.format("%s => %s remove %s/%s", localVersion, packageInfo.versionName,
+                                assetsPath, K.kCachedHeaderConfigFileName));
+
+                /*
+                 * 用户报表数据js文件存放在公共区域
+                 */
+                String headerPath = String.format("%s/%s", sharedPath, K.kCachedHeaderConfigFileName);
+                File headerFile = new File(headerPath);
+                if (headerFile.exists()) {
+                    headerFile.delete();
+                }
+
+                FileUtil.writeFile(versionConfigPath, packageInfo.versionName);
+
+                // 强制消息配置，重新上传服务器
+                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kPushConfigFileName);
+                JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
+                pushJSON.put(K.kPushIsValid, false);
+                FileUtil.writeFile(pushConfigPath, pushJSON.toString());
+            }
+        } catch (IOException | PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

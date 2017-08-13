@@ -7,6 +7,10 @@ import com.google.gson.Gson
 import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentRequest
+import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs
@@ -29,7 +33,7 @@ class NoticeContentMode(ctx : Context) : AbstractMode() {
     var id = ""
 
     fun getUrl(): String {
-        var url = K.kBaseUrl + "/api/v1/user/" + mUserSP.getInt(K.kUserId,0).toString() + "/notice/" + id
+        var url = K.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.kUserId,"0") + "/notice/" + id
         return url
     }
 
@@ -38,23 +42,23 @@ class NoticeContentMode(ctx : Context) : AbstractMode() {
         requestData()
     }
     override fun requestData() {
-        Thread(Runnable {
-            urlString = getUrl()
-            if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
-                result = response["body"]
-                if (StringUtil.isEmpty(result)) {
-                    val result1 = NoticeContentRequest(false, 400)
-                    EventBus.getDefault().post(result1)
-                    return@Runnable
-                }
-                analysisData(result)
-            } else {
-                val result1 = NoticeContentRequest(false, 400)
-                EventBus.getDefault().post(result1)
-                return@Runnable
-            }
-        }).start()
+        RetrofitUtil.getHttpService().getNoticeContent(id, mUserSP.getString(K.kUserId,"0"))
+                .compose(RetrofitUtil.CommonOptions<BaseResult>())
+                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                    override fun onError(apiException: ApiException?) {
+                        val result1 = NoticeContentRequest(false, -1)
+                        EventBus.getDefault().post(result1)
+                    }
+
+                    override fun onCompleted() {
+                    }
+
+                    override fun onBusinessNext(data: BaseResult?) {
+                        val result1 = NoticeContentRequest(true, 200)
+//                        result1.noticeContent = data
+                        EventBus.getDefault().post(result1)
+                    }
+                })
     }
 
     /**

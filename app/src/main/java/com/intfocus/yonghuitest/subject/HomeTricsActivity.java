@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -82,7 +83,7 @@ import static com.intfocus.yonghuitest.util.URLs.kBannerName;
  * Created by CANC on 2017/4/6.
  */
 
-public class HomeTricsActivity extends BaseActivity implements ProductListAdapter.ProductListListener
+public class HomeTricsActivity extends AppCompatActivity implements ProductListAdapter.ProductListListener
         , MetricsAdapter.MetricsListener, OnChartValueSelectedListener {
     @ViewInject(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
@@ -187,9 +188,6 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
         setContentView(R.layout.activity_hometrics);
         x.view().inject(this);
         mContext = this;
-
-        initUserIDColorView();
-
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
         groupID = intent.getIntExtra("groupID", -1);
@@ -213,7 +211,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
 
         @Override
         protected void onPostExecute(Map<String, String> response) {
-            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", groupID), 3, reportID);
+            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, reportID);
             String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
@@ -779,28 +777,11 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
     };
 
     /*
-     * 初始化用户信息
-     */
-    private void initUserIDColorView() {
-        String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
-        if ((new File(userConfigPath)).exists()) {
-            try {
-                user = FileUtil.readConfigFile(userConfigPath);
-                if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
-                    userID = user.getInt("user_id");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /*
      * 分享截图至微信
      */
     public void actionShare2Weixin() {
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(HomeTricsActivity.this);
-        if (bmpScrennShot == null) {toast("截图失败");}
+        if (bmpScrennShot == null) { ToastUtils.INSTANCE.show(this, "截图失败");}
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")
@@ -825,7 +806,7 @@ public class HomeTricsActivity extends BaseActivity implements ProductListAdapte
             if (t != null) {
                 Log.d("throw", "throw:" + t.getMessage());
             }
-            toast("分享失败");
+            ToastUtils.INSTANCE.show(mContext, "分享失败");
         }
 
         @Override

@@ -5,11 +5,11 @@ package com.intfocus.yonghuitest.dashboard.mine.bean
  */
 class InstituteDataBean {
     /**
-    "createTime":"2017-07-08 20:30:03",
-    "id":68,
-    "title":"门店补救单对移动均价的影响",
-    "favorite":"0",
-    "tagInfo":"分析师"
+    "createTime": "2017-07-08 20:48:49",
+    "id": 71,
+    "title": "超市如何监管收银漏洞",
+    "favorite": "0",
+    "tagInfo": ""
      */
 
     var createTime: String? = null

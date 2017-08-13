@@ -1,8 +1,10 @@
 package com.intfocus.yonghuitest.net;
 
+import com.intfocus.yonghuitest.data.request.CommentBody;
 import com.intfocus.yonghuitest.data.request.RequestFavourite;
 import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.data.response.article.ArticleResult;
+import com.intfocus.yonghuitest.data.response.assets.AssetsResult;
 import com.intfocus.yonghuitest.data.response.filter.MenuResult;
 import com.intfocus.yonghuitest.data.response.home.HomeMsgResult;
 import com.intfocus.yonghuitest.data.response.home.KpiResult;
@@ -11,12 +13,16 @@ import com.intfocus.yonghuitest.data.response.home.WorkBoxResult;
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.data.response.scanner.StoreListResult;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
+import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
 import retrofit2.http.Body;
 import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -32,6 +38,32 @@ import rx.Observable;
 
 public interface HttpService {
 
+    @GET (K.KAssetsMD5)
+    Observable<AssetsResult> getAssetsMD5();
+
+    /**
+     * 公告预警详情
+     * @param noticeId
+     * @param userNum
+     * @return
+     */
+    @GET (K.KNoticeContent)
+    Observable<BaseResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
+
+    /**
+     * 发表评论
+     * @param commentBody
+     * @return
+     */
+    @POST (K.KComment)
+    Observable<BaseResult> submitComment(@Body CommentBody commentBody);
+
+    /**
+     * 工具箱页
+     * @param groupId
+     * @param roleId
+     * @return
+     */
     @GET (K.KWorkBoxList)
     Observable<WorkBoxResult> getWorkBox(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
@@ -154,5 +186,51 @@ public interface HttpService {
      */
     @Multipart
     @POST(K.kUserIconUploadPath)
-    Observable<BaseResult> userIconUpload(@Path("deviceId") int deviceId, @Path("userId") int userId, @Part MultipartBody.Part file);
+    Observable<BaseResult> userIconUpload(@Path("deviceId") String deviceId, @Path("userId") String userId, @Part MultipartBody.Part file);
+
+    /**
+     * 登录post请求
+     * @param userNum　用户名
+     * @param password　密码
+     * @return
+     */
+    @POST(K.KNewLogin)
+    Observable<NewUser> userLogin(@Query("user_num") String userNum, @Query("password") String password, @Query("coordinate") String coordinate);
+
+    /**
+     * 上传设备信息
+     *
+     * @param deviceRequest　设备信息
+     * @return
+     */
+    @POST(K.KNewDevice)
+    Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
+
+    /**
+     * 退出登录
+     *
+     * @param userDeviceId　
+     * @return
+     */
+    @POST(K.KNewLogout)
+    Observable<BaseResult> userLogout(@Query("user_device_id") String userDeviceId);
+
+    /**
+     * 更新密码
+     *
+     * @param userNum　用户名
+     * @param newPwd　新密码
+     * @return
+     */
+    @POST(K.KNewUpdataPwd)
+    Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
+
+    /**
+     * 重置密码
+     * @param userNum　用户名
+     * @param mobile　手机号
+     * @return
+     */
+    @POST(K.KNewResetPwd)
+    Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
 }

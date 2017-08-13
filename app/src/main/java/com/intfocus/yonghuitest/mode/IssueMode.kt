@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
+import android.util.Log
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.dashboard.mine.bean.*
@@ -145,7 +146,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         }
 
         val request = Request.Builder()
-                .url(String.format("%s/api/v1/feedback", K.kBaseUrl))
+                .url(String.format("%s/api/v1.1/feedback", K.kBaseUrl))
                 .post(requestBody.build())
                 .build()
 

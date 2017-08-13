@@ -2,6 +2,7 @@ package com.intfocus.yonghuitest.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -621,35 +622,26 @@ public class HttpUtil {
         checkAssetUpdated(context, URLs.kBarCodeScan, false);
     }
 
-    public static boolean checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
-        try {
+    public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
+            SharedPreferences mAssetsSP = context.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
             boolean isShouldUpdateAssets = false;
             String sharedPath = FileUtil.sharedPath(context);
             String assetZipPath = String.format("%s/%s.zip", sharedPath, assetName);
             isShouldUpdateAssets = !(new File(assetZipPath)).exists();
 
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
-            JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
             String localKeyName = String.format("local_%s_md5", assetName);
             String keyName = String.format("%s_md5", assetName);
-            isShouldUpdateAssets = !isShouldUpdateAssets && !userJSON.getString(localKeyName).equals(userJSON.getString(keyName));
+            isShouldUpdateAssets = !isShouldUpdateAssets && !mAssetsSP.getString(localKeyName, "").equals(mAssetsSP.getString(keyName, ""));
             if (!isShouldUpdateAssets) {
-                return false;
+                return;
             }
 
-            LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, userJSON.getString(localKeyName), userJSON.getString(keyName)));
+            LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, mAssetsSP.getString(localKeyName, ""), mAssetsSP.getString(keyName, "")));
             // execute this when the downloader must be fired
             final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
 
             // AsyncTask并行下载
             downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
-//            downloadTask.execute(String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
-            return true;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
 

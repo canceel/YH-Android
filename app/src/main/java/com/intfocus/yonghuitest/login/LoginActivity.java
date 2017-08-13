@@ -7,20 +7,32 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
+import com.intfocus.yonghuitest.login.bean.NewUser;
+import com.intfocus.yonghuitest.net.ApiException;
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
+import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
@@ -29,18 +41,35 @@ import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 import com.pgyersdk.update.PgyUpdateManager;
 
+import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONObject;
 
-public class LoginActivity extends BaseActivity {
+import kotlin.jvm.Throws;
+
+import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
+import static com.intfocus.yonghuitest.util.K.kUserDeviceId;
+import static com.intfocus.yonghuitest.util.K.kUserId;
+import static com.intfocus.yonghuitest.util.K.kUserName;
+import static com.intfocus.yonghuitest.util.URLs.kGroupId;
+import static com.intfocus.yonghuitest.util.URLs.kRoleId;
+import static com.intfocus.yonghuitest.util.URLs.kUserNum;
+
+public class LoginActivity extends FragmentActivity {
     public String kFromActivity = "from_activity";         // APP 启动标识
-    public String kSuccess = "success";               // 用户登录验证结果
+    public String kSuccess = "success";                    // 用户登录验证结果
     private EditText usernameEditText, passwordEditText;
-    private String usernameString, passwordString;
-    private SharedPreferences mUserSP;
+    private String userNum, userPass;
     private View mLinearUsernameBelowLine;
     private View mLinearPasswordBelowLine;
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
+    private DeviceRequest mDeviceRequest;
+    private SharedPreferences mUserSP;
+    private SharedPreferences.Editor mUserSPEdit;
+    private ProgressDialog mProgressDialog;
+    private JSONObject logParams = new JSONObject();
+    private Context ctx;
+    private String assetsPath, sharedPath;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -48,33 +77,12 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mUserSPEdit = mUserSP.edit();
 
-        // 使背景填满整个屏幕,包括状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }
-
-        ApiHelper.getAMapLocation(mAppContext);
-
-        /*
-         *  如果是从触屏界面过来，则直接进入主界面如
-         *  不是的话，相当于直接启动应用，则检测是否有设置锁屏
-         */
-//        if (intent.hasExtra(kFromActivity) && intent.getStringExtra(kFromActivity).equals("ConfirmPassCodeActivity")) {
-//            intent = new Intent(LoginActivity.this, DashboardActivity.class);
-//            intent.putExtra(kFromActivity, intent.getStringExtra(kFromActivity));
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            LoginActivity.this.startActivity(intent);
-//
-//            finish();
-//        } else {
-            /*
-             *  检测版本更新
-             *    1. 与锁屏界面互斥；取消解屏时，返回登录界面，则不再检测版本更新；
-             *    2. 原因：如果解屏成功，直接进入MainActivity,会在BaseActivity#finishLoginActivityWhenInMainAcitivty中结束LoginActivity,若此时有AlertDialog，会报错误:Activity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@44f72ff0 that was originally added here
-             */
-        checkPgyerVersionUpgrade(LoginActivity.this, false);
-//        }
+        ctx = this;
+        ApiHelper.getAMapLocation(this);
+        assetsPath = FileUtil.dirPath(ctx, K.kHTMLDirName);
+        sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login_new);
 
@@ -88,32 +96,13 @@ public class LoginActivity extends BaseActivity {
         // 初始化监听
         initListener();
 
-
-        /*
-         *  基本目录结构
-         */
-//        makeSureFolder(mAppContext, K.kSharedDirName);
-//        makeSureFolder(mAppContext, K.kCachedDirName);
-
         /*
          * 显示记住用户名称
          */
-        usernameEditText.setText(mUserSP.getString("user_login_name", ""));
-
-        /*
-         *  当用户系统不在我们支持范围内时,发出警告。
-         */
-        if (Build.VERSION.SDK_INT > K.kMaxSdkVersion || Build.VERSION.SDK_INT < K.kMinSdkVersion) {
-            showVersionWarring();
-        }
+        usernameEditText.setText(mUserSP.getString("user_num", ""));
 
 //        View v = new View(this);
 //        actionSubmit(v);
-
-        /*
-         * 检测登录界面，版本是否升级
-         */
-        checkVersionUpgrade(assetsPath);
     }
 
     /**
@@ -137,7 +126,6 @@ public class LoginActivity extends BaseActivity {
         });
 
         // 用户名输入框 焦点监听 隐藏/显示 清空按钮
-
         usernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -246,12 +234,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-//
-//    private void hideKeyBoard() {
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
-//        imm.hideSoftInputFromWindow(usernameEditText.getWindowToken(), 0);
-//    }
 
     /**
      * 改变 EditText 正在编辑/不在编辑 下划线颜色
@@ -268,49 +250,18 @@ public class LoginActivity extends BaseActivity {
     }
 
     protected void onResume() {
-        mMyApp.setCurrentActivity(this);
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
         super.onResume();
     }
 
     protected void onDestroy() {
-        mWebView = null;
-        user = null;
         PgyUpdateManager.unregister();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        mMyApp.setCurrentActivity(null);
         finish();
         System.exit(0);
-    }
-
-    /*
-     * 系统版本警告
-     */
-    private void showVersionWarring() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("温馨提示")
-                .setMessage(String.format("本应用不支持当前系统版本【Android %s】,强制使用可能会出现异常喔,给您带来的不便深表歉意,我们会尽快适配的!", Build.VERSION.RELEASE))
-                .setPositiveButton("退出应用", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mMyApp.setCurrentActivity(null);
-                        finish();
-                        System.exit(0);
-                    }
-                })
-                .setNegativeButton("继续运行", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 返回 LoginActivity
-                    }
-                });
-        builder.show();
     }
 
     /*
@@ -318,15 +269,15 @@ public class LoginActivity extends BaseActivity {
      */
     public void actionSubmit(View v) {
         try {
-            usernameString = usernameEditText.getText().toString();
-            passwordString = passwordEditText.getText().toString();
+            userNum = usernameEditText.getText().toString();
+            userPass = passwordEditText.getText().toString();
 
-//            usernameString = "13162726850";
-//            passwordString = "1";
+//            userNum = "13162726850";
+//            userPass = "1";
 
-            mUserSP.edit().putString("user_login_name", usernameString).commit();
+            mUserSP.edit().putString("user_num", userNum).commit();
 
-            if (usernameString.isEmpty() || passwordString.isEmpty()) {
+            if (userNum.isEmpty() || userPass.isEmpty()) {
                 ToastUtils.INSTANCE.show(LoginActivity.this, "请输入用户名与密码");
                 return;
             }
@@ -339,37 +290,67 @@ public class LoginActivity extends BaseActivity {
                 }
             });
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final String info = ApiHelper.authentication(mAppContext, usernameString, URLs.MD5(passwordString));
-                    runOnUiThread(new Runnable() {
+
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+
+            // 上传设备信息
+            uploadDeviceInformation(packageInfo);
+
+            mUserSPEdit.putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
+            mUserSPEdit.putString("os_version", "android" + Build.VERSION.RELEASE).commit();
+            mUserSPEdit.putString("device_info", android.os.Build.MODEL).commit();
+            mUserSPEdit.putString("password", URLs.MD5(userPass)).commit();
+
+            // 登录验证
+            RetrofitUtil.getHttpService().userLogin(userNum, URLs.MD5(userPass), mUserSP.getString("location", "0,0"))
+                    .compose(new RetrofitUtil.CommonOptions<NewUser>())
+                    .subscribe(new CodeHandledSubscriber<NewUser>() {
+
                         @Override
-                        public void run() {
-                            if (info.compareTo(kSuccess) > 0 || info.compareTo(kSuccess) < 0) {
-                                if (mProgressDialog != null) {
-                                    mProgressDialog.dismiss();
-                                }
+                        public void onCompleted() {
+                        }
 
-                                /*
-                                 * 用户行为记录, 单独异常处理，不可影响用户体验
-                                 */
-                                try {
-                                    logParams = new JSONObject();
-                                    logParams.put(URLs.kAction, "unlogin");
-                                    logParams.put(URLs.kUserName, usernameString + "|;|" + passwordString);
-                                    logParams.put(URLs.kObjTitle, info);
-                                    ActionLogUtil.actionLoginLog(mAppContext, logParams);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                ToastUtils.INSTANCE.show(LoginActivity.this, info);
-                                return;
+                        /**
+                         * 登录请求失败
+                         * @param apiException
+                         */
+                        @Override
+                        public void onError(ApiException apiException) {
+                            if (mProgressDialog != null)
+                                mProgressDialog.dismiss();
+                            try {
+                                logParams = new JSONObject();
+                                logParams.put(URLs.kAction, "unlogin");
+                                logParams.put(URLs.kUserName, userNum + "|;|" + userPass);
+                                logParams.put(URLs.kObjTitle, apiException.getDisplayMessage());
+                                ActionLogUtil.actionLoginLog(ctx, logParams);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                            ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                        }
 
-                            SharedPreferences sharedPreferences = getSharedPreferences("loginToken", Context.MODE_PRIVATE);
-                            sharedPreferences.edit().putBoolean("loginToken", true).commit();
+                        /**
+                         * 登录成功
+                         * @param data 返回的数据
+                         */
+                        @Override
+                        public void onBusinessNext(NewUser data) {
 
+                            upLoadDevice(); //上传设备信息
+
+                            mUserSPEdit.putBoolean(URLs.kIsLogin, true).commit();
+
+                            mUserSPEdit.putString(kUserName, data.getData().getUser_name()).commit();
+                            mUserSPEdit.putString(kGroupId, data.getData().getGroup_id()).commit();
+                            mUserSPEdit.putString(kRoleId, data.getData().getRole_id()).commit();
+                            mUserSPEdit.putString(kUserId, data.getData().getUser_id()).commit();
+                            mUserSPEdit.putString(URLs.kRoleName, data.getData().getRole_name()).commit();
+                            mUserSPEdit.putString(URLs.kGroupName, data.getData().getGroup_name()).commit();
+                            mUserSPEdit.putString(kUserNum, data.getData().getUser_num()).commit();
+                            mUserSPEdit.putString(kCurrentUIVersion, "v2").commit();
+
+                            // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
                             if (getIntent().hasExtra("msgData")) {
                                 Bundle msgData = getIntent().getBundleExtra("msgData");
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -377,10 +358,8 @@ public class LoginActivity extends BaseActivity {
                                 intent.putExtra("msgData", msgData);
                                 LoginActivity.this.startActivity(intent);
                             } else {
-
-                                // 检测用户空间，版本是否升级
-                                assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
-                                checkVersionUpgrade(assetsPath);
+                                // 检测用户空间，版本是否升级版本是否升级
+                                FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath);
 
                                 // 跳转至主界面
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -388,13 +367,13 @@ public class LoginActivity extends BaseActivity {
                                 LoginActivity.this.startActivity(intent);
                             }
 
-                            /*
-                             * 用户行为记录, 单独异常处理，不可影响用户体验
-                             */
+                           /*
+                            * 用户行为记录, 单独异常处理，不可影响用户体验
+                            */
                             try {
                                 logParams = new JSONObject();
                                 logParams.put("action", "登录");
-                                ActionLogUtil.actionLog(mAppContext, logParams);
+                                ActionLogUtil.actionLog(ctx, logParams);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -405,13 +384,58 @@ public class LoginActivity extends BaseActivity {
                             finish();
                         }
                     });
-                }
-            }).start();
         } catch (Exception e) {
             e.printStackTrace();
             if (mProgressDialog != null) mProgressDialog.dismiss();
-            toast(e.getLocalizedMessage());
+            ToastUtils.INSTANCE.show(this, e.getLocalizedMessage());
         }
+    }
+
+    @NonNull
+    private void uploadDeviceInformation(PackageInfo packageInfo) {
+        mDeviceRequest = new DeviceRequest();
+        mDeviceRequest.setUser_num(userNum);
+        DeviceRequest.DeviceBean deviceBean = new DeviceRequest.DeviceBean();
+        deviceBean.setUuid(OpenUDID_manager.getOpenUDID());
+        deviceBean.setOs(Build.MODEL);
+        deviceBean.setName(Build.MODEL);
+        deviceBean.setOs_version(Build.VERSION.RELEASE);
+        deviceBean.setPlatform("android");
+        mDeviceRequest.setDevice(deviceBean);
+        mDeviceRequest.setApp_version(packageInfo.versionName);
+        mDeviceRequest.setBrowser(new WebView(this).getSettings().getUserAgentString());
+    }
+
+    /**
+     * 上传设备信息
+     */
+    private void upLoadDevice() {
+        //TODO: 上传定位信息
+
+        RetrofitUtil.getHttpService().deviceUpLoad(mDeviceRequest)
+                .compose(new RetrofitUtil.CommonOptions<Device>())
+                .subscribe(new CodeHandledSubscriber<Device>() {
+                    @Override
+                    public void onError(ApiException apiException) {
+                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                    }
+
+                    /**
+                     * 上传设备信息成功
+                     * @param data 返回的数据
+                     */
+                    @Override
+                    public void onBusinessNext(Device data) {
+                        mUserSPEdit.putString("device_uuid", data.getMResult().getDevice_uuid()).commit();
+                        mUserSPEdit.putBoolean("device_state", data.getMResult().getDevice_state()).commit();
+                        mUserSPEdit.putString("user_device_id", String.valueOf(data.getMResult().getUser_device_id())).commit();
+                        ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getMResult().getDevice_uuid());
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+                });
     }
 
     /**

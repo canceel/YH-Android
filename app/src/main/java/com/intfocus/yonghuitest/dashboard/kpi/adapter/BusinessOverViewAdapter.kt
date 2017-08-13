@@ -47,11 +47,10 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNumberCompare.typeface = mTypeface
-            holder.tvNumberCompareT.typeface = mTypeface
-            holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
-            holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
-            Log.i("testlog", itemData.data!!.high_light!!.arrow.toString())
-            if (itemData.data!!.high_light!!.compare.contains("%")) {
+        holder.tvNumberCompareT.typeface = mTypeface
+        holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+        holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
+        if (itemData.data!!.high_light!!.compare.contains("%")) {
             holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare.replace("%", "")
             holder.tvNumberCompareT.visibility = View.VISIBLE
         } else {
@@ -61,7 +60,7 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2
         holder.rlBusinessOverview.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.title!!, 1, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1, 1))
         }
     }
 

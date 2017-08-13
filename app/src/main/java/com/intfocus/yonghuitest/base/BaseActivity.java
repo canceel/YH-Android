@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -86,9 +87,8 @@ public class BaseActivity extends FragmentActivity {
     public DisplayMetrics displayMetrics;
     public boolean isWeiXinShared = false;
     public android.webkit.WebView mWebView;
-    public JSONObject user;
     public RelativeLayout animLoading;
-    public int userID = 0;
+    public String userID;
     public String urlString;
     public String assetsPath;
     public String urlStringForLoading;
@@ -99,6 +99,7 @@ public class BaseActivity extends FragmentActivity {
     public boolean isOffline = false;
     public ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> mUploadMessage1;
+    public SharedPreferences mUserSP;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -120,20 +121,13 @@ public class BaseActivity extends FragmentActivity {
         urlStringForDetecting = K.kBaseUrl;
         relativeAssetsPath = "assets";
         urlStringForLoading = loadingPath(kLoading);
+        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
 
-        String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
-        if ((new File(userConfigPath)).exists()) {
-            try {
-                user = FileUtil.readConfigFile(userConfigPath);
-                if (user.has(URLs.kIsLogin) && user.getBoolean(URLs.kIsLogin)) {
-                    userID = user.getInt("user_id");
-                    assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
-                    urlStringForDetecting = String.format(K.kDeviceStateAPIPath, K.kBaseUrl, user.getInt("user_device_id"));
-                    relativeAssetsPath = "../../Shared/assets";
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if (mUserSP.getBoolean(URLs.kIsLogin, false)) {
+            userID = mUserSP.getString("user_id", "0");
+            assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
+            urlStringForDetecting = String.format(K.kDeviceStateAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", ""));
+            relativeAssetsPath = "../../Shared/assets";
         }
     }
 
@@ -592,13 +586,12 @@ public class BaseActivity extends FragmentActivity {
 
                     PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     int currentVersionCode = packageInfo.versionCode;
-
                     JSONObject response = new JSONObject(result);
                     String message = response.getString("message");
 
                     JSONObject responseVersionJSON = response.getJSONObject(URLs.kData);
                     int newVersionCode = responseVersionJSON.getInt(kVersionCode);
-                    Log.i("1111", newVersionCode + "");
+
                     String newVersionName = responseVersionJSON.getString("versionName");
 
                     if (currentVersionCode >= newVersionCode) {
@@ -678,49 +671,7 @@ public class BaseActivity extends FragmentActivity {
         popupWindow.setFocusable(true);
     }
 
-    /**
-     * app升级后，清除缓存头文件
-     */
-    public void checkVersionUpgrade(String assetsPath) {
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionConfigPath = String.format("%s/%s", assetsPath, K.kCurrentVersionFileName);
 
-            String localVersion = "new-installer";
-            boolean isUpgrade = true;
-            if ((new File(versionConfigPath)).exists()) {
-                localVersion = FileUtil.readFile(versionConfigPath);
-                isUpgrade = !localVersion.equals(packageInfo.versionName);
-            }
-
-            if (isUpgrade) {
-                LogUtil.d("VersionUpgrade",
-                        String.format("%s => %s remove %s/%s", localVersion, packageInfo.versionName,
-                                assetsPath, K.kCachedHeaderConfigFileName));
-
-                /*
-                 * 用户报表数据js文件存放在公共区域
-                 */
-                String headerPath = String.format("%s/%s", sharedPath, K.kCachedHeaderConfigFileName);
-                File headerFile = new File(headerPath);
-                if (headerFile.exists()) {
-                    headerFile.delete();
-                }
-
-                FileUtil.writeFile(versionConfigPath, packageInfo.versionName);
-
-                // 强制消息配置，重新上传服务器
-                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(BaseActivity.this), K.kPushConfigFileName);
-                JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
-                pushJSON.put(K.kPushIsValid, false);
-                FileUtil.writeFile(pushConfigPath, pushJSON.toString());
-            }
-        } catch (PackageManager.NameNotFoundException | IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     protected void toast(String info, ToastColor toastColor) {
         ToastUtils.INSTANCE.show(this, info, toastColor);

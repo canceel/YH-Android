@@ -52,20 +52,6 @@ public class SettingListActivity extends BaseActivity {
 
     private void initListInfo(String type) {
         switch (type) {
-            case "基本信息" :
-                try {
-                    mItemNameList = new String[]{"用户名", "用户角色", "所属商行", "手机号码", "邮箱"};
-                    mItemContentList = new String[]{user.getString(URLs.kUserName),
-                                                    user.getString(URLs.kRoleName),
-                                                    user.getString(URLs.kGroupName),
-                                                    "暂未提供",
-                                                    "暂未提供",
-                                                    "arrow"};
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
-
             case "应用信息" :
                 PackageInfo packageInfo = null;
                 try {
@@ -88,18 +74,7 @@ public class SettingListActivity extends BaseActivity {
                 mItemNameList = new String[]{"消息推送", "关联的设备列表", "推送的消息列表"};
                 mItemContentList = new String[]{isPushOpened, "arrow", "arrow"};
                 break;
-            case "开发者选项" :
-                try {
-                    mItemNameList = new String[]{"报表缓存数据列表", "请求头缓存列表", "所属商行", "手机号码", "邮箱", "修改密码"};
-                    mItemContentList = new String[]{user.getString(URLs.kUserName),
-                            user.getString(URLs.kRoleName),
-                            user.getString(URLs.kGroupName),
-                            "暂未提供",
-                            "暂未提供",
-                            ""};
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
             default:
                 mItemNameList = new String[]{};
                 mItemContentList = new String[]{};
@@ -167,8 +142,7 @@ public class SettingListActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                String deviceTokenUrl = String.format(K.kDeviceTokenAPIPath, K.kBaseUrl, user.getString("user_num"));
+                                String deviceTokenUrl = String.format(K.kDeviceTokenAPIPath, K.kBaseUrl, mUserSP.getString("user_num", "0"));
                                 final Map<String, String> response = HttpUtil.httpGet(deviceTokenUrl, new HashMap<String, String>());
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -188,9 +162,6 @@ public class SettingListActivity extends BaseActivity {
                                         }
                                     }
                                 });
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
                         }
                     }).start();
                     break;

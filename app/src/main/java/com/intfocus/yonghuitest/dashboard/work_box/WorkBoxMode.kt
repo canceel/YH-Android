@@ -23,7 +23,7 @@ class WorkBoxMode(ctx: Context) : AbstractMode() {
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 
     override fun requestData() {
-        RetrofitUtil.getHttpService().getWorkBox(mUserSP.getInt(URLs.kGroupId, 0).toString(), mUserSP.getInt(URLs.kRoleId, 0).toString())
+        RetrofitUtil.getHttpService().getWorkBox(mUserSP.getString(URLs.kGroupId, "0"), mUserSP.getString(URLs.kRoleId, "0"))
                 .compose(RetrofitUtil.CommonOptions<WorkBoxResult>())
                 .subscribe(object : CodeHandledSubscriber<WorkBoxResult>() {
                     override fun onError(apiException: ApiException?) {

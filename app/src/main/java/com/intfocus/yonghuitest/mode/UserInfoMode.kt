@@ -61,8 +61,8 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             var gravatarImgPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
-            var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getInt(kUserId, 0).toString() + "icon", requestBody)
-            RetrofitUtil.getHttpService().userIconUpload(mUserSP.getInt(kUserDeviceId, 0), mUserSP.getInt(kUserId, 0), multiPartBody)
+            var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(kUserId, "0") + "icon", requestBody)
+            RetrofitUtil.getHttpService().userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"), multiPartBody)
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onBusinessNext(data: BaseResult?) {

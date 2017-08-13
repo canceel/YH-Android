@@ -122,18 +122,11 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     fun commitIssue2(issueInfo: IssueCommitInfo) {
         var mOkHttpClient = OkHttpClient()
 
-        var feedback = JSONObject()
-        var feedbackParams = JSONObject()
-        feedbackParams.put("content", issueInfo.issue_content)
-        feedbackParams.put("user_num", issueInfo.user_num)
-        feedbackParams.put("app_version", issueInfo.app_version)
-        feedbackParams.put("platform", issueInfo.platform)
-        feedbackParams.put("platform_version", issueInfo.platform_version)
-        feedback.put("feedback", feedbackParams)
-
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
+                .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.KFeedBack + K.ANDROID_API_KEY))
                 .addFormDataPart("content", issueInfo.issue_content)
+                .addFormDataPart("title", "生意人问题反馈")
                 .addFormDataPart("user_num", issueInfo.user_num)
                 .addFormDataPart("app_version", issueInfo.app_version)
                 .addFormDataPart("platform", issueInfo.platform)

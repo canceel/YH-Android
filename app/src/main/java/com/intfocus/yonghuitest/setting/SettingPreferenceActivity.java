@@ -21,7 +21,7 @@ import com.intfocus.yonghuitest.util.ToastUtils;
  */
 
 public class SettingPreferenceActivity extends BaseActivity {
-    private Switch mScreenLockSwitch, mScreenShotSwitch, mReportCopySwitch, mLandscapeBannerSwitch;
+    private Switch mScreenLockSwitch, mReportCopySwitch, mLandscapeBannerSwitch;
     private SharedPreferences mSharedPreferences;
     private Context mContext;
 
@@ -33,12 +33,10 @@ public class SettingPreferenceActivity extends BaseActivity {
         mContext = this;
 
         mScreenLockSwitch = (Switch) findViewById(R.id.switch_screenLock);
-        mScreenShotSwitch = (Switch) findViewById(R.id.switch_screenshot);
         mReportCopySwitch = (Switch) findViewById(R.id.switch_report_copy);
         mLandscapeBannerSwitch = (Switch) findViewById(R.id.switch_landscape_banner);
 
         mScreenLockSwitch.setOnCheckedChangeListener(mSwitchScreenLockListener);
-        mScreenShotSwitch.setOnCheckedChangeListener(mSwitchScreenShotListener);
         mReportCopySwitch.setOnCheckedChangeListener(mSwitchReportCopyListener);
         mLandscapeBannerSwitch.setOnCheckedChangeListener(mSwitchBannerListener);
     }
@@ -55,7 +53,6 @@ public class SettingPreferenceActivity extends BaseActivity {
     private void initSwitchPreference() {
         mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         mScreenLockSwitch.setChecked(mSharedPreferences.getBoolean("ScreenLock", false));
-        mScreenShotSwitch.setChecked(mSharedPreferences.getBoolean("ScreenShot", false));
         mReportCopySwitch.setChecked(mSharedPreferences.getBoolean("ReportCopy", false));
         mLandscapeBannerSwitch.setChecked(mSharedPreferences.getBoolean("Landscape", false));
     }
@@ -88,15 +85,6 @@ public class SettingPreferenceActivity extends BaseActivity {
         }
     };
 
-    /*
-     *  Switch ScreenShot 开关
-     */
-    private final CompoundButton.OnCheckedChangeListener mSwitchScreenShotListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mSharedPreferences.edit().putBoolean("ScreenShot", isChecked).commit();
-        }
-    };
 
     /*
      *  Switch Report Copy 开关

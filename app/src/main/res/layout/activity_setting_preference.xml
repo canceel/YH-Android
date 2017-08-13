@@ -65,25 +65,6 @@
 
         </RelativeLayout>
 
-
-        <RelativeLayout
-            style="@style/SettingGroupOptionSetting">
-
-            <TextView
-                style="@style/SettingKey"
-                android:text="微信分享长图"/>
-
-            <Switch
-                android:id="@+id/switch_screenshot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
-
-            <View style="@style/OptionSettingDivider"/>
-
-        </RelativeLayout>
-
         <RelativeLayout
             style="@style/SettingGroupOptionSetting"
 

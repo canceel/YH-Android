@@ -94,6 +94,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
+        getStoreList()
 
         var intent = intent
         if (intent.hasExtra("msgData")) {
@@ -182,11 +183,11 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
             builder.show()
             return
-        } else if (storeList != null) {
+        } else if (storeList == null) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
-                    .setPositiveButton("确认") { dialog, which -> }
+                    .setPositiveButton("确认") { _, _ -> }
             builder.show()
             return
         } else {

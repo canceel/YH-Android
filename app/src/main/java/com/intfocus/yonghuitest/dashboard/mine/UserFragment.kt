@@ -25,6 +25,7 @@ import com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult
 import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.mode.UserInfoMode
 import com.intfocus.yonghuitest.net.ApiException
@@ -112,18 +113,41 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun initView() {
-        mUserInfoString = mUserInfoSP.getString("UserInfoBean", "")
-        if (!mUserInfoString.equals("")) {
-            mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
-            tv_user_name.text = mUserInfo!!.user_name
-            tv_login_number.text = mUserInfo!!.login_duration
-            tv_report_number.text = mUserInfo!!.browse_report_count
-            tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
-            tv_user_role.text = mUserInfo!!.role_name
-            tv_mine_user_num_value.text = mUserInfo!!.user_num
-            tv_mine_user_group_value.text = mUserInfo!!.group_name
-            x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
-        }
+        var userNum = activity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        RetrofitUtil.getHttpService().getUserInfo(userNum)
+                .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
+                .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
+                    override fun onError(apiException: ApiException?) {
+                        ToastUtils.show(activity,apiException!!.displayMessage)
+                    }
+
+                    override fun onBusinessNext(mUserInfo: UserInfoResult?) {
+                        tv_user_name.text = mUserInfo!!.data!!.user_name
+                        tv_login_number.text = mUserInfo.data!!.login_duration
+                        tv_report_number.text = mUserInfo.data!!.browse_report_count
+                        tv_beyond_number.text = mUserInfo.data!!.surpass_percentage.toString()
+                        tv_user_role.text = mUserInfo.data!!.role_name
+                        tv_mine_user_num_value.text = mUserInfo.data!!.user_num
+                        tv_mine_user_group_value.text = mUserInfo.data!!.group_name
+                        x.image().bind(iv_user_icon, mUserInfo.data!!.gravatar, imageOptions)
+                    }
+
+                    override fun onCompleted() {
+                    }
+                })
+
+//        mUserInfoString = mUserInfoSP.getString("UserInfoBean", "")
+//        if (!mUserInfoString.equals("")) {
+//            mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
+//            tv_user_name.text = mUserInfo!!.user_name
+//            tv_login_number.text = mUserInfo!!.login_duration
+//            tv_report_number.text = mUserInfo!!.browse_report_count
+//            tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
+//            tv_user_role.text = mUserInfo!!.role_name
+//            tv_mine_user_num_value.text = mUserInfo!!.user_num
+//            tv_mine_user_group_value.text = mUserInfo!!.group_name
+//            x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
+//        }
         iv_user_icon.setOnClickListener { showIconSelectPopWindow(this.context) }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
         rl_issue.setOnClickListener { startIssueActivity() }

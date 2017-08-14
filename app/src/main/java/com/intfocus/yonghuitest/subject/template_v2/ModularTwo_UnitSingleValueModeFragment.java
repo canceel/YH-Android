@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
  */
 public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
     private static final String ARG_PARAM1 = "SingleValueParam";
+    public static String mCurrentParam;
     private String mParam1;
 
     private View rootView;
@@ -52,18 +53,20 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 
     public static ModularTwo_UnitSingleValueModeFragment newInstance(String param1) {
         ModularTwo_UnitSingleValueModeFragment fragment = new ModularTwo_UnitSingleValueModeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        fragment.setArguments(args);
+        mCurrentParam = param1;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//        }
+        mParam1 = mCurrentParam;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.intfocus.yonghuitest.data.response.BaseResult
  */
 
 class KpiResult : BaseResult() {
-
     @SerializedName("data")
     var data: List<KpiGroup>? = null
 }

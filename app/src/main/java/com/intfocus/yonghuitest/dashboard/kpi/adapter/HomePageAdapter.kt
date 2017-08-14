@@ -118,7 +118,7 @@ class HomePageAdapter(val context: Context,
                         tv_number_one_sub_title.text = themeItem.memo1
                         tv_number_one_sub.text = themeItem.data!!.high_light!!.compare
                         rl_kpi_number_one.setOnClickListener {
-                            EventBus.getDefault().post(DashboardItemBean(themeItem.target_url!!, themeItem.title!!, 1, 1))
+                            EventBus.getDefault().post(DashboardItemBean(themeItem.target_url!!, themeItem.report_title!!, 1, 1))
                         }
                         views!!.add(contentView)
                     }

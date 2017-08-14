@@ -24,7 +24,12 @@ import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
+import com.intfocus.yonghuitest.data.response.scanner.StoreItem
+import com.intfocus.yonghuitest.data.response.scanner.StoreListResult
 import com.intfocus.yonghuitest.db.OrmDBHelper
+import com.intfocus.yonghuitest.net.ApiException
+import com.intfocus.yonghuitest.net.CodeHandledSubscriber
+import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.scanner.BarCodeScannerActivity
 import com.intfocus.yonghuitest.subject.HomeTricsActivity
 import com.intfocus.yonghuitest.subject.SubjectActivity
@@ -53,7 +58,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
     private var mSharedPreferences: SharedPreferences? = null
     private var mTabView: Array<TabView>? = null
-    private var user: User? = null
     private var userID: Int = 0
     private var mApp: YHApplication? = null
     private var mViewPager: NoScrollViewPager? = null
@@ -65,6 +69,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var mAppContext: Context? = null
     private var mGson: Gson? = null
     lateinit var mUserSP: SharedPreferences
+    private var storeList: List<StoreItem>? = null
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
@@ -83,21 +88,17 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mAppContext = mApp!!.appContext
         mContext = this
         mGson = Gson()
-        initUser()
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         mDashboardFragmentAdapter = DashboardFragmentAdapter(supportFragmentManager)
         mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
-//        checkUserModifiedInitPassword() // 检测用户密码
-//        checkPgyerVersionUpgrade(this@DashboardActivity, false)
+        getStoreList()
 
         var intent = intent
         if (intent.hasExtra("msgData")) {
             handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
-        } else {
-//            HttpUtil.checkAssetsUpdated(mContext)
         }
     }
 
@@ -171,19 +172,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         builder.show()
     }
 
-    /*
-     * 初始化用户信息
-     */
-    private fun initUser() {
-        val userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName)
-        if (File(userConfigPath).exists()) {
-            user = mGson!!.fromJson(FileUtil.readConfigFile(userConfigPath).toString(), User::class.java)
-            if (user!!.isIs_login) {
-                userID = user!!.user_id
-            }
-        }
-    }
-
     fun startBarCodeActivity(v: View) {
         if (ContextCompat.checkSelfPermission(this@DashboardActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
@@ -195,11 +183,11 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
             builder.show()
             return
-        } else if (user!!.store_ids == null || user!!.store_ids.size == 0) {
+        } else if (storeList == null) {
             val builder = AlertDialog.Builder(this@DashboardActivity)
             builder.setTitle("温馨提示")
                     .setMessage("抱歉, 您没有扫码权限")
-                    .setPositiveButton("确认") { dialog, which -> }
+                    .setPositiveButton("确认") { _, _ -> }
             builder.show()
             return
         } else {
@@ -307,7 +295,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 用户编号
      */
     fun checkUserModifiedInitPassword() {
-        if (user!!.password != URLs.MD5(K.kInitPassword)) {
+        if (!mUserSP.getString("password", "").equals(URLs.MD5(K.kInitPassword))) {
             return
         }
         val alertDialog = AlertDialog.Builder(this@DashboardActivity)
@@ -323,6 +311,23 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         alertDialog.show()
     }
 
+    fun getStoreList() {
+        RetrofitUtil.getHttpService().getStoreList(mUserSP.getString("user_num", "0"))
+                .compose(RetrofitUtil.CommonOptions<StoreListResult>())
+                .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
+                    override fun onCompleted() {
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+                    }
+
+                    override fun onBusinessNext(data: StoreListResult) {
+                        if (data.data != null && data.data!!.size > 0) {
+                            storeList = data.data
+                        }
+                    }
+                })
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNoticeItemEvent(click: NoticeBoardRequest) {
@@ -352,7 +357,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     fun pageLink(mBannerName: String, link: String, objectId: Int, objectType: Int) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
-                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getInt(URLs.kGroupId, 0)
+                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
                 val reportID = TextUtils.split(link, "report/")[1].split("/")[0]
                 var urlString: String
                 val intent: Intent
@@ -382,7 +387,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
                     link.indexOf("template/3") > 0 -> {
                         intent = Intent(this, HomeTricsActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
@@ -395,7 +400,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     }
                     link.indexOf("template/5") > 0 -> {
                         intent = Intent(this, TableActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)

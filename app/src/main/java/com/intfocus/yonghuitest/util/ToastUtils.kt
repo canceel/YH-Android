@@ -45,6 +45,10 @@ object ToastUtils {
         mToast!!.show()
     }
 
+    fun showDefault(ctx: Context, info: String) {
+        Toast.makeText(ctx, info, Toast.LENGTH_SHORT).show()
+    }
+
     fun cancel() {
         if (mToast != null) {
             mToast!!.cancel()

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
+import com.intfocus.yonghuitest.subject.template_v2.entity.DataHolder;
 import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.Event;
@@ -41,15 +42,18 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modular_two_subtable);
+        getSupportActionBar().hide();
         x.view().inject(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide().setDuration(500));
             getWindow().setExitTransition(new Slide().setDuration(500));
         }
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String titel = bundle.getString("Title");
-            subData = bundle.getString("Data");
+//            subData = bundle.getString("Data");
+            subData = DataHolder.getInstance().getData();
             suRootID = bundle.getInt("suRootID");
             title.setText(titel);
             if (StringUtil.isEmpty(subData))

@@ -167,7 +167,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     private TableBarChartAdapter tableBarChartAdapter;
     private Context mContext;
     private String[] mColorList;
-    private int groupID;
+    private String groupID;
     private String reportID;
     private String mBannerName;
     private int objectID, objectType;
@@ -190,13 +190,13 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         mColorList = new String[]{"#F2836B", "#F2836B", "#F2E1AC", "#F2E1AC", "#63A69F", "#63A69F"};
 
         Intent intent = getIntent();
-        groupID = intent.getIntExtra("groupID", -1);
+        groupID = intent.getStringExtra("groupID");
         reportID = intent.getStringExtra("reportID");
         objectID = intent.getIntExtra(URLs.kObjectId, -1);
         objectType = intent.getIntExtra(URLs.kObjectType, -1);
         mBannerName = intent.getStringExtra(kBannerName);
         tvBannerName.setText(mBannerName);
-        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json", K.kBaseUrl, groupID, 5, reportID);
+        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json", K.kBaseUrl, groupID, 5, reportID);
         new LoadReportData().execute();
     }
 
@@ -243,9 +243,9 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         @Override
         protected String doInBackground(String... params) {
             String response = null;
-            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", String.format("%d", groupID), 5, reportID);
+            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 5, reportID);
             String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
-            boolean dataState = ApiHelper.reportJsonData(mContext, String.format("%d", groupID), "5", reportID);
+            boolean dataState = ApiHelper.reportJsonData(mContext, groupID, "5", reportID);
             if (dataState || new File(jsonFilePath).exists()) {
                 response = FileUtil.readFile(jsonFilePath);
             }

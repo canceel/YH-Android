@@ -166,26 +166,26 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: InstituteRquest) {
-        refresh_layout.finishRefreshing()
-        refresh_layout.finishLoadmore()
-        hideLoading()
-        if (result.isSuccess) {
-            totalPage = result.instittuteListBean!!.page!!.totalPage
-            if (page == 1 && datas != null) {
-                datas!!.clear()
-            }
-
-            if (datas == null) {
-                datas = result.instittuteListBean!!.page!!.list.toMutableList()
-            } else {
-                datas!!.addAll(result.instittuteListBean!!.page!!.list)
-            }
-            adapter.setData(datas)
-            isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
-        } else {
-            ToastUtils.show(context, result.errorMsg)
-        }
+//        refresh_layout.finishRefreshing()
+//        refresh_layout.finishLoadmore()
+//        hideLoading()
+//        if (result.isSuccess) {
+//            totalPage = result.instittuteListBean!!.page!!.totalPage
+//            if (page == 1 && datas != null) {
+//                datas!!.clear()
+//            }
+//
+//            if (datas == null) {
+//                datas = result.instittuteListBean
+//            } else {
+//                datas!!.addAll(result.instittuteListBean!!.page!!.list)
+//            }
+//            adapter.setData(datas)
+//            isEmpty = datas == null || datas!!.size == 0
+//            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
+//        } else {
+//            ToastUtils.show(context, result.errorMsg)
+//        }
     }
 
     /**

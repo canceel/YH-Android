@@ -3,12 +3,7 @@ package com.intfocus.yonghuitest.dashboard.work_box
 /**
  * Created by liuruilin on 2017/7/28.
  */
-class WorkBoxBean {
-    var code: Int = 0
-    var message: String? = null
-    var data: List<WorkBoxItemBean>? = null
-    
-    inner open class WorkBoxItemBean {
+class WorkBoxItem {
         var id: Int = 0
         var name: String? = null
         var category: String? = null
@@ -22,5 +17,4 @@ class WorkBoxBean {
         var group_order: Int = 0
         var item_order: Int = 0
         var created_at: String? = null
-    }
 }

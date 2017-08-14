@@ -169,7 +169,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                     }
                     link.indexOf("template/3") > 0 -> {
                         intent = Intent(this, HomeTricsActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
@@ -182,7 +182,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                     }
                     link.indexOf("template/5") > 0 -> {
                         intent = Intent(this, TableActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%d/template/%s/report/%s/json",
+                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                                 K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)

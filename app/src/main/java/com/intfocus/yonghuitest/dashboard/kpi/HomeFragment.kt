@@ -26,7 +26,6 @@ import org.xutils.x
  * Created by CANC on 2017/7/27.
  */
 class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
-
     lateinit var titleTop: LinearLayout
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
@@ -43,8 +42,8 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
         setRefreshLayout()
         mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         userId = mUserSP.getString(URLs.kUserNum, "")
-        roleId = mUserSP.getInt(URLs.kRoleId, 0).toString()
-        groupId = mUserSP.getInt(URLs.kGroupId, 0).toString()
+        roleId = mUserSP.getString(URLs.kRoleId, "0")
+        groupId = mUserSP.getString(URLs.kGroupId, "0")
         initView()
         getData(true)
         return mView

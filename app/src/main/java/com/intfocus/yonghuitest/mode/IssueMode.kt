@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.dashboard.mine.bean.*
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitInfo
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueCommitRequest
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueListBean
+import com.intfocus.yonghuitest.dashboard.mine.bean.IssueListRequest
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
@@ -121,18 +123,11 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     fun commitIssue2(issueInfo: IssueCommitInfo) {
         var mOkHttpClient = OkHttpClient()
 
-        var feedback = JSONObject()
-        var feedbackParams = JSONObject()
-        feedbackParams.put("content", issueInfo.issue_content)
-        feedbackParams.put("user_num", issueInfo.user_num)
-        feedbackParams.put("app_version", issueInfo.app_version)
-        feedbackParams.put("platform", issueInfo.platform)
-        feedbackParams.put("platform_version", issueInfo.platform_version)
-        feedback.put("feedback", feedbackParams)
-
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
+                .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.KFeedBack + K.ANDROID_API_KEY))
                 .addFormDataPart("content", issueInfo.issue_content)
+                .addFormDataPart("title", "生意人问题反馈")
                 .addFormDataPart("user_num", issueInfo.user_num)
                 .addFormDataPart("app_version", issueInfo.app_version)
                 .addFormDataPart("platform", issueInfo.platform)
@@ -140,12 +135,12 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
         if (!fileList.isEmpty()) {
             for ((i, file) in fileList.withIndex()) {
-                requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
+                requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("image/*"), file))
             }
         }
 
         val request = Request.Builder()
-                .url(String.format("%s/api/v1/feedback", K.kBaseUrl))
+                .url(K.kBaseUrl + K.KFeedBack)
                 .post(requestBody.build())
                 .build()
 
@@ -160,12 +155,21 @@ class IssueMode(var ctx: Context) : AbstractMode() {
             }
 
             override fun onResponse(call: Call?, response: Response?) {
-                var request = IssueCommitRequest(true, "提交成功")
-                EventBus.getDefault().post(request)
+                if (response!!.isSuccessful) {
+                    var request = IssueCommitRequest(true, "提交成功")
+                    EventBus.getDefault().post(request)
 
-                var logParams = JSONObject()
-                logParams.put(URLs.kAction, "点击/问题反馈/成功")
-                ActionLogUtil.actionLog(ctx, logParams)
+                    var logParams = JSONObject()
+                    logParams.put(URLs.kAction, "点击/问题反馈/成功")
+                    ActionLogUtil.actionLog(ctx, logParams)
+                } else {
+                    var request = IssueCommitRequest(false, "提交失败")
+                    EventBus.getDefault().post(request)
+
+                    var logParams = JSONObject()
+                    logParams.put(URLs.kAction, "点击/问题反馈/失败")
+                    ActionLogUtil.actionLog(ctx, logParams)
+                }
             }
         })
 

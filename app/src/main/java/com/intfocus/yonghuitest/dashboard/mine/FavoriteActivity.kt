@@ -14,10 +14,8 @@ import com.intfocus.yonghuitest.data.response.article.ArticleResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.ErrorUtils
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.subject.WebApplicationActivity
+import com.intfocus.yonghuitest.util.*
 import com.intfocus.yonghuitest.view.CommonPopupWindow
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
@@ -26,7 +24,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
-    lateinit var userId: String
+    lateinit var userNum: String
     lateinit var statusMap: MutableMap<String, String>
     lateinit var queryMap: MutableMap<String, String>
 
@@ -34,7 +32,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
         setRefreshLayout()
-        userId = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        userNum = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
         init()
     }
 
@@ -71,7 +69,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
             showLoading()
         }
-        queryMap.put("user_num", userId)
+        queryMap.put("user_num", userNum)
         queryMap.put("page", page.toString())
         queryMap.put("limit", pageSize.toString())
         RetrofitUtil.getHttpService().getMyFavouritedList(queryMap)
@@ -122,7 +120,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         }
         showLoading()
         var body = RequestFavourite()
-        body.user_num = userId
+        body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
         RetrofitUtil.getHttpService().articleOperating(body)
@@ -143,12 +141,12 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 })
     }
 
-
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, InstituteContentActivity::class.java)
+        var intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent.putExtra("id", instituteDataBean!!.acticleId.toString())
-        intent.putExtra("title", instituteDataBean!!.title.toString())
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.acticleId.toString())
+        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        intent.putExtra(URLs.kLink, link)
         startActivity(intent)
     }
 

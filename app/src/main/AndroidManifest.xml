@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="578"
-          android:versionName="3.0.28">
+          android:versionCode="580"
+          android:versionName="3.0.30">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -195,7 +195,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name=".StoreSelectorActivity"
+            android:name=".scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->

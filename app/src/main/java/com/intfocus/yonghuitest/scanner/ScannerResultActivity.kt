@@ -18,7 +18,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.PopupWindow
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.StoreSelectorActivity
 import com.intfocus.yonghuitest.util.FileUtil
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs

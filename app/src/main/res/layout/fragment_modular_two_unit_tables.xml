@@ -5,15 +5,22 @@
     android:layout_marginTop="@dimen/space_default"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fl_mdetal_table_title_container"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:background="@color/co10_syr"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_default_medium" />
 
     <FrameLayout
+        android:id="@+id/fl_mdetal_table_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_default_medium"
+        android:background="@color/co10_syr"
+        android:visibility="gone" />
+
+    <FrameLayout
         android:id="@+id/fl_mdetal_table_cont_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/space_default"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

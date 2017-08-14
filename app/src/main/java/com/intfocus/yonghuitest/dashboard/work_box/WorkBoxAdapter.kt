@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.DashboardItemBean
-import com.intfocus.yonghuitest.util.DisplayUtil
 import com.zbl.lib.baseframe.utils.PhoneUtil
 import org.greenrobot.eventbus.EventBus
 import org.xutils.x
@@ -15,7 +14,7 @@ import org.xutils.x
 /**
  * Created by liuruilin on 2017/7/28.
  */
-class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxBean.WorkBoxItemBean>?) : BaseAdapter() {
+class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / 3, PhoneUtil.getScreenWidth(ctx) / 3)
 

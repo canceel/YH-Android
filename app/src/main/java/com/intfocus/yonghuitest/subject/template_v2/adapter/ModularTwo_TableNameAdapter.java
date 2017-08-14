@@ -78,13 +78,13 @@ public class ModularTwo_TableNameAdapter extends BaseAdapter {
 
         ModularTwo_UnitTableEntity.TableRowEntity entity = ltdata.get(position);
 
-        if (StringUtil.isEmpty(entity.sub_data)) {
-            viewHolder.tv_name.setTextColor(defauteColor);
+        if (entity.sub_data.equals("[]")) {
             viewHolder.img_dot.setVisibility(View.INVISIBLE);
+            viewHolder.tv_name.setTextColor(defauteColor);
         } else {
-            viewHolder.tv_name.setTextColor(hasSubColor);
-            viewHolder.img_dot.setVisibility(View.VISIBLE);
-        }
+        viewHolder.tv_name.setTextColor(hasSubColor);
+        viewHolder.img_dot.setVisibility(View.VISIBLE);
+    }
         viewHolder.tv_name.setText(entity.main_data[0]);
         return convertView;
     }

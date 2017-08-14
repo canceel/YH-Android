@@ -621,7 +621,7 @@ public class HttpUtil {
      * to do
      */
     public static void checkAssetsUpdated(final Context context, String type) {
-        checkAssetUpdated(context, URLs.kAssets, false, type);
+//        checkAssetUpdated(context, URLs.kAssets, false, type);
         checkAssetUpdated(context, URLs.kLoading, false, type);
         checkAssetUpdated(context, URLs.kFonts, true, type);
         checkAssetUpdated(context, URLs.kImages, true, type);

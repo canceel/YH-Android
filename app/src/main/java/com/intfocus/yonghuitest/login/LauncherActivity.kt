@@ -104,7 +104,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                          * stylesheets_md5 : 4b5b98d9ad460a67e0943805e2be17c9
                          * advertisement_md5 : 0239802a086466ec31d566ca910da0c9
                          */
-                        mAssetsSPEdit.putString("assets_md5", assetsMD5s.assets_md5).commit()
+//                        mAssetsSPEdit.putString("assets_md5", assetsMD5s.assets_md5).commit()
                         mAssetsSPEdit.putString("loading_md5", assetsMD5s.loading_md5).commit()
                         mAssetsSPEdit.putString("fonts_md5", assetsMD5s.fonts_md5).commit()
                         mAssetsSPEdit.putString("images_md5", assetsMD5s.images_md5).commit()

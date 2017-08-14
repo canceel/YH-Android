@@ -83,6 +83,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                 showLoading()
             }
         }
+
         RetrofitUtil.getHttpService().getHomeIndex(queryMap)
                 .compose(RetrofitUtil.CommonOptions<KpiResult>())
                 .subscribe(object : CodeHandledSubscriber<KpiResult>() {
@@ -100,6 +101,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                         if (homeDatas == null) {
                             homeDatas = ArrayList()
                         }
+
                         homeDatas!!.clear()
                         var datas = data.data
                         if (datas != null) {

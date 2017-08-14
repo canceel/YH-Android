@@ -740,12 +740,12 @@ public class FileUtil {
                  *  不一致时，则删除原解压后文件夹，重新解压 zip
                  */
                 FileUtil.checkAssets(ctx, URLs.kAssets, false);
-                FileUtil.checkAssets(ctx, URLs.kLoading, false);
-                FileUtil.checkAssets(ctx, URLs.kFonts, true);
-                FileUtil.checkAssets(ctx, URLs.kImages, true);
-                FileUtil.checkAssets(ctx, URLs.kIcons, true);
-                FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
-                FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
+//                FileUtil.checkAssets(ctx, URLs.kLoading, false);
+//                FileUtil.checkAssets(ctx, URLs.kFonts, true);
+//                FileUtil.checkAssets(ctx, URLs.kImages, true);
+//                FileUtil.checkAssets(ctx, URLs.kIcons, true);
+//                FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
+//                FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
 
             if (type.equals("cache-clean")) {
                 if (!HttpUtil.isConnected(ctx)) {

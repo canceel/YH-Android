@@ -50,12 +50,12 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationStart(p0: Animation?) {
+        checkAssetsIsUpdata(ctx)
     }
 
     fun enter() {
         val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
         if (mSettingSP!!.getBoolean("ScreenLock", false)) {
-            checkAssetsIsUpdata(ctx)
             intent = Intent(this, ConfirmPassCodeActivity::class.java)
             intent.putExtra("is_from_login", true)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -69,7 +69,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             finish()
         } else {
-            checkAssetsIsUpdata(ctx)
             intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
             this.startActivity(intent)

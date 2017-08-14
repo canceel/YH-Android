@@ -115,7 +115,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 推送消息处理
      */
     fun handlePushMessage(message: String) {
-        Log.i("testlog", message)
         var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
         pushMessage.body_title = intent.getBundleExtra("msgData").getString("message_body_title")
         pushMessage.body_text = intent.getBundleExtra("msgData").getString("message_body_text")

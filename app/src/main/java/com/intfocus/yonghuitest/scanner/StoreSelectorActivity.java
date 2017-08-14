@@ -88,7 +88,6 @@ public class StoreSelectorActivity extends BaseActivity {
                                 }
                             }
 
-
                             /*
                              * 搜索框初始化
                              */
@@ -140,7 +139,6 @@ public class StoreSelectorActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     /*
@@ -154,7 +152,10 @@ public class StoreSelectorActivity extends BaseActivity {
                 String selectedItem = mSelector.getText().toString();
                 for (int i = 0; i < dataList.size(); i++) {
                     if (dataList.get(i).getName().equals(selectedItem)) {
-                        cachedJSON.put(URLs.kStore, dataList.get(i));
+                        JSONObject storeJson = new JSONObject();
+                        storeJson.put("id", dataList.get(i).getId());
+                        storeJson.put("name", dataList.get(i).getName());
+                        cachedJSON.put(URLs.kStore, storeJson);
                         FileUtil.writeFile(cachedPath, cachedJSON.toString());
                     }
                 }
@@ -179,21 +180,24 @@ public class StoreSelectorActivity extends BaseActivity {
 
     public class ListArrayAdapter extends ArrayAdapter<String> {
         private int resourceId;
+        private List<String> items;
 
         public ListArrayAdapter(Context context, int textViewResourceId, List<String> items) {
             super(context, textViewResourceId, items);
             this.resourceId = textViewResourceId;
+            this.items = items;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            String item = getItem(position).trim();
+            String item = items.get(position).trim();
             LinearLayout listItem = new LinearLayout(getContext());
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
             vi.inflate(resourceId, listItem, true);
             TextView viewItem = (TextView) listItem.findViewById(R.id.reportSelectorItem);
             viewItem.setText(item);
+            viewItem.setTextColor(getResources().getColor(R.color.black));
             viewItem.setBackgroundColor(Color.WHITE);
 
             return listItem;

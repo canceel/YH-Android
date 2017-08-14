@@ -56,7 +56,7 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         viewTag.rlItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 3, 3))
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 3))
         }
 
         return convertView

@@ -328,7 +328,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             llCopyLinkl.setVisibility(View.VISIBLE);
         }
         if (isSupportSearch) {
-            llShaixuan.setVisibility(View.VISIBLE);
+            llShaixuan.setVisibility(View.GONE);
         }
         //设置弹出框的宽度和高度
         popupWindow = new PopupWindow(contentView,

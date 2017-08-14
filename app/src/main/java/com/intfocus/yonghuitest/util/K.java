@@ -31,8 +31,8 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kBarCodeScanAPIPath = "%s/api/v1/group/%s/role/%s/user/%s/store/%s/barcode_scan?code_info=%s&code_type=%s";
     public final static String kBarCodeScanAPIViewPath = "%s/mobile/v2/store/%s/barcode/%s/view";
     public final static String kBarCodeScanAPIDataPath = "%s/mobile/v2/store/%s/barcode/%s/attachment";
-    public final static String kDownloadAssetsAPIPath = "%s/api/v1/download/%s.zip";
-    public final static String kDeviceTokenAPIPath = "%s/api/v1/user/%s/devices";
+//    public final static String kDownloadAssetsAPIPath = "%s/api/v1/download/%s.zip";
+//    public final static String kDeviceTokenAPIPath = "%s/api/v1/user/%s/devices";
     public final static String kDeleteDeviceIdAPIPath = "%s/api/v1/android/%s/logout";
 
     /**
@@ -147,5 +147,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KFeedBack = "/api/v1.1/feedback"; //提交反馈
     public final static String KAssetsMD5 = "/api/v1.1/assets/md5"; //静态资源MD5
     public final static String KPushToken = "/api/v1.1/device/push_token"; //
-
+    public final static String kDownloadAssetsAPIPath = "%s/api/v1.1/download/assets?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=%s.zip"; //下载静态资源
+    public final static String kDeviceTokenAPIPath = "/api/v1.1/user/devices";  //设备列表
+    public final static String kNewUserIconUploadPath = "/api/v1.1/upload/gravatar";
 }

@@ -15,18 +15,12 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.SimpleListAdapter;
-import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.ToastColor;
-import com.intfocus.yonghuitest.util.URLs;
 import com.umeng.message.PushAgent;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by liuruilin on 2017/3/29.
@@ -139,31 +133,31 @@ public class SettingListActivity extends BaseActivity {
                     break;
 
                 case "关联的设备列表":
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                                String deviceTokenUrl = String.format(K.kDeviceTokenAPIPath, K.kBaseUrl, mUserSP.getString("user_num", "0"));
-                                final Map<String, String> response = HttpUtil.httpGet(deviceTokenUrl, new HashMap<String, String>());
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (response.containsKey("code") && response.get("code").equals("200")){
-                                            Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response.get("body"));
-                                                intent.putExtra("response", jsonObject.getString("devices"));
-                                                intent.putExtra("title", "关联的设备列表");
-                                                startActivity(intent);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }else {
-                                            toast("获取关联的设备列表失败");
-                                        }
-                                    }
-                                });
-                        }
-                    }).start();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                                String deviceTokenUrl = String.format(K.kDeviceTokenAPIPath, K.kBaseUrl, mUserSP.getString("user_num", "0"));
+//                                final Map<String, String> response = HttpUtil.httpGet(deviceTokenUrl, new HashMap<String, String>());
+//                                runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if (response.containsKey("code") && response.get("code").equals("200")){
+//                                            Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
+//                                            try {
+//                                                JSONObject jsonObject = new JSONObject(response.get("body"));
+//                                                intent.putExtra("response", jsonObject.getString("devices"));
+//                                                intent.putExtra("title", "关联的设备列表");
+//                                                startActivity(intent);
+//                                            } catch (JSONException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }else {
+//                                            toast("获取关联的设备列表失败");
+//                                        }
+//                                    }
+//                                });
+//                        }
+//                    }).start();
                     break;
 
                 case "推送的消息列表":

@@ -12,16 +12,10 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
-import com.intfocus.yonghuitest.login.LoginActivity;
-import com.intfocus.yonghuitest.util.HttpUtil;
-import com.intfocus.yonghuitest.util.K;
 
-import org.json.JSONException;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by liuruilin on 2017/3/28.
@@ -101,40 +95,5 @@ public class SettingActivity extends BaseActivity {
             }
         }
     };
-
-    /*
-     * 退出登录
-     */
-    public void loginOut(View v) {
-        // 判断有无网络
-        if (!isNetworkConnected(this)) {
-            toast("未连接网络, 无法退出");
-            return;
-        }
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putBoolean("ScreenLock", false);
-        mEditor.commit();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                    String postUrl = String.format(K.kDeleteDeviceIdAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", "0"));
-                    final Map<String, String> response = HttpUtil.httpPost(postUrl, new HashMap());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (response.get("code").equals("200")) {
-                                modifiedUserConfig(false);
-                                Intent intent = new Intent();
-                                intent.setClass(SettingActivity.this, LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else {
-                                toast(response.get("body"));
-                            }
-                        }
-                    });
-            }
-        }).start();
-    }
 
 }

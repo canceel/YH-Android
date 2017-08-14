@@ -27,7 +27,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -38,66 +37,69 @@ import rx.Observable;
 
 public interface HttpService {
 
-    @POST (K.kActionLog)
-    Observable<BaseResult> pushActionLog();
-
     /**
      * 推送 push_token
      * @param uuid
      * @param pushToken
      * @return
      */
-    @POST (K.KPushToken)
+    @POST(K.KPushToken)
     Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
 
     /**
      * 获取AssetsMD5
+     *
      * @return
      */
-    @GET (K.KAssetsMD5)
+    @GET(K.KAssetsMD5)
     Observable<AssetsResult> getAssetsMD5();
 
     /**
      * 公告预警详情
+     *
      * @param noticeId
      * @param userNum
      * @return
      */
-    @GET (K.KNoticeContent)
+    @GET(K.KNoticeContent)
     Observable<NoticeContentResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
 
     /**
      * 发表评论
+     *
      * @param commentBody
      * @return
      */
-    @POST (K.KComment)
+    @POST(K.KComment)
     Observable<BaseResult> submitComment(@Body CommentBody commentBody);
 
     /**
      * 工具箱页
+     *
      * @param groupId
      * @param roleId
      * @return
      */
-    @GET (K.KWorkBoxList)
+    @GET(K.KWorkBoxList)
     Observable<WorkBoxResult> getWorkBox(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 报表页面列表
+     *
      * @param groupId
      * @param roleId
      * @return
      */
-    @GET (K.KReportList)
+    @GET(K.KReportList)
     Observable<ReportListResult> getReportList(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 门店列表
+     *
      * @param userNum
      * @return
      */
-    @GET (K.KStoreList)
+    @GET(K.KStoreList)
     Observable<StoreListResult> getStoreList(@Query("user_num") String userNum);
 
     /**
@@ -106,27 +108,29 @@ public interface HttpService {
      * @param userNum
      * @return
      */
-    @GET (K.KUserInfo)
+    @GET(K.KUserInfo)
     Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 
     /**
      * 获取概况页公告列表
      * /api/v1.1/user/notifications
+     *
      * @param groupId
      * @param roleId
      * @return
      */
-    @GET (K.KNotifications)
+    @GET(K.KNotifications)
     Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 扫码结果
      * {{host}}/api/v1.1/scan/barcode?api_token=123&store_id=123&code_info=123
+     *
      * @param storeId
      * @param codeInfo
      * @return
      */
-    @GET (K.KScannerResult)
+    @GET(K.KScannerResult)
     Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
 
     /**
@@ -195,37 +199,21 @@ public interface HttpService {
 
     /**
      * 头像上传
+     *
      * @param deviceId
-     * @param userId
+     * @param user_num
      * @param file
      * @return
      */
     @Multipart
-    @POST(K.kUserIconUploadPath)
-    Observable<BaseResult> userIconUpload(@Path("deviceId") String deviceId, @Path("userId") String userId, @Part MultipartBody.Part file);
-
-    /**
-     * 问题反馈上传
-     * "api_token": "a2d37407a3704b850c728da5fbdc6c5b",
-     * "user_num": 13,
-     * "title": "test",
-     * "content": "13564379606",
-     * "app_version": "ios123",
-     * "platform": "ios",
-     * "platform_version": "ios 9.0"
-     * @param
-     * @param
-     * @param file
-     * @return
-     */
-    @Multipart
-    @POST(K.kUserIconUploadPath)
-    Observable<BaseResult> submitFeedback(@Path("user_num") String userNum, @Path("title") String title, @Path("content") String content, @Path("app_version") String appVersion, @Path("platform") String platform, @Path("platform_version") String platformVersion, @Part MultipartBody.Part file);
+    @POST(K.kNewUserIconUploadPath)
+    Observable<BaseResult> userIconUpload(@Query("device_id") String deviceId, @Query("user_num") String user_num, @Part MultipartBody.Part file);
 
     /**
      * 登录post请求
-     * @param userNum　用户名
-     * @param password　密码
+     *
+     * @param userNum  　用户名
+     * @param password 　密码
      * @return
      */
     @POST(K.KNewLogin)
@@ -234,7 +222,7 @@ public interface HttpService {
     /**
      * 上传设备信息
      *
-     * @param deviceRequest　设备信息
+     * @param deviceRequest 　设备信息
      * @return
      */
     @POST(K.KNewDevice)
@@ -243,7 +231,7 @@ public interface HttpService {
     /**
      * 退出登录
      *
-     * @param userDeviceId　
+     * @param userDeviceId
      * @return
      */
     @POST(K.KNewLogout)
@@ -252,8 +240,8 @@ public interface HttpService {
     /**
      * 更新密码
      *
-     * @param userNum　用户名
-     * @param newPwd　新密码
+     * @param userNum 　用户名
+     * @param newPwd  　新密码
      * @return
      */
     @POST(K.KNewUpdataPwd)
@@ -261,8 +249,9 @@ public interface HttpService {
 
     /**
      * 重置密码
-     * @param userNum　用户名
-     * @param mobile　手机号
+     *
+     * @param userNum 　用户名
+     * @param mobile  　手机号
      * @return
      */
     @POST(K.KNewResetPwd)

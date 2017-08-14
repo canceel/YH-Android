@@ -2,10 +2,8 @@ package com.intfocus.yonghuitest.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,7 +13,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.intfocus.yonghuitest.constant.Urls;
 
-import org.OpenUDID.OpenUDID_manager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -33,108 +29,97 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
-import static com.intfocus.yonghuitest.util.K.kFontsMd5;
-import static com.intfocus.yonghuitest.util.K.kIconsMd5;
-import static com.intfocus.yonghuitest.util.K.kImagesMd5;
-import static com.intfocus.yonghuitest.util.K.kInfo;
-import static com.intfocus.yonghuitest.util.K.kUserDeviceId;
-import static com.intfocus.yonghuitest.util.K.kUserId;
-import static com.intfocus.yonghuitest.util.K.kUserName;
-import static com.intfocus.yonghuitest.util.URLs.kGroupId;
-import static com.intfocus.yonghuitest.util.URLs.kRoleId;
-import static com.intfocus.yonghuitest.util.URLs.kUserNum;
 
 public class ApiHelper {
     /*
      * 用户登录验证
      * params: {device: {name, platform, os, os_version, uuid}}
      */
-    public static String authentication(Context context, String username, String password) {
-        String responseState = "success", urlString = String.format(K.kUserAuthenticateAPIPath, K.kBaseUrl, "android", username, password);
-        SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
-        try {
-            JSONObject device = new JSONObject();
-            device.put("name", android.os.Build.MODEL);
-            device.put("platform", "android");
-            device.put("os", android.os.Build.MODEL);
-            device.put("os_version", Build.VERSION.RELEASE);
-            device.put("uuid", OpenUDID_manager.getOpenUDID());
-
-            JSONObject params = new JSONObject();
-            params.put("device", device);
-            params.put("coordinate", mUserSP.getString("location", "0,0"));
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
-
-            mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
-            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
-            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
-
-            Log.i("DeviceParams", params.toString());
-
-            Map<String, String> response = HttpUtil.httpPost(urlString, params);
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
-            JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
-            userJSON.put(URLs.kPassword, password);
-            userJSON.put(URLs.kIsLogin, response.get(URLs.kCode).equals("200"));
-
-            if (response.get(URLs.kCode).equals("400")) {
-                return "请检查网络环境";
-            } else if (response.get(URLs.kCode).equals("401")) {
-                return new JSONObject(response.get(URLs.kBody)).getString(kInfo);
-            } else if (response.get(URLs.kCode).equals("408")) {
-                return "连接超时";
-            } else if (!response.get(URLs.kCode).equals("200")) {
-                return response.get(URLs.kBody);
-            }
-            // FileUtil.dirPath 需要优先写入登录用户信息
-            JSONObject responseJSON = new JSONObject(response.get(URLs.kBody));
-            userJSON = ApiHelper.mergeJson(userJSON, responseJSON);
-            FileUtil.writeFile(userConfigPath, userJSON.toString());
-
-            String settingsConfigPath = FileUtil.dirPath(context, K.kConfigDirName, K.kSettingConfigFileName);
-            if ((new File(settingsConfigPath)).exists()) {
-                JSONObject settingJSON = FileUtil.readConfigFile(settingsConfigPath);
-                userJSON.put(URLs.kUseGesturePassword, settingJSON.has(URLs.kUseGesturePassword) ? settingJSON.getBoolean(URLs.kUseGesturePassword) : false);
-                userJSON.put(URLs.kGesturePassword, settingJSON.has(URLs.kGesturePassword) ? settingJSON.getString(URLs.kGesturePassword) : "");
-            } else {
-                userJSON.put(URLs.kUseGesturePassword, false);
-                userJSON.put(URLs.kGesturePassword, "");
-            }
-
-            JSONObject assetsJSON = userJSON.getJSONObject(URLs.kAssets);
-            userJSON.put(kFontsMd5, assetsJSON.getString(kFontsMd5));
-            userJSON.put(kImagesMd5, assetsJSON.getString(kImagesMd5));
-            userJSON.put(kIconsMd5, assetsJSON.getString(kIconsMd5));
-            userJSON.put(K.kStylesheetsMd5, assetsJSON.getString(K.kStylesheetsMd5));
-            userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
-
-            FileUtil.writeFile(userConfigPath, userJSON.toString());
-            mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
-            mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
-            mUserSP.edit().putInt(kRoleId, userJSON.getInt(kRoleId)).commit();
-            mUserSP.edit().putInt(kUserId, userJSON.getInt(kUserId)).commit();
-            mUserSP.edit().putString(URLs.kRoleName, userJSON.getString(URLs.kRoleName)).commit();
-            mUserSP.edit().putString(URLs.kGroupName, userJSON.getString(URLs.kGroupName)).commit();
-            mUserSP.edit().putString(kUserNum, userJSON.getString(kUserNum)).commit();
-            mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
-            mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
-
-            if (response.get(URLs.kCode).equals("200")) {
-                // 第三方消息推送，设备标识
-                ActionLogUtil.pushDeviceToken(context, userJSON.getString("device_uuid"));
-
-                FileUtil.writeFile(settingsConfigPath, userJSON.toString());
-            } else {
-                responseState = responseJSON.getString(kInfo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseState = e.getMessage();
-        }
-        return responseState;
-    }
+//    public static String authentication(Context context, String username, String password) {
+//        String responseState = "success", urlString = String.format(K.kUserAuthenticateAPIPath, K.kBaseUrl, "android", username, password);
+//        SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+//        try {
+//            JSONObject device = new JSONObject();
+//            device.put("name", android.os.Build.MODEL);
+//            device.put("platform", "android");
+//            device.put("os", android.os.Build.MODEL);
+//            device.put("os_version", Build.VERSION.RELEASE);
+//            device.put("uuid", OpenUDID_manager.getOpenUDID());
+//
+//            JSONObject params = new JSONObject();
+//            params.put("device", device);
+//            params.put("coordinate", mUserSP.getString("location", "0,0"));
+//            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+//            params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
+//
+//            mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
+//            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
+//            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
+//
+//            Log.i("DeviceParams", params.toString());
+//
+//            Map<String, String> response = HttpUtil.httpPost(urlString, params);
+//            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
+//            JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
+//            userJSON.put(URLs.kPassword, password);
+//            userJSON.put(URLs.kIsLogin, response.get(URLs.kCode).equals("200"));
+//
+//            if (response.get(URLs.kCode).equals("400")) {
+//                return "请检查网络环境";
+//            } else if (response.get(URLs.kCode).equals("401")) {
+//                return new JSONObject(response.get(URLs.kBody)).getString(kInfo);
+//            } else if (response.get(URLs.kCode).equals("408")) {
+//                return "连接超时";
+//            } else if (!response.get(URLs.kCode).equals("200")) {
+//                return response.get(URLs.kBody);
+//            }
+//            // FileUtil.dirPath 需要优先写入登录用户信息
+//            JSONObject responseJSON = new JSONObject(response.get(URLs.kBody));
+//            userJSON = ApiHelper.mergeJson(userJSON, responseJSON);
+//            FileUtil.writeFile(userConfigPath, userJSON.toString());
+//
+//            String settingsConfigPath = FileUtil.dirPath(context, K.kConfigDirName, K.kSettingConfigFileName);
+//            if ((new File(settingsConfigPath)).exists()) {
+//                JSONObject settingJSON = FileUtil.readConfigFile(settingsConfigPath);
+//                userJSON.put(URLs.kUseGesturePassword, settingJSON.has(URLs.kUseGesturePassword) ? settingJSON.getBoolean(URLs.kUseGesturePassword) : false);
+//                userJSON.put(URLs.kGesturePassword, settingJSON.has(URLs.kGesturePassword) ? settingJSON.getString(URLs.kGesturePassword) : "");
+//            } else {
+//                userJSON.put(URLs.kUseGesturePassword, false);
+//                userJSON.put(URLs.kGesturePassword, "");
+//            }
+//
+//            JSONObject assetsJSON = userJSON.getJSONObject(URLs.kAssets);
+//            userJSON.put(kFontsMd5, assetsJSON.getString(kFontsMd5));
+//            userJSON.put(kImagesMd5, assetsJSON.getString(kImagesMd5));
+//            userJSON.put(kIconsMd5, assetsJSON.getString(kIconsMd5));
+//            userJSON.put(K.kStylesheetsMd5, assetsJSON.getString(K.kStylesheetsMd5));
+//            userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
+//
+//            FileUtil.writeFile(userConfigPath, userJSON.toString());
+//            mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
+//            mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
+//            mUserSP.edit().putInt(kRoleId, userJSON.getInt(kRoleId)).commit();
+//            mUserSP.edit().putInt(kUserId, userJSON.getInt(kUserId)).commit();
+//            mUserSP.edit().putString(URLs.kRoleName, userJSON.getString(URLs.kRoleName)).commit();
+//            mUserSP.edit().putString(URLs.kGroupName, userJSON.getString(URLs.kGroupName)).commit();
+//            mUserSP.edit().putString(kUserNum, userJSON.getString(kUserNum)).commit();
+//            mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
+//            mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
+//
+//            if (response.get(URLs.kCode).equals("200")) {
+//                // 第三方消息推送，设备标识
+//                ActionLogUtil.pushDeviceToken(context, userJSON.getString("device_uuid"));
+//
+//                FileUtil.writeFile(settingsConfigPath, userJSON.toString());
+//            } else {
+//                responseState = responseJSON.getString(kInfo);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            responseState = e.getMessage();
+//        }
+//        return responseState;
+//    }
 
     /*
      *  获取报表网页数据
@@ -325,21 +310,21 @@ public class ApiHelper {
         return retMap;
     }
 
-    public static Map<String, String> resetPassword(String userID, String newPassword) {
-        Map<String, String> retMap = new HashMap<>();
-        try {
-            String urlString = String.format(K.kRsetPwdAPIPath, K.kBaseUrl, userID);
-
-            Map<String, String> params = new HashMap<>();
-            params.put(URLs.kPassword, newPassword);
-            retMap = HttpUtil.httpPost(urlString, params);
-        } catch (Exception e) {
-            e.printStackTrace();
-            retMap.put(URLs.kCode, "500");
-            retMap.put(URLs.kBody, e.getLocalizedMessage());
-        }
-        return retMap;
-    }
+//    public static Map<String, String> resetPassword(String userID, String newPassword) {
+//        Map<String, String> retMap = new HashMap<>();
+//        try {
+//            String urlString = String.format(K.kRsetPwdAPIPath, K.kBaseUrl, userID);
+//
+//            Map<String, String> params = new HashMap<>();
+//            params.put(URLs.kPassword, newPassword);
+//            retMap = HttpUtil.httpPost(urlString, params);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            retMap.put(URLs.kCode, "500");
+//            retMap.put(URLs.kBody, e.getLocalizedMessage());
+//        }
+//        return retMap;
+//    }
 
     /*
      * 缓存文件中，清除指定链接的内容
@@ -501,31 +486,31 @@ public class ApiHelper {
     }
 
 
-    /**
-     * 二维码扫描
-     *
-     * @param groupID  群组ID
-     * @param roleID   角色ID
-     * @param userNum  用户编号
-     * @param storeID  门店ID
-     * @param codeInfo 条形码信息
-     * @param codeType 条形码或二维码
-     */
-    public static Map<String, String> barCodeScan(String groupID, String roleID, String userNum, String storeID, String codeInfo, String codeType) {
-        try {
-            JSONObject params = new JSONObject();
-            params.put(URLs.kCodeInfo, codeInfo);
-            params.put(URLs.kCodeType, codeType);
-
-            String urlString = String.format(K.kBarCodeScanAPIPath, K.kBaseUrl, groupID, roleID, userNum, storeID, codeInfo, codeType);
-            // Map<String, String> response = HttpUtil.httpPost(urlString, params);
-
-            return (Map<String, String>) HttpUtil.httpGet(urlString, new HashMap());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    /**
+//     * 二维码扫描
+//     *
+//     * @param groupID  群组ID
+//     * @param roleID   角色ID
+//     * @param userNum  用户编号
+//     * @param storeID  门店ID
+//     * @param codeInfo 条形码信息
+//     * @param codeType 条形码或二维码
+//     */
+//    public static Map<String, String> barCodeScan(String groupID, String roleID, String userNum, String storeID, String codeInfo, String codeType) {
+//        try {
+//            JSONObject params = new JSONObject();
+//            params.put(URLs.kCodeInfo, codeInfo);
+//            params.put(URLs.kCodeType, codeType);
+//
+//            String urlString = String.format(K.kBarCodeScanAPIPath, K.kBaseUrl, groupID, roleID, userNum, storeID, codeInfo, codeType);
+//            // Map<String, String> response = HttpUtil.httpPost(urlString, params);
+//
+//            return (Map<String, String>) HttpUtil.httpGet(urlString, new HashMap());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public static String getLocation(Context context) {
         try {

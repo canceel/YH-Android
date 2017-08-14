@@ -22,7 +22,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kReportDataAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/zip";
     public final static String kReportJsonDataAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String kReportJsonAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/json";
-    //    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
+//    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
     public final static String kScreenLockAPIPath = "%s/api/v1/user_device/%s/screen_lock";
     public final static String kDeviceStateAPIPath = "%s/api/v1/user_device/%s/state";
     public final static String kRsetPwdAPIPath = "%s/api/v1/update/%s/password";

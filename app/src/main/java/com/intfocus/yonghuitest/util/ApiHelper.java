@@ -509,7 +509,7 @@ public class ApiHelper {
 
     public static String getLocation(Context context) {
         try {
-            SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+            SharedPreferences mUserSP = context.getSharedPreferences("UserBean", MODE_PRIVATE);
 
             String locationInfo = "";
             String locationProvider = "";

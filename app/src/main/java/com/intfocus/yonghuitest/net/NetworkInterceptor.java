@@ -3,6 +3,8 @@ package com.intfocus.yonghuitest.net;
 
 import android.util.Log;
 
+import com.intfocus.yonghuitest.util.LogUtil;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 
@@ -47,9 +49,9 @@ public class NetworkInterceptor implements Interceptor {
             BufferedSource bufferedSource = responseBody.source();
             bufferedSource.request(Long.MAX_VALUE);
             Buffer buffer = bufferedSource.buffer();
-            Log.d(TAG, "responseBody：" + buffer.clone().readUtf8());
+            LogUtil.largeLogD(TAG, "responseBody：" + buffer.clone().readUtf8());
         } else {
-            Log.d(TAG, "responseBody：contentLength=" + responseBody.contentLength());
+            LogUtil.largeLogD(TAG, "responseBody：contentLength=" + responseBody.contentLength());
         }
         return response;
     }

@@ -70,7 +70,7 @@
     <string name="userID">用户编号</string>
     <string name="iphone">联系方式</string>
     <string name="submit">提交</string>
-    <string name="forgetPassword">忘记密码?</string>
+    <string name="forgetPassword">忘记密码</string>
     <array name="array_affiche">
         <item>公告（1）：第一集群九月数据己更新</item>
         <item>公告（2）：第二集群九月数据己更新</item>

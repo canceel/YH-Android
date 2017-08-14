@@ -62,8 +62,8 @@ public class MeterDetalActMode extends AbstractMode {
                     String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
                     Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
 
-                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
-                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+//                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
+//                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
                     if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
                         MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
                         EventBus.getDefault().post(result1);

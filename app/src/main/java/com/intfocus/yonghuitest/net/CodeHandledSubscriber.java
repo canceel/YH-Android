@@ -115,8 +115,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     public void onNext(T t) {
         if (t instanceof BaseResult) {
             BaseResult baseResultEntity = (BaseResult) t;
-            if (REQUEST_SUCCESS.equals(baseResultEntity.getCode()) || REQUEST_SUCCESS_ONE.equals(baseResultEntity.getCode())
-                    || REQUEST_SUCCESS_TWO.equals(baseResultEntity.getCode())) {
+            if (REQUEST_SUCCESS.equals(baseResultEntity.getCode())) {
                 onBusinessNext(t);
             } else {
                 onError(new ApiException(Integer.parseInt(baseResultEntity.getCode()), baseResultEntity.getMessage()));

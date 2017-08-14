@@ -34,6 +34,7 @@ import java.util.LinkedList;
  */
 public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
     private static final String ARG_PARAM1 = "param1";
+    public static String mCurrentParam;
     private View rootView;
 
     @ViewInject(R.id.lv_MDRPUnit_PlusMinusChart)
@@ -58,18 +59,20 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
 
     public static ModularTwo_UnitPlusMinusChartModeFragment newInstance(String param) {
         ModularTwo_UnitPlusMinusChartModeFragment fragment = new ModularTwo_UnitPlusMinusChartModeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param);
+//        fragment.setArguments(args);
+        mCurrentParam = param;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//        }
+        mParam1 = mCurrentParam;
     }
 
     @Override

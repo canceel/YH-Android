@@ -112,7 +112,7 @@ public class K extends PrivateURLs implements Serializable {
      */
     public final static String kPushConfigFileName = "push_message_config.json";
     public final static String kPushIsValid = "push_valid";
-    public final static String kPushDeviceToken = "push_device_token";
+    public final static String kPushDeviceToken = "push_token";
     public final static String kPushDeviceUUID = "device_uuid";
 
     /**
@@ -146,4 +146,6 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KComment = "/api/v1.1/comment"; //发表评论
     public final static String KFeedBack = "/api/v1.1/feedback"; //提交反馈
     public final static String KAssetsMD5 = "/api/v1.1/assets/md5"; //静态资源MD5
+    public final static String KPushToken = "/api/v1.1/device/push_token"; //
+
 }

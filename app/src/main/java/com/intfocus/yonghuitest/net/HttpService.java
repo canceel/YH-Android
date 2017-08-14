@@ -14,14 +14,13 @@ import com.intfocus.yonghuitest.data.response.mine_page.NoticeContentResult;
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult;
 import com.intfocus.yonghuitest.data.response.notice.NoticesResult;
 import com.intfocus.yonghuitest.data.response.scanner.StoreListResult;
-import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.Device;
+import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.NewUser;
 import com.intfocus.yonghuitest.util.K;
 
 import java.util.Map;
 
-import retrofit2.http.Body;
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -39,6 +38,13 @@ import rx.Observable;
 
 public interface HttpService {
 
+    @POST (K.KPushToken)
+    Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
+
+    /**
+     * 获取AssetsMD5
+     * @return
+     */
     @GET (K.KAssetsMD5)
     Observable<AssetsResult> getAssetsMD5();
 
@@ -198,8 +204,8 @@ public interface HttpService {
      * "app_version": "ios123",
      * "platform": "ios",
      * "platform_version": "ios 9.0"
-     * @param deviceId
-     * @param userId
+     * @param
+     * @param
      * @param file
      * @return
      */

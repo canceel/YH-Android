@@ -123,23 +123,10 @@ public class YHApplication extends Application {
 
             @Override
             public void onSuccess(String deviceToken) {
-                try {
-                    //注册成功会返回device token
-                    // onRegistered方法的参数registrationId即是device_token
-                    String pushConfigPath = String.format("%s/%s", FileUtil.basePath(appContext), K.kPushConfigFileName);
-                    if (new File(pushConfigPath).exists()) {
-                        new File(pushConfigPath).delete();
-                    }
-                    JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
-                    pushJSON.put(K.kPushIsValid, false);
-                    pushJSON.put(kPushDeviceToken, deviceToken);
-                    FileUtil.writeFile(pushConfigPath, pushJSON.toString());
-                    Log.d(kPushDeviceToken, deviceToken);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
+                SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
+
+                mPushSPEdit.putString(kPushDeviceToken, deviceToken).commit();
             }
 
             @Override

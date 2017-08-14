@@ -119,7 +119,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
                     || REQUEST_SUCCESS_TWO.equals(baseResultEntity.getCode())) {
                 onBusinessNext(t);
             } else {
-                onError(new ApiException(Integer.parseInt(baseResultEntity.getCode()), baseResultEntity.getMsg() + baseResultEntity.getMessage()));
+                onError(new ApiException(Integer.parseInt(baseResultEntity.getCode()), baseResultEntity.getMessage()));
             }
         }
     }

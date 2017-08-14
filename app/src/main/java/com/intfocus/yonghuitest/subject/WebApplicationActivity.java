@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +126,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
         mWebView = (WebView) findViewById(R.id.browser);
         initActiongBar();
-        initSubWebView();
+        initWebAppWebView();
 
         mWebView.setWebChromeClient(new WebApplicationActivity.MyWebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
@@ -199,6 +200,62 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             }
         });
         isWeiXinShared = false;
+    }
+
+
+    public android.webkit.WebView initWebAppWebView() {
+        animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
+        mWebView.getSettings().setAppCachePath(appCachePath);
+        mWebView.getSettings().setAllowFileAccess(true);
+
+        mWebView.getSettings().setAppCacheEnabled(true);
+
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setDrawingCacheEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                LogUtil.d("onPageStarted", String.format("%s - %s", URLs.timestamp(), url));
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                animLoading.setVisibility(View.GONE);
+                isWeiXinShared = true;
+                LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                LogUtil.d("onReceivedError",
+                        String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
+                                failingUrl));
+            }
+        });
+
+        mWebView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return true;
+            }
+        });
+        setWebViewLongListener(true);
+        return mWebView;
     }
 
     public class MyWebChromeClient extends WebChromeClient {

@@ -621,7 +621,7 @@ public class HttpUtil {
      * to do
      */
     public static void checkAssetsUpdated(final Context context, String type) {
-        checkAssetUpdated(context, URLs.kAssets, false, type);
+//        checkAssetUpdated(context, URLs.kAssets, false, type);
         checkAssetUpdated(context, URLs.kLoading, false, type);
         checkAssetUpdated(context, URLs.kFonts, true, type);
         checkAssetUpdated(context, URLs.kImages, true, type);
@@ -650,7 +650,6 @@ public class HttpUtil {
         // AsyncTask并行下载
         downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
     }
-
 
     /*
      * Zip 档下载

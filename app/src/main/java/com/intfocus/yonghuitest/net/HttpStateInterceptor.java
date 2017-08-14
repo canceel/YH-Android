@@ -1,9 +1,19 @@
 package com.intfocus.yonghuitest.net;
 
+import com.google.gson.Gson;
+import com.intfocus.yonghuitest.data.response.BaseResult;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
+
+import static com.alibaba.fastjson.util.IOUtils.UTF8;
 
 /**
  * Created by CANC on 2017/8/11.
@@ -22,10 +32,29 @@ public class HttpStateInterceptor implements Interceptor {
         Response response = chain.proceed(chain.request());
         if (response.code() == PARAMTER_ERROR || response.code() == TOKEN_FAILED_CODE
                 || response.code() == NO_PERMISSION_CODE || response.code() == INTERNAL_ERROR
-                || response.code() == UN_FOUND|| response.code() == ERROR_502) {
+                || response.code() == UN_FOUND || response.code() == ERROR_502) {
+            String msg = "";
+            ResponseBody responseBody = response.body();
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+            Charset charset = UTF8;
+            MediaType contentType = responseBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(UTF8);
+            }
+            String bodyString = buffer.clone().readString(charset);
+            try {
+                BaseResult baseResult = new Gson().fromJson(bodyString, BaseResult.class);
+                if (baseResult != null) {
+                    msg = baseResult.getMessage();
+                }
+            } catch (Exception e) {
+                msg = e.getMessage().toString();
+            }
             HttpStateException interceptorExceptioin = new HttpStateException();
             interceptorExceptioin.setErrorCode(response.code());
-            interceptorExceptioin.setMsg("code:" + response.code() + "  " + response.message());
+            interceptorExceptioin.setMsg(msg);
             throw interceptorExceptioin;
         }
         return response;

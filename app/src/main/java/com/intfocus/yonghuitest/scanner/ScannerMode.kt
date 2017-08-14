@@ -1,10 +1,7 @@
 package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.data.response.BaseResult
-import com.intfocus.yonghuitest.data.response.scanner.StoreItem
 import com.intfocus.yonghuitest.data.response.scanner.StoreListResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
@@ -12,11 +9,9 @@ import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
-import org.json.JSONException
 import org.json.JSONObject
 import org.xutils.common.Callback
 import java.io.File
-import java.io.IOException
 import java.util.HashMap
 import org.xutils.http.RequestParams
 import org.xutils.common.Callback.CancelledException
@@ -46,36 +41,80 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
                     }
 
                     override fun onError(apiException: ApiException?) {
+                        val result1 = ScannerRequest(false, 400)
+                        result1.errorInfo = apiException!!.message.toString()
+                        EventBus.getDefault().post(result1)
                     }
 
-                    override fun onBusinessNext(data: StoreListResult?) {
-                        var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
-                        var cachedJSON: JSONObject
-                        cachedJSON = FileUtil.readConfigFile(cachedPath)
-                        var flag = false
-                        var storeName: String
-                        if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
-                                data != null) {
-                            storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
-                            for (i in 0..data.data!!.size - 1) {
-                                if (data.data!![i].name == storeName) {
-                                    flag = true
+                    override fun onBusinessNext(data: StoreListResult) {
+                            var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
+                            var cachedJSON: JSONObject
+                            cachedJSON = FileUtil.readConfigFile(cachedPath)
+                            var flag = false
+                            var storeName: String
+                            if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
+                                    data != null) {
+                                storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
+                                for (i in 0..data.data!!.size - 1) {
+                                    if (data.data!![i].name == storeName) {
+                                        flag = true
+                                    }
                                 }
                             }
-                        }
 
-                        if (!flag) {
-                            cachedJSON.put(URLs.kStore, data!!.data!![0].name)
-                            FileUtil.writeFile(cachedPath, cachedJSON.toString())
-                        }
+                            if (!flag) {
+                                cachedJSON.put(URLs.kStore, data!!.data!![0].name)
+                                FileUtil.writeFile(cachedPath, cachedJSON.toString())
+                            }
 
-                        currentBarcode = barcode
-                        store_id = cachedJSON.getJSONObject(URLs.kStore).getString("id")
-                        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
-                        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
-                        requestData()
+                            currentBarcode = barcode
+                            store_id = cachedJSON.getJSONObject(URLs.kStore).getString("id")
+                            jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
+                            htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
+                            requestData()
                     }
                 })
+
+//        RetrofitUtil.getHttpService().getStoreList(mUserSP.getString("user_num", "0"))
+//                .compose(RetrofitUtil.CommonOptions<StoreListResult>())
+//                .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
+//                    override fun onCompleted() {
+//                    }
+//
+//                    override fun onError(apiException: ApiException?) {
+//                        val result1 = ScannerRequest(false, 400)
+//                        result1.errorInfo = apiException!!.message.toString()
+//                        EventBus.getDefault().post(result1)
+//                    }
+//
+//                    override fun onBusinessNext(data: StoreListResult?) {
+//                        var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
+//                        var cachedJSON: JSONObject
+//                        cachedJSON = FileUtil.readConfigFile(cachedPath)
+//                        var flag = false
+//                        var storeName: String
+//                        if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
+//                                data != null) {
+//                            storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
+//                            for (i in 0..data.data!!.size - 1) {
+//                                if (data.data!![i].name == storeName) {
+//                                    flag = true
+//                                }
+//                            }
+//                        }
+//
+//                        if (!flag) {
+//                            cachedJSON.put(URLs.kStore, data!!.data!![0].name)
+//                            FileUtil.writeFile(cachedPath, cachedJSON.toString())
+//                        }
+//
+//                        currentBarcode = barcode
+//                        store_id = cachedJSON.getJSONObject(URLs.kStore).getString("id")
+//                        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
+//                        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
+//                        requestData()
+//                    }
+//                })
     }
 
     override fun requestData() {

@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
+import com.intfocus.yonghuitest.data.response.BaseResult;
 import com.intfocus.yonghuitest.login.bean.Device;
 import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.NewUser;
@@ -70,6 +72,7 @@ public class LoginActivity extends FragmentActivity {
     private DeviceRequest mDeviceRequest;
     private SharedPreferences mUserSP;
     private SharedPreferences.Editor mUserSPEdit;
+    private SharedPreferences mPushSP;
     private ProgressDialog mProgressDialog;
     private JSONObject logParams = new JSONObject();
     private Context ctx;
@@ -81,6 +84,7 @@ public class LoginActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mPushSP = getSharedPreferences("PushMessage", Context.MODE_PRIVATE);
         mUserSPEdit = mUserSP.edit();
 
         ctx = this;
@@ -433,12 +437,32 @@ public class LoginActivity extends FragmentActivity {
                         mUserSPEdit.putBoolean("device_state", data.getMResult().getDevice_state()).commit();
                         mUserSPEdit.putString("user_device_id", String.valueOf(data.getMResult().getUser_device_id())).commit();
                         ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getMResult().getDevice_uuid());
+
+                        RetrofitUtil.getHttpService().putPushToken(data.getMResult().getDevice_uuid(), mPushSP.getString("push_token", ""))
+                                .compose(new RetrofitUtil.CommonOptions<BaseResult>())
+                                .subscribe(new CodeHandledSubscriber<BaseResult>() {
+                                    @Override
+                                    public void onError(ApiException apiException) {
+
+                                    }
+
+                                    @Override
+                                    public void onBusinessNext(BaseResult data) {
+                                        Log.i("testlog", data.getMessage());
+                                    }
+
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+                                });
                     }
 
                     @Override
                     public void onCompleted() {
                     }
                 });
+
     }
 
     /**

@@ -91,7 +91,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                     }
 
                     override fun onError(apiException: ApiException) {
-                        ToastUtils.show(mActivity, apiException.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException.displayMessage)
                         getHomeMsg()
                     }
 
@@ -166,7 +166,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
 
                     override fun onError(apiException: ApiException?) {
                         finshRequest()
-                        ToastUtils.show(mActivity, apiException!!.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(data: HomeMsgResult?) {

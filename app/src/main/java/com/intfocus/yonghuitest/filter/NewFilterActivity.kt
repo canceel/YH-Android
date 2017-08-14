@@ -44,7 +44,7 @@ class NewFilterActivity : FragmentActivity(), NewFilterFragment.NewFilterFragmen
                 .compose(RetrofitUtil.CommonOptions<MenuResult>())
                 .subscribe(object : CodeHandledSubscriber<MenuResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(mActivuty, apiException!!.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivuty, apiException!!.displayMessage)
                     }
 
                     override fun onCompleted() {

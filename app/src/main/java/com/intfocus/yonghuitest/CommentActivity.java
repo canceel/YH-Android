@@ -16,6 +16,7 @@ import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
@@ -88,7 +89,7 @@ public class CommentActivity extends BaseActivity {
 
                         @Override
                         public void onBusinessNext(BaseResult data) {
-                            ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage());
+                            ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), ToastColor.SUCCESS);
                         }
 
                         @Override

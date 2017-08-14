@@ -22,7 +22,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kReportDataAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/zip";
     public final static String kReportJsonDataAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String kReportJsonAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/json";
-//    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
+    //    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
     public final static String kScreenLockAPIPath = "%s/api/v1/user_device/%s/screen_lock";
     public final static String kDeviceStateAPIPath = "%s/api/v1/user_device/%s/state";
     public final static String kRsetPwdAPIPath = "%s/api/v1/update/%s/password";
@@ -31,8 +31,8 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kBarCodeScanAPIPath = "%s/api/v1/group/%s/role/%s/user/%s/store/%s/barcode_scan?code_info=%s&code_type=%s";
     public final static String kBarCodeScanAPIViewPath = "%s/mobile/v2/store/%s/barcode/%s/view";
     public final static String kBarCodeScanAPIDataPath = "%s/mobile/v2/store/%s/barcode/%s/attachment";
-    public final static String kDownloadAssetsAPIPath = "%s/api/v1/download/%s.zip";
-    public final static String kDeviceTokenAPIPath = "%s/api/v1/user/%s/devices";
+//    public final static String kDownloadAssetsAPIPath = "%s/api/v1/download/%s.zip";
+//    public final static String kDeviceTokenAPIPath = "%s/api/v1/user/%s/devices";
     public final static String kDeleteDeviceIdAPIPath = "%s/api/v1/android/%s/logout";
 
     /**
@@ -147,5 +147,6 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KFeedBack = "/api/v1.1/feedback"; //提交反馈
     public final static String KAssetsMD5 = "/api/v1.1/assets/md5"; //静态资源MD5
     public final static String KPushToken = "/api/v1.1/device/push_token"; //
-
+    public final static String kDownloadAssetsAPIPath = "%s/api/v1.1/download/assets?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=%s.zip"; //下载静态资源
+    public final static String kDeviceTokenAPIPath = "/api/v1.1/user/devices";  //设备列表
 }

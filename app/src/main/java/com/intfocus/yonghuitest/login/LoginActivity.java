@@ -436,7 +436,6 @@ public class LoginActivity extends FragmentActivity {
                         mUserSPEdit.putString("device_uuid", data.getMResult().getDevice_uuid()).commit();
                         mUserSPEdit.putBoolean("device_state", data.getMResult().getDevice_state()).commit();
                         mUserSPEdit.putString("user_device_id", String.valueOf(data.getMResult().getUser_device_id())).commit();
-                        ActionLogUtil.pushDeviceToken(getApplicationContext(), data.getMResult().getDevice_uuid());
 
                         RetrofitUtil.getHttpService().putPushToken(data.getMResult().getDevice_uuid(), mPushSP.getString("push_token", ""))
                                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())

@@ -24,7 +24,6 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +65,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -80,7 +78,7 @@ public class BaseActivity extends FragmentActivity {
     public final static String kVersionCode = "versionCode";
     public String sharedPath;
     public String relativeAssetsPath;
-    public String urlStringForDetecting;
+//    public String urlStringForDetecting;
     public ProgressDialog mProgressDialog;
     public YHApplication mMyApp;
     public PopupWindow popupWindow;
@@ -118,7 +116,7 @@ public class BaseActivity extends FragmentActivity {
 
         sharedPath = FileUtil.sharedPath(mAppContext);
         assetsPath = sharedPath;
-        urlStringForDetecting = K.kBaseUrl;
+//        urlStringForDetecting = K.kBaseUrl;
         relativeAssetsPath = "assets";
         urlStringForLoading = loadingPath(kLoading);
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
@@ -126,7 +124,7 @@ public class BaseActivity extends FragmentActivity {
         if (mUserSP.getBoolean(URLs.kIsLogin, false)) {
             userID = mUserSP.getString("user_id", "0");
             assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
-            urlStringForDetecting = String.format(K.kDeviceStateAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", ""));
+//            urlStringForDetecting = String.format(K.kDeviceStateAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", ""));
             relativeAssetsPath = "../../Shared/assets";
         }
     }
@@ -275,21 +273,21 @@ public class BaseActivity extends FragmentActivity {
     public final Runnable mRunnableForDetecting = new Runnable() {
         @Override
         public void run() {
-            Map<String, String> response = HttpUtil.httpGet(urlStringForDetecting,
-                    new HashMap<String, String>());
-            int statusCode = Integer.parseInt(response.get(URLs.kCode));
-            if (statusCode == 200 && !urlStringForDetecting.equals(K.kBaseUrl)) {
-                try {
-                    JSONObject json = new JSONObject(response.get("body"));
-                    statusCode = json.getBoolean("device_state") ? 200 : 401;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+//            Map<String, String> response = HttpUtil.httpGet(urlStringForDetecting,
+//                    new HashMap<String, String>());
+//            int statusCode = Integer.parseInt(response.get(URLs.kCode));
+//            if (statusCode == 200 && !urlStringForDetecting.equals(K.kBaseUrl)) {
+//                try {
+//                    JSONObject json = new JSONObject(response.get("body"));
+//                    statusCode = json.getBoolean("device_state") ? 200 : 401;
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
             mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
             Message message = mHandlerForDetecting.obtainMessage();
-            message.what = statusCode;
+//            message.what = statusCode;
             mHandlerForDetecting.sendMessage(message);
         }
     };

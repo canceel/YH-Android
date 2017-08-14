@@ -47,6 +47,11 @@ class InstituteContentActivity : BaseActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
     /*
      * 返回
      */

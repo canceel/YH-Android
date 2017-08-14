@@ -55,7 +55,7 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
 
         viewTag.llItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 2, 2))
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!, 2))
         }
         return convertView
     }

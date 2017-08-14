@@ -1048,7 +1048,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     menuItem.setArrorDirection(false);
                 }
                 menuAdpter.setData(menuDatas);
-//            viewBg.visibility = View.GONE
             }
         });
     }

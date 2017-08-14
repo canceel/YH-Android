@@ -47,9 +47,11 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberTitle.text = itemData.title
         var number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
+
         if (!number.equals("null")) {
             holder.tvNumberMain.text = formatNumber(number)
         }
+
         holder.tvNumberMain.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNnumberCompare.text = itemData.data!!.high_light!!.compare
@@ -58,7 +60,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1))
         }
     }
 

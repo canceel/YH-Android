@@ -136,7 +136,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         RxBusUtil.getInstance().post("UpDatePushMessage")
 
         when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", 1, 1)
+            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", 1)
             "analyse" -> {
                 mViewPager!!.currentItem = PAGE_REPORTS
                 mTabView!![mViewPager!!.currentItem].setActive(true)
@@ -342,9 +342,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         if (items != null) {
             val link = items.link
             val bannerName = items.bannerName + ""
-            val objectId = items.objectId
             val objectType = items.objectType
-            pageLink(bannerName, link, objectId, objectType)
+            pageLink(bannerName, link, objectType)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
@@ -353,7 +352,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 页面跳转事件
      */
-    fun pageLink(mBannerName: String, link: String, objectId: Int, objectType: Int) {
+    fun pageLink(mBannerName: String, link: String, objectType: Int) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
                 val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
@@ -367,7 +366,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectId, reportID.toInt())
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -378,7 +377,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectId, reportID.toInt())
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -390,7 +389,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                 K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectId, reportID.toInt())
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -403,7 +402,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                 K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectId, reportID.toInt())
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -414,7 +413,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
+                        intent.putExtra(URLs.kObjectId, reportID.toInt())
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -436,7 +435,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(URLs.kBannerName, mBannerName)
             intent.putExtra(URLs.kLink, link)
-            intent.putExtra(URLs.kObjectId, objectId)
             intent.putExtra(URLs.kObjectType, objectType)
             startActivity(intent)
 

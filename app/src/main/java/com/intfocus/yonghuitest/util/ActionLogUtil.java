@@ -48,11 +48,14 @@ public class ActionLogUtil {
      * @param param   用户行为
      */
     public static void actionLog(final Context context, final JSONObject param) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
                     param.put(K.kUserId, mUserSP.getString(K.kUserId, ""));
-                    param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum,""));
+                    param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum, ""));
                     param.put(kUserName, mUserSP.getString(K.kUserName, ""));
                     param.put(K.kUserDeviceId, mUserSP.getString(K.kUserDeviceId, ""));
 
@@ -75,6 +78,8 @@ public class ActionLogUtil {
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+        }).start();
     }
 
     /**

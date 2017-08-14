@@ -92,6 +92,11 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
         imageOptions = ImageOptions.Builder()
                 .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .setCircular(true)
@@ -109,7 +114,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         tv_report_number.typeface = mTypeFace
         tv_beyond_number.typeface = mTypeFace
         initView()
-        super.onActivityCreated(savedInstanceState)
     }
 
     fun initView() {

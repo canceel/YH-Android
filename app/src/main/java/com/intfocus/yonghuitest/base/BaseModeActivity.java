@@ -1,6 +1,7 @@
 package com.intfocus.yonghuitest.base;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,11 +13,11 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.constant.Permissions;
+import com.intfocus.yonghuitest.util.LoadingUtils;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
@@ -53,7 +54,8 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * 容器
      */
     protected FrameLayout fl_container;
-    protected ProgressBar progressBar;
+    //    protected ProgressBar progressBar;
+    private Dialog loadingDialog;
 
 
     private String TAG = com.intfocus.yonghuitest.base.BaseActivity.class.getSimpleName();
@@ -199,7 +201,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         stub_header = (ViewStub) findViewById(R.id.ll_baseUI_title);
 
         rootView = (FrameLayout) findViewById(R.id.rootView);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
+//        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
 
         int contentID = setLayoutRes();
         View content = null;
@@ -337,20 +339,30 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         imm.showSoftInput(rootView, 0);
     }
 
-
-    /**
-     * 显示Loding
-     */
-    public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+    protected void showDialog(Context context) {
+        loadingDialog = LoadingUtils.createLoadingDialog(context, false);
+        loadingDialog.show();
     }
 
-    /**
-     * 隐藏Loding
-     */
-    public void dismissProgress() {
-        progressBar.setVisibility(View.GONE);
+    protected void hideLoading() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
     }
+
+//    /**
+//     * 显示Loding
+//     */
+//    public void showProgress() {
+//        progressBar.setVisibility(View.VISIBLE);
+//    }
+//
+//    /**
+//     * 隐藏Loding
+//     */
+//    public void dismissProgress() {
+//        progressBar.setVisibility(View.GONE);
+//    }
 
     //===================================================================================================
     @Override

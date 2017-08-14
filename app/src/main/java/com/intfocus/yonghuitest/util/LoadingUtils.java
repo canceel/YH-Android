@@ -16,6 +16,7 @@ import com.intfocus.yonghuitest.R;
  */
 
 public class LoadingUtils {
+
     /**
      * 得到自定义的progressDialog
      *
@@ -23,6 +24,17 @@ public class LoadingUtils {
      * @return
      */
     public static Dialog createLoadingDialog(Context context) {
+        return createLoadingDialog(context, true);
+    }
+
+    /**
+     * 得到自定义的progressDialog
+     *
+     * @param context
+     * @param isCanCancel 是否可以触摸取消
+     * @return
+     */
+    public static Dialog createLoadingDialog(Context context, boolean isCanCancel) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);// 得到加载view
@@ -37,6 +49,7 @@ public class LoadingUtils {
 
         Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
+        loadingDialog.setCanceledOnTouchOutside(isCanCancel);
         loadingDialog.setCancelable(true);// 是否可用“返回键”取消
         loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,

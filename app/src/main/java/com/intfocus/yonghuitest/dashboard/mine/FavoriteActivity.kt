@@ -94,7 +94,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                         if (isRefresh!!) {
                             datas!!.clear()
                         }
-                        datas!!.addAll(data.data!!)
+                        datas!!.addAll(data.data)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,

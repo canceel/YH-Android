@@ -12,6 +12,5 @@ class NoticesResult : BaseResult() {
     var curr_page: Int = 0
     var page_size: Int = 0
     var total_page: Int = 0
-    @SerializedName("data")
     var data: List<Notice> = listOf()
 }

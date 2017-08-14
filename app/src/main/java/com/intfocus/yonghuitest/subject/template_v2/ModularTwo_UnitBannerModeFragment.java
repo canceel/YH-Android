@@ -25,6 +25,7 @@ import org.xutils.x;
  */
 public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     private static final String ARG_PARAM1 = "param1";
+    public static String mCurrentParam;
     private String mParam1;
 
     private View rootView;
@@ -48,18 +49,20 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
 
     public static ModularTwo_UnitBannerModeFragment newInstance(String param1) {
         ModularTwo_UnitBannerModeFragment fragment = new ModularTwo_UnitBannerModeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        fragment.setArguments(args);
+        mCurrentParam = param1;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+//        if (getArguments() != null) {
+////            mParam1 = getArguments().getString(ARG_PARAM1);
+//        }
+        mParam1 = mCurrentParam;
     }
 
     @Override
@@ -68,9 +71,7 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_banner, container, false);
             x.view().inject(this, rootView);
-
             initPopup();
-
             bindData();
         }
         return rootView;
@@ -111,8 +112,7 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
                 String name = jsonObject.getString("title");
                 if (!name.isEmpty()) {
                     tv_title.setText(name);
-                }
-                else {
+                } else {
                     tv_title.setVisibility(View.GONE);
                 }
             }

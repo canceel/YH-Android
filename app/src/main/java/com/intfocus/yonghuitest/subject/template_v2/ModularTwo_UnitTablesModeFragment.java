@@ -28,16 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageModeFragment.SU_ROOTID;
-
 /**
  * 表格根
  */
 public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
-    //private static final String ARG_PARAM1 = "TablesParam";
-    //
+    private static final String ARG_PARAM1 = "TablesParam";
+
     public static String mCurrentData;
+    public static int mCurrentSuRootID;
     private String mParam;
 
     private View rootView;
@@ -71,11 +70,12 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
 
     public static ModularTwo_UnitTablesModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
-        Bundle args = new Bundle();
-        args.putInt(SU_ROOTID, suRootID);
-        mCurrentData = param;
+//        Bundle args = new Bundle();
+//        args.putInt(SU_ROOTID, suRootID);
         //args.putString(ARG_PARAM1, param);
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
+        mCurrentData = param;
+        mCurrentSuRootID = suRootID;
         return fragment;
     }
 
@@ -91,11 +91,12 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         int cuttentFTID = random.nextInt(Integer.MAX_VALUE);
         fragmentTag = "android:switcher:" + cuttentFTID + ":";
         fm = getChildFragmentManager();
-        if (getArguments() != null) {
-            suRootID = getArguments().getInt(SU_ROOTID);
-            //mParam = getArguments().getString(ARG_PARAM1);
-            mParam = mCurrentData;
-        }
+//        if (getArguments() != null) {
+//            suRootID = getArguments().getInt(SU_ROOTID);
+//            //mParam = getArguments().getString(ARG_PARAM1);
+//        }
+        mParam = mCurrentData;
+        suRootID = mCurrentSuRootID;
     }
 
     @Override

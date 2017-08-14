@@ -32,6 +32,7 @@ import java.util.Collections;
  */
 public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener {
     private static final String ARG_PARAM1 = "param1";
+    public static String mCurrentParam;
     private String targetID;
     private String mParam1;
     private View rootView;
@@ -77,18 +78,20 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
 
     public static ModularTwo_UnitCurveChartModeFragment newInstance(String param1) {
         ModularTwo_UnitCurveChartModeFragment fragment = new ModularTwo_UnitCurveChartModeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        fragment.setArguments(args);
+        mCurrentParam = param1;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//        }
+        mParam1 = mCurrentParam;
     }
 
     @Override

@@ -49,13 +49,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.intfocus.yonghuitest.subject.template_v2.ModularTwo_RootPageModeFragment.SU_ROOTID;
-
 /**
  * 模块二根标签页面
  */
 public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
     private static final String ARG_PARAM = "param";
+    private static final String SU_ROOTID = "suRootID";
+    public static int mCurrentSuRootID;
     private String mParam;
 
     private View rootView;
@@ -128,11 +128,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
-        Bundle args = new Bundle();
+//        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM, param);
+//        args.putInt(SU_ROOTID, suRootID);
+//        fragment.setArguments(args);
         mCurrentData = param;
-        args.putInt(SU_ROOTID, suRootID);
-        fragment.setArguments(args);
+        mCurrentSuRootID = suRootID;
         return fragment;
     }
 
@@ -140,10 +141,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (getArguments() != null) {
-            suRootID = getArguments().getInt(SU_ROOTID);
-            mParam = mCurrentData;
-        }
+//        if (getArguments() != null) {
+//            suRootID = getArguments().getInt(SU_ROOTID);
+//            mParam = getArguments().getString(ARG_PARAM);
+//        }
+        mParam = mCurrentData;
+        suRootID = mCurrentSuRootID;
     }
 
     @Override

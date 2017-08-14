@@ -36,6 +36,8 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
     public static final String SU_ROOTID = "suRootID";
     private static final String ARG_PARAM = "param";
     private String mParam;
+    public static int mCurrentSuRootID;
+    public static String mCurrentParam;
 
     private View rootView;
 
@@ -55,22 +57,26 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
         return new MDetalRootPageMode(ctx);
     }
 
-    public static ModularTwo_RootPageModeFragment newInstance(int suRootID,String param) {
+    public static ModularTwo_RootPageModeFragment newInstance(int suRootID, String param) {
         ModularTwo_RootPageModeFragment fragment = new ModularTwo_RootPageModeFragment();
-        Bundle args = new Bundle();
-        args.putInt(SU_ROOTID, suRootID);
-        args.putString(ARG_PARAM, param);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(SU_ROOTID, suRootID);
+//        args.putString(ARG_PARAM, param);
+//        fragment.setArguments(args);
+        mCurrentSuRootID = suRootID;
+        mCurrentParam = param;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            suRootID = getArguments().getInt(SU_ROOTID);
-            mParam = getArguments().getString(ARG_PARAM);
-        }
+//        if (getArguments() != null) {
+//            suRootID = getArguments().getInt(SU_ROOTID);
+//            mParam = getArguments().getString(ARG_PARAM);
+//        }
+        suRootID = mCurrentSuRootID;
+        mParam = mCurrentParam;
     }
 
     @Override
@@ -144,7 +150,7 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
                     break;
 
                 case "tables"://类Excel冻结横竖首列表格
-                    fragment = ModularTwo_UnitTablesModeFragment.newInstance(suRootID,entity.config);
+                    fragment = ModularTwo_UnitTablesModeFragment.newInstance(suRootID, entity.config);
                     break;
             }
 

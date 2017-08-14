@@ -740,12 +740,6 @@ public class FileUtil {
                  *  不一致时，则删除原解压后文件夹，重新解压 zip
                  */
                 FileUtil.checkAssets(ctx, URLs.kAssets, false);
-//                FileUtil.checkAssets(ctx, URLs.kLoading, false);
-//                FileUtil.checkAssets(ctx, URLs.kFonts, true);
-//                FileUtil.checkAssets(ctx, URLs.kImages, true);
-//                FileUtil.checkAssets(ctx, URLs.kIcons, true);
-//                FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
-//                FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
 
             if (type.equals("cache-clean")) {
                 if (!HttpUtil.isConnected(ctx)) {
@@ -760,7 +754,6 @@ public class FileUtil {
                                 SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
 
                                 AssetsMD5 assetsMD5s = data.getData();
-                                mAssetsSPEdit.putString("assets_md5", assetsMD5s.getAssets_md5()).commit();
                                 mAssetsSPEdit.putString("loading_md5", assetsMD5s.getLoading_md5()).commit();
                                 mAssetsSPEdit.putString("fonts_md5", assetsMD5s.getFonts_md5()).commit();
                                 mAssetsSPEdit.putString("images_md5", assetsMD5s.getImages_md5()).commit();

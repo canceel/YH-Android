@@ -142,7 +142,6 @@ public class MeterDetalActMode extends AbstractMode {
 
     /**
      * 解析数据
-     *
      * @param result
      *//*
     private void analysisData(String result) {

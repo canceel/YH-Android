@@ -176,7 +176,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         var intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.id.toString())
-        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        intent.putExtra(URLs.kBannerName, "数据学院")
         intent.putExtra(URLs.kLink, link)
         intent.putExtra("hideBannerSetting",true)
         startActivity(intent)

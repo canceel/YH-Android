@@ -23,10 +23,9 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kReportJsonDataAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String kReportJsonAPIPath = "%s/api/v1/group/%s/template/%s/report/%s/json";
 //    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
-    public final static String kScreenLockAPIPath = "%s/api/v1/user_device/%s/screen_lock";
+
     public final static String kDeviceStateAPIPath = "%s/api/v1/user_device/%s/state";
     public final static String kRsetPwdAPIPath = "%s/api/v1/update/%s/password";
-    public final static String kActionLogAPIPath = "%s/api/v1/android/logger";
     public final static String kPushDeviceTokenAPIPath = "%s/api/v1/device/%s/push_token/%s";
     public final static String kBarCodeScanAPIPath = "%s/api/v1/group/%s/role/%s/user/%s/store/%s/barcode_scan?code_info=%s&code_type=%s";
     public final static String kBarCodeScanAPIViewPath = "%s/mobile/v2/store/%s/barcode/%s/view";
@@ -146,6 +145,10 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KComment = "/api/v1.1/comment"; //发表评论
     public final static String KFeedBack = "/api/v1.1/feedback"; //提交反馈
     public final static String KAssetsMD5 = "/api/v1.1/assets/md5"; //静态资源MD5
-    public final static String KPushToken = "/api/v1.1/device/push_token"; //
+    public final static String KPushToken = "/api/v1.1/device/push_token"; //推送设备 push_token
+    public final static String KReportBaseApi = "/api/v1.1/report/data"; //报表 Zip 数据
+    public final static String KReportZipData = "%s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip"; //报表 Zip 数据
+    public final static String kActionLog = "%s/api/v1.1/device/logger"; //上传设备
+    public final static String kScreenLockAPIPath = "%s/api/v1.1/device/screen_lock"; //上传锁屏信息
 
 }

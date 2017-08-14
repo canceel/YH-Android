@@ -19,6 +19,7 @@ import android.webkit.WebViewClient
 import android.widget.PopupWindow
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.util.FileUtil
+import com.intfocus.yonghuitest.util.ImageUtil
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.intfocus.yonghuitest.util.URLs
 import com.umeng.socialize.ShareAction
@@ -166,66 +167,18 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
      * 分享截图至微信
      */
     private fun actionShare2Weixin() {
-        var displayMetrics = resources.displayMetrics
-        val mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
-        val imgBmp: Bitmap?
-        val filePath = Environment.getExternalStorageDirectory().toString() + "/" + "SnapShot" + System.currentTimeMillis() + ".png"
-
-        if (!mSettingSP.getBoolean("ScreenShot", false)) {
-            // WebView 生成当前屏幕大小的图片，shortImage 就是最终生成的图片
-            imgBmp = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.RGB_565)
-            val canvas = Canvas(imgBmp!!)   // 画布的宽高和屏幕的宽高保持一致
-            val paint = Paint()
-            canvas.drawBitmap(imgBmp, displayMetrics.widthPixels.toFloat(), displayMetrics.heightPixels.toFloat(), paint)
-            wv_scanner_view.draw(canvas)
-            FileUtil.saveImage(filePath, imgBmp)
-        } else {
-            wv_scanner_view.setDrawingCacheEnabled(true)
-            wv_scanner_view.measure(View.MeasureSpec.makeMeasureSpec(
-                    View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
-
-            wv_scanner_view.buildDrawingCache()
-
-            val imgMaxHight = displayMetrics.heightPixels * 3
-
-            if (wv_scanner_view.getMeasuredHeight() > imgMaxHight) {
-                imgBmp = Bitmap.createBitmap(wv_scanner_view.getMeasuredWidth(),
-                        displayMetrics.heightPixels * 3, Bitmap.Config.ARGB_8888)
-            } else {
-                imgBmp = Bitmap.createBitmap(wv_scanner_view.getMeasuredWidth(),
-                        wv_scanner_view.getMeasuredHeight(), Bitmap.Config.ARGB_8888)
-            }
-
-            if (imgBmp == null && imgBmp!!.width <= 0 && imgBmp!!.height <= 0) {
-                ToastUtils.show(ctx, "截图失败,请尝试系统截图")
-                return
-            }
-
-            val canvas = Canvas(imgBmp)
-            val paint = Paint()
-            val iHeight = imgBmp.height
-            canvas.drawBitmap(imgBmp, 0f, iHeight.toFloat(), paint)
-            wv_scanner_view.draw(canvas)
-            FileUtil.saveImage(filePath, imgBmp)
-            wv_scanner_view.setDrawingCacheEnabled(false)
+        val bmpScrennShot = ImageUtil.takeScreenShot(this@ScannerResultActivity)
+        if (bmpScrennShot == null) {
+            ToastUtils.show(this, "截图失败")
         }
-
-        imgBmp.recycle() // 回收 bitmap 资源，避免内存浪费
-
-        val file = File(filePath)
-        if (file.exists() && file.length() > 0) {
-            val image = UMImage(this@ScannerResultActivity, file)
-            ShareAction(this)
-                    .withMedia(image)
-                    .setPlatform(SHARE_MEDIA.WEIXIN)
-                    .setDisplayList(SHARE_MEDIA.WEIXIN)
-                    .setCallback(umShareListener)
-                    .open()
-        } else {
-            ToastUtils.show(ctx, "截图失败,请尝试系统截图")
-        }
-
+        val image = UMImage(this, bmpScrennShot!!)
+        ShareAction(this)
+                .withText("截图分享")
+                .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setDisplayList(SHARE_MEDIA.WEIXIN)
+                .withMedia(image)
+                .setCallback(umShareListener)
+                .open()
     }
 
     private val umShareListener = object : UMShareListener {

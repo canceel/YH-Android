@@ -753,6 +753,8 @@ public class FileUtil {
                                 SharedPreferences mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
 
+                                mAssetsSPEdit.clear().commit();
+
                                 AssetsMD5 assetsMD5s = data.getData();
                                 mAssetsSPEdit.putString("loading_md5", assetsMD5s.getLoading_md5()).commit();
                                 mAssetsSPEdit.putString("fonts_md5", assetsMD5s.getFonts_md5()).commit();
@@ -761,7 +763,7 @@ public class FileUtil {
                                 mAssetsSPEdit.putString("javascripts_md5", assetsMD5s.getJavascripts_md5()).commit();
                                 mAssetsSPEdit.putString("stylesheets_md5", assetsMD5s.getStylesheets_md5()).commit();
 
-                                HttpUtil.checkAssetsUpdated(ctx, "cache-clean");
+                                HttpUtil.checkAssetsUpdated(ctx);
                             }
 
                             @Override

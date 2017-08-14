@@ -31,13 +31,14 @@ public class ActionLogUtil {
      * @param password 锁屏密码
      */
     public static void screenLock(String deviceID, String password, boolean state) {
-        String urlString = String.format(K.kScreenLockAPIPath, K.kBaseUrl, deviceID);
+        String urlString = String.format(K.kScreenLockAPIPath, K.kBaseUrl);
 
         Map<String, String> params = new HashMap<>();
         params.put("screen_lock_state", "1");
         params.put("screen_lock_type", "4位数字");
         params.put("screen_lock", password);
-
+        params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/screen_lock"));
+        params.put("id", deviceID);
         HttpUtil.httpPost(urlString, params);
     }
 
@@ -48,9 +49,6 @@ public class ActionLogUtil {
      * @param param   用户行为
      */
     public static void actionLog(final Context context, final JSONObject param) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 try {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
@@ -71,13 +69,13 @@ public class ActionLogUtil {
                     userParams.put("user_pass", mUserSP.getString(URLs.kPassword, ""));
                     params.put("user", userParams);
 
-                    String urlString = String.format(K.kActionLogAPIPath, K.kBaseUrl);
+                    params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
+
+                    String urlString = String.format(K.kActionLog, K.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
     }
 
     /**
@@ -100,8 +98,9 @@ public class ActionLogUtil {
                     JSONObject params = new JSONObject();
                     params.put("action_log", param);
 
-                    Log.i("logger", params.toString());
-                    String urlString = String.format(K.kActionLogAPIPath, K.kBaseUrl);
+                    params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
+
+                    String urlString = String.format(K.kActionLog, K.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

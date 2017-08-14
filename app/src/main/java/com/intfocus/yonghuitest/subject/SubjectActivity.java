@@ -327,9 +327,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         if (!isInnerLink) {
             llCopyLinkl.setVisibility(View.VISIBLE);
         }
-        if (isSupportSearch) {
-            llShaixuan.setVisibility(View.VISIBLE);
-        }
         //设置弹出框的宽度和高度
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -519,9 +516,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
              *  此处仅在第二次及以后才会生效
              */
             isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%s", groupID), templateID, reportID);
-//            if (isSupportSearch) {
-//                displayBannerTitleAndSearchIcon();
-//            }
 
             new Thread(new Runnable() {
                 @Override

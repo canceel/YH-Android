@@ -54,7 +54,15 @@ check_assets() {
 }
 
 download_assets() {
+  check_assets "BarCodeScan"
+  check_assets "advertisement"
   check_assets "assets"
+  check_assets "fonts"
+  check_assets "images"
+  check_assets "icons"
+  check_assets "javascripts"
+  check_assets "stylesheets"
+  check_assets "loading"
 }
 
 case "$1" in

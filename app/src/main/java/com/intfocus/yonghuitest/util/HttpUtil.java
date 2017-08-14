@@ -503,24 +503,11 @@ public class HttpUtil {
         private PowerManager.WakeLock mWakeLock;
         private final String assetFilename;
         private final boolean isInAssets;
-        private final String type;
-        private ProgressDialog mProgressDialog;
 
-        public DownloadAssetsTask(Context context, String assetFilename, boolean isInAssets, String type) {
+        public DownloadAssetsTask(Context context, String assetFilename, boolean isInAssets) {
             this.context = context;
             this.assetFilename = assetFilename;
             this.isInAssets = isInAssets;
-            this.type = type;
-
-            if (type.equals("cache-clean")) {
-                // 初始化进度条
-                mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setTitle("提示信息");
-                mProgressDialog.setMessage("正在更新静态资源，请稍候...");
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.setCanceledOnTouchOutside(false);
-            }
         }
 
         @Override
@@ -588,18 +575,11 @@ public class HttpUtil {
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
-            if (type.equals("clear-cache")) {
-                mProgressDialog.show();
-                mProgressDialog.setProgress(0);
-            }
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
-            if (type.equals("cache-clean")) {
-                mProgressDialog.setProgress(progress[0]);
-            }
         }
 
         @Override
@@ -609,10 +589,6 @@ public class HttpUtil {
             if (result != null) {
                 ToastUtils.INSTANCE.show(context, String.format("静态资源更新失败(%s)", result));
             }
-
-            if (type.equals("cache-clean")) {
-                mProgressDialog.cancel();
-            }
         }
     }
 
@@ -620,16 +596,16 @@ public class HttpUtil {
      * 检测服务器端静态文件是否更新
      * to do
      */
-    public static void checkAssetsUpdated(final Context context, String type) {
-        checkAssetUpdated(context, URLs.kLoading, false, type);
-        checkAssetUpdated(context, URLs.kFonts, true, type);
-        checkAssetUpdated(context, URLs.kImages, true, type);
-        checkAssetUpdated(context, URLs.kIcons, true, type);
-        checkAssetUpdated(context, URLs.kStylesheets, true, type);
-        checkAssetUpdated(context, URLs.kJavaScripts, true, type);
+    public static void checkAssetsUpdated(final Context context) {
+        checkAssetUpdated(context, URLs.kLoading, false);
+        checkAssetUpdated(context, URLs.kFonts, true);
+        checkAssetUpdated(context, URLs.kImages, true);
+        checkAssetUpdated(context, URLs.kIcons, true);
+        checkAssetUpdated(context, URLs.kStylesheets, true);
+        checkAssetUpdated(context, URLs.kJavaScripts, true);
     }
 
-    public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets, String type) {
+    public static void checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
         SharedPreferences mAssetsSP = context.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
         boolean isShouldUpdateAssets = false;
         String sharedPath = FileUtil.sharedPath(context);
@@ -644,7 +620,7 @@ public class HttpUtil {
 
         LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, mAssetsSP.getString(localKeyName, ""), mAssetsSP.getString(keyName, "")));
         // execute this when the downloader must be fired
-        final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets, type);
+        final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
 
         // AsyncTask并行下载
         downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);

@@ -267,6 +267,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                             intent.setClass(activity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
+                            activity.finish()
                         } else {
                             ToastUtils.show(ctx, data.message!!)
                         }

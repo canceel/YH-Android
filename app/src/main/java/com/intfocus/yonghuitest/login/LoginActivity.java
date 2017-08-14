@@ -1,11 +1,15 @@
 package com.intfocus.yonghuitest.login;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,14 +35,22 @@ import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
+import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
+import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import org.OpenUDID.OpenUDID_manager;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
+import static com.intfocus.yonghuitest.base.BaseActivity.kVersionCode;
 import static com.intfocus.yonghuitest.util.K.kCurrentUIVersion;
 import static com.intfocus.yonghuitest.util.K.kUserId;
 import static com.intfocus.yonghuitest.util.K.kUserName;
@@ -77,6 +89,7 @@ public class LoginActivity extends FragmentActivity {
         sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login_new);
+        checkPgyerVersionUpgrade(LoginActivity.this,true);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
@@ -291,7 +304,7 @@ public class LoginActivity extends FragmentActivity {
             mUserSPEdit.putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
             mUserSPEdit.putString("os_version", "android" + Build.VERSION.RELEASE).commit();
             mUserSPEdit.putString("device_info", android.os.Build.MODEL).commit();
-            mUserSPEdit.putString("password", URLs.MD5(userPass)).commit();
+
 
             // 登录验证
             RetrofitUtil.getHttpService().userLogin(userNum, URLs.MD5(userPass), mUserSP.getString("location", "0,0"))
@@ -328,7 +341,7 @@ public class LoginActivity extends FragmentActivity {
                          */
                         @Override
                         public void onBusinessNext(NewUser data) {
-
+                            mUserSPEdit.putString("password", URLs.MD5(userPass)).commit();
                             upLoadDevice(); //上传设备信息
 
                             mUserSPEdit.putBoolean(URLs.kIsLogin, true).commit();
@@ -352,7 +365,7 @@ public class LoginActivity extends FragmentActivity {
                             } else {
                                 // 检测用户空间，版本是否升级版本是否升级
                                 FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath);
-
+//                                checkPgyerVersionUpgrade(mActivity, true);
                                 // 跳转至主界面
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -435,5 +448,90 @@ public class LoginActivity extends FragmentActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    /*
+     * 托管在蒲公英平台，对比版本号检测是否版本更新
+     * 对比 build 值，只准正向安装提示
+     * 奇数: 测试版本，仅提示
+     * 偶数: 正式版本，点击安装更新
+     */
+    public void checkPgyerVersionUpgrade(final Activity activity, final boolean isShowToast) {
+        PgyUpdateManager.register(activity, "com.intfocus.yonghuitest.fileprovider", new UpdateManagerListener() {
+            @Override
+            public void onUpdateAvailable(final String result) {
+                try {
+                    final AppBean appBean = getAppBeanFromString(result);
+
+                    if (result == null || result.isEmpty()) {
+                        return;
+                    }
+
+                    PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    int currentVersionCode = packageInfo.versionCode;
+                    JSONObject response = new JSONObject(result);
+                    String message = response.getString("message");
+
+                    JSONObject responseVersionJSON = response.getJSONObject(URLs.kData);
+                    int newVersionCode = responseVersionJSON.getInt(kVersionCode);
+
+                    String newVersionName = responseVersionJSON.getString("versionName");
+
+                    if (currentVersionCode >= newVersionCode) {
+                        return;
+                    }
+
+                    String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(getApplicationContext()), K.kPgyerVersionConfigFileName);
+                    FileUtil.writeFile(pgyerVersionPath, result);
+
+                    if (newVersionCode % 2 == 1) {
+                        if (isShowToast) {
+                            ToastUtils.INSTANCE.show(getApplicationContext(),String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
+                        }
+
+                        return;
+                    } else if (HttpUtil.isWifi(activity) && newVersionCode % 10 == 8) {
+
+                        startDownloadTask(activity, appBean.getDownloadURL());
+
+                        return;
+                    }
+                    new AlertDialog.Builder(activity)
+                            .setTitle("版本更新")
+                            .setMessage(message.isEmpty() ? "无升级简介" : message)
+                            .setPositiveButton(
+                                    "确定",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            startDownloadTask(activity, appBean.getDownloadURL());
+                                        }
+                                    })
+                            .setNegativeButton("下一次",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setCancelable(false)
+                            .show();
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNoUpdateAvailable() {
+                if (isShowToast) {
+                    ToastUtils.INSTANCE.show(getApplicationContext(),"已是最新版本", ToastColor.SUCCESS);
+                }
+            }
+        });
     }
 }

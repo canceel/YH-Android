@@ -302,15 +302,15 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 popupWindow.dismiss();
             }
         });
-        contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 筛选
-                actionLaunchReportSelectorActivity(view);
-//                WidgetUtil.showToastShort(mAppContext, "暂无筛选功能");
-                popupWindow.dismiss();
-            }
-        });
+//        contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 筛选
+//                actionLaunchReportSelectorActivity(view);
+////                WidgetUtil.showToastShort(mAppContext, "暂无筛选功能");
+//                popupWindow.dismiss();
+//            }
+//        });
         contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

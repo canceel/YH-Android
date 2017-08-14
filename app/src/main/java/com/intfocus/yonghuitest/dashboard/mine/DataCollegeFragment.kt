@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -180,6 +179,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.id.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
         intent.putExtra(URLs.kLink, link)
+        intent.putExtra("hideBannerSetting",true)
         startActivity(intent)
     }
 

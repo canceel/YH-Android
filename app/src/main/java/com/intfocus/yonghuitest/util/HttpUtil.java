@@ -651,7 +651,6 @@ public class HttpUtil {
         downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
     }
 
-
     /*
      * Zip 档下载
      */

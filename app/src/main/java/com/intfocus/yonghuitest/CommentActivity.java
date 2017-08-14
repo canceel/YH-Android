@@ -3,7 +3,6 @@ package com.intfocus.yonghuitest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -16,17 +15,11 @@ import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
-import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CommentActivity extends BaseActivity {
 
@@ -79,19 +72,23 @@ public class CommentActivity extends BaseActivity {
         @JavascriptInterface
         public void writeComment(final String content) {
             CommentBody commentBody = new CommentBody();
-            commentBody.setUserNum(mUserSP.getString(URLs.kUserNum, "0"));
+            commentBody.setUser_num(mUserSP.getString(URLs.kUserNum, "0"));
             commentBody.setContent(content);
+            commentBody.setObject_type(objectType);
+            commentBody.setObject_id(objectID);
+            commentBody.setObject_title(bannerName);
 
             RetrofitUtil.getHttpService().submitComment(commentBody)
                     .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(new CodeHandledSubscriber<BaseResult>() {
                         @Override
                         public void onError(ApiException apiException) {
+                            ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
                         }
 
                         @Override
                         public void onBusinessNext(BaseResult data) {
-                            ToastUtils.INSTANCE.show(mAppContext, "评论成功");
+                            ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage());
                         }
 
                         @Override

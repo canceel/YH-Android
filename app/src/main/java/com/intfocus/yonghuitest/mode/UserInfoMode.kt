@@ -1,11 +1,8 @@
 package com.intfocus.yonghuitest.mode
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.mine_page.UserInfoResult
@@ -13,7 +10,8 @@ import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.util.*
-import com.intfocus.yonghuitest.util.K.*
+import com.intfocus.yonghuitest.util.K.kUserDeviceId
+import com.intfocus.yonghuitest.util.K.kUserId
 import com.zbl.lib.baseframe.core.AbstractMode
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -38,7 +36,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
     override fun requestData() {
         RetrofitUtil.getHttpService().getUserInfo(mUserSP.getString(URLs.kUserNum, ""))
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
-                .subscribe(object : CodeHandledSubscriber<UserInfoResult>(){
+                .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onBusinessNext(data: UserInfoResult?) {
                         val result1 = UserInfoRequest(true, 200)
                         result1.userInfoBean = data!!.data
@@ -62,7 +60,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
             var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(kUserId, "0") + "icon", requestBody)
-            RetrofitUtil.getHttpService().userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"), multiPartBody)
+            RetrofitUtil.getHttpService().userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"),multiPartBody)
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onBusinessNext(data: BaseResult?) {
@@ -70,6 +68,8 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                         }
 
                         override fun onError(apiException: ApiException?) {
+                            ToastUtils.show(ctx, apiException!!.displayMessage)
+
                         }
 
                         override fun onCompleted() {

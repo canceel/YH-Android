@@ -149,4 +149,5 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KPushToken = "/api/v1.1/device/push_token"; //
     public final static String kDownloadAssetsAPIPath = "%s/api/v1.1/download/assets?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=%s.zip"; //下载静态资源
     public final static String kDeviceTokenAPIPath = "/api/v1.1/user/devices";  //设备列表
+    public final static String kNewUserIconUploadPath = "/api/v1.1/upload/gravatar";
 }

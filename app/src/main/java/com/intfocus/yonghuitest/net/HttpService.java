@@ -37,6 +37,12 @@ import rx.Observable;
 
 public interface HttpService {
 
+    /**
+     * 推送 push_token
+     * @param uuid
+     * @param pushToken
+     * @return
+     */
     @POST(K.KPushToken)
     Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
 

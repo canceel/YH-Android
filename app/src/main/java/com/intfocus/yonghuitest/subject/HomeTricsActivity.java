@@ -186,6 +186,7 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometrics);
+        getSupportActionBar().hide();
         x.view().inject(this);
         mContext = this;
         Intent intent = getIntent();

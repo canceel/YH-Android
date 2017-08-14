@@ -96,7 +96,6 @@ public class CommentActivity extends BaseActivity {
                         }
                     });
 
-
             /*
              * 用户行为记录, 单独异常处理，不可影响用户体验
              */

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.YHApplication;
@@ -228,7 +229,7 @@ public class ConfirmPassCodeActivity extends Activity {
                  * 2. 已打开app, 手机待机后再激活时，进入app；验证成功，不作任何处理
                  */
                 if (is_from_login) {
-                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    Intent intent = new Intent(mContext, DashboardActivity.class);
                     intent.putExtra("from_activity", this.getClass().getSimpleName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(intent);

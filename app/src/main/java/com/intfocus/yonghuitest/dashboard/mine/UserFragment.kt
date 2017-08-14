@@ -223,7 +223,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         //设置可以点击
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
-        popupWindow.
+        popupWindow.animationStyle = R.anim.popup_bottombar_in
 
         contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出

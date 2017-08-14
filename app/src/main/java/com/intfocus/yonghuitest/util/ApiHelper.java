@@ -11,6 +11,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.intfocus.yonghuitest.constant.Urls;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -124,7 +125,9 @@ public class ApiHelper {
      *  获取报表网页数据
      */
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
-        String urlString = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+//        String urlString = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+        // %s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip
+        String urlString = String.format(K.KReportZipData, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.KReportBaseApi  + K.ANDROID_API_KEY), groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         String headerPath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
         File headerFile = new File(headerPath);
@@ -134,6 +137,8 @@ public class ApiHelper {
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
         String jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
         String cachedZipPath = FileUtil.dirPath(context, K.kCachedDirName, String.format("%s.zip", jsFileName));
+
+
         Map<String, String> response = HttpUtil.downloadZip(urlString, cachedZipPath, headers);
 
         //添加code字段是否存在。原因:网络不好的情况下response为{}
@@ -604,5 +609,9 @@ public class ApiHelper {
         mOption.setWifiScan(true); //可选，设置是否开启wifi扫描。默认为true，如果设置为false会同时停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
         mOption.setLocationCacheEnable(true); //可选，设置是否使用缓存定位，默认为true
         return mOption;
+    }
+
+    public static String checkApiToken(String url) {
+        return URLs.MD5(K.ANDROID_API_KEY + url + K.ANDROID_API_KEY );
     }
 }

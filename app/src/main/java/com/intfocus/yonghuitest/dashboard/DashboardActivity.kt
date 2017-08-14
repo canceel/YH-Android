@@ -441,7 +441,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             startActivity(intent)
 
             var logParams = JSONObject()
-            logParams.put(URLs.kAction, "点击/生意概况/链接")
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/链接")
             logParams.put(URLs.kObjTitle, mBannerName)
             ActionLogUtil.actionLog(mAppContext, logParams)
         }

@@ -880,6 +880,13 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     for (Menu menu : msg.getData()) {
                         if ("location".equals(menu.getType())) {
                             locationDatas = menu.getData();
+                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+                            if (!new File(selectedItemPath).exists()) {
+                                if (locationDatas != null)
+                                {
+                                    tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
+                                }
+                            }
                         }
                         if ("faster_select".equals(menu.getType())) {
                             menuDatas = menu.getData();
@@ -917,6 +924,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     }
                 });
             }
+
             return item;
         }
 

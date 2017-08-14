@@ -57,16 +57,17 @@ public class YHApplication extends Application {
 
     private Context appContext;
     public static Context globalContext;
-    SharedPreferences mSharedPreferences;
+    SharedPreferences mSettingSP;
+    SharedPreferences mUserSP;
     PackageInfo packageInfo;
-
 
     @Override
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
         globalContext = getApplicationContext();
-        mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
+        mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
+        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -101,7 +102,8 @@ public class YHApplication extends Application {
          */
         OpenUDID_manager.sync(getApplicationContext());
 
-        if (mSharedPreferences.getInt("Version", 0) != packageInfo.versionCode) {
+        if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
+            mUserSP.edit().clear().commit();
             new FileUtil.CacheCleanAsync(appContext, "new-install").execute();
         }
 

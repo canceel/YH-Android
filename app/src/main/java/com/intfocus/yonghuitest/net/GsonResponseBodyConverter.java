@@ -25,7 +25,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     public T convert(ResponseBody value) throws IOException {
         String response = value.string();
         BaseResultMember baseResultMember = gson.fromJson(response, BaseResultMember.class);
-        if (baseResultMember.getCode() == 0) {
+        if (baseResultMember.getCode() == 200) {
             return gson.fromJson(response, type);
         } else {
             throw new ResultException(baseResultMember.getCode(), baseResultMember.getMessage());

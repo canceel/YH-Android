@@ -259,20 +259,6 @@ public class ApiHelper {
         }
     }
 
-    /*
-     * 发表评论
-     */
-    public static void writeComment(String userID, int objectType, int objectID, Map params) throws UnsupportedEncodingException {
-
-
-        String urlString = String.format(K.kCommentAPIPath, K.kBaseUrl, userID, objectID,
-                objectType);
-
-        Map<String, String> response = HttpUtil.httpPost(urlString, params);
-        Log.i("WriteComment", response.get("code"));
-        Log.i("WriteComment", response.get("body"));
-    }
-
     public static Map<String, String> httpGetWithHeader(String urlString, String assetsPath, String relativeAssetsPath) {
         Map<String, String> retMap = new HashMap<>();
 

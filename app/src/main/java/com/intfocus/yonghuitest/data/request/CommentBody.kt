@@ -11,7 +11,10 @@ class CommentBody {
      * "content": "13564379606"
      * }
      */
-    var apiToken: String? = null
-    var userNum: String? = null
+    var user_num: String? = null
     var content: String? = null
+    var object_type: Int? = null
+    var object_id: Int? = null
+    var object_title: String? = null
+
 }

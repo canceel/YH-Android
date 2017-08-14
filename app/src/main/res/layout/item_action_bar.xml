@@ -22,6 +22,11 @@
     <TextView
         android:id="@+id/tv_banner_title"
         style="@style/BannerTitle"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/iv_banner_setting"
+        android:layout_toRightOf="@id/iv_banner_back"
         android:text="主题名称主题名称主题名称"
         android:textAlignment="center"/>
 

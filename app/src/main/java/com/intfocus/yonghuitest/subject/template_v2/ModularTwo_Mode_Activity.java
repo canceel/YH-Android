@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.subject.template_v2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -65,6 +66,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
 
     private TextView tv_single_title;
 
+    private Context mContext;
     /**
      * 数据实体
      */
@@ -93,6 +95,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         getSupportActionBar().hide();
         fm = getSupportFragmentManager();
         x.view().inject(this);
+        mContext = this;
         init();
     }
 
@@ -104,7 +107,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         banner_name = intent.getStringExtra("bannerName");
         rootTableListener = new RootTableCheckedChangeListener();
         setACTitle("标题");
-        showProgress();
+        showDialog(mContext);
         getModel().requestData(group_id, report_id);
     }
 
@@ -150,7 +153,6 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MDetalActRequestResult entity) {
-        dismissProgress();
         this.entity = entity;
         setACTitle(banner_name);
         if (entity != null) {
@@ -166,11 +168,11 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                     RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.WRAP_CONTENT,
                             DisplayUtil.dip2px(ctx, 25f));
-                        params_rb.setMargins(50, 0, 0, 0);
+                    params_rb.setMargins(50, 0, 0, 0);
 
                     rbtn.setTag(i);
                     rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
-                    Bitmap a=null;
+                    Bitmap a = null;
                     rbtn.setButtonDrawable(new BitmapDrawable(a));
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);
                     rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
@@ -193,6 +195,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
             }
         } else
             ToastUtils.INSTANCE.show(ctx, "数据实体为空");
+        hideLoading();
     }
 
     class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {

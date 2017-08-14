@@ -104,6 +104,7 @@ public class YHApplication extends Application {
 
         if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
             mUserSP.edit().clear().commit();
+            mSettingSP.edit().clear().commit();
             new FileUtil.CacheCleanAsync(appContext, "new-install").execute();
         }
 

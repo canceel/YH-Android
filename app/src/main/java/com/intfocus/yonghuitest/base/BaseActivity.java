@@ -273,6 +273,7 @@ public class BaseActivity extends FragmentActivity {
     public final Runnable mRunnableForDetecting = new Runnable() {
         @Override
         public void run() {
+
 //            Map<String, String> response = HttpUtil.httpGet(urlStringForDetecting,
 //                    new HashMap<String, String>());
 //            int statusCode = Integer.parseInt(response.get(URLs.kCode));
@@ -287,7 +288,7 @@ public class BaseActivity extends FragmentActivity {
 
             mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
             Message message = mHandlerForDetecting.obtainMessage();
-//            message.what = statusCode;
+            message.what = 200;
             mHandlerForDetecting.sendMessage(message);
         }
     };

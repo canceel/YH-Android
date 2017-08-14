@@ -1,12 +1,13 @@
 package com.intfocus.yonghuitest.subject.template_v2.mode;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.yonghuitest.subject.template_v2.entity.MererDetalEntity;
 import com.intfocus.yonghuitest.subject.template_v2.entity.msg.MDetalActRequestResult;
+import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.HttpUtil;
 import com.intfocus.yonghuitest.util.K;
@@ -15,13 +16,9 @@ import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.intfocus.yonghuitest.YHApplication.threadPool;
@@ -54,74 +51,86 @@ public class MeterDetalActMode extends AbstractMode {
     @Override
     public void requestData() {
         entity = null;
-        Log.i(TAG, "StartTime:" + TimeUtil.getNowTime());
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
 //                try {
-                    String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
-                    Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
-
-//                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
-//                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
-                    if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
-                        MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                        EventBus.getDefault().post(result1);
-                        return;
+                Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
+                String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
+                String assetsPath = FileUtil.sharedPath(ctx);
+                String itemsString;
+                Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
+                Map<String, String> response = HttpUtil.httpGet(urlString, headers);
+                Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
+                if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
+                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+                    EventBus.getDefault().post(result1);
+                    return;
+                }
+                ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+                //请求数据成功
+                itemsString = response.get("body").toString();
+                if (TextUtils.isEmpty(itemsString)) {
+                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);//取数据
+                } else {
+                    try {
+                        FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                }
+                if (TextUtils.isEmpty(itemsString)) {
+                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+                    EventBus.getDefault().post(result1);
+                    return;
+                }
+                StringReader stringReader = new StringReader(itemsString);
+                Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
+                JSONReader reader = new JSONReader(stringReader);
+                reader.startArray();
+                reader.startObject();
 
-                    StringReader stringReader = new StringReader(response.get("body"));
-                    JSONReader reader = new JSONReader(stringReader);
-                    reader.startArray();
-                    reader.startObject();
+                entity = new MererDetalEntity();
+                entity.data = new ArrayList<>();
 
-//                InputStream is = ctx.getAssets().open("kpi_detaldata.json");
-//                InputStreamReader isr = new InputStreamReader(is);
-//                JSONReader reader = new JSONReader(isr);
-//                reader.startArray();
-//                reader.startObject();
+                while (reader.hasNext()) {
+                    String key = reader.readString();
+                    switch (key) {
+                        case "name":
+                            String name = reader.readObject().toString();
+                            entity.name = name;
+                            break;
 
-                    entity = new MererDetalEntity();
-                    entity.data = new ArrayList<>();
-
-                    while (reader.hasNext()) {
-                        String key = reader.readString();
-                        switch (key) {
-                            case "name":
-                                String name = reader.readObject().toString();
-                                entity.name = name;
-                                break;
-
-                            case "data":
-                                reader.startArray();
+                        case "data":
+                            reader.startArray();
+                            while (reader.hasNext()) {
+                                reader.startObject();
+                                MererDetalEntity.PageData data = new MererDetalEntity.PageData();
                                 while (reader.hasNext()) {
-                                    reader.startObject();
-                                    MererDetalEntity.PageData data = new MererDetalEntity.PageData();
-                                    while (reader.hasNext()) {
-                                        String dataKey = reader.readString();
-                                        switch (dataKey) {
-                                            case "parts":
-                                                String parts = reader.readObject().toString();
-                                                data.parts = parts;
-                                                break;
+                                    String dataKey = reader.readString();
+                                    switch (dataKey) {
+                                        case "parts":
+                                            String parts = reader.readObject().toString();
+                                            data.parts = parts;
+                                            break;
 
-                                            case "title":
-                                                String title = reader.readObject().toString();
-                                                data.title = title;
-                                                break;
-                                        }
+                                        case "title":
+                                            String title = reader.readObject().toString();
+                                            data.title = title;
+                                            break;
                                     }
-                                    reader.endObject();
-                                    entity.data.add(data);
                                 }
-                                reader.endArray();
-                                break;
-                        }
+                                reader.endObject();
+                                entity.data.add(data);
+                            }
+                            reader.endArray();
+                            break;
                     }
-                    reader.endObject();
-                    reader.endArray();
-                    EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
-                    Log.i(TAG, "EndTime:" + TimeUtil.getNowTime());
+                }
+                reader.endObject();
+                reader.endArray();
+                EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
+                Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
@@ -131,7 +140,7 @@ public class MeterDetalActMode extends AbstractMode {
         });
     }
 
-     /**
+    /**
      * 解析数据
      *
      * @param result

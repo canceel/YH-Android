@@ -552,9 +552,6 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onNoUpdateAvailable() {
-                if (isShowToast) {
-                    ToastUtils.INSTANCE.show(getApplicationContext(),"已是最新版本", ToastColor.SUCCESS);
-                }
             }
         });
     }

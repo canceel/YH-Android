@@ -3,18 +3,13 @@ package com.intfocus.yonghuitest.dashboard.kpi
 import android.app.Fragment
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.base.BaseModeFragment
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_number_three.*
-import kotlinx.android.synthetic.main.fragment_number_two.*
-import org.greenrobot.eventbus.EventBus
 import java.text.DecimalFormat
 
 /**
@@ -24,7 +19,7 @@ class NumberThreeFragment : Fragment() {
     var datas: KpiGroupItem? = null
     private var rootView: View? = null
     internal var df = DecimalFormat("#.00")
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     companion object {
         fun newInstance(datas: KpiGroupItem): NumberThreeFragment {
@@ -63,7 +58,7 @@ class NumberThreeFragment : Fragment() {
             tv_number_three_unit.text = datas!!.unit
             tv_number_three_compare.text = datas!!.data!!.high_light!!.compare
             tv_number_three_sub.text = datas!!.memo1
-//            rl_number_three_compare.setBackgroundColor(Constant.colorsRGY[datas!!.data!!.high_light!!.arrow])
+//            rl_number_three_compare.setBackgroundColor(Colors.colorsRGY[datas!!.data!!.high_light!!.arrow])
 //            rl_kpi_number_three.setOnClickListener {
 //                EventBus.getDefault().post(datas)
 //            }

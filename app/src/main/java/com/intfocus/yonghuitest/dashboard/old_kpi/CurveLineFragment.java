@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseModeFragment;
-import com.intfocus.yonghuitest.constant.Constant;
+import com.intfocus.yonghuitest.constant.Colors;
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity;
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity;
 import com.intfocus.yonghuitest.view.MeterCursor;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class CurveLineFragment extends BaseModeFragment {
     private MererEntity entity;
-    private int[]colors = Constant.INSTANCE.getColorsRGY();
+    private int[]colors = Colors.INSTANCE.getColorsRGY();
     private View rootView;
 
     @ViewInject(R.id.ll_ragment_curve)

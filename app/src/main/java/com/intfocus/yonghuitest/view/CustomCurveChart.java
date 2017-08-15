@@ -9,7 +9,7 @@ import android.graphics.PathEffect;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.intfocus.yonghuitest.constant.Constant;
+import com.intfocus.yonghuitest.constant.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,17 +208,17 @@ public class CustomCurveChart extends View {
         switch (colorList[index]) {
             case 1:
             case 2:
-                color = Constant.INSTANCE.getColorsRGY()[0];
+                color = Colors.INSTANCE.getColorsRGY()[0];
                 break;
 
             case 3:
             case 4:
-                color = Constant.INSTANCE.getColorsRGY()[1];
+                color = Colors.INSTANCE.getColorsRGY()[1];
                 break;
 
             case 5:
             case 6:
-                color = Constant.INSTANCE.getColorsRGY()[2];
+                color = Colors.INSTANCE.getColorsRGY()[2];
                 break;
             default:
                 color = defauteolor;

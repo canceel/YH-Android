@@ -1,36 +1,26 @@
 package com.intfocus.yonghuitest.dashboard.app
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.app.adapter.AppListAdapter
-import com.intfocus.yonghuitest.dashboard.app.adapter.AppListItemAdapter
 import com.intfocus.yonghuitest.dashboard.app.mode.AppListMode
 import com.intfocus.yonghuitest.dashboard.app.mode.AppListPageRequest
 import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
-import com.intfocus.yonghuitest.subject.HomeTricsActivity
-import com.intfocus.yonghuitest.subject.SubjectActivity
-import com.intfocus.yonghuitest.subject.TableActivity
-import com.intfocus.yonghuitest.subject.WebApplicationActivity
-import com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yonghuitest.util.*
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_app.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
-import org.json.JSONObject
 
 /**
  * 主页 - 专题

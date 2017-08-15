@@ -14,13 +14,11 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.YHApplication
 import com.intfocus.yonghuitest.bean.DashboardItemBean
-import com.intfocus.yonghuitest.bean.User
 import com.intfocus.yonghuitest.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yonghuitest.dashboard.mine.bean.PushMessageBean
@@ -50,7 +48,6 @@ import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import sumimakito.android.advtextswitcher.AdvTextSwitcher
-import java.io.File
 import java.io.IOException
 import java.sql.SQLException
 
@@ -136,7 +133,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         RxBusUtil.getInstance().post("UpDatePushMessage")
 
         when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", 1)
+            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", pushMessage.obj_id, 1)
             "analyse" -> {
                 mViewPager!!.currentItem = PAGE_REPORTS
                 mTabView!![mViewPager!!.currentItem].setActive(true)
@@ -343,7 +340,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val link = items.link
             val bannerName = items.bannerName + ""
             val objectType = items.objectType
-            pageLink(bannerName, link, objectType)
+            val objectId = items.objectId
+            pageLink(bannerName, link, objectType, objectId)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
@@ -352,7 +350,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 页面跳转事件
      */
-    fun pageLink(mBannerName: String, link: String, objectType: Int) {
+    fun pageLink(mBannerName: String, link: String, objectType: Int, objectId: Int) {
         if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
             try {
                 val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
@@ -366,7 +364,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, reportID.toInt())
+                        intent.putExtra(URLs.kObjectId, objectId)
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -377,7 +375,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, reportID.toInt())
+                        intent.putExtra(URLs.kObjectId, objectId)
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -389,7 +387,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                 K.kBaseUrl, groupID, "3", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, reportID.toInt())
+                        intent.putExtra(URLs.kObjectId, objectId)
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -402,7 +400,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                 K.kBaseUrl, groupID, "5", reportID)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, reportID.toInt())
+                        intent.putExtra(URLs.kObjectId, objectId)
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -413,7 +411,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                         val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, reportID.toInt())
+                        intent.putExtra(URLs.kObjectId, objectId)
                         intent.putExtra(URLs.kObjectType, objectType)
                         intent.putExtra("groupID", groupID)
                         intent.putExtra("reportID", reportID)
@@ -435,6 +433,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(URLs.kBannerName, mBannerName)
             intent.putExtra(URLs.kLink, link)
+            intent.putExtra(URLs.kObjectId, objectId)
             intent.putExtra(URLs.kObjectType, objectType)
             startActivity(intent)
 

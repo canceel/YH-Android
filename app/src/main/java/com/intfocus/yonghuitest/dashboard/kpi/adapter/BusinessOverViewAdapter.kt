@@ -3,7 +3,6 @@ package com.intfocus.yonghuitest.dashboard.mine.adapter
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.DashboardItemBean
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import org.greenrobot.eventbus.EventBus
 
@@ -23,7 +22,7 @@ class BusinessOverViewAdapter(val context: Context,
                               private var datas: List<KpiGroupItem>?) : RecyclerView.Adapter<BusinessOverViewAdapter.OperationalWarningHolder>() {
 
     var inflater = LayoutInflater.from(context)
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     fun setData(data: List<KpiGroupItem>?) {
         this.datas = data
@@ -61,7 +60,7 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2
         holder.rlBusinessOverview.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, itemData.id!!, 1))
         }
     }
 

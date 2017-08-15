@@ -2,26 +2,18 @@ package com.intfocus.yonghuitest.mode
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
-import com.intfocus.yonghuitest.constant.Urls
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.yonghuitest.dashboard.mine.bean.NoticeContentRequest
-import com.intfocus.yonghuitest.data.response.BaseResult
 import com.intfocus.yonghuitest.data.response.mine_page.NoticeContentResult
-import com.intfocus.yonghuitest.data.response.notice.NoticesResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.HttpUtil
 import com.intfocus.yonghuitest.util.K
-import com.intfocus.yonghuitest.util.URLs
 import com.zbl.lib.baseframe.core.AbstractMode
-import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
 
 /**
  * Created by liuruilin on 2017/6/15.

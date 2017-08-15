@@ -3,7 +3,6 @@ package com.intfocus.yonghuitest.net;
 import android.util.Log;
 
 import com.intfocus.yonghuitest.util.K;
-import com.intfocus.yonghuitest.util.LogUtil;
 import com.intfocus.yonghuitest.util.Utils;
 
 import java.io.IOException;

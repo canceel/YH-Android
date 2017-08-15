@@ -2,12 +2,8 @@ package com.intfocus.yonghuitest.scanner
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.PopupWindow
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.util.FileUtil
-import com.intfocus.yonghuitest.util.ImageUtil
-import com.intfocus.yonghuitest.util.ToastUtils
-import com.intfocus.yonghuitest.util.URLs
+import com.intfocus.yonghuitest.util.*
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -34,7 +27,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.xutils.x
-import java.io.File
 
 class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     lateinit var ctx: Context
@@ -138,6 +130,12 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         wv_scanner_view.addJavascriptInterface(JavaScriptInterface(), URLs.kJSInterfaceName)
         wv_scanner_view.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
+                var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
+                var cachedJSON = FileUtil.readConfigFile(cachedPath)
+                if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("name")) {
+                    var storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
+                    tv_banner_title.text = storeName
+                }
                 super.onPageFinished(view, url)
             }
         })

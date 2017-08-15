@@ -15,11 +15,11 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.intfocus.yonghuitest.constant.Constants;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity;
 import com.intfocus.yonghuitest.util.FileUtil;
-import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.message.IUmengRegisterCallback;
@@ -30,12 +30,8 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
 import org.OpenUDID.OpenUDID_manager;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.x;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,15 +71,9 @@ public class YHApplication extends Application {
         }
 
         /*
-         *  蒲公英平台，收集闪退日志
-         */
-//        PgyCrashManager.register(this);
-
-        Log.i("testlog", BuildConfig.DEBUG + "");
-        /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), "1690ecea95", BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), Constants.BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化

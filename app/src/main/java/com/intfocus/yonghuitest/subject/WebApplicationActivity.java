@@ -79,7 +79,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     @ViewInject(R.id.ll_copylink)
     LinearLayout llCopyLinkl;
 
-
     private Boolean isInnerLink, isSupportSearch = false;
     private String templateID, reportID;
     private PDFView mPDFView;
@@ -98,6 +97,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     private ImageView iv_BannerSetting;
     private Intent mSourceIntent;
     private Boolean isFromActivityResult = false;
+
     /* 请求识别码 */
     private static final int CODE_RESULT_REQUEST = 0xa2;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
@@ -220,6 +220,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setDrawingCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
+
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
@@ -251,10 +252,10 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return true;
+                return false;
             }
         });
-        setWebViewLongListener(true);
+        setWebViewLongListener(false);
         return mWebView;
     }
 
@@ -695,9 +696,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
     @Override
     public void onBackPressed() {
-        if (isInnerLink) {
-            finish();
-        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("温馨提示")
                     .setMessage("退出当前页面?")
@@ -714,7 +712,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                         }
                     });
             builder.show();
-        }
     }
 
     public void refresh(View v) {
@@ -1118,5 +1115,13 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

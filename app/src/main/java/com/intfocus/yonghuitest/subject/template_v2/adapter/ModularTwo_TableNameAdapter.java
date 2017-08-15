@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.subject.template_v2.entity.ModularTwo_UnitTableEntity;
-import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;

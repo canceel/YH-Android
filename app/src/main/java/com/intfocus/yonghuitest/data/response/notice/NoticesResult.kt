@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.data.response.notice
 
-import com.google.gson.annotations.SerializedName
 import com.intfocus.yonghuitest.data.response.BaseResult
 
 /**

@@ -10,14 +10,12 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.data.response.assets.AssetsMD5
 import com.intfocus.yonghuitest.data.response.assets.AssetsResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
 import com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity
 import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.URLs
 import kotlinx.android.synthetic.main.activity_splash.*
 
 

@@ -2,7 +2,6 @@ package com.intfocus.yonghuitest.dashboard.mine
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView

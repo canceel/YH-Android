@@ -1,6 +1,5 @@
 package com.intfocus.yonghuitest.util;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;

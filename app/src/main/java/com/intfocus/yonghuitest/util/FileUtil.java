@@ -1,7 +1,6 @@
 package com.intfocus.yonghuitest.util;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,13 +18,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.data.response.assets.AssetsMD5;
 import com.intfocus.yonghuitest.data.response.assets.AssetsResult;
 import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
-import com.intfocus.yonghuitest.subject.SubjectActivity;
 import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
 
 import java.io.BufferedReader;
@@ -38,8 +35,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -731,20 +726,23 @@ public class FileUtil {
              *  新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
              *  避免再从服务器下载更新，浪费用户流量
              */
-                copyAssetFiles(ctx, sharedPath);
+            copyAssetFiles(ctx, sharedPath);
 
-                /*
-                 *  校正静态资源
-                 *
-                 *  sharedPath/filename.zip md5 值 <=> user.plist 中 filename_md5
-                 *  不一致时，则删除原解压后文件夹，重新解压 zip
-                 */
-                FileUtil.checkAssets(ctx, URLs.kAssets, false);
+            /*
+             *  校正静态资源
+             *
+             *  sharedPath/filename.zip md5 值 <=> user.plist 中 filename_md5
+             *  不一致时，则删除原解压后文件夹，重新解压 zip
+             */
+            FileUtil.checkAssets(ctx, URLs.kAssets, false);
+            FileUtil.checkAssets(ctx, URLs.kLoading, false);
+            FileUtil.checkAssets(ctx, URLs.kFonts, true);
+            FileUtil.checkAssets(ctx, URLs.kImages, true);
+            FileUtil.checkAssets(ctx, URLs.kIcons, true);
+            FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
+            FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
 
             if (type.equals("cache-clean")) {
-                if (!HttpUtil.isConnected(ctx)) {
-                    return;
-                }
                 RetrofitUtil.getHttpService().getAssetsMD5()
                         .compose(new RetrofitUtil.CommonOptions<AssetsResult>())
                         .subscribe(new CodeHandledSubscriber<AssetsResult>() {

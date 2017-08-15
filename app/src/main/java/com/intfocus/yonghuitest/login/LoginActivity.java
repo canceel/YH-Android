@@ -109,9 +109,6 @@ public class LoginActivity extends FragmentActivity {
          * 显示记住用户名称
          */
         usernameEditText.setText(mUserSP.getString("user_num", ""));
-
-//        View v = new View(this);
-//        actionSubmit(v);
     }
 
     /**
@@ -281,9 +278,6 @@ public class LoginActivity extends FragmentActivity {
             userNum = usernameEditText.getText().toString();
             userPass = passwordEditText.getText().toString();
 
-//            userNum = "13162726850";
-//            userPass = "1";
-
             mUserSP.edit().putString("user_num", userNum).commit();
 
             if (userNum.isEmpty() || userPass.isEmpty()) {
@@ -299,7 +293,6 @@ public class LoginActivity extends FragmentActivity {
                 }
             });
 
-
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
             // 上传设备信息
@@ -308,7 +301,6 @@ public class LoginActivity extends FragmentActivity {
             mUserSPEdit.putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
             mUserSPEdit.putString("os_version", "android" + Build.VERSION.RELEASE).commit();
             mUserSPEdit.putString("device_info", android.os.Build.MODEL).commit();
-
 
             // 登录验证
             RetrofitUtil.getHttpService().userLogin(userNum, URLs.MD5(userPass), mUserSP.getString("location", "0,0"))

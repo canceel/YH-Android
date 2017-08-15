@@ -11,7 +11,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.intfocus.yonghuitest.constant.Urls;
+import com.intfocus.yonghuitest.constant.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -552,7 +552,7 @@ public class ApiHelper {
     public static void getAMapLocation(final Context ctx) {
         //初始化client
         AMapLocationClient locationClient = new AMapLocationClient(ctx);
-        locationClient.setApiKey("a9de6a6686b42561f41ef209079fb708");
+        locationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);

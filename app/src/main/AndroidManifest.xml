@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yonghuitest"
           android:hardwareAccelerated="false"
-          android:versionCode="592"
-          android:versionName="3.0.50">
+          android:versionCode="608"
+          android:versionName="3.0.68">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -35,7 +35,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name=".YHApplication"
+        android:name="com.intfocus.yonghuitest.YHApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
@@ -63,12 +63,12 @@
         </service>
 
         <!--定位服务-->
-        <service android:name=".service.LocationService" />
+        <service android:name="com.intfocus.yonghuitest.service.LocationService" />
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
         <activity
-            android:name=".login.LauncherActivity"
+            android:name="com.intfocus.yonghuitest.login.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
@@ -80,164 +80,164 @@
 
         <!-- 登录 -->
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.intfocus.yonghuitest.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 模板三 -->
         <activity
-            android:name=".subject.HomeTricsActivity"
+            android:name="com.intfocus.yonghuitest.subject.HomeTricsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 筛选 -->
         <activity
-            android:name=".subject.SelectorTreeActivity"
+            android:name="com.intfocus.yonghuitest.subject.SelectorTreeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
-            android:name=".dashboard.mine.FeedbackActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 公告详情 -->
         <activity
-            android:name=".dashboard.mine.NoticeContentActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <activity
-            android:name=".subject.TableActivity"
+            android:name="com.intfocus.yonghuitest.subject.TableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
-            android:name=".login.ForgetPasswordActivity"
+            android:name="com.intfocus.yonghuitest.login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name=".dashboard.mine.PassWordAlterActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.PassWordAlterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
-            android:name=".dashboard.mine.FavoriteActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.FavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 筛选界面 -->
         <activity
-            android:name=".filter.FilterActivity"
+            android:name="com.intfocus.yonghuitest.filter.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
         <!-- 扫码页 -->
         <activity
-            android:name=".scanner.BarCodeScannerActivity"
+            android:name="com.intfocus.yonghuitest.scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
         <!-- 个人信息 -->
         <activity
-            android:name=".setting.SettingActivity"
+            android:name="com.intfocus.yonghuitest.setting.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
-            android:name=".setting.SettingListActivity"
+            android:name="com.intfocus.yonghuitest.setting.SettingListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
-            android:name=".setting.SettingPreferenceActivity"
+            android:name="com.intfocus.yonghuitest.setting.SettingPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
-            android:name=".dashboard.DashboardActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
         <activity
-            android:name=".subject.SubjectActivity"
+            android:name="com.intfocus.yonghuitest.subject.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name=".subject.template_v2.ModularTwo_Mode_Activity"
+            android:name="com.intfocus.yonghuitest.subject.template_v2.ModularTwo_Mode_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name=".subject.template_v2.ModularTwo_SubTableActivity"
+            android:name="com.intfocus.yonghuitest.subject.template_v2.ModularTwo_SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 外部链接 -->
         <activity
-            android:name=".subject.WebApplicationActivity"
+            android:name="com.intfocus.yonghuitest.subject.WebApplicationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <activity
-            android:name=".CommentActivity"
+            android:name="com.intfocus.yonghuitest.CommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
-            android:name=".scanner.ScannerResultActivity"
+            android:name="com.intfocus.yonghuitest.scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name=".scanner.StoreSelectorActivity"
+            android:name="com.intfocus.yonghuitest.scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
-            android:name=".screen_lock.InitPassCodeActivity"
+            android:name="com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
-            android:name=".screen_lock.ConfirmPassCodeActivity"
+            android:name="com.intfocus.yonghuitest.screen_lock.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
         <activity
-            android:name=".setting.ThursdaySayActivity"
+            android:name="com.intfocus.yonghuitest.setting.ThursdaySayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
         <activity
-            android:name=".setting.DeveloperActivity"
+            android:name="com.intfocus.yonghuitest.setting.DeveloperActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.intfocus.yonghuitest.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name=".setting.ShowListMsgActivity"/>
-        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
+        <activity android:name="com.intfocus.yonghuitest.setting.ShowListMsgActivity"/>
+        <activity android:name="com.intfocus.yonghuitest.dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!--消息页-->
         <activity
-            android:name=".dashboard.mine.activity.PushMessageContentActivity"
+            android:name="com.intfocus.yonghuitest.dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!--引导页-->
         <activity
-            android:name=".login.GuideActivity"
+            android:name="com.intfocus.yonghuitest.login.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 

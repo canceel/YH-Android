@@ -3,7 +3,6 @@ package com.intfocus.yonghuitest.dashboard.kpi
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,8 @@ import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_number_one.*
-import kotlinx.android.synthetic.main.fragment_number_two.*
 import org.greenrobot.eventbus.EventBus
 import java.text.DecimalFormat
-import android.graphics.Typeface.createFromAsset
-
 
 
 /**

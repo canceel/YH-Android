@@ -73,12 +73,15 @@ public class ForgetPasswordActivity extends BaseActivity {
                 if (userNum == null && "".equals(userNum)) {
                     ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效");
                 } else if (mobile.length() == 11) {
+
+                    mBtnSubmit.setClickable(false);
+
                     // 发起 post 请求
                     startPost(userNum, mobile);
 
-                        /*
-                         * 用户行为记录, 单独异常处理，不可影响用户体验
-                         */
+                    /*
+                     * 用户行为记录, 单独异常处理，不可影响用户体验
+                     */
                     try {
                         logParams = new JSONObject();
                         logParams.put(URLs.kAction, "重置密码");
@@ -106,6 +109,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     @Override
                     public void onError(ApiException apiException) {
                         showErrorMsg(apiException.getDisplayMessage());
+                        mBtnSubmit.setClickable(true);
                     }
 
                     @Override
@@ -115,6 +119,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
                     @Override
                     public void onCompleted() {
+                        mBtnSubmit.setClickable(true);
                     }
                 });
 

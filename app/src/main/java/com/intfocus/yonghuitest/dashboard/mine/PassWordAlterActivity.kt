@@ -97,6 +97,7 @@ class PassWordAlterActivity : BaseActivity() {
         ActionLogUtil.actionLog(this@PassWordAlterActivity, logParams)
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(URLs.kPassword, "0")) {
+            btn_pwd_alter_submit.isClickable = false
             // 修改密码 POST 请求
             RetrofitUtil.getHttpService()
                     .updatePwd(mUserSP.getString(URLs.kUserNum, "0"), URLs.MD5(newPassword))
@@ -118,10 +119,12 @@ class PassWordAlterActivity : BaseActivity() {
                                 startActivity(intent)
                             }
                             alertDialog.show()
+                            btn_pwd_alter_submit.isClickable = true
                         }
 
                         override fun onError(apiException: ApiException?) {
                             ToastUtils.show(applicationContext, "密码修改失败")
+                            btn_pwd_alter_submit.isClickable = true
 //                            ToastUtils.show(applicationContext, apiException!!.displayMessage!!)
                         }
 

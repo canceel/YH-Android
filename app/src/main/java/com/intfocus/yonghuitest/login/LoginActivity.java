@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -69,6 +70,7 @@ public class LoginActivity extends FragmentActivity {
     private View mLinearPasswordBelowLine;
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
+    private Button mBtnLogin;
     private DeviceRequest mDeviceRequest;
     private SharedPreferences mUserSP;
     private SharedPreferences.Editor mUserSPEdit;
@@ -93,7 +95,7 @@ public class LoginActivity extends FragmentActivity {
         sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login_new);
-        checkPgyerVersionUpgrade(LoginActivity.this,true);
+        checkPgyerVersionUpgrade(LoginActivity.this, true);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
@@ -101,6 +103,7 @@ public class LoginActivity extends FragmentActivity {
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
         mLlEtUsernameClear = (LinearLayout) findViewById(R.id.ll_etUsername_clear);
         mLlEtPasswordClear = (LinearLayout) findViewById(R.id.ll_etPassword_clear);
+        mBtnLogin = (Button) findViewById(R.id.btn_login);
 
         // 初始化监听
         initListener();
@@ -239,6 +242,7 @@ public class LoginActivity extends FragmentActivity {
                 return false;
             }
         });
+
     }
 
     /**
@@ -274,6 +278,7 @@ public class LoginActivity extends FragmentActivity {
      * 登录按钮点击事件
      */
     public void actionSubmit(View v) {
+        mBtnLogin.setClickable(false);
         try {
             userNum = usernameEditText.getText().toString();
             userPass = passwordEditText.getText().toString();
@@ -309,6 +314,7 @@ public class LoginActivity extends FragmentActivity {
 
                         @Override
                         public void onCompleted() {
+                            mBtnLogin.setClickable(true);
                         }
 
                         /**
@@ -317,6 +323,7 @@ public class LoginActivity extends FragmentActivity {
                          */
                         @Override
                         public void onError(ApiException apiException) {
+                            mBtnLogin.setClickable(true);
                             if (mProgressDialog != null)
                                 mProgressDialog.dismiss();
                             try {
@@ -501,7 +508,7 @@ public class LoginActivity extends FragmentActivity {
 
                     if (newVersionCode % 2 == 1) {
                         if (isShowToast) {
-                            ToastUtils.INSTANCE.show(getApplicationContext(),String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
+                            ToastUtils.INSTANCE.show(getApplicationContext(), String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
 
                         return;

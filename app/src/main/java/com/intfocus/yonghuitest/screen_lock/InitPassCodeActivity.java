@@ -21,6 +21,7 @@ import com.intfocus.yonghuitest.YHApplication;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
 import com.intfocus.yonghuitest.util.FileUtil;
 import com.intfocus.yonghuitest.util.K;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
@@ -237,7 +238,7 @@ public class InitPassCodeActivity extends Activity {
                 break;
             default:
                 if (this.password == Integer.parseInt(stringBuilder.toString())) {
-                    ToastUtils.INSTANCE.show(mContext, "设置锁屏成功", R.color.co1_syr);
+                    ToastUtils.INSTANCE.show(mContext, "设置锁屏成功", ToastColor.SUCCESS);
 
                     try {
                         String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);

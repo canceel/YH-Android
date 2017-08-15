@@ -64,7 +64,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onBusinessNext(data: BaseResult?) {
-                            ToastUtils.show(ctx, "头像已上传")
+                            ToastUtils.show(ctx, "头像已上传",ToastColor.SUCCESS)
                         }
 
                         override fun onError(apiException: ApiException?) {

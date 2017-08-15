@@ -120,7 +120,7 @@ class NoticeFragment : RefreshFragment(), NoticeListAdapter.NoticeItemListener, 
 
                     override fun onError(apiException: ApiException?) {
                         finshRequest()
-                        ToastUtils.show(mActivity, apiException!!.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(data: NoticesResult) {

@@ -136,7 +136,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onBusinessNext(data: BaseResult) {
                         getData(true)
-                        ToastUtils.show(mActivity, data.message + "", R.color.co1_syr)
+                        ToastUtils.show(mActivity, data.message + "",ToastColor.SUCCESS)
                     }
                 })
     }

@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import com.intfocus.yonghuitest.R
@@ -62,6 +63,7 @@ class PassWordAlterActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        hideKeyboard()
         super.onDestroy()
     }
 
@@ -141,5 +143,15 @@ class PassWordAlterActivity : BaseActivity() {
         val pattern = Pattern.compile(regexp)
         val matcher = pattern.matcher(str)
         return matcher.matches()
+    }
+
+
+    /**
+     * 隐藏软件盘
+     */
+    fun hideKeyboard() {
+        val imm = getSystemService(
+                Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
     }
 }

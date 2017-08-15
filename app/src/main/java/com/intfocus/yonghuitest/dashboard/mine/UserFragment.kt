@@ -57,6 +57,7 @@ import java.io.File
  * Created by liuruilin on 2017/6/7.
  */
 class UserFragment : BaseModeFragment<UserInfoMode>() {
+
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
     var mUserInfo: UserInfoBean? = null
@@ -65,6 +66,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     var gson = Gson()
     var imageOptions: ImageOptions? = null
     var localImageOptions: ImageOptions? = null
+    var userNum: String? = null
 
     /* 请求识别码 */
     private val CODE_GALLERY_REQUEST = 0xa0
@@ -94,10 +96,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
         imageOptions = ImageOptions.Builder()
                 .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .setCircular(true)
@@ -105,10 +103,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .setFailureDrawableId(R.drawable.face_default)
                 .build()
 
-        localImageOptions = ImageOptions.Builder()
-                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
-                .setCircular(true)
-                .build()
+//        localImageOptions = ImageOptions.Builder()
+//                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
+//                .setCircular(true)
+//                .build()
 
         var mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
@@ -117,20 +115,22 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         initView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
+
     fun initView() {
-        var userNum = activity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        userNum= activity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
         RetrofitUtil.getHttpService().getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(activity,apiException!!.displayMessage)
+                        ToastUtils.show(activity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(mUserInfo: UserInfoResult?) {
                         tv_user_name.text = mUserInfo!!.data!!.user_name
-                        tv_login_number.text = mUserInfo.data!!.login_duration
-                        tv_report_number.text = mUserInfo.data!!.browse_report_count
-                        tv_beyond_number.text = mUserInfo.data!!.surpass_percentage.toString()
                         tv_user_role.text = mUserInfo.data!!.role_name
                         tv_mine_user_num_value.text = mUserInfo.data!!.user_num
                         tv_mine_user_group_value.text = mUserInfo.data!!.group_name
@@ -160,6 +160,25 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_favorite.setOnClickListener { startFavoriteActivity() }
         rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
+    }
+
+    fun refreshData(){
+        RetrofitUtil.getHttpService().getUserInfo(userNum)
+                .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
+                .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
+                    override fun onError(apiException: ApiException?) {
+                        ToastUtils.show(activity, apiException!!.displayMessage)
+                    }
+
+                    override fun onBusinessNext(mUserInfo: UserInfoResult?) {
+                        tv_login_number.text = mUserInfo!!.data!!.login_duration
+                        tv_report_number.text = mUserInfo.data!!.browse_report_count
+                        tv_beyond_number.text = mUserInfo.data!!.surpass_percentage.toString()
+                    }
+
+                    override fun onCompleted() {
+                    }
+                })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

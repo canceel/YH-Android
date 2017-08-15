@@ -122,7 +122,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
                 .compose(RetrofitUtil.CommonOptions<MenuResult>())
                 .subscribe(object : CodeHandledSubscriber<MenuResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(mActivity, apiException!!.displayMessage, R.color.co11_syr)
+                        ToastUtils.show(mActivity, apiException!!.displayMessage)
                     }
 
                     override fun onCompleted() {

@@ -19,6 +19,7 @@ import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
 import com.intfocus.yonghuitest.util.ActionLogUtil;
+import com.intfocus.yonghuitest.util.ToastColor;
 import com.intfocus.yonghuitest.util.ToastUtils;
 import com.intfocus.yonghuitest.util.URLs;
 
@@ -70,7 +71,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效", R.color.color_notice_login_failure);
+                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效");
                 } else if (mobile.length() == 11) {
                     // 发起 post 请求
                     startPost(userNum, mobile);
@@ -86,7 +87,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "请输入正确的手机号", R.color.color_notice_login_failure);
+                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "请输入正确的手机号");
                 }
             }
         });
@@ -109,7 +110,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
                     @Override
                     public void onBusinessNext(BaseResult data) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), R.color.color_notice_login_success);
+                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), ToastColor.SUCCESS);
                     }
 
                     @Override

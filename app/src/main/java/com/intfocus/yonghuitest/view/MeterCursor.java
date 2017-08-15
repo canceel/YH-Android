@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import com.intfocus.yonghuitest.constant.Constant;
+import com.intfocus.yonghuitest.constant.Colors;
 
 /**
  * 仪表盘箭头
@@ -14,7 +14,7 @@ import com.intfocus.yonghuitest.constant.Constant;
  */
 public class MeterCursor extends android.support.v7.widget.AppCompatImageView {
 
-    private int[] colors = Constant.INSTANCE.getColorsRGY();
+    private int[] colors = Colors.INSTANCE.getColorsRGY();
 
     private int state = 0;
 

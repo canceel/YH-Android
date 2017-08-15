@@ -13,7 +13,6 @@ import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.data.response.filter.MenuItem
-import com.intfocus.yonghuitest.util.ToastUtils
 
 
 /**

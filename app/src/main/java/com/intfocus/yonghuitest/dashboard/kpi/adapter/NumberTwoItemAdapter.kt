@@ -1,23 +1,16 @@
 package com.intfocus.yonghuitest.dashboard.kpi.adapter
 
-import android.app.Fragment
-import android.app.FragmentManager
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.constant.Constant
-import com.intfocus.yonghuitest.dashboard.kpi.NumberThreeFragment
-import com.intfocus.yonghuitest.dashboard.kpi.NumberTwoFragment
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
-import com.zbl.lib.baseframe.utils.PhoneUtil
-import kotlinx.android.synthetic.main.fragment_number_two.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -25,7 +18,7 @@ import org.greenrobot.eventbus.EventBus
  */
 class NumberTwoItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGroupItem>?) : RecyclerView.Adapter<NumberTwoItemAdapter.NumberTwoItemHolder>() {
     var inflater = LayoutInflater.from(ctx)
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberTwoItemHolder {
         val contentView = inflater.inflate(R.layout.fragment_number_two, parent, false)

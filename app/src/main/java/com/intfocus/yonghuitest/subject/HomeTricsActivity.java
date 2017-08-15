@@ -42,7 +42,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yonghuitest.CommentActivity;
 import com.intfocus.yonghuitest.R;
-import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.subject.metrics.MetricsAdapter;
 import com.intfocus.yonghuitest.subject.metrics.ProductListAdapter;
 import com.intfocus.yonghuitest.util.FileUtil;
@@ -64,7 +63,6 @@ import com.yonghui.homemetrics.data.response.Product;
 import com.yonghui.homemetrics.utils.ReorganizeTheDataUtils;
 import com.yonghui.homemetrics.utils.Utils;
 
-import org.json.JSONException;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;

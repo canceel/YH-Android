@@ -5,7 +5,6 @@ import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.intfocus.yonghuitest.util.DisplayUtil
 import org.xutils.x
 
 /**

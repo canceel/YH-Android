@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import kotlinx.android.synthetic.main.fragment_number_two.*
 import org.greenrobot.eventbus.EventBus
@@ -21,7 +21,7 @@ class NumberTwoFragment : Fragment() {
     var datas: KpiGroupItem? = null
     private var rootView: View? = null
     internal var df = DecimalFormat("#.00")
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     companion object {
         fun newInstance(datas: KpiGroupItem): NumberTwoFragment {

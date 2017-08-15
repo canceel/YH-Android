@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -90,7 +88,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     @ViewInject(R.id.ll_copylink)
     LinearLayout llCopyLinkl;
 
-    private Boolean isInnerLink, isSupportSearch = false;
+    private Boolean isInnerLink = false;
     private String templateID, reportID;
     private PDFView mPDFView;
     private File pdfFile;
@@ -115,6 +113,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
     /**
      * 筛选
+     *
      * @param savedInstanceState
      */
     private LinearLayout llFilter;
@@ -356,15 +355,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 popupWindow.dismiss();
             }
         });
-        contentView.findViewById(R.id.ll_shaixuan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 筛选
-                actionLaunchReportSelectorActivity(view);
-//                WidgetUtil.showToastShort(mAppContext, "暂无筛选功能");
-                popupWindow.dismiss();
-            }
-        });
         contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -507,15 +497,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-            /**
-             * 内部报表具有筛选功能时
-             *   - 如果用户已选择，则 banner 显示该选项名称
-             *   - 未设置时，默认显示筛选项列表中第一个
-             *
-             *  初次加载时，判断筛选功能的条件还未生效
-             *  此处仅在第二次及以后才会生效
-             */
-            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, String.format("%s", groupID), templateID, reportID);
 
             new Thread(new Runnable() {
                 @Override
@@ -608,22 +589,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     };
 
     /*
-     * 内部报表具有筛选功能时，调用筛选项界面
-     */
-    public void actionLaunchReportSelectorActivity(View v) {
-        if (isSupportSearch) {
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
-            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
-            Intent intent = new Intent(mContext, SelectorTreeActivity.class);
-            intent.putExtra("searchItemsPath", searchItemsPath);
-            intent.putExtra("selectedItemPath", selectedItemPath);
-            mContext.startActivity(intent);
-        } else {
-            ToastUtils.INSTANCE.show(mContext, "该报表暂不支持筛选");
-        }
-    }
-
-    /*
      * 拷贝链接
      */
     public void actionCopyLink(View v) {
@@ -647,7 +612,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         }
 
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(SubjectActivity.this);
-        if (bmpScrennShot == null) { ToastUtils.INSTANCE.show(this, "截图失败");}
+        if (bmpScrennShot == null) {
+            ToastUtils.INSTANCE.show(this, "截图失败");
+        }
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")
@@ -847,23 +814,23 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
-            try {
-                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
-                FileUtil.writeFile(searchItemsPath, arrayString);
-
-                /**
-                 *  判断筛选的条件: arrayString 数组不为空
-                 *  报表第一次加载时，此处为判断筛选功能的关键点
-                 */
-                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
-                    isSupportSearch = true;
-//                    displayBannerTitleAndSearchIcon();
-                } else {
-                    isSupportSearch = false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+//                FileUtil.writeFile(searchItemsPath, arrayString);
+//
+//                /**
+//                 *  判断筛选的条件: arrayString 数组不为空
+//                 *  报表第一次加载时，此处为判断筛选功能的关键点
+//                 */
+//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
+//                    isSupportSearch = true;
+////                    displayBannerTitleAndSearchIcon();
+//                } else {
+//                    isSupportSearch = false;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @JavascriptInterface
@@ -876,8 +843,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                             locationDatas = menu.getData();
                             String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
                             if (!new File(selectedItemPath).exists()) {
-                                if (locationDatas != null)
-                                {
+                                if (locationDatas != null) {
                                     tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
                                 }
                             }
@@ -1077,12 +1043,11 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     public void complete(@NotNull ArrayList<MenuItem> data) {
         try {
             String addStr = "";
-            for (MenuItem menuItem : data) {
-                addStr += menuItem.getName() + "|";
+            for (int i = 0; i < data.size(); i++) {
+                addStr += data.get(i).getName() + "||";
             }
 
-            addStr = addStr.substring(0, addStr.length() - 1);
-            tvLocationAddress.setText(addStr);
+            addStr = addStr.substring(0, addStr.length() - 2);
             String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
             FileUtil.writeFile(selectedItemPath, addStr);
 

@@ -1,24 +1,15 @@
 package com.intfocus.yonghuitest.mode
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.intfocus.yonghuitest.dashboard.report.mode.ListPageBean
 import com.intfocus.yonghuitest.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yonghuitest.data.response.home.ReportListResult
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
 import com.intfocus.yonghuitest.net.RetrofitUtil
-import com.intfocus.yonghuitest.util.HttpUtil
-import com.intfocus.yonghuitest.util.K
 import com.intfocus.yonghuitest.util.URLs.kGroupId
 import com.intfocus.yonghuitest.util.URLs.kRoleId
 import com.zbl.lib.baseframe.core.AbstractMode
-import com.zbl.lib.baseframe.utils.StringUtil
 import org.greenrobot.eventbus.EventBus
-import org.json.JSONException
-import org.json.JSONObject
-import java.util.HashMap
 
 /**
  * 主页 - 报表 Model

@@ -14,7 +14,6 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity
 import com.intfocus.yonghuitest.util.FileUtil
-import com.intfocus.yonghuitest.util.ToastUtils
 
 /**
  * Created by liuruilin on 2017/3/28.

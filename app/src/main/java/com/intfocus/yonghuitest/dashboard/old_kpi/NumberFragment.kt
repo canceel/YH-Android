@@ -9,7 +9,7 @@ import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseModeFragment
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MererEntity
 import com.intfocus.yonghuitest.dashboard.kpi.bean.MeterClickEventEntity
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.fragment_number.*
 import org.greenrobot.eventbus.EventBus
@@ -20,7 +20,7 @@ import java.text.DecimalFormat
  */
 class NumberFragment : BaseModeFragment<Subject>() {
     private var entity: MererEntity? = null
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
     private var rootView: View? = null
 
     internal var df = DecimalFormat("#.00")

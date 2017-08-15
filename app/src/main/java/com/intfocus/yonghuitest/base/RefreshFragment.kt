@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.util.LoadingUtils
-import com.intfocus.yonghuitest.util.ToastColor
 import com.intfocus.yonghuitest.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout

@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.zbl.lib.baseframe.utils.PhoneUtil
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +22,7 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
     internal var viewHeight: Int = 0
     internal var view2width: Int = 0
     var inflater = LayoutInflater.from(ctx)
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     init {
         val sw = PhoneUtil.getScreenWidth(ctx)

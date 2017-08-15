@@ -4,10 +4,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.ViewGroup
-import com.intfocus.yonghuitest.dashboard.app.AppFragment
 import com.intfocus.yonghuitest.dashboard.kpi.HomeFragment
 
-import com.intfocus.yonghuitest.dashboard.kpi.KpiFragment
 import com.intfocus.yonghuitest.dashboard.mine.MinePageFragment
 import com.intfocus.yonghuitest.dashboard.report.ReportFragment
 import com.intfocus.yonghuitest.dashboard.work_box.WorkBoxFragment

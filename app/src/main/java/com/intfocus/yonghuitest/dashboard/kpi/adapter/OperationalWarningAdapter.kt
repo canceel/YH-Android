@@ -11,7 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.bean.DashboardItemBean
-import com.intfocus.yonghuitest.constant.Constant
+import com.intfocus.yonghuitest.constant.Colors
 import com.intfocus.yonghuitest.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.yonghuitest.util.Utils
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +24,7 @@ class OperationalWarningAdapter(val context: Context,
                                 private var datas: List<KpiGroupItem>?) : RecyclerView.Adapter<OperationalWarningAdapter.OperationalWarningHolder>() {
 
     var inflater = LayoutInflater.from(context)
-    private val colors = Constant.colorsRGY
+    private val colors = Colors.colorsRGY
 
     fun setData(data: List<KpiGroupItem>?) {
         this.datas = data
@@ -60,7 +60,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, 1))
+            EventBus.getDefault().post(DashboardItemBean(itemData.target_url!!, itemData.report_title!!, itemData.id!!, 1))
         }
     }
 

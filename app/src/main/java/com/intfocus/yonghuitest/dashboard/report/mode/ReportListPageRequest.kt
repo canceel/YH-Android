@@ -1,7 +1,5 @@
 package com.intfocus.yonghuitest.dashboard.report.mode
 
-import com.intfocus.yonghuitest.dashboard.report.mode.CategoryBean
-
 /**
  * Created by liuruilin on 2017/6/16.
  */

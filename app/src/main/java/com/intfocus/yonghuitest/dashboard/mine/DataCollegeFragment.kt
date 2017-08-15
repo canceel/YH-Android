@@ -110,6 +110,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                     }
 
                     override fun onError(apiException: ApiException) {
+                        finshRequest()
                         ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 

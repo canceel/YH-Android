@@ -129,6 +129,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { }
+
         // RxBus通知消息界面 ShowPushMessageActivity 更新数据
         RxBusUtil.getInstance().post("UpDatePushMessage")
 

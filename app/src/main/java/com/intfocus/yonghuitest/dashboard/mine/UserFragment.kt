@@ -103,11 +103,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .setFailureDrawableId(R.drawable.face_default)
                 .build()
 
-//        localImageOptions = ImageOptions.Builder()
-//                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
-//                .setCircular(true)
-//                .build()
-
         var mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
@@ -141,18 +136,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                     }
                 })
 
-//        mUserInfoString = mUserInfoSP.getString("UserInfoBean", "")
-//        if (!mUserInfoString.equals("")) {
-//            mUserInfo = gson.fromJson(mUserInfoString, UserInfoBean::class.java)
-//            tv_user_name.text = mUserInfo!!.user_name
-//            tv_login_number.text = mUserInfo!!.login_duration
-//            tv_report_number.text = mUserInfo!!.browse_report_count
-//            tv_beyond_number.text = mUserInfo!!.surpass_percentage.toString()
-//            tv_user_role.text = mUserInfo!!.role_name
-//            tv_mine_user_num_value.text = mUserInfo!!.user_num
-//            tv_mine_user_group_value.text = mUserInfo!!.group_name
-//            x.image().bind(iv_user_icon, mUserInfo!!.gravatar, imageOptions)
-//        }
         iv_user_icon.setOnClickListener { showIconSelectPopWindow(this.context) }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
         rl_issue.setOnClickListener { startIssueActivity() }

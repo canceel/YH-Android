@@ -290,13 +290,9 @@ public class LoginActivity extends FragmentActivity {
                 return;
             }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    hideKeyboard();
-                    mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
-                }
-            });
+            hideKeyboard();
+            mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
+            mBtnLogin.setClickable(true);
 
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
@@ -314,7 +310,7 @@ public class LoginActivity extends FragmentActivity {
 
                         @Override
                         public void onCompleted() {
-                            mBtnLogin.setClickable(true);
+
                         }
 
                         /**
@@ -323,9 +319,7 @@ public class LoginActivity extends FragmentActivity {
                          */
                         @Override
                         public void onError(ApiException apiException) {
-                            mBtnLogin.setClickable(true);
-                            if (mProgressDialog != null)
-                                mProgressDialog.dismiss();
+                            mProgressDialog.dismiss();
                             try {
                                 logParams = new JSONObject();
                                 logParams.put(URLs.kAction, "unlogin");
@@ -385,16 +379,13 @@ public class LoginActivity extends FragmentActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-                            if (mProgressDialog != null) {
-                                mProgressDialog.dismiss();
-                            }
+                            mProgressDialog.dismiss();
                             finish();
                         }
                     });
         } catch (Exception e) {
             e.printStackTrace();
-            if (mProgressDialog != null) mProgressDialog.dismiss();
+            mProgressDialog.dismiss();
             ToastUtils.INSTANCE.show(this, e.getLocalizedMessage());
         }
     }

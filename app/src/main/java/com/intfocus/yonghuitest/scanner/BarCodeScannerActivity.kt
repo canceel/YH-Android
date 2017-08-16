@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
@@ -27,6 +26,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.filter.Filter
 import kotlinx.android.synthetic.main.activity_bar_code_scanner_v2.*
 import kotlinx.android.synthetic.main.popup_input_barcode.view.*
+import java.util.*
 
 
 class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.OnClickListener {
@@ -180,7 +180,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
     override fun onScanQRCodeOpenCameraError() {
         ToastUtils.show(this@BarCodeScannerActivity, "扫描失败，请重新扫描")
-        Handler().postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
+        Timer().schedule(object :TimerTask(){
+            override fun run() {
+                zbarview_barcode_scanner.startSpot()
+            }
+        },2000)
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
@@ -189,7 +193,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         var toIntOrNull = result!!.toLongOrNull()
         if (toIntOrNull == null) {
             ToastUtils.show(this@BarCodeScannerActivity, "暂时只支持条形码")
-            Handler().postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
+            Timer().schedule(object :TimerTask(){
+                override fun run() {
+                    zbarview_barcode_scanner.startSpot()
+                }
+            },2000)
             return
         }
         val intent = Intent(this, ScannerResultActivity::class.java)

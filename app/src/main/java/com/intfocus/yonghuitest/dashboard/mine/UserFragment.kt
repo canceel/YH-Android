@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -121,7 +120,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(activity, apiException!!.displayMessage)
+                        ToastUtils.show(ctx, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(mUserInfo: UserInfoResult?) {
@@ -150,7 +149,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(activity, apiException!!.displayMessage)
+                        ToastUtils.show(ctx, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(mUserInfo: UserInfoResult?) {

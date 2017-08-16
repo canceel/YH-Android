@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,6 +32,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     private EditText mEtEmployeeId;
     private TextView mBtnSubmit;
     private EditText mEtEmployeePhoneNum;
+    private ProgressDialog mRequestDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效");
                 } else if (mobile.length() == 11) {
 
-                    mBtnSubmit.setClickable(false);
+
 
                     // 发起 post 请求
                     startPost(userNum, mobile);
@@ -103,13 +105,18 @@ public class ForgetPasswordActivity extends BaseActivity {
      * @param mobile
      */
     public void startPost(String userNum, String mobile) {
+        mBtnSubmit.setClickable(false);
+        mRequestDialog = new ProgressDialog(this);
+        mRequestDialog.show();
+        mBtnSubmit.setClickable(true);
         RetrofitUtil.getHttpService().resetPwd(userNum, mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override
                     public void onError(ApiException apiException) {
+                        mRequestDialog.dismiss();
                         showErrorMsg(apiException.getDisplayMessage());
-                        mBtnSubmit.setClickable(true);
+//                        mBtnSubmit.setClickable(true);
                     }
 
                     @Override
@@ -119,7 +126,8 @@ public class ForgetPasswordActivity extends BaseActivity {
 
                     @Override
                     public void onCompleted() {
-                        mBtnSubmit.setClickable(true);
+                        mRequestDialog.dismiss();
+//                        mBtnSubmit.setClickable(true);
                     }
                 });
 

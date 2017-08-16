@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -29,6 +30,7 @@ import java.util.regex.Pattern
  * Created by liuruilin on 2017/6/9.
  */
 class PassWordAlterActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_alter)
@@ -91,41 +93,44 @@ class PassWordAlterActivity : BaseActivity() {
             ToastUtils.show(this, "密码必须为数字与字母的组合")
             return
         }
-
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/密码修改")
         ActionLogUtil.actionLog(this@PassWordAlterActivity, logParams)
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(URLs.kPassword, "0")) {
-            btn_pwd_alter_submit.isClickable = false
+        var mRequestDialog = ProgressDialog(this)
+        mRequestDialog.show()
+//            btn_pwd_alter_submit.isClickable = false
             // 修改密码 POST 请求
             RetrofitUtil.getHttpService()
                     .updatePwd(mUserSP.getString(URLs.kUserNum, "0"), URLs.MD5(newPassword))
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onCompleted() {
+                            mRequestDialog.dismiss()
                             val alertDialog = AlertDialog.Builder(this@PassWordAlterActivity)
                             alertDialog.setTitle("温馨提示")
-                            alertDialog.setMessage("密码修改成功")
-                            alertDialog.setPositiveButton("重新登录") { _, _ ->
-                                modifiedUserConfig(false)
-                                val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
-                                mEditor.putBoolean("ScreenLock", false)
-                                mEditor.commit()
+                                    .setMessage("密码修改成功")
+                                    .setPositiveButton("重新登录") { _, _ ->
+                                        modifiedUserConfig(false)
+                                        val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
+                                        mEditor.putBoolean("ScreenLock", false)
+                                        mEditor.commit()
 
-                                val intent = Intent()
-                                intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(intent)
-                            }
-                            alertDialog.show()
-                            btn_pwd_alter_submit.isClickable = true
+                                        val intent = Intent()
+                                        intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        startActivity(intent)
+                                        finish()
+                                    }.show()
+//                            btn_pwd_alter_submit.isClickable = true
                         }
 
                         override fun onError(apiException: ApiException?) {
-                            ToastUtils.show(applicationContext, "密码修改失败")
-                            btn_pwd_alter_submit.isClickable = true
-//                            ToastUtils.show(applicationContext, apiException!!.displayMessage!!)
+//                            ToastUtils.show(applicationContext, "密码修改失败")
+                            mRequestDialog.dismiss()
+                            ToastUtils.show(applicationContext, apiException!!.displayMessage!!)
+//                            btn_pwd_alter_submit.isClickable = true
                         }
 
                         override fun onBusinessNext(data: BaseResult?) {

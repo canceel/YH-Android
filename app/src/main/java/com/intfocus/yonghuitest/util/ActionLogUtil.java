@@ -27,6 +27,11 @@ public class ActionLogUtil {
      * @param state    是否启用锁屏
      * @param deviceID 设备标识
      * @param password 锁屏密码
+     *
+     * "id": ,
+     * "screen_lock_state": ,
+     * "screen_lock_type": "",
+     * "screen_lock": ""
      */
     public static void screenLock(String deviceID, String password, boolean state) {
         String urlString = String.format(K.kScreenLockAPIPath, K.kBaseUrl);

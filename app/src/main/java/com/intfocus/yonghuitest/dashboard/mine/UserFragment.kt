@@ -120,7 +120,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(ctx, apiException!!.displayMessage)
+                        ToastUtils.show(activity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(mUserInfo: UserInfoResult?) {
@@ -149,7 +149,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
                     override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(ctx, apiException!!.displayMessage)
+                        ToastUtils.show(activity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(mUserInfo: UserInfoResult?) {

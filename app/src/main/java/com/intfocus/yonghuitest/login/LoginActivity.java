@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener;
 import com.intfocus.yonghuitest.login.bean.Device;
 import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.NewUser;
@@ -243,6 +244,13 @@ public class LoginActivity extends FragmentActivity {
             }
         });
 
+        mBtnLogin.setOnClickListener(new NoDoubleClickListener(){
+            @Override
+            protected void onNoDoubleClick(View v) {
+                actionSubmit(v);
+            }
+        });
+
     }
 
     /**
@@ -278,7 +286,6 @@ public class LoginActivity extends FragmentActivity {
      * 登录按钮点击事件
      */
     public void actionSubmit(View v) {
-        mBtnLogin.setClickable(false);
         try {
             userNum = usernameEditText.getText().toString();
             userPass = passwordEditText.getText().toString();
@@ -292,7 +299,6 @@ public class LoginActivity extends FragmentActivity {
 
             hideKeyboard();
             mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
-            mBtnLogin.setClickable(true);
 
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
@@ -329,7 +335,7 @@ public class LoginActivity extends FragmentActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                            ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
                         }
 
                         /**
@@ -414,7 +420,7 @@ public class LoginActivity extends FragmentActivity {
                 .subscribe(new CodeHandledSubscriber<Device>() {
                     @Override
                     public void onError(ApiException apiException) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                        ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
                     }
 
                     /**
@@ -499,7 +505,7 @@ public class LoginActivity extends FragmentActivity {
 
                     if (newVersionCode % 2 == 1) {
                         if (isShowToast) {
-                            ToastUtils.INSTANCE.show(getApplicationContext(), String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
+                            ToastUtils.INSTANCE.show(LoginActivity.this, String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
 
                         return;

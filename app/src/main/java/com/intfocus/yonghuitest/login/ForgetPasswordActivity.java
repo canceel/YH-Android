@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener;
 import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
@@ -63,9 +64,9 @@ public class ForgetPasswordActivity extends BaseActivity {
             }
         });
 
-        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+        mBtnSubmit.setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onNoDoubleClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -73,10 +74,8 @@ public class ForgetPasswordActivity extends BaseActivity {
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效");
+                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "员工号无效");
                 } else if (mobile.length() == 11) {
-
-
 
                     // 发起 post 请求
                     startPost(userNum, mobile);
@@ -105,10 +104,8 @@ public class ForgetPasswordActivity extends BaseActivity {
      * @param mobile
      */
     public void startPost(String userNum, String mobile) {
-        mBtnSubmit.setClickable(false);
         mRequestDialog = new ProgressDialog(this);
         mRequestDialog.show();
-        mBtnSubmit.setClickable(true);
         RetrofitUtil.getHttpService().resetPwd(userNum, mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
@@ -121,7 +118,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
                     @Override
                     public void onBusinessNext(BaseResult data) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), ToastColor.SUCCESS);
+                        ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, data.getMessage(), ToastColor.SUCCESS);
                     }
 
                     @Override

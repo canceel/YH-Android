@@ -15,6 +15,7 @@ import android.widget.EditText
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener
 import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
@@ -38,7 +39,11 @@ class PassWordAlterActivity : BaseActivity() {
     }
 
     private fun initListener() {
-        btn_pwd_alter_submit.setOnClickListener { submitPassword() }
+        btn_pwd_alter_submit.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                submitPassword()
+            }
+        })
         rl_pwd_alter_look_new_pwd.setOnClickListener {
             setEditTextInputTypeByCheckBox(et_pwd_alter_new_pwd, cb_pwd_alter_look_new_pwd)
         }
@@ -98,9 +103,8 @@ class PassWordAlterActivity : BaseActivity() {
         ActionLogUtil.actionLog(this@PassWordAlterActivity, logParams)
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(URLs.kPassword, "0")) {
-        var mRequestDialog = ProgressDialog(this)
-        mRequestDialog.show()
-//            btn_pwd_alter_submit.isClickable = false
+            var mRequestDialog = ProgressDialog(this)
+            mRequestDialog.show()
             // 修改密码 POST 请求
             RetrofitUtil.getHttpService()
                     .updatePwd(mUserSP.getString(URLs.kUserNum, "0"), URLs.MD5(newPassword))
@@ -123,18 +127,14 @@ class PassWordAlterActivity : BaseActivity() {
                                         startActivity(intent)
                                         finish()
                                     }.show()
-//                            btn_pwd_alter_submit.isClickable = true
                         }
 
                         override fun onError(apiException: ApiException?) {
-//                            ToastUtils.show(applicationContext, "密码修改失败")
                             mRequestDialog.dismiss()
-                            ToastUtils.show(applicationContext, apiException!!.displayMessage!!)
-//                            btn_pwd_alter_submit.isClickable = true
+                            ToastUtils.show(this@PassWordAlterActivity, apiException!!.displayMessage!!)
                         }
 
                         override fun onBusinessNext(data: BaseResult?) {
-//                            ToastUtils.show(applicationContext, data!!.message!!)
                         }
 
                     })

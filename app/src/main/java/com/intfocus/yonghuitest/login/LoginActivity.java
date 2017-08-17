@@ -22,12 +22,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.dashboard.DashboardActivity;
 import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener;
 import com.intfocus.yonghuitest.login.bean.Device;
 import com.intfocus.yonghuitest.login.bean.DeviceRequest;
 import com.intfocus.yonghuitest.login.bean.NewUser;
@@ -69,6 +71,7 @@ public class LoginActivity extends FragmentActivity {
     private View mLinearPasswordBelowLine;
     private LinearLayout mLlEtUsernameClear;
     private LinearLayout mLlEtPasswordClear;
+    private Button mBtnLogin;
     private DeviceRequest mDeviceRequest;
     private SharedPreferences mUserSP;
     private SharedPreferences.Editor mUserSPEdit;
@@ -93,7 +96,7 @@ public class LoginActivity extends FragmentActivity {
         sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login_new);
-        checkPgyerVersionUpgrade(LoginActivity.this,true);
+        checkPgyerVersionUpgrade(LoginActivity.this, true);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
@@ -101,6 +104,7 @@ public class LoginActivity extends FragmentActivity {
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
         mLlEtUsernameClear = (LinearLayout) findViewById(R.id.ll_etUsername_clear);
         mLlEtPasswordClear = (LinearLayout) findViewById(R.id.ll_etPassword_clear);
+        mBtnLogin = (Button) findViewById(R.id.btn_login);
 
         // 初始化监听
         initListener();
@@ -239,6 +243,14 @@ public class LoginActivity extends FragmentActivity {
                 return false;
             }
         });
+
+        mBtnLogin.setOnClickListener(new NoDoubleClickListener(){
+            @Override
+            protected void onNoDoubleClick(View v) {
+                actionSubmit(v);
+            }
+        });
+
     }
 
     /**
@@ -285,13 +297,8 @@ public class LoginActivity extends FragmentActivity {
                 return;
             }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    hideKeyboard();
-                    mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
-                }
-            });
+            hideKeyboard();
+            mProgressDialog = ProgressDialog.show(LoginActivity.this, "稍等", "验证用户信息...");
 
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
@@ -309,6 +316,7 @@ public class LoginActivity extends FragmentActivity {
 
                         @Override
                         public void onCompleted() {
+
                         }
 
                         /**
@@ -317,8 +325,7 @@ public class LoginActivity extends FragmentActivity {
                          */
                         @Override
                         public void onError(ApiException apiException) {
-                            if (mProgressDialog != null)
-                                mProgressDialog.dismiss();
+                            mProgressDialog.dismiss();
                             try {
                                 logParams = new JSONObject();
                                 logParams.put(URLs.kAction, "unlogin");
@@ -328,7 +335,7 @@ public class LoginActivity extends FragmentActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                            ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
                         }
 
                         /**
@@ -378,16 +385,13 @@ public class LoginActivity extends FragmentActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-                            if (mProgressDialog != null) {
-                                mProgressDialog.dismiss();
-                            }
+                            mProgressDialog.dismiss();
                             finish();
                         }
                     });
         } catch (Exception e) {
             e.printStackTrace();
-            if (mProgressDialog != null) mProgressDialog.dismiss();
+            mProgressDialog.dismiss();
             ToastUtils.INSTANCE.show(this, e.getLocalizedMessage());
         }
     }
@@ -416,7 +420,7 @@ public class LoginActivity extends FragmentActivity {
                 .subscribe(new CodeHandledSubscriber<Device>() {
                     @Override
                     public void onError(ApiException apiException) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), apiException.getDisplayMessage());
+                        ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
                     }
 
                     /**
@@ -501,7 +505,7 @@ public class LoginActivity extends FragmentActivity {
 
                     if (newVersionCode % 2 == 1) {
                         if (isShowToast) {
-                            ToastUtils.INSTANCE.show(getApplicationContext(),String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
+                            ToastUtils.INSTANCE.show(LoginActivity.this, String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
 
                         return;

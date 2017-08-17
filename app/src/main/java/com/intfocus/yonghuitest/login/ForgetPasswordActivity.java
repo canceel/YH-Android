@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.intfocus.yonghuitest.R;
 import com.intfocus.yonghuitest.base.BaseActivity;
 import com.intfocus.yonghuitest.data.response.BaseResult;
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener;
 import com.intfocus.yonghuitest.net.ApiException;
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber;
 import com.intfocus.yonghuitest.net.RetrofitUtil;
@@ -31,6 +33,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     private EditText mEtEmployeeId;
     private TextView mBtnSubmit;
     private EditText mEtEmployeePhoneNum;
+    private ProgressDialog mRequestDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,9 @@ public class ForgetPasswordActivity extends BaseActivity {
             }
         });
 
-        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+        mBtnSubmit.setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onNoDoubleClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -71,14 +74,15 @@ public class ForgetPasswordActivity extends BaseActivity {
                 String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
                 if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(getApplicationContext(), "员工号无效");
+                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "员工号无效");
                 } else if (mobile.length() == 11) {
+
                     // 发起 post 请求
                     startPost(userNum, mobile);
 
-                        /*
-                         * 用户行为记录, 单独异常处理，不可影响用户体验
-                         */
+                    /*
+                     * 用户行为记录, 单独异常处理，不可影响用户体验
+                     */
                     try {
                         logParams = new JSONObject();
                         logParams.put(URLs.kAction, "重置密码");
@@ -100,21 +104,26 @@ public class ForgetPasswordActivity extends BaseActivity {
      * @param mobile
      */
     public void startPost(String userNum, String mobile) {
+        mRequestDialog = ProgressDialog.show(this, "稍等", "正在重置密码...");
         RetrofitUtil.getHttpService().resetPwd(userNum, mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override
                     public void onError(ApiException apiException) {
+                        mRequestDialog.dismiss();
                         showErrorMsg(apiException.getDisplayMessage());
+//                        mBtnSubmit.setClickable(true);
                     }
 
                     @Override
                     public void onBusinessNext(BaseResult data) {
-                        ToastUtils.INSTANCE.show(getApplicationContext(), data.getMessage(), ToastColor.SUCCESS);
+                        ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, data.getMessage(), ToastColor.SUCCESS);
                     }
 
                     @Override
                     public void onCompleted() {
+                        mRequestDialog.dismiss();
+//                        mBtnSubmit.setClickable(true);
                     }
                 });
 

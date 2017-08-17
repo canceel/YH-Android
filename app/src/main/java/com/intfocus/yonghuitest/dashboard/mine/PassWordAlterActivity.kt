@@ -1,5 +1,6 @@
 package com.intfocus.yonghuitest.dashboard.mine
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.widget.EditText
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.data.response.BaseResult
+import com.intfocus.yonghuitest.listen.NoDoubleClickListener
 import com.intfocus.yonghuitest.login.LoginActivity
 import com.intfocus.yonghuitest.net.ApiException
 import com.intfocus.yonghuitest.net.CodeHandledSubscriber
@@ -29,6 +31,7 @@ import java.util.regex.Pattern
  * Created by liuruilin on 2017/6/9.
  */
 class PassWordAlterActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_alter)
@@ -36,7 +39,11 @@ class PassWordAlterActivity : BaseActivity() {
     }
 
     private fun initListener() {
-        btn_pwd_alter_submit.setOnClickListener { submitPassword() }
+        btn_pwd_alter_submit.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                submitPassword()
+            }
+        })
         rl_pwd_alter_look_new_pwd.setOnClickListener {
             setEditTextInputTypeByCheckBox(et_pwd_alter_new_pwd, cb_pwd_alter_look_new_pwd)
         }
@@ -91,42 +98,42 @@ class PassWordAlterActivity : BaseActivity() {
             ToastUtils.show(this, "密码必须为数字与字母的组合")
             return
         }
-
         var logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/密码修改")
         ActionLogUtil.actionLog(this@PassWordAlterActivity, logParams)
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(URLs.kPassword, "0")) {
+            var mRequestDialog = ProgressDialog.show(this, "稍等", "正在修改密码...")
             // 修改密码 POST 请求
             RetrofitUtil.getHttpService()
                     .updatePwd(mUserSP.getString(URLs.kUserNum, "0"), URLs.MD5(newPassword))
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onCompleted() {
+                            mRequestDialog.dismiss()
                             val alertDialog = AlertDialog.Builder(this@PassWordAlterActivity)
                             alertDialog.setTitle("温馨提示")
-                            alertDialog.setMessage("密码修改成功")
-                            alertDialog.setPositiveButton("重新登录") { _, _ ->
-                                modifiedUserConfig(false)
-                                val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
-                                mEditor.putBoolean("ScreenLock", false)
-                                mEditor.commit()
+                                    .setMessage("密码修改成功")
+                                    .setPositiveButton("重新登录") { _, _ ->
+                                        modifiedUserConfig(false)
+                                        val mEditor = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE).edit()
+                                        mEditor.putBoolean("ScreenLock", false)
+                                        mEditor.commit()
 
-                                val intent = Intent()
-                                intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(intent)
-                            }
-                            alertDialog.show()
+                                        val intent = Intent()
+                                        intent.setClass(this@PassWordAlterActivity, LoginActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        startActivity(intent)
+                                        finish()
+                                    }.show()
                         }
 
                         override fun onError(apiException: ApiException?) {
-                            ToastUtils.show(applicationContext, "密码修改失败")
-//                            ToastUtils.show(applicationContext, apiException!!.displayMessage!!)
+                            mRequestDialog.dismiss()
+                            ToastUtils.show(this@PassWordAlterActivity, apiException!!.displayMessage!!)
                         }
 
                         override fun onBusinessNext(data: BaseResult?) {
-//                            ToastUtils.show(applicationContext, data!!.message!!)
                         }
 
                     })

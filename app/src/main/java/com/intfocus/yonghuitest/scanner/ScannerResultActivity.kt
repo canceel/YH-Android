@@ -76,6 +76,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     fun launchDropMenuActivity(clickView: View) {
         val contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null)
         contentView.findViewById(R.id.ll_shaixuan).visibility = View.VISIBLE
+        contentView.findViewById(R.id.ll_comment).visibility = View.GONE
         x.view().inject(this, contentView)
         //设置弹出框的宽度和高度
         popupWindow = PopupWindow(contentView,

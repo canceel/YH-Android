@@ -103,8 +103,7 @@ class PassWordAlterActivity : BaseActivity() {
         ActionLogUtil.actionLog(this@PassWordAlterActivity, logParams)
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(URLs.kPassword, "0")) {
-            var mRequestDialog = ProgressDialog(this)
-            mRequestDialog.show()
+            var mRequestDialog = ProgressDialog.show(this, "稍等", "正在修改密码...")
             // 修改密码 POST 请求
             RetrofitUtil.getHttpService()
                     .updatePwd(mUserSP.getString(URLs.kUserNum, "0"), URLs.MD5(newPassword))

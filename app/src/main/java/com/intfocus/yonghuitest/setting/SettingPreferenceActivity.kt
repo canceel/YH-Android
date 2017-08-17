@@ -8,42 +8,30 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.Switch
-
 import com.intfocus.yonghuitest.R
 import com.intfocus.yonghuitest.base.BaseActivity
 import com.intfocus.yonghuitest.screen_lock.InitPassCodeActivity
 import com.intfocus.yonghuitest.util.FileUtil
+import kotlinx.android.synthetic.main.activity_setting_preference.*
 
 /**
  * Created by liuruilin on 2017/3/28.
  */
 
 class SettingPreferenceActivity : BaseActivity() {
-    private var mScreenLockSwitch: Switch? = null
-    private var mReportCopySwitch: Switch? = null
-    private var mLandscapeBannerSwitch: Switch? = null
     private var mSharedPreferences: SharedPreferences? = null
-    private var mContext: Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_preference)
 
-        mContext = this
-
-        mScreenLockSwitch = findViewById(R.id.switch_screenLock) as Switch
-        mReportCopySwitch = findViewById(R.id.switch_report_copy) as Switch
-        mLandscapeBannerSwitch = findViewById(R.id.switch_landscape_banner) as Switch
-
-        mScreenLockSwitch!!.setOnCheckedChangeListener(mSwitchScreenLockListener)
-        mReportCopySwitch!!.setOnCheckedChangeListener(mSwitchReportCopyListener)
-        mLandscapeBannerSwitch!!.setOnCheckedChangeListener(mSwitchBannerListener)
+        initSwitchPreference()
+        initListener()
     }
 
     override fun onResume() {
         super.onResume()
-        initSwitchPreference()
+        switch_screenLock!!.isChecked = mSharedPreferences!!.getBoolean("ScreenLock", false)
     }
 
     /*
@@ -51,9 +39,14 @@ class SettingPreferenceActivity : BaseActivity() {
      */
     private fun initSwitchPreference() {
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
-        mScreenLockSwitch!!.isChecked = mSharedPreferences!!.getBoolean("ScreenLock", false)
-        mReportCopySwitch!!.isChecked = mSharedPreferences!!.getBoolean("ReportCopy", false)
-        mLandscapeBannerSwitch!!.isChecked = mSharedPreferences!!.getBoolean("Landscape", false)
+        switch_screenLock.isChecked = mSharedPreferences!!.getBoolean("ScreenLock", false)
+        switch_report_copy.isChecked = mSharedPreferences!!.getBoolean("ReportCopy", false)
+        switch_landscape_banner.isChecked = mSharedPreferences!!.getBoolean("Landscape", false)
+    }
+
+    private fun initListener() {
+        switch_screenLock.setOnCheckedChangeListener(mSwitchScreenLockListener)
+        switch_report_copy.setOnCheckedChangeListener(mSwitchReportCopyListener)
     }
 
     /*
@@ -72,12 +65,6 @@ class SettingPreferenceActivity : BaseActivity() {
     }
 
     /*
-     *  Switch LandScape Banner 开关
-     */
-    private val mSwitchBannerListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> mSharedPreferences!!.edit().putBoolean("Landscape", isChecked).commit() }
-
-
-    /*
      *  Switch Report Copy 开关
      */
     private val mSwitchReportCopyListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> mSharedPreferences!!.edit().putBoolean("ReportCopy", isChecked).commit() }
@@ -86,8 +73,8 @@ class SettingPreferenceActivity : BaseActivity() {
      * 清理缓存
      */
     fun clearUserCache(v: View) {
-        FileUtil.CacheCleanAsync(mAppContext, "cache-clean").execute()
         var mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
+        FileUtil.CacheCleanAsync(mAppContext, "cache-clean").execute()
         Handler().postDelayed({ mProgressDialog.dismiss() }, 15000)
     }
 }
